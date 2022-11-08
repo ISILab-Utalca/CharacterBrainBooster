@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CBB.Api;
 
+[UtilityAgentAttribute("Green man")]
 public class GreenMan : MonoBehaviour
 {
+    [UtilityInput("Size")]
     public float Size = 1;
     bool isObserved = false;
     public Rigidbody2D rg2D;
@@ -11,6 +14,10 @@ public class GreenMan : MonoBehaviour
     public float SpeedModifier=10;
     public float SizeLossModifier = 0.1f;
     public bool Moving = false;
+
+    [UtilityInput("Position")]
+    public Vector3 Position => transform.position;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +51,8 @@ public class GreenMan : MonoBehaviour
         }
 
     }
+
+    [UtilityAction("Position","Size")]
     public void MoveTo(GreenMan objective, bool escape = false)
     {
         Direction = (objective.transform.position - transform.position).normalized;
@@ -53,14 +62,17 @@ public class GreenMan : MonoBehaviour
         }
         Moving = true;
     }
+
     public void Stop()
     {
         Moving = false;
     }
+
     private void OnDestroy()
     {
         MinionsObserver.Instance?.RemoveMinion(this);
     }
+
     public void Eat(GreenMan other)
     {
         transform.localScale *= (Size + other.Size) / Size;

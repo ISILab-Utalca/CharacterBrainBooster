@@ -6,9 +6,17 @@ using UnityEngine;
 namespace CBB.Api
 {
     [System.AttributeUsage(System.AttributeTargets.Class)]
-    public class UtilityAgentAtribute : Attribute
+    public class UtilityAgentAttribute : Attribute
     {
-        public UtilityAgentAtribute()
+        public UtilityAgentAttribute(string name)
+        {
+        }
+    }
+
+    [System.AttributeUsage(System.AttributeTargets.Field | AttributeTargets.Property)]
+    public class UtilityInputAttribute : Attribute
+    {
+        public UtilityInputAttribute(string name)
         {
 
         }
@@ -18,19 +26,11 @@ namespace CBB.Api
     [System.AttributeUsage(System.AttributeTargets.Method | AttributeTargets.Event)]
     public class UtilityActionAttribute : Attribute
     {
-        public UtilityActionAttribute()
+        public UtilityActionAttribute(params string[] names)
         {
 
         }
     }
 
 
-    [System.AttributeUsage(System.AttributeTargets.Field | AttributeTargets.Property)]
-    public class UtilityInputAttribute : Attribute
-    {
-        public UtilityInputAttribute()
-        {
-
-        }
-    }
 }
