@@ -7,7 +7,7 @@ using System;
 public class MinionsObserver : MonoBehaviour
 {
     public static MinionsObserver Instance;
-    public List<GreenMan> AllMinions = new List<GreenMan>();
+    public List<ColorMan> AllMinions = new List<ColorMan>();
 
     // Start is called before the first frame update
     void Start()
@@ -22,12 +22,12 @@ public class MinionsObserver : MonoBehaviour
         }
     }
 
-    public void AddMinion(GreenMan newMinion)
+    public void AddMinion(ColorMan newMinion)
     {
         AllMinions.Add(newMinion);
     }
 
-    public void RemoveMinion(GreenMan oldMinion)
+    public void RemoveMinion(ColorMan oldMinion)
     {
         AllMinions.Remove(oldMinion);
     }
