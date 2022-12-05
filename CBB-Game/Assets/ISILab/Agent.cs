@@ -9,7 +9,8 @@ using CBB.Lib;
 
 namespace CBB.Api
 {
-
+    // (??) esta clase se podria inyectar al momento de ser instanciado el objeto que lo necesite
+    // asi evitamos que los usuarios tengan que acordarse de poner ellos esta clase a mano
     public class Agent : MonoBehaviour // brain
     {
         private _Agent agent;
@@ -29,8 +30,14 @@ namespace CBB.Api
 
         void Start()
         {
-            // esto no deberia estar aqui pero cumple para el propotipo
+            // (!) esto no deberia estar aqui pero cumple para el propotipo
             utilities = new CFCALIV().GetUtilities(agent);
+        }
+
+        private void OnMouseUpAsButton()
+        {
+            var x = FindObjectOfType<VisualInterface>();
+            x.Show(this.agent);
         }
 
         private void OnDestroy()
@@ -48,7 +55,7 @@ namespace CBB.Api
             AgentObserver.Instance.RemoveAgent(this);
         }
 
-        public Action GetAction()
+        public Action GetAction() // (???) quitar
         {
             //agent.actions
             return null;
@@ -146,10 +153,11 @@ namespace CBB.Api
     }
 }
 
+[System.Serializable]
 public class _Agent
 {
-    public Agent brain;
-    public MonoBehaviour body;
+    public Agent brain; // (!!) esta referencia puede ser un problema al momento de mandarla entre apps
+    public MonoBehaviour body; // (!!) esta referencia puede ser un problema al momento de mandarla entre apps
     public List<Tuple<string, object>> inputs;
     public List<Tuple<string, object>> actions;
 
@@ -164,12 +172,59 @@ public class _Agent
     public T GetInput<T>(string name)
     {
         var v = inputs.First(i => i.Item1.Equals(name));
-        return (T)v.Item2;
+
+        if(v == null)
+        {
+            Debug.Log("color = red>[CBB]:</color> Agent '"+this+"' does not have an input called '"+name+"'.");
+        }
+
+        T vv = (T)v.Item2;
+        if (vv == null)
+        {
+            Debug.Log("color = red>[CBB]:</color> the requested input is not '"+ (typeof(T)).ToString() +"' type.");
+        }
+
+        return vv;
     }
 
-    public object GetAction(string name)
+    public object GetInput(string name) // (?) es util o sobra? 
+    {
+        var v = inputs.First(i => i.Item1.Equals(name));
+
+        if (v == null)
+        {
+            Debug.Log("color = red>[CBB]:</color> Agent '" + this + "' does not have an input called '" + name + "'.");
+        }
+
+        return v.Item2;
+    }
+
+    public T GetAction<T>(string name) // (?) es util o sobra? 
     {
         var v = actions.First(a => a.Item1.Equals(name));
+
+        if (v == null)
+        {
+            Debug.Log("color = red>[CBB]:</color> Agent '" + this + "' does not have an action called '" + name + "'.");
+        }
+
+
+        T vv = (T)v.Item2;
+        if (vv == null)
+        {
+            Debug.Log("color = red>[CBB]:</color> the requested action is not '" + (typeof(T)).ToString() + "' type.");
+        }
+        return vv;
+    }
+
+    public object GetAction(string name) // (?) es util o sobra? 
+    {
+        var v = actions.First(a => a.Item1.Equals(name));
+
+        if (v == null)
+        {
+            Debug.Log("color = red>[CBB]:</color> Agent '" + this + "' does not have an action called '" + name + "'.");
+        }
         return v.Item2;
     }
 }
