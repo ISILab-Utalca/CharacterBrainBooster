@@ -39,5 +39,28 @@ namespace CBB.Api
 
     }
 
+    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)] // (??) pede que esto tenga que estar en otra hoja para que no se mesclen los attributos con diferentes usos
+    public class MetadataAttribute : Attribute
+    {
+        private string name;
+
+        public string Name => name;
+
+        public MetadataAttribute(string name)
+        {
+            this.name = name;
+        }
+    }
+
+    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)] // (??) pede que esto tenga que estar en otra hoja para que no se mesclen los attributos con diferentes usos
+    public class EvaluatorAttribute : Attribute
+    {
+        public string[] inputsNames;
+
+        public EvaluatorAttribute(params string[] inputsNames)
+        {
+            this.inputsNames = inputsNames;
+        }
+    }
 
 }
