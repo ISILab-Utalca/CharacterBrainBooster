@@ -13,7 +13,7 @@ namespace CBB.Api
             {
                 if (agents[i].IsAvailable())
                 {
-                   //var action = agents.GetAction();
+                    //var action = agents.GetAction();
                     //action?.invoke();
                 }
             }
@@ -36,7 +36,6 @@ namespace CBB.Api
                 return instance;
             }
         }
-
 
         public void AddAgent(Agent agent)
         {
