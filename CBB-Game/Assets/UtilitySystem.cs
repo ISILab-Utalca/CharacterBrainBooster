@@ -6,18 +6,24 @@ namespace CBB.Api
 {
     public class UtilitySystem : MonoBehaviour
     {
-
-    }
-
-    public class AgentDesitionTreee
-    {
-        // AgentDesitionTreee continuar trabajando
+        private void Update()
+        {
+            var agents = AgentObserver.Instance.Agents;
+            for (int i = 0; i < agents.Count; i++)
+            {
+                if (agents[i].IsAvailable())
+                {
+                   //var action = agents.GetAction();
+                    //action?.invoke();
+                }
+            }
+        }
     }
 
     public class AgentObserver
     {
         private static AgentObserver instance;
-        public List<Agent> AllMinions = new List<Agent>();
+        public List<Agent> Agents = new List<Agent>();
 
         public static AgentObserver Instance
         {
@@ -34,12 +40,12 @@ namespace CBB.Api
 
         public void AddAgent(Agent agent)
         {
-            AllMinions.Add(agent);
+            Agents.Add(agent);
         }
 
         public void RemoveAgent(Agent agent)
         {
-            AllMinions.Remove(agent);
+            Agents.Remove(agent);
         }
     }
 }

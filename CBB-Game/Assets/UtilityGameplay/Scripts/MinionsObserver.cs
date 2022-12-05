@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[Obsolete("This class is not being used.")]
 public class MinionsObserver : MonoBehaviour
 {
     public static MinionsObserver Instance;

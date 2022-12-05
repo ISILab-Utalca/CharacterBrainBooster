@@ -11,16 +11,16 @@ namespace CBB.Lib
         public abstract float Evaluate(params float[] param);
     }
 
-    public class A : UtilityEvaluator
+    public class Valentia : UtilityEvaluator
     {
         public override float Evaluate(params float[] param)
         {
             if (param.Length != 4)
                 throw new ArgumentException();
 
-            var dif = param[3] - param[4]; // max - min
-            var v1 = (param[0] - param[4]) / dif;
-            var v2 = (param[1] - param[4]) / dif;
+            var dif = param[2] - param[3]; // max - min
+            var v1 = (param[0] - param[3]) / dif;
+            var v2 = (param[1] - param[3]) / dif;
             return ((v1 - v2) + 0.5f) / 2f;
         }
     }
@@ -47,6 +47,19 @@ namespace CBB.Lib
             foreach (var temp in param)
             {
                 v = v * temp;
+            }
+            return v;
+        }
+    }
+
+    public class Divide : UtilityEvaluator
+    {
+        public override float Evaluate(params float[] param)
+        {
+            var v = 1f;
+            foreach (var temp in param)
+            {
+                v = v / temp;
             }
             return v;
         }

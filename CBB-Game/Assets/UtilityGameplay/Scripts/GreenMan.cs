@@ -52,7 +52,20 @@ public class GreenMan : MonoBehaviour
 
     }
 
-    [UtilityAction("Position","Size")]
+    [UtilityAction("Run", "Position")]
+    public void MoveFrom(Vector3 pos)
+    {
+        Direction = -(pos - transform.position).normalized;
+        Moving = true;
+    }
+
+    [UtilityAction("Chase", "Position")]
+    public void MoveTo(Vector3 pos)
+    {
+        Direction = (pos - transform.position).normalized;
+        Moving = true;
+    }
+
     public void MoveTo(GreenMan objective, bool escape = false)
     {
         Direction = (objective.transform.position - transform.position).normalized;
@@ -63,6 +76,7 @@ public class GreenMan : MonoBehaviour
         Moving = true;
     }
 
+    [UtilityAction("Stop")]
     public void Stop()
     {
         Moving = false;
