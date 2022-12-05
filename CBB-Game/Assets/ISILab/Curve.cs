@@ -1,13 +1,27 @@
+using CBB.Api;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Curve
 {
     public abstract float Calc(params float[] parms);
     public abstract float Calc(float v);
+
+    public static List<Curve> GetCurves()
+    {
+        IEnumerable<Curve> exporters = typeof(Curve)
+        .Assembly.GetTypes()
+        .Where(t => t.IsSubclassOf(typeof(Curve)) && !t.IsAbstract)
+        .Select(t => (Curve)Activator.CreateInstance(t));
+
+        return exporters.ToList();
+    }
 }
 
+[Metadata("Linear")]
 public class Linear : Curve
 {
     float value = 0f;
@@ -32,6 +46,7 @@ public class Linear : Curve
     }
 }
 
+[Metadata("Exponencial invertida")]
 public class ExponencialInvertida : Curve
 {
     float value = 0f;   // X
@@ -56,6 +71,7 @@ public class ExponencialInvertida : Curve
     }
 }
 
+[Metadata("Exponencial")]
 public class Exponencial : Curve
 {
     float value = 0f;   // X
@@ -80,6 +96,7 @@ public class Exponencial : Curve
     }
 }
 
+[Metadata("Escalonada")]
 public class Escalonada : Curve
 {
     float value = 0f;   // X
@@ -104,6 +121,7 @@ public class Escalonada : Curve
     }
 }
 
+[Metadata("Sigmoide")]
 public class Sigmoide : Curve
 {
     float value = 0f;   // X
