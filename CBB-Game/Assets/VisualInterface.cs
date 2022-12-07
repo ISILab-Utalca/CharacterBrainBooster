@@ -42,26 +42,41 @@ public class VisualInterface : MonoBehaviour // (!!) mejorar nombre
         actionPanels.Clear();
     }
 
-    private void SelectAction()
+    public void SelectAction() // (!!) esto deberia ser atravez de objetos para poder pasar diferentes formas de seleccion
     {
+        InfoAction act = null;
+        var best = 0f;
         foreach (var action in actionPanels)
         {
-
+            var v = action.GetValue();
+            if(v > best)
+            {
+                act = action;
+                best = v;
+            }
         }
+
+        if(act == null)
+        {
+            Debug.Log("No exite una accion como la mejor");
+            return;
+        }
+
+        act.Select(true);
     }
 }
 
-public interface IElementoEcuacion
+public interface IElementoEcuacion // (?) sobra
 {
 
 }
 
-public class Value : IElementoEcuacion
+public class Value : IElementoEcuacion // (?) sobra
 {
 
 }
 
-public class Symbol : ScriptableObject, IElementoEcuacion
+public class Symbol : ScriptableObject, IElementoEcuacion // (?) sobra
 {
     public string nameText;
 
