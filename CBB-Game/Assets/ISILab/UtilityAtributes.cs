@@ -6,49 +6,102 @@ using UnityEngine;
 
 namespace CBB.Api
 {
+    /// <summary>
+    /// This attribute allows the CBB system to identify the agents,
+    /// these will be displayed on a general blackboard.
+    /// </summary>
     [System.AttributeUsage(System.AttributeTargets.Class)]
     public class UtilityAgentAttribute : Attribute
-    {
-        public UtilityAgentAttribute(string name)
-        {
-
-        }
-    }
-
-    [System.AttributeUsage(System.AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-    public class UtilityInputAttribute : Attribute
-    {
-        public UtilityInputAttribute(string name)
-        {
-
-        }
-    }
-
-
-    [System.AttributeUsage(System.AttributeTargets.Method | AttributeTargets.Event, AllowMultiple = true)]
-    public class UtilityActionAttribute : Attribute
-    {
-        private string[] inputs;
-
-        public List<string> Inputs => inputs.ToList();
-
-        public UtilityActionAttribute(string name ,params string[] inputs)
-        {
-            this.inputs = inputs;
-        }
-
-    }
-
-    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)] // (??) pede que esto tenga que estar en otra hoja para que no se mesclen los attributos con diferentes usos
-    public class MetadataAttribute : Attribute
     {
         private string name;
 
         public string Name => name;
 
-        public MetadataAttribute(string name)
+        public UtilityAgentAttribute(string name)
         {
             this.name = name;
+        }
+    }
+
+    /// <summary>
+    /// This attribute allows the CBB system to identify the fields
+    /// and properties of an agenof an agent, these will be displayed on a general board.
+    /// </summary>
+    [System.AttributeUsage(System.AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+    public class UtilityInputAttribute : Attribute
+    {
+        private string name;
+        private bool general;
+
+        public string Name => name;
+        public bool IsGeneral => general;
+
+        public UtilityInputAttribute(string name, bool general = false)
+        {
+            this.name = name;
+            this.general = general;
+        }
+    }
+
+    /// <summary>
+    /// This attribute allows the CBB system to identify the methods, events
+    /// and actions of an agent, these will be exposed on a general board.
+    /// </summary>
+    [System.AttributeUsage(System.AttributeTargets.Method | AttributeTargets.Event, AllowMultiple = true)]
+    public class UtilityActionAttribute : Attribute
+    {
+        private string name;
+        private string[] inputs;
+
+        public string Name => name;
+        public List<string> Inputs => inputs.ToList();
+
+        public UtilityActionAttribute(string name ,params string[] inputs)
+        {
+            this.name = name;
+            this.inputs = inputs;
+        }
+    }
+
+    /// <summary>
+    /// This attribute allows the CBB system to identify if the action
+    /// requires an external agent and which ones it allows.
+    /// </summary>
+    [System.AttributeUsage(System.AttributeTargets.Method | AttributeTargets.Event, AllowMultiple = true)]
+    public class ReferenceOtherAttribute : Attribute
+    {
+        private ReferenceType refType;
+        private Type[] allowedTypes;
+
+        public ReferenceType RefType => refType;
+        public List<Type> AllowedTypes => allowedTypes.ToList();
+
+        public ReferenceOtherAttribute(ReferenceType refType, params Type[] types)
+        {
+            this.refType = refType;
+            this.allowedTypes = types;
+        }
+
+        public enum ReferenceType
+        {
+            All,
+            ByDistance
+        }
+    }
+
+
+    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)] // (??) pede que esto tenga que estar en otra hoja para que no se mesclen los attributos con diferentes usos
+    public class CurveAttribute : Attribute
+    {
+        private string name;
+        private string[] parms;
+
+        public string Name => name;
+
+        public CurveAttribute(string name, params string[] parms)
+        {
+            this.name = name;
+            this.parms = parms;
         }
     }
 
