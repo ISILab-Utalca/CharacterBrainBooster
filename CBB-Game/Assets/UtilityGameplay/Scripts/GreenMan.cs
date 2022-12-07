@@ -7,14 +7,14 @@ using UnityEngine;
 public class GreenMan : ColorMan
 {
 
-    [UtilityAction("Run", "o:Position")]
+    [UtilityAction("Run", " Position")]
     public void MoveFrom(Vector3 pos)
     {
         Direction = -(pos - transform.position).normalized;
         Moving = true;
     }
 
-    [UtilityAction("Chase", "o:Position")]
+    [UtilityAction("Chase", "Position")]
     public void MoveTo(Vector3 pos)
     {
         Direction = (pos - transform.position).normalized;
