@@ -3,7 +3,9 @@ using CBB.Lib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -89,17 +91,30 @@ public class InfoAction : MonoBehaviour
     public float GetEvaluatorValue()
     {
         var evaluators = UtilityEvaluator.GetEvaluators();
-        var evlauator = evaluators[evaluatorDD.value];
+        var evaluator = evaluators[evaluatorDD.value];
 
         object[] inputsValue = new object[inputsDD.Count];
         for (int i = 0; i < inputsDD.Count; i++)
         {
             var index = inputsDD[i].DD.value;
             var input = agent.inputs[index];
-            inputsValue[i] = input.Item2;
+
+            var field = (FieldInfo)input.Item2;
+            if (field != null)
+            {
+                inputsValue[i] = field.GetValue(agent.body);
+                continue;
+            }
+
+            var prop = (PropertyInfo)input.Item2;
+            if(prop != null)
+            {
+                inputsValue[i] = prop.GetValue(agent.body);
+                continue;
+            }
         }
 
-        return evlauator.Evaluate(inputsValue);
+        return evaluator.Evaluate(inputsValue);
     }
 
     public float GetCurveValue(float v)
