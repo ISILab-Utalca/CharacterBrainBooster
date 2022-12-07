@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[Obsolete]
 public class CFCALIV // hace lo que la interfaz
 {
     public List<Utility> GetUtilities(_Agent agent)
