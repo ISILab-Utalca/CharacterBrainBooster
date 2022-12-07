@@ -21,7 +21,7 @@ public abstract class Curve
     }
 }
 
-[Metadata("Linear")]
+[Curve(name:"Linear", "Slope", "Dx", "Dy")]
 public class Linear : Curve
 {
     float value = 0f;
@@ -46,7 +46,7 @@ public class Linear : Curve
     }
 }
 
-[Metadata("Exponencial invertida")]
+[Curve(name:"Inverted exponential", "e", "Dx", "Dy")]
 public class ExponencialInvertida : Curve
 {
     float value = 0f;   // X
@@ -71,7 +71,7 @@ public class ExponencialInvertida : Curve
     }
 }
 
-[Metadata("Exponencial")]
+[Curve(name: "Exponential", "e", "Dx", "Dy")]
 public class Exponencial : Curve
 {
     float value = 0f;   // X
@@ -96,7 +96,7 @@ public class Exponencial : Curve
     }
 }
 
-[Metadata("Escalonada")]
+[Curve(name:"Staggered", "e", "Max", "Min")]
 public class Escalonada : Curve
 {
     float value = 0f;   // X
@@ -121,7 +121,7 @@ public class Escalonada : Curve
     }
 }
 
-[Metadata("Sigmoide")]
+[Curve(name:"Sigmoide", "De", "Dx", "Dy")] // ,"Euler")]
 public class Sigmoide : Curve
 {
     float value = 0f;   // X
