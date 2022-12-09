@@ -23,7 +23,7 @@ namespace CBB.Api
     public class AgentObserver
     {
         private static AgentObserver instance;
-        public List<Agent> Agents = new List<Agent>();
+        public List<AgentMB> Agents = new List<AgentMB>();
 
         public static AgentObserver Instance
         {
@@ -37,12 +37,12 @@ namespace CBB.Api
             }
         }
 
-        public void AddAgent(Agent agent)
+        public void AddAgent(AgentMB agent)
         {
             Agents.Add(agent);
         }
 
-        public void RemoveAgent(Agent agent)
+        public void RemoveAgent(AgentMB agent)
         {
             Agents.Remove(agent);
         }
