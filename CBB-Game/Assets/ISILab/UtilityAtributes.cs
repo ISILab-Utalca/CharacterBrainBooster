@@ -94,7 +94,7 @@ namespace CBB.Api
     public class CurveAttribute : Attribute
     {
         private string name;
-        private string[] parms;
+        public string[] parms;
 
         public string Name => name;
 
@@ -108,10 +108,14 @@ namespace CBB.Api
     [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)] // (??) pede que esto tenga que estar en otra hoja para que no se mesclen los attributos con diferentes usos
     public class EvaluatorAttribute : Attribute
     {
-        public string[] inputsNames;
+        private string name;
 
-        public EvaluatorAttribute(params string[] inputsNames)
+        public string[] inputsNames;
+        public string Name => name;
+
+        public EvaluatorAttribute(string name, params string[] inputsNames)
         {
+            this.name = name;
             this.inputsNames = inputsNames;
         }
     }
