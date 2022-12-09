@@ -9,14 +9,15 @@ using CBB.Lib;
 
 namespace CBB.Api
 {
+
     // (??) esta clase se podria inyectar al momento de ser instanciado el objeto que lo necesite
     // asi evitamos que los usuarios tengan que acordarse de poner ellos esta clase a mano
-    public class Agent : MonoBehaviour // brain
+    public class AgentMB : MonoBehaviour // brain
     {
         private _Agent agent;
 
         private float lastTime = 0;
-        private float cooldown = 50; //ms o seg ?
+        private float cooldown = 50; // (?) ms o seg ?
 
         private List<Utility> utilities = new List<Utility>();
 
@@ -30,8 +31,7 @@ namespace CBB.Api
 
         void Start()
         {
-            // (!) esto no deberia estar aqui pero cumple para el propotipo
-            utilities = new CFCALIV().GetUtilities(agent);
+
         }
 
         private void OnMouseUpAsButton()
@@ -156,12 +156,12 @@ namespace CBB.Api
 [System.Serializable]
 public class _Agent
 {
-    public Agent brain; // (!!) esta referencia puede ser un problema al momento de mandarla entre apps
+    public AgentMB brain; // (!!) esta referencia puede ser un problema al momento de mandarla entre apps
     public MonoBehaviour body; // (!!) esta referencia puede ser un problema al momento de mandarla entre apps
     public List<Tuple<string, object>> inputs;
     public List<Tuple<string, object>> actions;
 
-    public _Agent(Agent brain, MonoBehaviour body, List<Tuple<string, object>> inputs, List<Tuple<string, object>> actions)
+    public _Agent(AgentMB brain, MonoBehaviour body, List<Tuple<string, object>> inputs, List<Tuple<string, object>> actions)
     {
         this.brain = brain;
         this.body = body;
