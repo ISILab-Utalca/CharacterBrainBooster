@@ -9,6 +9,9 @@ using UnityEngine;
 [System.Serializable]
 public abstract class Curve
 {
+    [JsonRequired]
+    public bool Inverted = false;
+
     public abstract float Calc(params float[] parms);
     public abstract float Calc(float v);
 
@@ -55,13 +58,14 @@ public class Linear : Curve
         var dx = parms[2];
         var dy = parms[3];
 
-        return (m * (value + dx)) + dy;
+        return Calc(value);
     }
 
     public override float Calc(float v)
     {
         value = v;
-        return (m * (value + dx)) + dy;
+        var toR = Mathf.Clamp01((m * (value + dx)) + dy);
+        return Inverted? 1 - toR : toR;
     }
 
     public override int GetHashCode()
@@ -79,7 +83,7 @@ public class ExponencialInvertida : Curve
     [JsonRequired]
     float e = 2f;       // 2f
     [JsonRequired]
-    float dx = 0f;      // 0.0f
+    float dx = 1f;      // 0.0f
     [JsonRequired]
     float dy = 0f;      // 0.0f
 
@@ -90,13 +94,14 @@ public class ExponencialInvertida : Curve
         var dx = parms[2];      // 0.0f
         var dy = parms[3];      // 0.0f
 
-        return (1f / (Mathf.Pow(value, e) + dx)) + dy;
+        return Calc(value);
     }
 
     public override float Calc(float v)
     {
         value = v;
-        return (1f / (Mathf.Pow(value, e) + dx)) + dy;
+        var toR =  Mathf.Clamp01((Mathf.Log(value + dx, e)) + dy);
+        return Inverted ? 1 - toR : toR;
     }
 
     public override int GetHashCode()
@@ -125,13 +130,14 @@ public class Exponencial : Curve
         var dx = parms[2];      // 0.0f
         var dy = parms[3];      // 0.0f
 
-        return Mathf.Pow(value + dx, e) + dy;
+        return Calc(value);
     }
 
     public override float Calc(float v)
     {
         value = v;
-        return Mathf.Pow(value + dx, e) + dy;
+        var toR = Mathf.Clamp01(Mathf.Pow(value + dx, e) + dy);
+        return Inverted ? 1 - toR : toR;
     }
 
     public override int GetHashCode()
@@ -160,13 +166,14 @@ public class Escalonada : Curve
         var max = parms[2];     // 1f
         var min = parms[3];     // 0.1f
 
-        return value >= e ? max : min;
+        return Calc(value);
     }
 
     public override float Calc(float v)
     {
         value = v;
-        return value >= e ? max : min;
+        var toR = value >= e ? max : min;
+        return Inverted ? 1 - toR : toR;
     }
 
     public override int GetHashCode()
@@ -184,7 +191,9 @@ public class Sigmoide : Curve
     [JsonRequired]
     float de = 0f;      // 0.0f
     [JsonRequired]
-    float dx = 0f;      // 0.0f
+    float dx = 5f;      // 5.0f
+    [JsonRequired]
+    float sx = 10f;     // 10.0f
     [JsonRequired]
     float dy = 0f;      // 0.0f
     [JsonIgnore]
@@ -197,13 +206,14 @@ public class Sigmoide : Curve
         var dx = parms[2];      // 0.0f
         var dy = parms[3];      // 0.0f
 
-        return (1 / (1 + Mathf.Pow(euler + dx, -value + de))) + dy;
+        return Calc(value);
     }
 
     public override float Calc(float v)
     {
         value = v;
-        return (1 / (1 + Mathf.Pow(euler + dx, -value + de))) + dy;
+        var toR = Mathf.Clamp01((1 / (1 + Mathf.Pow(euler + de, -(value * sx) + dx))) + dy);
+        return Inverted ? 1 - toR : toR;
     }
 
     public override int GetHashCode()
