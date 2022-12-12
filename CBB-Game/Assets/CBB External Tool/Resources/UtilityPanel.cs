@@ -15,11 +15,13 @@ public class UtilityPanel : VisualElement
     private VisualElement evaluatorParamaters;
 
     private DropdownField curveDropdown;
+    private Toggle invertedToggle;
     private Chart chart;
     private VisualElement curveParameters;
 
     private UtilityEvaluator[] _evaluators;
     private Curve[] _curves;
+    private int _cIndex;
 
     public UtilityPanel(AgentData.Consideration consideration)
     {
@@ -59,8 +61,19 @@ public class UtilityPanel : VisualElement
 
         // Chart
         this.chart = this.Q<Chart>("Chart");
-        var index = _curves.ToList().FindIndex(c => c.GetType().Equals(consideration.curve.GetType()));
-        UpdateChart(_curves[index]);
+        _cIndex = _curves.ToList().FindIndex(c => c.GetType().Equals(consideration.curve.GetType()));
+        Debug.Log(_cIndex);
+        UpdateChart(_curves[_cIndex]);
+
+        // InvertedToggle
+        this.invertedToggle = this.Q<Toggle>("InvertedToggle");
+        var curve = _curves.ToList().Find(c => c.GetType().Equals(consideration.curve.GetType())).Inverted;
+        this.invertedToggle.value = curve;
+        this.invertedToggle.RegisterCallback<ChangeEvent<bool>>(e =>
+        {
+            _curves[_cIndex].Inverted = e.newValue;
+            UpdateChart(_curves[_cIndex]);
+        });
 
         // CurveDropdown
         this.curveDropdown = this.Q<DropdownField>("CurveDropdown");
@@ -70,10 +83,10 @@ public class UtilityPanel : VisualElement
         }).ToList();
         this.curveDropdown.index = _curves.ToList().FindIndex(c => c.GetType().Equals(consideration.curve.GetType()));
         this.curveDropdown.RegisterCallback<ChangeEvent<string>>(e => {
-            var index = this.curveDropdown.index;
-            consideration.curve = _curves[index];
-            UpdateCurveParamter(_curves[index]);
-            UpdateChart(_curves[index]);
+            _cIndex = this.curveDropdown.index;
+            consideration.curve = _curves[_cIndex];
+            UpdateCurveParamter(_curves[_cIndex]);
+            UpdateChart(_curves[_cIndex]);
         });
 
     }
