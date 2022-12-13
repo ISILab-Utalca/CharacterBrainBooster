@@ -19,22 +19,7 @@ public class AgentData
     public Type type;
 
     [JsonRequired]
-    public List<Variable> inputs = new List<Variable>();
-    //{
-    //    new Variable("Hp",typeof(float),5f),
-    //    new Variable("MaxHp",typeof(float),10f),
-    //    new Variable("Name",typeof(string),"Max Steel")
-    //};
-    [JsonRequired]
     public List<Consideration> considerations = new List<Consideration>();
-    //{
-    //    new Consideration("percentageHP",new List<Variable>(){
-    //        new Variable("Hp",typeof(float),5f),
-    //        new Variable("MaxHp",typeof(float),10f)
-    //    },
-    //        new Normalize(),
-    //        new Linear())
-    //};
 
     public AgentData() { }
 
@@ -43,93 +28,129 @@ public class AgentData
         this.type = type;
     }
 
-    public static Type[] Collect()
+}
+
+[System.Serializable]
+public class Variable
+{
+    [JsonRequired]
+    public string name;
+    [JsonRequired]
+    public Type type;
+    [JsonRequired]
+    public Type ownerType;
+    [JsonRequired, SerializeReference]
+    public object value; // (??) esto sobra?
+
+    public Variable(string name, Type type,Type ownerType, object value)
     {
-        var types = Assembly.GetExecutingAssembly()
-                       .GetTypes()
-                       .Where(t => t.GetCustomAttributes(typeof(UtilityAgentAttribute), false).Length > 0)
-                       .ToArray();
-        return types;
+        this.name = name;
+        this.type = type;
+        this.ownerType = ownerType;
+        this.value = value;
     }
 
-
-    [System.Serializable]
-    public class Variable
+    public override bool Equals(object obj)
     {
-        [JsonRequired]
-        public string name;
-        [JsonRequired]
-        public Type type;
-        [JsonRequired, SerializeReference]
-        public object value;
+        var other = (Variable)obj;
+        if (other == null)
+            return false;
 
-        public Variable(string name, Type type, object value)
+        if (other.name.Equals(this.name) &&
+            other.type.Equals(this.type) &&
+            other.value.Equals(this.value))
         {
-            this.name = name;
-            this.type = type;
-            this.value = value;
+            return true;
         }
 
-        public override bool Equals(object obj)
-        {
-            var other = (Variable)obj;
-            if (other == null)
-                return false;
-
-            if(other.name.Equals(this.name) && 
-                other.type.Equals(this.type) &&
-                other.value.Equals(this.value))
-            {
-                return true;
-            }
-
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            var x = Utils.StringToInt(this.name);
-            var xx = Utils.StringToInt(this.type.ToString()) * 10;
-            var xxx = Utils.StringToInt(this.value.ToString()) * 100;
-            return (x + xx + xxx);
-                
-        }
+        return base.Equals(obj);
     }
 
-    [System.Serializable]
-    public class Consideration
+    public override int GetHashCode()
     {
-        [JsonRequired]
-        public string name;
-        [JsonRequired, SerializeReference]
-        public List<int> variablesHash;
-        [JsonRequired, SerializeField]
-        public Type evaluator; 
-        [JsonRequired, SerializeReference]
-        public Curve curve;
+        var x = Utils.StringToInt(this.name);
+        var xx = Utils.StringToInt(this.type.ToString()) * 10;
+        var xxx = Utils.StringToInt(this.ownerType.ToString()) * 100;
+        var xxxx = Utils.StringToInt(this.value.ToString()) * 1000; // (?) null
+        return (x + xx + xxx + xxxx);
 
-        [JsonIgnore]
-        private List<Variable> variables;
+    }
+}
 
-        public Consideration(string name, List<Variable> variables, UtilityEvaluator evaluator, Curve curve)
-        {
-            this.name = name;
-            this.variables = variables;
-            this.variablesHash = variables.Select(v => v.GetHashCode()).ToList();
-            this.evaluator = evaluator.GetType();
-            this.curve = curve;
-        }
 
-        public override int GetHashCode()
-        {
-            var x = Utils.StringToInt(this.name);
-            var xx = variablesHash.Sum( v => v) * 10;
-            var xxx = Utils.StringToInt(evaluator.ToString()) * 100;
-            var xxxx = curve.GetHashCode() * 1000;
-            return (x + xx + xxx + xxxx);
-        }
+[System.Serializable]
+public class Consideration
+{
+    [JsonRequired]
+    public string name;
+    [JsonRequired, SerializeReference]
+    public List<int> variablesHash;
+    [JsonRequired, SerializeField]
+    public Type evaluator;
+    [JsonRequired, SerializeReference]
+    public Curve curve;
+
+    [JsonIgnore]
+    private List<Variable> variables;
+
+    public Consideration(string name, List<Variable> variables, UtilityEvaluator evaluator, Curve curve)
+    {
+        this.name = name;
+        this.variables = variables;
+        this.variablesHash = variables.Select(v => v.GetHashCode()).ToList();
+        this.evaluator = evaluator.GetType();
+        this.curve = curve;
     }
 
+    public override int GetHashCode()
+    {
+        var x = Utils.StringToInt(this.name);
+        var xx = variablesHash.Sum(v => v) * 10;
+        var xxx = Utils.StringToInt(evaluator.ToString()) * 100;
+        var xxxx = curve.GetHashCode() * 1000;
+        return (x + xx + xxx + xxxx);
+    }
+}
+
+[System.Serializable]
+public class ActionInfo // (!!) mejorar nombre
+{
+    [JsonRequired]
+    public string name;
+    [JsonRequired]
+    public Type type;
+    [JsonRequired]
+    public Action action; // (??) sobra?
+
+    public ActionInfo(string name, Type owner, Action action)
+    {
+        this.name = name;
+        this.type = owner;
+        this.action = action;
+    }
+
+    public override int GetHashCode()
+    {
+        var x = Utils.StringToInt(this.name);
+        var xx = Utils.StringToInt(this.type.ToString()) * 10;
+        var xxx = Utils.StringToInt(this.action.ToString()) * 100; // (?) null
+        return (x + xx + xxx);
+    }
+}
+
+[System.Serializable]
+public class AgentBaseData
+{
+    public int? intenceRef; // (?) sobra ?
+    public List<Variable> inputs = new List<Variable>();
+    public List<ActionInfo> actions = new List<ActionInfo>();
+
+    public AgentBaseData(List<Variable> inputs, List<ActionInfo> actions, int? intenceRef = null)
+    {
+        this.intenceRef = intenceRef;
+        this.inputs = inputs;
+        this.actions = actions;
+    }
 }
 
 public static class Utils
