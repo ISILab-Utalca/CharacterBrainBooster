@@ -23,6 +23,7 @@ namespace CBB.Lib
     }
 
     [Evaluator(name: "Normalize", "Value", "Min", "Max")]
+    [ParamsAllowed(typeof(float),typeof(int))]
     public class Normalize : UtilityEvaluator
     {
         public override float Evaluate(params object[] param)
@@ -39,6 +40,7 @@ namespace CBB.Lib
     }
 
     [Evaluator(name: "Multiply", "Multiplier", "Multiplicand")]
+    [ParamsAllowed(typeof(float), typeof(int))]
     public class Multiply : UtilityEvaluator
     {
         public override float Evaluate(params object[] param)
@@ -53,7 +55,8 @@ namespace CBB.Lib
         }
     }
 
-    [Evaluator(name: "Divide", "Dividend","Divisor")]
+    [Evaluator(name: "Divide", "Dividend", "Divisor")]
+    [ParamsAllowed(typeof(float), typeof(int))]
     public class Divide : UtilityEvaluator
     {
         public override float Evaluate(params object[] param)
@@ -69,6 +72,7 @@ namespace CBB.Lib
     }
 
     [Evaluator(name: "Identity", "Value")]
+    [ParamsAllowed(typeof(float), typeof(int))]
     public class Identity : UtilityEvaluator
     {
         public override float Evaluate(params object[] param)
@@ -78,6 +82,48 @@ namespace CBB.Lib
                 throw new ArgumentException();
 
             return parm[0];
+        }
+    }
+
+    [Evaluator(name: "Distance (v1)", "First", "Second")]
+    [ParamsAllowed(typeof(float), typeof(int))]
+    public class DistanceV1 : UtilityEvaluator
+    {
+        public override float Evaluate(params object[] param)
+        {
+            var parm = param.Select(p => (float)p).ToArray();
+            if (param.Length != 2)
+                throw new ArgumentException();
+
+            return (parm[0] + parm[1])/2f;
+        }
+    }
+
+    [Evaluator(name: "Distance (v2)", "First", "Second")]
+    [ParamsAllowed(typeof(Vector2))]
+    public class DistanceV2 : UtilityEvaluator
+    {
+        public override float Evaluate(params object[] param)
+        {
+            var parm = param.Select(p => (Vector2)p).ToArray();
+            if (param.Length != 2)
+                throw new ArgumentException();
+
+            return Vector2.Distance(parm[0], parm[1]);
+        }
+    }
+
+    [Evaluator(name: "Distance (v3)", "First", "Second")]
+    [ParamsAllowed(typeof(Vector3))]
+    public class DistanceV3 : UtilityEvaluator
+    {
+        public override float Evaluate(params object[] param)
+        {
+            var parm = param.Select(p => (Vector3)p).ToArray();
+            if (param.Length != 2)
+                throw new ArgumentException();
+
+            return Vector3.Distance(parm[0], parm[1]);
         }
     }
 
