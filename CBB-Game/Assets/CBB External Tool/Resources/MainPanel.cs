@@ -24,15 +24,16 @@ public class MainPanel : MonoBehaviour
         
         // AgentDropdown
         this.agentDropdown = root.Q<DropdownField>("AgentDropdown");
-        this.agentDropdown.choices = Globals.AgentClasses.Select((t) => {
+        var agentTypes = UtilitySystem.CollectAgentTypes();
+        this.agentDropdown.choices = agentTypes.Select((t) => {
             var att = t.GetCustomAttributes(typeof(UtilityAgentAttribute),false)[0] as UtilityAgentAttribute;
             return att.Name;
             }).ToList();
         this.agentDropdown.index = 0;
-        _agentType = Globals.AgentClasses[0];
+        _agentType = agentTypes[0];
         this.agentDropdown.RegisterCallback<ChangeEvent<string>>(e => {
             var index = this.agentDropdown.index;
-            _agentType = Globals.AgentClasses[index];
+            _agentType = agentTypes[index];
         });
 
         // CreateBrain
@@ -58,28 +59,16 @@ public static class Globals
 {
     public static AgentData Current;
 
-    private static Type[] agentClasses;
-    public static Type[] AgentClasses 
-    {
-        get 
-        {
-            if(agentClasses == null)
-                agentClasses = AgentData.Collect();
-            return agentClasses;
-        } 
-    }
+    public static List<Variable> globalVariables = new List<Variable>();
 
-    /*
-    private static UtilityEvaluator[] evaluators;
-    public static UtilityEvaluator[] Evaluators
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void OnBeforeSceneLoadRuntimeMethod()
     {
-        get
-        {
-            if (evaluators == null)
-                evaluators = UtilityEvaluator.GetEvaluators().ToArray();
-            return evaluators;
-        }
+        Debug.Log("Before scene loaded");
+        var agentTypes = UtilitySystem.CollectAgentTypes();
+        var allVariables = agentTypes.Select( t => UtilitySystem.CollectVariables(t)).ToList();
+
+        allVariables.ForEach(vs => globalVariables.AddRange(vs));
     }
-    */
 }
 
