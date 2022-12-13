@@ -3,6 +3,7 @@ using CBB.Lib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -45,15 +46,26 @@ public class UtilityMain : MonoBehaviour
         for (int i = 0; i < considerations.Count; i++)
         {
             var cons = considerations[i];
-            this.content.Add(new UtilityPanel(cons));
+            this.content.Add(new UtilityPanel(_current, cons, () => { 
+                this.content.Clear(); 
+                UpdateConsiderations();
+                this.content.Add(this.addConsideration);
+            })); // (?) ojo recursivo ?
         }
     }
 
     private void AddConsideration()
     {
-        var consideration = new AgentData.Consideration(
-            "New consideration",
-            new List<AgentData.Variable>(),
+        var newName = "";
+        var iterator = 0;
+        do{
+            newName = "New consideration " + iterator;
+            iterator++;
+        } while (_current.considerations.Any( c => c.name == newName));
+
+        var consideration = new Consideration(
+            newName,
+            new List<Variable>(),
             new Normalize(),
             new Linear()
             );
