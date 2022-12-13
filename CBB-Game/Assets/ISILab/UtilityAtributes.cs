@@ -105,6 +105,23 @@ namespace CBB.Api
         }
     }
 
+    [System.AttributeUsage(System.AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)] // (??) pede que esto tenga que estar en otra hoja para que no se mesclen los attributos con diferentes usos
+    public class ParamAttribute : Attribute
+    {
+        private string name;
+        private float min,max;
+
+        public string Name => name;
+        public float Min => min;
+        public float Max => max;
+        public ParamAttribute(string name,float min = 0f, float max = 1f)
+        {
+            this.name = name;
+            this.min = min;
+            this.max = max;
+        }
+    }
+
     [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)] // (??) pede que esto tenga que estar en otra hoja para que no se mesclen los attributos con diferentes usos
     public class EvaluatorAttribute : Attribute
     {
@@ -117,6 +134,24 @@ namespace CBB.Api
         {
             this.name = name;
             this.inputsNames = inputsNames;
+        }
+    }
+
+    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)] // (??) pede que esto tenga que estar en otra hoja para que no se mesclen los attributos con diferentes usos
+    public class ParamsAllowedAttribute : Attribute
+    {
+        private Type[] parms;
+
+        public Type[] Parms => parms;
+
+        public bool IsAllowed(Type type)
+        {
+            return parms.Contains(type);
+        }
+
+        public ParamsAllowedAttribute(params Type[] parms)
+        {
+            this.parms = parms;
         }
     }
 
