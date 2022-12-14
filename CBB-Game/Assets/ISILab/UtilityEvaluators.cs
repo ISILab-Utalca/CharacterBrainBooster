@@ -1,4 +1,5 @@
 using CBB.Api;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace CBB.Lib
     public abstract class UtilityEvaluator
     {
         public abstract float Evaluate(params object[] param);
+        public abstract float Evaluate(object param);
 
         public static List<UtilityEvaluator> GetEvaluators()
         {
@@ -26,16 +28,31 @@ namespace CBB.Lib
     [ParamsAllowed(typeof(float),typeof(int))]
     public class Normalize : UtilityEvaluator
     {
+        [JsonRequired, Param("Value")]
+        public float value = 0f;
+        [JsonRequired, Param("Min")]
+        public float min = 0f;
+        [JsonRequired, Param("Max")]
+        public float max = 0f;
+
         public override float Evaluate(params object[] param)
         {
             var parm = param.Select(p => (float)p).ToArray();
-
             if (param.Length != 3)
                 throw new ArgumentException();
 
-            var dif = parm[1] - parm[2];
+            value = parm[0];
+            min = parm[1];
+            max = parm[2];
 
-            return (parm[0] - parm[2]) / dif * 1f;
+            return this.Evaluate(value);
+        }
+
+        public override float Evaluate(object param)
+        {
+            value = (float)param;
+            var dif = min - max;
+            return (value - min) / dif * 1f;
         }
     }
 
@@ -43,15 +60,27 @@ namespace CBB.Lib
     [ParamsAllowed(typeof(float), typeof(int))]
     public class Multiply : UtilityEvaluator
     {
+        [JsonRequired, Param("Multiplier")]
+        public float multiplier = 0f;
+        [JsonRequired, Param("Multiplicand")]
+        public float multiplicand = 1f;
+
         public override float Evaluate(params object[] param)
         {
             var parm = param.Select(p => (float)p).ToArray();
-            var v = 1f;
-            foreach (var temp in parm)
-            {
-                v = v * temp;
-            }
-            return v;
+            if (param.Length != 2)
+                throw new ArgumentException();
+
+            multiplier = parm[0];
+            multiplicand = parm[1];
+
+            return this.Evaluate(multiplier);
+        }
+
+        public override float Evaluate(object param)
+        {
+            multiplier = (float)param;
+            return multiplicand * multiplicand;
         }
     }
 
@@ -59,15 +88,27 @@ namespace CBB.Lib
     [ParamsAllowed(typeof(float), typeof(int))]
     public class Divide : UtilityEvaluator
     {
+        [JsonRequired, Param("Dividend")]
+        public float dividend = 0f;
+        [JsonRequired, Param("Divisor")]
+        public float divisor = 1f;
+
         public override float Evaluate(params object[] param)
         {
             var parm = param.Select(p => (float)p).ToArray();
-            var v = 1f;
-            foreach (var temp in parm)
-            {
-                v = v / temp;
-            }
-            return v;
+            if (param.Length != 2)
+                throw new ArgumentException();
+
+            dividend = parm[0];
+            divisor = parm[1];
+
+            return this.Evaluate(dividend);
+        }
+
+        public override float Evaluate(object param)
+        {
+            dividend = (float)param;
+            return dividend * divisor;
         }
     }
 
@@ -75,13 +116,23 @@ namespace CBB.Lib
     [ParamsAllowed(typeof(float), typeof(int))]
     public class Identity : UtilityEvaluator
     {
+        [JsonRequired, Param("Value")]
+        public float value = 0f;
+
         public override float Evaluate(params object[] param)
         {
             var parm = param.Select(p => (float)p).ToArray();
             if (param.Length != 1)
                 throw new ArgumentException();
 
-            return parm[0];
+            value = parm[0];
+
+            return Evaluate(value);
+        }
+
+        public override float Evaluate(object param)
+        {
+            return (float)param;
         }
     }
 
@@ -89,13 +140,27 @@ namespace CBB.Lib
     [ParamsAllowed(typeof(float), typeof(int))]
     public class DistanceV1 : UtilityEvaluator
     {
+        [JsonRequired, Param("First")]
+        public float first = 0f;
+        [JsonRequired, Param("Second")]
+        public float second = 0f;
+
         public override float Evaluate(params object[] param)
         {
             var parm = param.Select(p => (float)p).ToArray();
             if (param.Length != 2)
                 throw new ArgumentException();
 
-            return (parm[0] + parm[1])/2f;
+            first = parm[0];
+            second = parm[1];
+
+            return Evaluate(first);
+        }
+
+        public override float Evaluate(object param)
+        {
+            first = (float)param;
+            return Mathf.Abs(first - second);
         }
     }
 
@@ -103,13 +168,27 @@ namespace CBB.Lib
     [ParamsAllowed(typeof(Vector2))]
     public class DistanceV2 : UtilityEvaluator
     {
+        [JsonRequired, Param("First")]
+        public Vector2 first = Vector2.zero;
+        [JsonRequired, Param("Second")]
+        public Vector2 second = Vector2.zero;
+
         public override float Evaluate(params object[] param)
         {
             var parm = param.Select(p => (Vector2)p).ToArray();
             if (param.Length != 2)
                 throw new ArgumentException();
 
-            return Vector2.Distance(parm[0], parm[1]);
+            first = parm[0];
+            second = parm[1];
+
+            return Evaluate(first);
+        }
+
+        public override float Evaluate(object param)
+        {
+            first = (Vector2)param;
+            return Vector2.Distance(first, second);
         }
     }
 
@@ -117,32 +196,27 @@ namespace CBB.Lib
     [ParamsAllowed(typeof(Vector3))]
     public class DistanceV3 : UtilityEvaluator
     {
+        [JsonRequired, Param("First")]
+        public Vector3 first = Vector3.zero;
+        [JsonRequired, Param("Second")]
+        public Vector3 second = Vector3.zero;
+
         public override float Evaluate(params object[] param)
         {
             var parm = param.Select(p => (Vector3)p).ToArray();
             if (param.Length != 2)
                 throw new ArgumentException();
 
-            return Vector3.Distance(parm[0], parm[1]);
+            first = parm[0];
+            second = parm[1];
+
+            return Evaluate(first);
+        }
+
+        public override float Evaluate(object param)
+        {
+            first = (Vector3)param;
+            return Vector3.Distance(first, second);
         }
     }
-
-    /*
-   [Evaluator("Value","B","C","D")]
-   public class Valentia : UtilityEvaluator // (!) este es el unico complejo deberia estar aqui?
-   {
-       public override float Evaluate(params object[] param)
-       {
-           var parm = param.Select(p => (float)p).ToArray();
-
-           if (param.Length != 4)
-               throw new ArgumentException();
-
-           var dif = parm[2] - parm[3]; // max - min
-           var v1 = (parm[0] - parm[3]) / dif * 1f;
-           var v2 = (parm[1] - parm[3]) / dif * 1f;
-           return ((v1 - v2) + 0.5f) / 2f;
-       }
-   }
-   */
 }
