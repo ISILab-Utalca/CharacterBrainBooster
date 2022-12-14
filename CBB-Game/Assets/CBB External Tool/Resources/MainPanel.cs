@@ -9,8 +9,11 @@ using UnityEngine.UIElements;
 
 public class MainPanel : MonoBehaviour
 {
+    // Panel references
     [SerializeField]
-    private GameObject utilityMain;
+    private GameObject _utilityMain;
+    [SerializeField]
+    private GameObject _openBrainPanel;
 
     private DropdownField agentDropdown;
     private Button createBrain;
@@ -42,7 +45,7 @@ public class MainPanel : MonoBehaviour
 
         // OpenBrain
         this.openBrain = root.Q<Button>("OpenBrain");
-        this.openBrain.clicked += () => { new NotImplementedException(); }; // (!)
+        this.openBrain.clicked += () => { OpenBrain(); }; // (!)
 
     }
 
@@ -51,7 +54,13 @@ public class MainPanel : MonoBehaviour
     {
         Globals.Current = new AgentData(_agentType);
         this.gameObject.SetActive(false);
-        utilityMain.SetActive(true);
+        _utilityMain.SetActive(true);
+    }
+
+    private void OpenBrain()
+    {
+        this.gameObject.SetActive(false);
+        _openBrainPanel.SetActive(true);
     }
 }
 

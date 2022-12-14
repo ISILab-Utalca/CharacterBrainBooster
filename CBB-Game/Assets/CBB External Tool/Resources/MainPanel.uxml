@@ -2,6 +2,6 @@
     <ui:VisualElement>
         <ui:DropdownField label="Agent type" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="AgentDropdown" />
         <ui:Button tabindex="-1" text="New brain file" display-tooltip-when-elided="true" name="CreateBrain" />
-        <ui:Button tabindex="-1" text="Open brain file" display-tooltip-when-elided="true" name="OpenBrain" focusable="true" style="display: flex; opacity: 0.28;" />
+        <ui:Button tabindex="-1" text="Open brain file" display-tooltip-when-elided="true" name="OpenBrain" focusable="true" style="display: flex; opacity: 1;" />
     </ui:VisualElement>
 </ui:UXML>
