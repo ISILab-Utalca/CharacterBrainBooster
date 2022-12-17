@@ -1,0 +1,16 @@
+{
+    "name": "CBB_External_Tool",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3ebf0e9fb6aa1794fb28670cefe4e6b9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
