@@ -11,15 +11,24 @@ namespace Utility
     {
         public static void SaveData<T>(string path, T data)
         {
-            var jsonString = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto });
+            var jsonString = JsonConvert.SerializeObject(
+                data, 
+                Formatting.Indented, 
+                new JsonSerializerSettings() { 
+                    PreserveReferencesHandling = PreserveReferencesHandling.All,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    TypeNameHandling = TypeNameHandling.Auto 
+                });
+
+
             using StreamWriter writer = new StreamWriter(path);
             writer.Write(jsonString);
         }
 
         public static void SaveData<T>(string directoryName, string fileName, T data)
         {
-            string directoryPath = Application.dataPath + '/' + directoryName;
-            if(!Directory.Exists(directoryPath))
+            string directoryPath = directoryName;
+            if(!Directory.Exists(directoryPath)) 
             {
                 Directory.CreateDirectory(directoryPath);
             }
@@ -34,20 +43,26 @@ namespace Utility
 
         public static T LoadData<T>(string path)
         {
-            using StreamReader reader = new StreamReader(path);
+            using StreamReader reader = new StreamReader(path + ".json");
             string json = reader.ReadToEnd();
-            var data = JsonConvert.DeserializeObject<T>(json,
-                new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, Formatting = Formatting.Indented });
+            var data = JsonConvert.DeserializeObject<T>(
+                json,
+                new JsonSerializerSettings() { 
+                    PreserveReferencesHandling = PreserveReferencesHandling.All,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    TypeNameHandling = TypeNameHandling.Auto,
+                    Formatting = Formatting.Indented 
+                });
 
             if (data == null)
-                Debug.LogWarning("Data in " + path + " is not of type" + typeof(T).ToString());
+                Debug.LogWarning("Data in " + path + " is not of type " + typeof(T).ToString());
 
             return data;
         }
 
         public static T LoadData<T>(string directoryName, string fileName)
         {
-            string directoryPath = Application.dataPath + '/' + directoryName;
+            string directoryPath = directoryName;
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
@@ -61,7 +76,8 @@ namespace Utility
         {
             if(!Directory.Exists(path))
             {
-                Directory.CreateDirectory(path);
+                return null;
+                //return new List<string>(); // return empty list
             }
             string[] files = System.IO.Directory.GetFiles(path);
             List<string> jsonFiles = new List<string>();
