@@ -50,6 +50,14 @@ public class Variable
         this.value = value;
     }
 
+    public override string ToString()
+    {
+        return "<b>Name:</b>\t\t" + name +
+            "\n<b>Type:</b>\t\t" + type.ToString() +
+            "\n<b>Owner type:</b>\t" + ownerType.ToString() +
+            "\n<b>Value:</b>\t\t" + value.ToString();
+    }
+
     public override bool Equals(object obj)
     {
         var other = (Variable)obj;
