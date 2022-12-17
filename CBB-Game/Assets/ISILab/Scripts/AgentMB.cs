@@ -34,12 +34,6 @@ namespace CBB.Api
 
         }
 
-        private void OnMouseUpAsButton()
-        {
-            var x = FindObjectOfType<VisualInterface>();
-            x.Show(this.agent);
-        }
-
         private void OnDestroy()
         {
             AgentObserver.Instance.RemoveAgent(this);
