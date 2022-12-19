@@ -4,9 +4,16 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System.IO;
 using System.Linq;
+using System;
+using Newtonsoft.Json;
 
 public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel general para cargar archivos.
 {
+    [SerializeField]
+    private GameObject mainPanel;
+    [SerializeField]
+    private GameObject utilityMain;
+
     private Button backButton;
     private VisualElement content;
 
@@ -24,7 +31,10 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
 
         // BackButton
         this.backButton = root.Q<Button>("BackButton");
-        backButton.clicked += () => { };
+        backButton.clicked += () => {
+            this.gameObject.SetActive(false);
+            mainPanel.SetActive(true);
+        };
 
         // Content
         this.content = root.Q<VisualElement>("Content");
@@ -32,7 +42,24 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
 
         this.selected = root.Q<Label>("Selected");
         this.openButton = root.Q<Button>("OpenButton");
-        openButton.clicked += () => { };
+        openButton.clicked += () => {
+
+            var p = selected.text;
+            Debug.Log("A: "+ p);
+            Globals.Current = Utility.JSONDataManager.LoadData<AgentBrainData>(p);
+            Debug.Log("B: " + Globals.Current);
+            utilityMain.SetActive(true);
+            this.gameObject.SetActive(false);
+            try
+            {
+                
+            }
+            catch (Exception e)
+            {
+                throw new JsonException();
+            }
+            
+        };
     }
 
     private void UpdateContent()
