@@ -24,7 +24,11 @@ namespace CBB.Lib
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     [Evaluator(name: "Normalize", "Value", "Min", "Max")]
+    [System.Serializable]
     [ParamsAllowed(typeof(float),typeof(int))]
     public class Normalize : UtilityEvaluator
     {
@@ -34,6 +38,15 @@ namespace CBB.Lib
         public float min = 0f;
         [JsonRequired, Param("Max")]
         public float max = 0f;
+
+        public Normalize() { }
+
+        public Normalize(float value, float min, float max)
+        {
+            this.value = value;
+            this.min = min;
+            this.max = max;
+        }
 
         public override float Evaluate(params object[] param)
         {
@@ -54,9 +67,20 @@ namespace CBB.Lib
             var dif = min - max;
             return (value - min) / dif * 1f;
         }
+
+        public override string ToString()
+        {
+            return "Value: " + value +
+                "\nMin: " + min +
+                "\nMax: " + max;
+        }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     [Evaluator(name: "Multiply", "Multiplier", "Multiplicand")]
+    [System.Serializable]
     [ParamsAllowed(typeof(float), typeof(int))]
     public class Multiply : UtilityEvaluator
     {
@@ -64,6 +88,14 @@ namespace CBB.Lib
         public float multiplier = 0f;
         [JsonRequired, Param("Multiplicand")]
         public float multiplicand = 1f;
+
+        public Multiply() { }
+
+        public Multiply(float multiplier, float multiplicand)
+        {
+            this.multiplier = multiplier;
+            this.multiplicand = multiplicand;
+        }
 
         public override float Evaluate(params object[] param)
         {
@@ -84,7 +116,11 @@ namespace CBB.Lib
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     [Evaluator(name: "Divide", "Dividend", "Divisor")]
+    [System.Serializable]
     [ParamsAllowed(typeof(float), typeof(int))]
     public class Divide : UtilityEvaluator
     {
@@ -92,6 +128,14 @@ namespace CBB.Lib
         public float dividend = 0f;
         [JsonRequired, Param("Divisor")]
         public float divisor = 1f;
+
+        public Divide() { }
+
+        public Divide(float dividend, float divisor)
+        {
+            this.dividend = dividend;
+            this.divisor = divisor;
+        }
 
         public override float Evaluate(params object[] param)
         {
@@ -112,12 +156,23 @@ namespace CBB.Lib
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     [Evaluator(name: "Identity", "Value")]
+    [System.Serializable]
     [ParamsAllowed(typeof(float), typeof(int))]
     public class Identity : UtilityEvaluator
     {
         [JsonRequired, Param("Value")]
         public float value = 0f;
+
+        public Identity() { }
+
+        public Identity(float value)
+        {
+            this.value = value;
+        }
 
         public override float Evaluate(params object[] param)
         {
@@ -136,7 +191,11 @@ namespace CBB.Lib
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     [Evaluator(name: "Distance (v1)", "First", "Second")]
+    [System.Serializable]
     [ParamsAllowed(typeof(float), typeof(int))]
     public class DistanceV1 : UtilityEvaluator
     {
@@ -144,6 +203,14 @@ namespace CBB.Lib
         public float first = 0f;
         [JsonRequired, Param("Second")]
         public float second = 0f;
+
+        public DistanceV1() { }
+
+        public DistanceV1(float first, float second)
+        {
+            this.first = first;
+            this.second = second;
+        }
 
         public override float Evaluate(params object[] param)
         {
@@ -165,6 +232,7 @@ namespace CBB.Lib
     }
 
     [Evaluator(name: "Distance (v2)", "First", "Second")]
+    [System.Serializable]
     [ParamsAllowed(typeof(Vector2))]
     public class DistanceV2 : UtilityEvaluator
     {
@@ -172,6 +240,14 @@ namespace CBB.Lib
         public Vector2 first = Vector2.zero;
         [JsonRequired, Param("Second")]
         public Vector2 second = Vector2.zero;
+
+        public DistanceV2() { }
+
+        public DistanceV2(Vector2 first, Vector2 second)
+        {
+            this.first = first;
+            this.second = second;
+        }
 
         public override float Evaluate(params object[] param)
         {
@@ -193,6 +269,7 @@ namespace CBB.Lib
     }
 
     [Evaluator(name: "Distance (v3)", "First", "Second")]
+    [System.Serializable]
     [ParamsAllowed(typeof(Vector3))]
     public class DistanceV3 : UtilityEvaluator
     {
@@ -200,6 +277,14 @@ namespace CBB.Lib
         public Vector3 first = Vector3.zero;
         [JsonRequired, Param("Second")]
         public Vector3 second = Vector3.zero;
+
+        public DistanceV3() { }
+
+        public DistanceV3(Vector3 first, Vector3 second)
+        {
+            this.first = first;
+            this.second = second;
+        }
 
         public override float Evaluate(params object[] param)
         {
