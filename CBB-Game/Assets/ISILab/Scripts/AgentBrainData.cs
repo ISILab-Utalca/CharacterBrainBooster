@@ -13,17 +13,20 @@ using System.Reflection;
 using CBB.Api;
 
 [System.Serializable]
-public class AgentData
+public class AgentBrainData
 {
     [JsonRequired]
     public Type type;
 
     [JsonRequired]
+    public AgentData baseData;
+
+    [JsonRequired]
     public List<Consideration> considerations = new List<Consideration>();
 
-    public AgentData() { }
+    public AgentBrainData() { }
 
-    public AgentData( Type type)
+    public AgentBrainData( Type type)
     {
         this.type = type;
     }
@@ -84,7 +87,6 @@ public class Variable
 
     }
 }
-
 
 [System.Serializable]
 public class Consideration
@@ -147,15 +149,15 @@ public class ActionInfo // (!!) mejorar nombre
 }
 
 [System.Serializable]
-public class AgentBaseData
+public class AgentData
 {
-    public int? intenceRef; // (?) sobra ?
+    [JsonRequired, SerializeReference]
     public List<Variable> inputs = new List<Variable>();
+    [JsonRequired, SerializeReference]
     public List<ActionInfo> actions = new List<ActionInfo>();
 
-    public AgentBaseData(List<Variable> inputs, List<ActionInfo> actions, int? intenceRef = null)
+    public AgentData(List<Variable> inputs, List<ActionInfo> actions)
     {
-        this.intenceRef = intenceRef;
         this.inputs = inputs;
         this.actions = actions;
     }
