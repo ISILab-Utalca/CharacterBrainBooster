@@ -54,7 +54,7 @@ public class EvaluatorsCBB
     public void Can_Save_And_Load_Normalize_Evaluator()
     {
         var eva = Create_Normalize_Evaluator();
-        var pth = Application.dataPath + "/Test";
+        var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Normalize>(pth, "Eva", eva);
         var rEva = Utility.JSONDataManager.LoadData<Normalize>(pth, "Eva");
         Assert.That(rEva.ToString() == eva.ToString());
@@ -65,7 +65,7 @@ public class EvaluatorsCBB
     public void Can_Save_And_Load_Multiply_Evaluator()
     {
         var mult = Create_Multiply_Evaluator();
-        var pth = Application.dataPath + "/Test";
+        var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Multiply>(pth, "Mult", mult);
         var rMult = Utility.JSONDataManager.LoadData<Multiply>(pth, "Mult");
         Assert.That(rMult.ToString() == mult.ToString());
@@ -75,7 +75,7 @@ public class EvaluatorsCBB
     public void Can_Save_And_Load_Divide_Evaluator()
     {
         var div = Create_Divide_Evaluator();
-        var pth = Application.dataPath + "/Test";
+        var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Divide>(pth, "Div", div);
         var rDiv = Utility.JSONDataManager.LoadData<Divide>(pth, "Div");
         Assert.That(rDiv.ToString() == div.ToString());
@@ -85,7 +85,7 @@ public class EvaluatorsCBB
     public void Can_Save_And_Load_Identity_Evaluator()
     {
         var ident = Create_Identity_Evaluator();
-        var pth = Application.dataPath + "/Test";
+        var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Identity>(pth, "Ident", ident);
         var rIdent = Utility.JSONDataManager.LoadData<Identity>(pth, "Ident");
         Assert.That(rIdent.ToString() == ident.ToString());
@@ -95,7 +95,7 @@ public class EvaluatorsCBB
     public void Can_Save_And_Load_Distance_V1_Evaluator()
     {
         var dv1 = Create_DistnaceV1_Evalautor();
-        var pth = Application.dataPath + "/Test";
+        var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<DistanceV1>(pth, "Dv1", dv1);
         var rDv1 = Utility.JSONDataManager.LoadData<DistanceV1>(pth, "Dv1");
         Assert.That(rDv1.ToString() == dv1.ToString());
@@ -105,7 +105,7 @@ public class EvaluatorsCBB
     public void Can_Save_And_Load_Distance_V2_Evaluator()
     {
         var dv2 = Create_DistnaceV2_Evalautor();
-        var pth = Application.dataPath + "/Test";
+        var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<DistanceV2>(pth, "Dv2", dv2);
         var rDv2 = Utility.JSONDataManager.LoadData<DistanceV2>(pth, "Dv2");
         Assert.That(rDv2.ToString() == dv2.ToString());
@@ -115,7 +115,7 @@ public class EvaluatorsCBB
     public void Can_Save_And_Load_Distance_V3_Evaluator()
     {
         var dv3 = Create_DistnaceV3_Evalautor();
-        var pth = Application.dataPath + "/Test";
+        var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<DistanceV3>(pth, "Dv3", dv3);
         var rDv3 = Utility.JSONDataManager.LoadData<DistanceV3>(pth, "Dv3");
         Assert.That(rDv3.ToString() == dv3.ToString());
@@ -128,7 +128,7 @@ public class TestCBB
     public void Can_Save_And_Load_Variable()
     {
         var v = new Variable("Var_1", typeof(float), typeof(MonoBehaviour), 5f);
-        var pth1 = Application.dataPath + "/Test";
+        var pth1 = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Variable>(pth1, "Var1", v);
         var rV = Utility.JSONDataManager.LoadData<Variable>(pth1, "Var1");
         Assert.That(rV.ToString() == v.ToString());
