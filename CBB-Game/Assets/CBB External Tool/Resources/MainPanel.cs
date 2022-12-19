@@ -52,7 +52,7 @@ public class MainPanel : MonoBehaviour
 
     private void CreateBrain()
     {
-        Globals.Current = new AgentData(_agentType);
+        Globals.Current = new AgentBrainData(_agentType);
         this.gameObject.SetActive(false);
         _utilityMain.SetActive(true);
     }
@@ -66,7 +66,7 @@ public class MainPanel : MonoBehaviour
 
 public static class Globals
 {
-    public static AgentData Current;
+    public static AgentBrainData Current;
 
     public static List<Variable> globalVariables = new List<Variable>();
 
