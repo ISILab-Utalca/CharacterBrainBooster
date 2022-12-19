@@ -9,57 +9,43 @@ public class EvaluatorsCBB
 {
     private Normalize Create_Normalize_Evaluator()
     {
-        var eva = new Normalize();
-        eva.value = 50;
-        eva.min = 0;
-        eva.max = 100;
+        var eva = new Normalize(50, 0, 100);
         return eva;
     }
 
     private Multiply Create_Multiply_Evaluator()
     {
-        var eva = new Multiply();
-        eva.multiplicand = 5;
-        eva.multiplier = 10;
+        var eva = new Multiply(5,10);
         return eva;
     }
 
     private Divide Create_Divide_Evaluator()
     {
-        var eva = new Divide();
-        eva.dividend = 5;
-        eva.divisor = 10;
+        var eva = new Divide(5,10);
         return eva;
     }
 
     private Identity Create_Identity_Evaluator()
     {
-        var eva = new Identity();
-        eva.value = 5;
+        var eva = new Identity(5f);
         return eva;
     }
 
     private DistanceV1 Create_DistnaceV1_Evalautor()
     {
-        var eva = new DistanceV1();
-        eva.first = 0f;
-        eva.second = 10f;
+        var eva = new DistanceV1(0f, 10f);
         return eva;
     }
 
     private DistanceV2 Create_DistnaceV2_Evalautor()
     {
-        var eva = new DistanceV2();
-        eva.first = new Vector2(0, 0);
-        eva.second = new Vector2(10, 10);
+        var eva = new DistanceV2(new Vector2(0, 0), new Vector2(10, 10));
         return eva;
     }
 
     private DistanceV3 Create_DistnaceV3_Evalautor()
     {
-        var eva = new DistanceV3();
-        eva.first = new Vector3(0, 0);
-        eva.second = new Vector3(10, 10);
+        var eva = new DistanceV3(new Vector3(0, 0), new Vector3(10, 10));
         return eva;
     }
 
@@ -156,8 +142,9 @@ public class TestCBB
         var vv3 = new Variable("Var_2", typeof(Vector3), typeof(MonoBehaviour), new Vector3(1,2,3));
         var vs = new Variable("Var_3", typeof(string), typeof(MonoBehaviour), "hola");
         var vb = new Variable("Var_4", typeof(bool), typeof(MonoBehaviour), false);
-        Assert.That(false);
-        //var cons = new Consideration("Cons_1", new List<Variable>() { vf, vv3, vs, vb },)
+        var eva = new Normalize(50,0,100);
+        var curve = new Linear();
+        var cons = new Consideration("Cons_1", new List<Variable>() { vf, vv3, vs, vb }, eva, curve);
     }
     //*/
 }
