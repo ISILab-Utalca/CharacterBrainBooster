@@ -76,6 +76,7 @@ crashlytics-build.properties
 # ISILab
 LBSBackUp.asset
 LBSBackUp.asset.meta
+[Gg]it-Ignore
 [Gg]itIgnorable/
 /[Gg]itIgnorable/
 LevelBuildingSidekick/UserSettings/Layouts/default-2022.dwlt
