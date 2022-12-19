@@ -35,7 +35,7 @@ public class UtilityPanel : VisualElement
     private Type[] _others;
     private Type _sOther; 
 
-    public UtilityPanel(AgentData agent, Consideration consideration, Action OnChange)
+    public UtilityPanel(AgentBrainData agent, Consideration consideration, Action OnChange)
     {
         var vt = Resources.Load<VisualTreeAsset>("UtilityPanel");
         vt.CloneTree(this);
