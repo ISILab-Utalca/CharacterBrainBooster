@@ -12,7 +12,7 @@ namespace CBB.Api
 
     // (??) esta clase se podria inyectar al momento de ser instanciado el objeto que lo necesite
     // asi evitamos que los usuarios tengan que acordarse de poner ellos esta clase a mano
-    public class AgentMB : MonoBehaviour // brain
+    public class AgentBeahaviour : MonoBehaviour // brain
     {
         private _Agent agent;
 
@@ -151,12 +151,12 @@ namespace CBB.Api
 [System.Serializable]
 public class _Agent
 {
-    public AgentMB brain; // (!!) esta referencia puede ser un problema al momento de mandarla entre apps
+    public AgentBeahaviour brain; // (!!) esta referencia puede ser un problema al momento de mandarla entre apps
     public MonoBehaviour body; // (!!) esta referencia puede ser un problema al momento de mandarla entre apps
     public List<Tuple<string, object>> inputs;
     public List<Tuple<string, object>> actions;
 
-    public _Agent(AgentMB brain, MonoBehaviour body, List<Tuple<string, object>> inputs, List<Tuple<string, object>> actions)
+    public _Agent(AgentBeahaviour brain, MonoBehaviour body, List<Tuple<string, object>> inputs, List<Tuple<string, object>> actions)
     {
         this.brain = brain;
         this.body = body;
