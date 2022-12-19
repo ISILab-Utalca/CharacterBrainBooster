@@ -17,16 +17,16 @@ namespace CBB.Api
             CollectAgentBaseData();
         }
 
-        public static AgentBaseData[] CollectAgentBaseData()
+        public static AgentData[] CollectAgentBaseData()
         {
             var agentTypes = UtilitySystem.CollectAgentTypes();
-            var agents = new List<AgentBaseData>();
+            var agents = new List<AgentData>();
             foreach (var type in agentTypes)
             {
                 var inputs = UtilitySystem.CollectVariables(type);
                 var actions = UtilitySystem.CollectActions(type);
 
-                agents.Add(new AgentBaseData(inputs.ToList(), actions.ToList()));
+                agents.Add(new AgentData(inputs.ToList(), actions.ToList()));
             }
 
             return agents.ToArray();
@@ -117,7 +117,7 @@ namespace CBB.Api
     public class AgentObserver
     {
         private static AgentObserver instance;
-        public List<AgentMB> Agents = new List<AgentMB>();
+        public List<AgentBeahaviour> Agents = new List<AgentBeahaviour>();
 
         public static AgentObserver Instance
         {
@@ -131,12 +131,12 @@ namespace CBB.Api
             }
         }
 
-        public void AddAgent(AgentMB agent)
+        public void AddAgent(AgentBeahaviour agent)
         {
             Agents.Add(agent);
         }
 
-        public void RemoveAgent(AgentMB agent)
+        public void RemoveAgent(AgentBeahaviour agent)
         {
             Agents.Remove(agent);
         }
