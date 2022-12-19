@@ -15,7 +15,7 @@ public class UtilityMain : MonoBehaviour
     private Button Test;
     private Button addConsideration;
 
-    private AgentData _current;
+    private AgentBrainData _current;
 
     private void Awake()
     {
@@ -50,7 +50,7 @@ public class UtilityMain : MonoBehaviour
                 this.content.Clear(); 
                 UpdateConsiderations();
                 this.content.Add(this.addConsideration);
-            })); // (?) ojo recursivo ?
+            })); 
         }
     }
 
@@ -78,7 +78,7 @@ public class UtilityMain : MonoBehaviour
     public void SaveTest(string fileName)
     {
         var path = Application.persistentDataPath + "/" + fileName + ".json";
-        Utility.JSONDataManager.SaveData<AgentData>(path, _current);
+        Utility.JSONDataManager.SaveData<AgentBrainData>(path, _current);
         Debug.Log("Saved on: " + path);
     }
 }
