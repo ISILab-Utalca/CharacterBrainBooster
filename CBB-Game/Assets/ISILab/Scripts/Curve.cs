@@ -51,6 +51,16 @@ public class Linear : Curve
     [JsonRequired, Param("Dy",-1,1)]
     public float dy = 0f;
 
+    public Linear() { }
+
+    public Linear(float value, float m = 1f, float dx = 0f, float dy = 0f)
+    {
+        this.value = value;
+        this.m = m;
+        this.dx = dx;
+        this.dy = dy;
+    }
+
     public override float Calc(params float[] parms)
     {
         var value = parms[0];
@@ -90,6 +100,18 @@ public class ExponencialInvertida : Curve
     public float sx = 1f;      // 1.0f
     [JsonRequired, Param("Sy", 0, 1)]
     public float sy = 1f;      // 1.0f
+
+    public ExponencialInvertida() { }
+
+    public ExponencialInvertida(float value, float e = 2f, float dx = 1f, float dy = 0f, float sx = 1f, float sy = 1f)
+    {
+        this.value = value;
+        this.e = e;
+        this.dx = dx;
+        this.dy = dy;
+        this.sx = sx;
+        this.sy = sy;
+    }
 
     public override float Calc(params float[] parms)
     {
@@ -131,6 +153,18 @@ public class Exponencial : Curve
     [JsonRequired, Param("Sy", 0, 2)]
     public float sy = 1f;      // 1.0f
 
+    public Exponencial() { }
+
+    public Exponencial(float value, float e = 2f, float dx = 0f, float dy = 0f, float sx = 1f, float sy = 1f)
+    {
+        this.value = value;
+        this.e = e;
+        this.dx = dx;
+        this.dy = dy;
+        this.sx = sx;
+        this.sy = sy;
+    }
+
     public override float Calc(params float[] parms)
     {
         var value = parms[0];   // X
@@ -156,7 +190,7 @@ public class Exponencial : Curve
 
 [Curve(name:"Staggered")]
 [System.Serializable]
-public class Escalonada : Curve
+public class Staggered : Curve
 {
     [JsonRequired]
     public float value = 0f;   // X
@@ -166,6 +200,16 @@ public class Escalonada : Curve
     public float max = 0.95f;  // 0.95f;
     [JsonRequired, Param("Min", 0, 1)]
     public float min = 0.05f;  //  0.05f; 
+
+    public Staggered() { }
+
+    public Staggered(float value, float e = 0.5f, float max = 0.95f, float min = 0.05f)
+    {
+        this.value = value;
+        this.e = e;
+        this.max = max;
+        this.min = min;
+    }
 
     public override float Calc(params float[] parms)
     {
@@ -196,8 +240,6 @@ public class Sigmoide : Curve
 {
     [JsonRequired]
     public float value = 0f;   // X
-    [JsonRequired, Param("De", -10, 10)]
-    public float de = 0f;      // 0.0f
     [JsonRequired, Param("Dx", 0, 10)]
     public float dx = 5f;      // 5.0f
     [JsonRequired, Param("Sx", 5, 15)]
@@ -206,15 +248,25 @@ public class Sigmoide : Curve
     public float dy = 0f;      // 0.0f
     [JsonRequired, Param("Sy", 0, 2)]
     public float sy = 1f;     // 10.0f
-    [JsonIgnore]
-    public readonly float euler = 2.71828f;   // 2.71828f
+
+    public Sigmoide() { }
+
+    public Sigmoide(float value, float dx = 5f, float sx = 10f, float dy = 0f, float sy = 1f)
+    {
+        this.value = value;
+        this.dx = dx;
+        this.sx = sx;
+        this.dy = dy;
+        this.sy = sy;
+    }
 
     public override float Calc(params float[] parms)
     {
-        var value = parms[0];   // X
-        var de = parms[1];      // 0.0f
-        var dx = parms[2];      // 0.0f
-        var dy = parms[3];      // 0.0f
+        value = parms[0];   // X
+        dx = parms[1];      // 0.0f
+        sx = parms[2];
+        dy = parms[3];      // 0.0f
+        sy = parms[4];
 
         return Calc(value);
     }
@@ -222,15 +274,82 @@ public class Sigmoide : Curve
     public override float Calc(float v)
     {
         value = v;
-        var toR = Mathf.Clamp01(((1 / (1 + Mathf.Pow(euler + de, -(value * sx) + dx))) * sy) + dy);
+        var toR = Mathf.Clamp01(((1 / (1 + Mathf.Exp(-(value * sx) + dx))) * sy) + dy);
         return Inverted ? 1 - toR : toR;
     }
 
     public override int GetHashCode()
     {
-        return (int)(Utils.StringToInt(GetType().ToString()) + value * 10 + de * 100 + dx * 1000 + dy * 10000 + sx * 100000 + sy * 1000000);
+        return (int)(Utils.StringToInt(GetType().ToString()) + value * 10 + dx * 100 + dy * 1000 + sx * 10000 + sy * 100000);
     }
 }
 
+[Curve(name: "Constant")]
+[System.Serializable]
+public class Constant : Curve
+{
+    [JsonRequired]
+    public float value = 0f;   // X
 
+    public Constant() { }
+
+    public Constant(float value)
+    {
+        this.value = value;
+    }
+
+    public override float Calc(params float[] parms)
+    {
+        value = parms[0];
+        return Calc(value);
+    }
+
+    public override float Calc(float v)
+    {
+        return value;
+    }
+}
+
+[Curve(name: "Bell")]
+[System.Serializable]
+public class Bell : Curve
+{
+    [JsonRequired]
+    public float value;     // X
+    [JsonRequired, Param("O", 1f, 10f)]
+    public float o = 1f;
+    [JsonRequired, Param("U", 1f, 10f)]
+    public float u = 1f;
+    [JsonRequired, Param("Dx", 0f, 10f)]
+    public float dx = 0f;
+    [JsonRequired, Param("Dy", 0f, 10f)]
+    public float dy = 0f;
+
+    public Bell() { }
+
+    public Bell(float value, float o = 1f, float u = 1f, float dx = 0f, float dy = 0f)
+    {
+        this.value = value;
+        this.o = o;
+        this.u = u;
+        this.dx = dx;
+        this.dy = dy;
+    }
+
+    public override float Calc(params float[] parms)
+    {
+        this.value = parms[0];
+        this.o = parms[1];
+        this.u = parms[2];
+        this.dx = parms[3];
+        this.dy = parms[4];
+
+        return Calc(value);
+    }
+
+    public override float Calc(float v)
+    {
+        return (1f / o * Mathf.Sqrt(2 * Mathf.PI)) * Mathf.Exp(-(0.5f) * ((Mathf.Pow(value - u, 2) / Mathf.Pow(o, 2)))) + dy;
+    }
+}
 
