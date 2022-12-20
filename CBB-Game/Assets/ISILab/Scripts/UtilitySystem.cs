@@ -26,7 +26,7 @@ namespace CBB.Api
                 var inputs = UtilitySystem.CollectVariables(type);
                 var actions = UtilitySystem.CollectActions(type);
 
-                agents.Add(new AgentData(inputs.ToList(), actions.ToList()));
+                agents.Add(new AgentData(type, inputs.ToList(), actions.ToList()));
             }
 
             return agents.ToArray();
@@ -93,7 +93,7 @@ namespace CBB.Api
                 if (atts.Any(a => a.GetType() == typeof(UtilityActionAttribute)))
                 {
                     var att = meth.GetCustomAttribute(typeof(UtilityActionAttribute), false) as UtilityActionAttribute;
-                    var action = new ActionInfo(att.Name, type, null);
+                    var action = new ActionInfo(att.Name, type);
                     actions.Add(action);
                 }
             }
@@ -105,7 +105,7 @@ namespace CBB.Api
                 if (atts.Any(a => a.GetType() == typeof(UtilityActionAttribute)))
                 {
                     var att = evt.GetCustomAttribute(typeof(UtilityActionAttribute), false) as UtilityActionAttribute;
-                    var action = new ActionInfo(att.Name, type, null);
+                    var action = new ActionInfo(att.Name, type);
                     actions.Add(action);
                 }
             }
