@@ -41,11 +41,11 @@ public class UtilityPanel : VisualElement
         vt.CloneTree(this);
         _evaluators = UtilityEvaluator.GetEvaluators().ToArray();
         _curves = Curve.GetCurves().ToArray();
-        _self = agent.type;
+        _self = agent.baseData.agentType;
 
         // AgentLabel 
         this.agentLabel = this.Q<Label>("AgentLabel");
-        this.agentLabel.text = (agent.type.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
+        this.agentLabel.text = (agent.baseData.agentType.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
 
         // OtherDropdown
         this.otherDropdown = this.Q<DropdownField>("OtherDropdown");
@@ -94,7 +94,7 @@ public class UtilityPanel : VisualElement
         this.evaluatorDropdown.index = _evaluators.ToList().FindIndex(e => e.GetType().Equals(consideration.evaluator.GetType())); // (!) no tiene que partir en o sino que la que estaba guardada
         this.evaluatorDropdown.RegisterCallback<ChangeEvent<string>>(e => {
             var index = this.evaluatorDropdown.index;
-            consideration.evaluator = _evaluators[index].GetType();
+            consideration.evaluator = _evaluators[index];
             UpdateEvaluatorParameter(_evaluators[index]);
         });
 
