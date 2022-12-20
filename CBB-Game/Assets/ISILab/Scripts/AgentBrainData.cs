@@ -5,32 +5,29 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using CBB.Lib;
-using System.Security.Cryptography;
 using System.Text;
-using System.Runtime.Serialization;
-using System.Runtime.InteropServices;
-using System.Reflection;
-using CBB.Api;
+
 
 [System.Serializable]
 public class AgentBrainData
 {
-    [JsonRequired]
-    public Type type;
-
     [JsonRequired]
     public AgentData baseData;
 
     [JsonRequired]
     public List<Consideration> considerations = new List<Consideration>();
 
+    [JsonRequired]
+    public List<ActionInfo> actions = new List<ActionInfo>();
+
     public AgentBrainData() { }
 
-    public AgentBrainData( Type type)
+    public AgentBrainData(AgentData baseData, List<Consideration> considerations, List<ActionInfo> actions)
     {
-        this.type = type;
+        this.baseData = baseData;
+        this.considerations = considerations;
+        this.actions = actions;
     }
-
 }
 
 [System.Serializable]
@@ -42,23 +39,19 @@ public class Variable
     public Type type;
     [JsonRequired]
     public Type ownerType;
-    [JsonRequired, SerializeReference]
-    public object value; // (??) esto sobra?
 
     public Variable(string name, Type type,Type ownerType, object value)
     {
         this.name = name;
         this.type = type;
         this.ownerType = ownerType;
-        this.value = value;
     }
 
     public override string ToString()
     {
         return "<b>Name:</b>\t\t" + name +
             "\n<b>Type:</b>\t\t" + type.ToString() +
-            "\n<b>Owner type:</b>\t" + ownerType.ToString() +
-            "\n<b>Value:</b>\t\t" + value.ToString();
+            "\n<b>Owner type:</b>\t" + ownerType.ToString();
     }
 
     public override bool Equals(object obj)
@@ -68,8 +61,7 @@ public class Variable
             return false;
 
         if (other.name.Equals(this.name) &&
-            other.type.Equals(this.type) &&
-            other.value.Equals(this.value))
+            other.type.Equals(this.type))
         {
             return true;
         }
@@ -82,8 +74,7 @@ public class Variable
         var x = Utils.StringToInt(this.name);
         var xx = Utils.StringToInt(this.type.ToString()) * 10;
         var xxx = Utils.StringToInt(this.ownerType.ToString()) * 100;
-        var xxxx = Utils.StringToInt(this.value.ToString()) * 1000; // (?) null
-        return (x + xx + xxx + xxxx);
+        return (x + xx + xxx);
 
     }
 }
@@ -94,31 +85,27 @@ public class Consideration
     [JsonRequired]
     public string name;
     [JsonRequired, SerializeReference]
-    public List<int> variablesHash;
-    [JsonRequired, SerializeField]
-    public Type evaluator;
+    public UtilityEvaluator evaluator;
     [JsonRequired, SerializeReference]
     public Curve curve;
-
-    [JsonIgnore]
+    [JsonRequired, SerializeReference]
     private List<Variable> variables;
 
     public Consideration(string name, List<Variable> variables, UtilityEvaluator evaluator, Curve curve)
     {
         this.name = name;
         this.variables = variables;
-        this.variablesHash = variables.Select(v => v.GetHashCode()).ToList();
-        this.evaluator = evaluator.GetType();
+        this.evaluator = evaluator;
         this.curve = curve;
     }
 
     public override int GetHashCode()
     {
         var x = Utils.StringToInt(this.name);
-        var xx = variablesHash.Sum(v => v) * 10;
-        var xxx = Utils.StringToInt(evaluator.ToString()) * 100;
-        var xxxx = curve.GetHashCode() * 1000;
-        return (x + xx + xxx + xxxx);
+        var xx = Utils.StringToInt(evaluator.ToString()) * 10;
+        var xxx = curve.GetHashCode() * 100;
+        var xxxx = variables.Sum(v => Utils.StringToInt(v.ToString()));
+        return (x + xx + xxx);
     }
 }
 
@@ -128,36 +115,39 @@ public class ActionInfo // (!!) mejorar nombre
     [JsonRequired]
     public string name;
     [JsonRequired]
-    public Type type;
-    [JsonRequired]
-    public Action action; // (??) sobra?
+    public Type ownerType;
 
-    public ActionInfo(string name, Type owner, Action action)
+    public ActionInfo(string name, Type ownerType)
     {
         this.name = name;
-        this.type = owner;
-        this.action = action;
+        this.ownerType = ownerType;
     }
 
     public override int GetHashCode()
     {
         var x = Utils.StringToInt(this.name);
-        var xx = Utils.StringToInt(this.type.ToString()) * 10;
-        var xxx = Utils.StringToInt(this.action.ToString()) * 100; // (?) null
-        return (x + xx + xxx);
+        var xx = Utils.StringToInt(this.ownerType.ToString()) * 10;
+        return (x + xx);
     }
 }
 
 [System.Serializable]
 public class AgentData
 {
+    [JsonRequired]
+    public Type agentType;
+
     [JsonRequired, SerializeReference]
     public List<Variable> inputs = new List<Variable>();
+
     [JsonRequired, SerializeReference]
     public List<ActionInfo> actions = new List<ActionInfo>();
 
-    public AgentData(List<Variable> inputs, List<ActionInfo> actions)
+    public AgentData() { }
+
+    public AgentData(Type agentType,List<Variable> inputs, List<ActionInfo> actions)
     {
+        this.agentType = agentType;
         this.inputs = inputs;
         this.actions = actions;
     }
