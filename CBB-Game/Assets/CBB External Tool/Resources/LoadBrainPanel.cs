@@ -46,8 +46,8 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
 
             var p = selected.text;
             Debug.Log("A: "+ p);
-            Globals.Current = Utility.JSONDataManager.LoadData<AgentBrainData>(p);
-            Debug.Log("B: " + Globals.Current);
+            //Globals.Current = Utility.JSONDataManager.LoadData<AgentBrainData>(p,); // (!!) reparar
+            //Debug.Log("B: " + Globals.Current);
             utilityMain.SetActive(true);
             this.gameObject.SetActive(false);
             try
