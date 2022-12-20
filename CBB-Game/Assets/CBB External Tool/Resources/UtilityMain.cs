@@ -24,7 +24,8 @@ public class UtilityMain : MonoBehaviour
 
         // NameLabel
         this.nameLabel = root.Q<Label>("NameLabel");
-        this.nameLabel.text = (_current.type.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
+        var type = _current.baseData.agentType;
+        this.nameLabel.text = (type.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
         
         // Content panel
         this.content = root.Q<VisualElement>("Content");
@@ -77,8 +78,8 @@ public class UtilityMain : MonoBehaviour
 
     public void SaveTest(string fileName)
     {
-        var path = Application.persistentDataPath + "/" + fileName + ".json";
-        Utility.JSONDataManager.SaveData<AgentBrainData>(path, _current);
+        var path = Application.persistentDataPath;
+        Utility.JSONDataManager.SaveData<AgentBrainData>(path, fileName, _current);
         Debug.Log("Saved on: " + path);
     }
 }
