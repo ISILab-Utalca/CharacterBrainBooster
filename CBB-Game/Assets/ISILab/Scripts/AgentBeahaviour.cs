@@ -14,18 +14,13 @@ namespace CBB.Api
     // asi evitamos que los usuarios tengan que acordarse de poner ellos esta clase a mano
     public class AgentBeahaviour : MonoBehaviour // brain
     {
-        private _Agent agent;
-
         private float lastTime = 0;
         private float cooldown = 50; // (?) ms o seg ?
 
         private List<Utility> utilities = new List<Utility>();
 
-        public _Agent Data => agent;
-
         private void Awake()
         {
-            agent = CosntructAgent();
             AgentObserver.Instance.AddAgent(this);
         }
 
@@ -49,12 +44,6 @@ namespace CBB.Api
             AgentObserver.Instance.RemoveAgent(this);
         }
 
-        public Action GetAction() // (???) quitar
-        {
-            //agent.actions
-            return null;
-        }
-
         public bool IsAvailable()
         {
             if((Time.time - lastTime) > cooldown)
@@ -65,17 +54,17 @@ namespace CBB.Api
             return false;
         }
 
-        private _Agent CosntructAgent()
+        private AgentData CosntructAgent()
         {
             var agent = GetAgent();
             var inputs = GetInputs(agent);
             var actions = GetActions(agent);
-            return new _Agent(this,agent, inputs, actions);
+            return new AgentData(agent.GetType(),inputs,actions);
         }
 
-        private List<Tuple<string, object>> GetInputs(object behaviour)
+        private List<Variable> GetInputs(object behaviour)
         {
-            var inputs = new List<Tuple<string, object>>();
+            var inputs = new List<Variable>();
 
             var fields = behaviour.GetType().GetFields();
             foreach (var field in fields)
@@ -102,7 +91,7 @@ namespace CBB.Api
             return inputs;
         }
 
-        private List<Tuple<string, object>> GetActions(object behaviour)
+        private List<ActionInfo> GetActions(object behaviour)
         {
             var actions = new List<Tuple<string, object>>();
             var meths = behaviour.GetType().GetMethods();
@@ -143,83 +132,5 @@ namespace CBB.Api
             }
             return null;
         }
-    }
-}
-
-
-
-[System.Serializable]
-public class _Agent
-{
-    public AgentBeahaviour brain; // (!!) esta referencia puede ser un problema al momento de mandarla entre apps
-    public MonoBehaviour body; // (!!) esta referencia puede ser un problema al momento de mandarla entre apps
-    public List<Tuple<string, object>> inputs;
-    public List<Tuple<string, object>> actions;
-
-    public _Agent(AgentBeahaviour brain, MonoBehaviour body, List<Tuple<string, object>> inputs, List<Tuple<string, object>> actions)
-    {
-        this.brain = brain;
-        this.body = body;
-        this.inputs = inputs;
-        this.actions = actions;
-    }
-
-    public T GetInput<T>(string name)
-    {
-        var v = inputs.First(i => i.Item1.Equals(name));
-
-        if(v == null)
-        {
-            Debug.Log("color = red>[CBB]:</color> Agent '"+this+"' does not have an input called '"+name+"'.");
-        }
-
-        T vv = (T)v.Item2;
-        if (vv == null)
-        {
-            Debug.Log("color = red>[CBB]:</color> the requested input is not '"+ (typeof(T)).ToString() +"' type.");
-        }
-
-        return vv;
-    }
-
-    public object GetInput(string name) // (?) es util o sobra? 
-    {
-        var v = inputs.First(i => i.Item1.Equals(name));
-
-        if (v == null)
-        {
-            Debug.Log("color = red>[CBB]:</color> Agent '" + this + "' does not have an input called '" + name + "'.");
-        }
-
-        return v.Item2;
-    }
-
-    public T GetAction<T>(string name) // (?) es util o sobra? 
-    {
-        var v = actions.First(a => a.Item1.Equals(name));
-
-        if (v == null)
-        {
-            Debug.Log("color = red>[CBB]:</color> Agent '" + this + "' does not have an action called '" + name + "'.");
-        }
-
-
-        T vv = (T)v.Item2;
-        if (vv == null)
-        {
-            Debug.Log("color = red>[CBB]:</color> the requested action is not '" + (typeof(T)).ToString() + "' type.");
-        }
-        return vv;
-    }
-
-    public object GetAction(string name) // (?) es util o sobra? 
-    {
-        var v = actions.First(a => a.Item1.Equals(name));
-
-        if (v == null)
-        {
-            Debug.Log("color = red>[CBB]:</color> Agent '" + this + "' does not have an action called '" + name + "'.");
-        }
-        return v.Item2;
     }
 }
