@@ -40,7 +40,7 @@ public class Variable
     [JsonRequired]
     public Type ownerType;
 
-    public Variable(string name, Type type,Type ownerType, object value)
+    public Variable(string name, Type type,Type ownerType)
     {
         this.name = name;
         this.type = type;
