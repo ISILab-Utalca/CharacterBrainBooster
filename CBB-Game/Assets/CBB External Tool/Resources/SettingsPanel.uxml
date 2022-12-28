@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1">
+        <ui:Foldout text="Global" name="GlobalFoldout">
+            <ui:Toggle label="Min value" name="MinToggle" style="justify-content: space-around; flex-grow: 1; flex-shrink: 1; align-items: stretch; align-self: stretch; flex-direction: row-reverse;" />
+            <ui:Toggle label="Max value" name="MaxToggle" style="justify-content: space-around; flex-grow: 1; flex-shrink: 1; align-items: stretch; align-self: stretch; flex-direction: row-reverse;" />
+            <ui:Toggle label="Average value" name="AverageToggle" style="justify-content: space-around; flex-grow: 1; flex-shrink: 1; align-items: stretch; align-self: stretch; flex-direction: row-reverse;" />
+        </ui:Foldout>
+        <ui:Foldout text="Others" name="OthersFoldout" value="false">
+            <ui:Toggle label="Toggle" style="justify-content: space-around;" />
+            <ui:Toggle label="Toggle" style="justify-content: space-around;" />
+            <ui:Toggle label="Toggle" style="justify-content: space-around;" />
+        </ui:Foldout>
+    </ui:ScrollView>
+</ui:UXML>
