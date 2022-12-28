@@ -84,6 +84,8 @@ public class Consideration
 {
     [JsonRequired]
     public string name;
+    [JsonRequired]
+    public bool isPublic;
     [JsonRequired, SerializeReference]
     public UtilityEvaluator evaluator;
     [JsonRequired, SerializeReference]
@@ -91,9 +93,10 @@ public class Consideration
     [JsonRequired, SerializeReference]
     private List<Variable> variables;
 
-    public Consideration(string name, List<Variable> variables, UtilityEvaluator evaluator, Curve curve)
+    public Consideration(string name,bool isPublic, List<Variable> variables, UtilityEvaluator evaluator, Curve curve)
     {
         this.name = name;
+        this.isPublic = isPublic;
         this.variables = variables;
         this.evaluator = evaluator;
         this.curve = curve;
