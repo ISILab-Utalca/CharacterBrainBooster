@@ -16,6 +16,7 @@ public class UtilityPanel : VisualElement
 
     // Left panel
     private TextField nameField;
+    private Toggle publicToggle;
     private VisualElement actionParameters;
 
     // Middle panel
@@ -29,18 +30,20 @@ public class UtilityPanel : VisualElement
     private VisualElement curveParameters;
 
     private UtilityEvaluator[] _evaluators;
+    private int _eIndex;
     private Type _self;
     private Curve[] _curves;
     private int _cIndex;
     private Type[] _others;
-    private Type _sOther; 
+    private Type _sOther;
+
 
     public UtilityPanel(AgentBrainData agent, Consideration consideration, Action OnChange)
     {
         var vt = Resources.Load<VisualTreeAsset>("UtilityPanel");
         vt.CloneTree(this);
-        _evaluators = UtilityEvaluator.GetEvaluators().ToArray();
-        _curves = Curve.GetCurves().ToArray();
+        _evaluators = UtilityEvaluator.GetEvaluators().ToArray(); // (!) esta imeplementacion crea un objeto por cada 'Evalaudor' por cada utilityPanel lo cual puede sr inecesario
+        _curves = Curve.GetCurves().ToArray(); // (!) esta imeplementacion crea un objeto por cada 'Curve' por cada utilityPanel lo cual puede sr inecesario
         _self = agent.baseData.agentType;
 
         // AgentLabel 
@@ -54,16 +57,9 @@ public class UtilityPanel : VisualElement
         this.otherDropdown.choices = (choices.Concat(new List<string>() { "Nothing" })).ToList();
         this.otherDropdown.index = choices.ToList().Count;
         this.otherDropdown.RegisterCallback<ChangeEvent<string>>(e => {
-            if(this.otherDropdown.index == _others.Length)
-            {
-                _sOther = null;
-            }
-            else
-            {
-                _sOther = _others[otherDropdown.index];
-            }
+            _sOther = (this.otherDropdown.index == _others.Length) ? null : _others[otherDropdown.index];
+            UpdateEvaluatorParameter(_evaluators[_eIndex]);
         });
-
 
         // DeleteButton
         this.deleteButton = this.Q<Button>("DeleteButton");
@@ -72,11 +68,16 @@ public class UtilityPanel : VisualElement
             OnChange?.Invoke();
         };
 
-        // ConsiderationField
+        // ConsiderationField (Left panel)
         this.nameField = this.Q<TextField>("NameField"); 
         this.nameField.value = consideration.name;
         this.nameField.RegisterCallback<ChangeEvent<string>>(e => {
             consideration.name = e.newValue;
+        });
+        this.publicToggle = this.Q<Toggle>("PublicToggle");
+        this.publicToggle.value = consideration.isPublic;
+        this.publicToggle.RegisterCallback<ChangeEvent<bool>>(b => {
+            consideration.isPublic = b.newValue;
         });
 
         // ActionParameters
@@ -87,16 +88,18 @@ public class UtilityPanel : VisualElement
 
         // EvaluatorDropdown
         this.evaluatorDropdown = this.Q<DropdownField>("EvaluatorDropdown");
-        this.evaluatorDropdown.choices = _evaluators.Select((e) => {
+         this.evaluatorDropdown.choices = _evaluators.Select((e) => {
             var att = e.GetType().GetCustomAttributes(typeof(EvaluatorAttribute), false)[0] as EvaluatorAttribute;
             return att.Name;
         }).ToList();
-        this.evaluatorDropdown.index = _evaluators.ToList().FindIndex(e => e.GetType().Equals(consideration.evaluator.GetType())); // (!) no tiene que partir en o sino que la que estaba guardada
+        _eIndex = _evaluators.ToList().FindIndex(e => e.GetType().Equals(consideration.evaluator.GetType()));
+        this.evaluatorDropdown.index = _eIndex;
         this.evaluatorDropdown.RegisterCallback<ChangeEvent<string>>(e => {
-            var index = this.evaluatorDropdown.index;
-            consideration.evaluator = _evaluators[index];
-            UpdateEvaluatorParameter(_evaluators[index]);
+            _eIndex = this.evaluatorDropdown.index;
+            consideration.evaluator = _evaluators[_eIndex];
+            UpdateEvaluatorParameter(_evaluators[_eIndex]);
         });
+        UpdateEvaluatorParameter(_evaluators[_eIndex]); 
 
         // Curve
         _cIndex = _curves.ToList().FindIndex(c => c.GetType().Equals(consideration.curve.GetType()));
