@@ -13,7 +13,7 @@ namespace CBB.Api
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnBeforeSceneLoadRuntimeMethod()
         {
-            Debug.Log("Before scene loaded");
+            Debug.Log("[CBB]: Load agent data.");
             CollectAgentBaseData();
         }
 
@@ -34,11 +34,17 @@ namespace CBB.Api
 
         public static Type[] CollectAgentTypes()
         {
-            var types = Assembly.GetExecutingAssembly()
-                           .GetTypes()
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            var assemblies = currentDomain.GetAssemblies().ToArray();
+            var types = new List<Type>();
+            foreach (var assembly in assemblies)
+            {
+                var tys = assembly.GetTypes()
                            .Where(t => t.GetCustomAttributes(typeof(UtilityAgentAttribute), false).Length > 0)
                            .ToArray();
-            return types;
+                types.AddRange(tys);
+            }
+            return types.ToArray();
         }
 
         public static Variable[] CollectVariables(Type typeOwner)
@@ -51,7 +57,7 @@ namespace CBB.Api
                 if (atts.Any(a => a.GetType() == typeof(UtilityInputAttribute)))
                 {
                     var att = field.GetCustomAttributes(typeof(UtilityInputAttribute), false)[0] as UtilityInputAttribute;
-                    var input = new Variable(att.Name, field.FieldType, typeOwner, null);
+                    var input = new Variable(att.Name, field.FieldType, typeOwner);
                     inputs.Add(input);
                 }
             }
@@ -63,7 +69,7 @@ namespace CBB.Api
                 if (atts.Any(a => a.GetType() == typeof(UtilityInputAttribute)))
                 {
                     var att = prop.GetCustomAttributes(typeof(UtilityInputAttribute), false)[0] as UtilityInputAttribute;
-                    var input = new Variable(att.Name, prop.PropertyType, typeOwner, null);
+                    var input = new Variable(att.Name, prop.PropertyType, typeOwner);
                     inputs.Add(input);
                 }
             }
