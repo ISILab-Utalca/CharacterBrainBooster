@@ -84,7 +84,7 @@ public class Test_Variables
     [Test(Author = "Nicolas Romero")]
     public void Can_Save_And_Load_Variable_Float()
     {
-        var v = new Variable("Var_Float", typeof(float), typeof(MonoBehaviour), 5f);
+        var v = new Variable("Var_Float", typeof(float), typeof(MonoBehaviour));
         var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Variable>(pth, "Var_Float", v);
         var rV = Utility.JSONDataManager.LoadData<Variable>(pth, "Var_Float");
@@ -94,7 +94,7 @@ public class Test_Variables
     [Test(Author = "Nicolas Romero")]
     public void Can_Save_And_Load_Variable_String()
     {
-        var v = new Variable("Var_String", typeof(string), typeof(MonoBehaviour), "hola");
+        var v = new Variable("Var_String", typeof(string), typeof(MonoBehaviour));
         var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Variable>(pth, "Var_String", v);
         var rV = Utility.JSONDataManager.LoadData<Variable>(pth, "Var_String");
@@ -104,7 +104,7 @@ public class Test_Variables
     [Test(Author = "Nicolas Romero")]
     public void Can_Save_And_Load_Variable_Bool()
     {
-        var v = new Variable("Var_Bool", typeof(bool), typeof(MonoBehaviour), false);
+        var v = new Variable("Var_Bool", typeof(bool), typeof(MonoBehaviour));
         var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Variable>(pth, "Var_Bool", v);
         var rV = Utility.JSONDataManager.LoadData<Variable>(pth, "Var_Bool");
@@ -114,7 +114,7 @@ public class Test_Variables
     [Test(Author = "Nicolas Romero")]
     public void Can_Save_And_Load_Variable_Vector2()
     {
-        var v = new Variable("Var_Vec2", typeof(Vector2), typeof(MonoBehaviour), new Vector2(0, 1));
+        var v = new Variable("Var_Vec2", typeof(Vector2), typeof(MonoBehaviour));
         var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Variable>(pth, "Var_Vec2", v);
         var rV = Utility.JSONDataManager.LoadData<Variable>(pth, "Var_Vec2");
@@ -124,7 +124,7 @@ public class Test_Variables
     [Test(Author = "Nicolas Romero")]
     public void Can_Save_And_Load_Variable_Vector3()
     {
-        var v = new Variable("Var_Vec3", typeof(Vector3), typeof(MonoBehaviour), new Vector3(0, 1, 2));
+        var v = new Variable("Var_Vec3", typeof(Vector3), typeof(MonoBehaviour));
         var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Variable>(pth, "Var_Vec3", v);
         var rV = Utility.JSONDataManager.LoadData<Variable>(pth, "Var_Vec3");
@@ -210,13 +210,13 @@ public class TestCBB
     [Test(Author = "Nicolas Romero")]
     public void Can_Save_And_Load_Consideration()
     {
-        var vf = new Variable("Var_1", typeof(float), typeof(MonoBehaviour), 5f);
-        var vv3 = new Variable("Var_2", typeof(Vector3), typeof(MonoBehaviour), new Vector3(1,2,3));
-        var vs = new Variable("Var_3", typeof(string), typeof(MonoBehaviour), "hola");
-        var vb = new Variable("Var_4", typeof(bool), typeof(MonoBehaviour), false);
+        var vf = new Variable("Var_1", typeof(float), typeof(MonoBehaviour));
+        var vv3 = new Variable("Var_2", typeof(Vector3), typeof(MonoBehaviour));
+        var vs = new Variable("Var_3", typeof(string), typeof(MonoBehaviour));
+        var vb = new Variable("Var_4", typeof(bool), typeof(MonoBehaviour));
         var eva = new Normalize(50,0,100);
         var curve = new Linear(0.5f);
-        var cons = new Consideration("Cons_1", new List<Variable>() { vf, vv3, vs, vb }, eva, curve);
+        var cons = new Consideration("Cons_1",true,new List<Variable>() { vf, vv3, vs, vb }, eva, curve);
         var pth1 = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Consideration>(pth1, "Cons", cons);
         var rC = Utility.JSONDataManager.LoadData<Consideration>(pth1, "Cons");
@@ -226,8 +226,8 @@ public class TestCBB
     [Test(Author = "Nicolas Romero")]
     public void Can_Save_And_Load_AgentData()
     {
-        var vf = new Variable("Var_1", typeof(float), typeof(MonoBehaviour), 5f);
-        var vv3 = new Variable("Var_2", typeof(Vector3), typeof(MonoBehaviour), new Vector3(1, 2, 3));
+        var vf = new Variable("Var_1", typeof(float), typeof(MonoBehaviour));
+        var vv3 = new Variable("Var_2", typeof(Vector3), typeof(MonoBehaviour));
         var inputs = new List<Variable>() { vf, vv3 };
         var a1 = new ActionInfo("Action_1",typeof(MonoBehaviour));
         var a2 = new ActionInfo("Action_1", typeof(MonoBehaviour));
@@ -243,8 +243,8 @@ public class TestCBB
     public void Can_Save_And_Load_AgentBrainData()
     {
         // Variables
-        var vf = new Variable("Var_1", typeof(float), typeof(MonoBehaviour), 5f);
-        var vv3 = new Variable("Var_2", typeof(Vector3), typeof(MonoBehaviour), new Vector3(1, 2, 3));
+        var vf = new Variable("Var_1", typeof(float), typeof(MonoBehaviour));
+        var vv3 = new Variable("Var_2", typeof(Vector3), typeof(MonoBehaviour));
         var inputs = new List<Variable>() { vf, vv3 };
 
         // Actions
@@ -262,8 +262,8 @@ public class TestCBB
         var curve = new Linear(0.5f);
 
         // Considerations
-        var cons1 = new Consideration("Cons_1", new List<Variable>() { vf, vv3}, eva, curve);
-        var cons2 = new Consideration("Cons_1", new List<Variable>() { vf }, eva, curve);
+        var cons1 = new Consideration("Cons_1",true, new List<Variable>() { vf, vv3}, eva, curve);
+        var cons2 = new Consideration("Cons_1",true, new List<Variable>() { vf }, eva, curve);
         var considerations = new List<Consideration> { cons1, cons2 };
 
         // BrainData
