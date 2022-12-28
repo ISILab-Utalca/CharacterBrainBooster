@@ -67,13 +67,6 @@ namespace CBB.Lib
             var dif = min - max;
             return (value - min) / dif * 1f;
         }
-
-        public override string ToString()
-        {
-            return "Value: " + value +
-                "\nMin: " + min +
-                "\nMax: " + max;
-        }
     }
 
     /// <summary>
