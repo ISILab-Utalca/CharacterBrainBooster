@@ -57,12 +57,12 @@ namespace CBB.Api
         private AgentData CosntructAgent()
         {
             var agent = GetAgent();
-            var inputs = GetInputs(agent);
-            var actions = GetActions(agent);
+            var inputs = GetInputs(agent, agent.GetType());
+            var actions = GetActions(agent, agent.GetType());
             return new AgentData(agent.GetType(),inputs,actions);
         }
 
-        private List<Variable> GetInputs(object behaviour)
+        private List<Variable> GetInputs(object behaviour, Type ownerType)
         {
             var inputs = new List<Variable>();
 
@@ -72,8 +72,8 @@ namespace CBB.Api
                 var atts = field.GetCustomAttributes();
                 if (atts.Any(a => a.GetType() == typeof(UtilityInputAttribute)))
                 {
-                    var inp = new Tuple<string, object>(field.Name, field);
-                    inputs.Add(inp);
+                    var variable = new Variable(field.Name,field.FieldType, ownerType);
+                    inputs.Add(variable);
                 }
             }
 
@@ -83,25 +83,25 @@ namespace CBB.Api
                 var atts = prop.GetCustomAttributes();
                 if (atts.Any(a => a.GetType() == typeof(UtilityInputAttribute)))
                 {
-                    var inp = new Tuple<string, object>(prop.Name, prop);
-                    inputs.Add(inp);
+                    var variable = new Variable(prop.Name, prop.PropertyType, ownerType);
+                    inputs.Add(variable);
                 }
             }
 
             return inputs;
         }
 
-        private List<ActionInfo> GetActions(object behaviour)
+        private List<ActionInfo> GetActions(object behaviour, Type ownerType)
         {
-            var actions = new List<Tuple<string, object>>();
+            var actions = new List<ActionInfo>();
             var meths = behaviour.GetType().GetMethods();
             foreach (var meth in meths)
             {
                 var atts = meth.GetCustomAttributes();
                 if (atts.Any(a => a.GetType() == typeof(UtilityActionAttribute)))
                 {
-                    var met = new Tuple<string, object>(meth.Name, meth);
-                    actions.Add(met);
+                    var action = new ActionInfo(meth.Name, ownerType);
+                    actions.Add(action);
                 }
             }
 
@@ -111,14 +111,19 @@ namespace CBB.Api
                 var atts = evt.GetCustomAttributes();
                 if (atts.Any(a => a.GetType() == typeof(UtilityActionAttribute)))
                 {
-                    var ev = new Tuple<string, object>(evt.Name, evt);
-                    actions.Add(ev);
+                    var action = new ActionInfo(evt.Name, ownerType);
+                    actions.Add(action);
                 }
             }
 
             return actions;
         }
 
+        /// <summary>
+        /// Searches for and returns the first component of type 'MonoBehaviour' that has the 'UtilityAgentAttribute'
+        /// attribute on a given object. If no such component is found, 'null' is returned.
+        /// </summary>
+        /// <returns>The 'MonoBehaviour' component with the 'UtilityAgentAttribute' attribute, or 'null' if not found.</returns>
         private MonoBehaviour GetAgent()
         {
             var behaviours = GetComponents<MonoBehaviour>();
