@@ -7,13 +7,12 @@ using UnityEngine;
 
 namespace CBB.Api
 {
-
     public static class UtilitySystem
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnBeforeSceneLoadRuntimeMethod()
         {
-            Debug.Log("[CBB]: Load agent data.");
+            Debug.Log("<b><color=#d4fffeff>[CBB]</color>:</b> Load agent data.");
             CollectAgentBaseData();
         }
 
@@ -117,6 +116,54 @@ namespace CBB.Api
             }
 
             return actions.ToArray();
+        }
+
+        public static ActionMetaInfo[] CollectActionMetaInfo(Type type)
+        {
+            var actms = new List<ActionMetaInfo>();
+            var meths = type.GetMethods();
+            foreach (var meth in meths)
+            {
+                var atts = meth.GetCustomAttributes();
+                if (atts.Any(a => a.GetType() == typeof(UtilityActionAttribute)))
+                {
+                    var att = meth.GetCustomAttribute(typeof(UtilityActionAttribute), false) as UtilityActionAttribute;
+                    var action = new ActionInfo(att.Name, type);
+                    var actm = new ActionMetaInfo(action, meth, null, att);
+                    actms.Add(actm);
+                }
+            }
+
+            var events = type.GetEvents();
+            foreach (var evt in events)
+            {
+                var atts = evt.GetCustomAttributes();
+                if (atts.Any(a => a.GetType() == typeof(UtilityActionAttribute)))
+                {
+                    var att = evt.GetCustomAttribute(typeof(UtilityActionAttribute), false) as UtilityActionAttribute;
+                    var action = new ActionInfo(att.Name, type);
+                    var actm = new ActionMetaInfo(action, null, evt, att);
+                    actms.Add(actm);
+                }
+            }
+
+            return actms.ToArray();
+        }
+    }
+
+    public class ActionMetaInfo // (!!) esta clase es para encapsular la info de una accion tanto su methodInfo o eventInfo, su actionAttribute y actionInfo
+    {
+        public ActionInfo actionInfo;
+        public MethodInfo methodInfo;
+        public EventInfo eventInfo;
+        public UtilityActionAttribute atribute;
+
+        public ActionMetaInfo(ActionInfo actionInfo, MethodInfo methodInfo, EventInfo eventInfo, UtilityActionAttribute atribute)
+        {
+            this.actionInfo = actionInfo;
+            this.methodInfo = methodInfo;
+            this.eventInfo = eventInfo;
+            this.atribute = atribute;
         }
     }
 
