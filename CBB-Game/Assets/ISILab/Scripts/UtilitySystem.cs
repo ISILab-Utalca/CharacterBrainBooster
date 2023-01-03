@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace CBB.Api
 {
+    /// <summary>
+    /// Static class that provides various functions for collecting and storing data about agents and their variables and actions in the utility system.
+    /// </summary>
     public static class UtilitySystem
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -16,6 +19,10 @@ namespace CBB.Api
             CollectAgentBaseData();
         }
 
+        /// <summary>
+        /// Collects basic data about all agents in the utility system.
+        /// </summary>
+        /// <returns>Array of agent data for each agent in the utility system.</returns>
         public static AgentData[] CollectAgentBaseData()
         {
             var agentTypes = UtilitySystem.CollectAgentTypes();
@@ -31,6 +38,10 @@ namespace CBB.Api
             return agents.ToArray();
         }
 
+        /// <summary>
+        /// Collects the types of agents in the utility system.
+        /// </summary>
+        /// <returns>Array of agent types in the utility system.</returns>
         public static Type[] CollectAgentTypes()
         {
             AppDomain currentDomain = AppDomain.CurrentDomain;
@@ -46,6 +57,11 @@ namespace CBB.Api
             return types.ToArray();
         }
 
+        /// <summary>
+        /// Collects variables for a specific agent type.
+        /// </summary>
+        /// <param name="typeOwner">Type of the agent to collect variables for.</param>
+        /// <returns>Array of variables for the specified agent type.</returns>
         public static Variable[] CollectVariables(Type typeOwner)
         {
             var inputs = new List<Variable>();
@@ -75,12 +91,24 @@ namespace CBB.Api
             return inputs.ToArray();
         }
 
-        public static Variable[] CollectVariables(Type typeOwner,Type variable)
+        /// <summary>
+        /// Collects variables of a specific type for a specific agent type.
+        /// </summary>
+        /// <param name="typeOwner">Type of the agent to collect variables for.</param>
+        /// <param name="variable">Type of variables to collect.</param>
+        /// <returns>Array of variables of the specified type for the specified agent type.</returns>
+        public static Variable[] CollectVariables(Type typeOwner, Type variable)
         {
             var inputs = CollectVariables(typeOwner).Where(v => v.type == variable);
             return inputs.ToArray();
         }
 
+        /// <summary>
+        /// Collects variables of specific types for a specific agent type.
+        /// </summary>
+        /// <param name="typeOwner">Type of the agent to collect variables for.</param>
+        /// <param name="variable">Types of variables to collect.</param>
+        /// <returns>Array of variables of the specified types for the specified agent type.</returns>
         public static Variable[] CollectVariables(Type typeOwner, Type[] variable)
         {
             var vs = CollectVariables(typeOwner);
@@ -88,6 +116,11 @@ namespace CBB.Api
             return inputs.ToArray();
         }
 
+        /// <summary>
+        /// Collects actions for a specific agent type.
+        /// </summary>
+        /// <param name="type">Type of the agent to collect actions for.</param>
+        /// <returns>Array of actions for the specified agent type.</returns>
         public static ActionInfo[] CollectActions(Type type)
         {
             var actions = new List<ActionInfo>();
@@ -118,6 +151,11 @@ namespace CBB.Api
             return actions.ToArray();
         }
 
+        /// <summary>
+        /// Collects meta information about actions for a specific agent type.
+        /// </summary>
+        /// <param name="type">Type of the agent to collect action meta information for.</param>
+        /// <returns>Array of action meta information for the specified agent type.</returns>
         public static ActionMetaInfo[] CollectActionMetaInfo(Type type)
         {
             var actms = new List<ActionMetaInfo>();
@@ -151,13 +189,27 @@ namespace CBB.Api
         }
     }
 
+    /// <summary>
+    /// Contains meta information about an action, including its method or event, its attribute, and its action info.
+    /// </summary>
     public class ActionMetaInfo // (!!) esta clase es para encapsular la info de una accion tanto su methodInfo o eventInfo, su actionAttribute y actionInfo
     {
+        /// <summary>Info about the action. </summary>
         public ActionInfo actionInfo;
+        /// <summary>Method associated with the action. </summary>
         public MethodInfo methodInfo;
+        /// <summary>Event associated with the action.</summary>
         public EventInfo eventInfo;
+        /// <summary>Attribute associated with the action.</summary>
         public UtilityActionAttribute atribute;
 
+        /// <summary>
+        /// Constructs an action meta info object with the specified action info, method or event, and attribute.
+        /// </summary>
+        /// <param name="actionInfo">Info about the action.</param>
+        /// <param name="methodInfo">Method associated with the action.</param>
+        /// <param name="eventInfo">Event associated with the action.</param>
+        /// <param name="atribute">Attribute associated with the action.</param>
         public ActionMetaInfo(ActionInfo actionInfo, MethodInfo methodInfo, EventInfo eventInfo, UtilityActionAttribute atribute)
         {
             this.actionInfo = actionInfo;
@@ -167,11 +219,17 @@ namespace CBB.Api
         }
     }
 
+    /// <summary>
+    /// Class for observing agents and maintaining a list of active agents.
+    /// </summary>
     public class AgentObserver
     {
+        /// <summary>Singleton instance of the agent observer. </summary>
         private static AgentObserver instance;
+        /// <summary>List of active agents.</summary>
         public List<AgentBeahaviour> Agents = new List<AgentBeahaviour>();
 
+        /// <summary>Gets the singleton instance of the agent observer.</summary>
         public static AgentObserver Instance
         {
             get
@@ -184,11 +242,19 @@ namespace CBB.Api
             }
         }
 
+        /// <summary>
+        /// Adds an agent to the list of active agents.
+        /// </summary>
+        /// <param name="agent">Agent to add.</param>
         public void AddAgent(AgentBeahaviour agent)
         {
             Agents.Add(agent);
         }
 
+        /// <summary>
+        /// Removes an agent from the list of active agents.
+        /// </summary>
+        /// <param name="agent">Agent to remove.</param>
         public void RemoveAgent(AgentBeahaviour agent)
         {
             Agents.Remove(agent);
