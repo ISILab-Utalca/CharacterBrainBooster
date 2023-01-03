@@ -53,11 +53,15 @@ public class UtilityMain : MonoBehaviour
         this.addConsideration = root.Q<Button>("AddConsideration");
         this.addConsideration.clicked += () => { AddConsideration(); };
 
+        // AddAction
+        this.addAction = root.Q<Button>("AddAction");
+        this.addAction.clicked += () => { AddAction(); };
+
         // Actions Tab
         this.actionsTab = root.Q<Button>("ActionsTab");
         this.actionsTab.clicked += () => {
             ChangeTab(actionsContent);
-
+            UpdateActions();
         };
 
         // Conditions Tab
@@ -89,16 +93,54 @@ public class UtilityMain : MonoBehaviour
 
     private void UpdateConsiderations()
     {
+        this.considerationsContent.Clear();
         var considerations = _current.considerations;
         for (int i = 0; i < considerations.Count; i++)
         {
             var cons = considerations[i];
             this.considerationsContent.Add(new UtilityPanel(_current, cons, () => { 
-                this.considerationsContent.Clear(); 
                 UpdateConsiderations();
-                this.considerationsContent.Add(this.addConsideration);
             })); 
         }
+        this.considerationsContent.Add(this.addConsideration);
+    }
+
+    private void UpdateActions()
+    {
+        this.actionsContent.Clear();
+        var actions = _current.actions;
+        for (int i = 0; i < actions.Count; i++)
+        {
+            var action = actions[i];
+            this.actionsContent.Add(new UtilityPanel(_current, action, () => {
+                UpdateActions();
+            }));
+        }
+        this.actionsContent.Add(this.addAction);
+    }
+
+    private void AddAction()
+    {
+        var newName = "";
+        var iterator = 0;
+        do
+        {
+            newName = "New action " + iterator;
+            iterator++;
+        } while (_current.considerations.Any(c => c.name == newName));
+
+        var type = _current.baseData.agentType;
+        var action = new ActionUtility( // (????) esto deberia ser utility action y no action info ??
+            newName,
+            UtilitySystem.CollectActions(type)[0],
+            new Normalize(),
+            new Linear(),
+            new List<Variable>()
+            );;
+        _current.actions.Add(action);
+        this.actionsContent.Clear();
+        UpdateActions();
+        this.actionsContent.Add(this.addAction);
     }
 
     private void AddConsideration()
