@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -16,6 +17,7 @@ public class UtilityPanel : VisualElement
 
     // Left panel
     private TextField nameField;
+    private DropdownField actionField;
     private Toggle publicToggle;
     private VisualElement actionParameters;
 
@@ -80,6 +82,10 @@ public class UtilityPanel : VisualElement
             consideration.isPublic = b.newValue;
         });
 
+        // ActionField
+        this.actionField = this.Q<DropdownField>("ActionField");
+        this.actionField.style.display = DisplayStyle.None;
+
         // ActionParameters
         this.actionParameters = this.Q<VisualElement>("ActionParameters");
 
@@ -135,6 +141,125 @@ public class UtilityPanel : VisualElement
             UpdateCurveParamter(_curves[_cIndex]);
             UpdateChart(_curves[_cIndex]);
         });
+
+    }
+
+    public UtilityPanel(AgentBrainData agent, ActionUtility action, Action OnChange)
+    {
+        // Init basic info
+        var vt = Resources.Load<VisualTreeAsset>("UtilityPanel");
+        vt.CloneTree(this);
+        _evaluators = UtilityEvaluator.GetEvaluators().ToArray(); // (!) esta imeplementacion crea un objeto por cada 'Evalaudor' por cada utilityPanel lo cual puede sr inecesario
+        _curves = Curve.GetCurves().ToArray(); // (!) esta imeplementacion crea un objeto por cada 'Curve' por cada utilityPanel lo cual puede sr inecesario
+        _self = agent.baseData.agentType;
+
+        // AgentLabel 
+        this.agentLabel = this.Q<Label>("AgentLabel");
+        this.agentLabel.text = (agent.baseData.agentType.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
+
+        // OtherDropdown
+        this.otherDropdown = this.Q<DropdownField>("OtherDropdown");
+        this.otherDropdown.style.display = DisplayStyle.None;
+
+        // DeleteButton
+        this.deleteButton = this.Q<Button>("DeleteButton");
+        this.deleteButton.clicked += () => {
+            agent.actions.Remove(action);
+            OnChange?.Invoke();
+        };
+
+        // ConsiderationField (Left panel)
+        this.nameField = this.Q<TextField>("NameField");
+        this.nameField.value = action.name;
+        this.nameField.RegisterCallback<ChangeEvent<string>>(e => {
+            action.name = e.newValue;
+        });
+        this.publicToggle = this.Q<Toggle>("PublicToggle");
+        this.publicToggle.style.display = DisplayStyle.None;
+
+        // ActionParameters
+        this.actionParameters = this.Q<VisualElement>("ActionParameters");
+        UpdateActionParameter(action);
+
+        // EvaluatorParamenters
+        this.evaluatorParamaters = this.Q<VisualElement>("EvaluatorParameters");
+
+        // EvaluatorDropdown
+        this.evaluatorDropdown = this.Q<DropdownField>("EvaluatorDropdown");
+        this.evaluatorDropdown.choices = _evaluators.Select((e) => {
+            var att = e.GetType().GetCustomAttributes(typeof(EvaluatorAttribute), false)[0] as EvaluatorAttribute;
+            return att.Name;
+        }).ToList();
+        _eIndex = _evaluators.ToList().FindIndex(e => e.GetType().Equals(action.evaluator.GetType()));
+        this.evaluatorDropdown.index = _eIndex;
+        this.evaluatorDropdown.RegisterCallback<ChangeEvent<string>>(e => {
+            _eIndex = this.evaluatorDropdown.index;
+            action.evaluator = _evaluators[_eIndex];
+            UpdateEvaluatorParameter(_evaluators[_eIndex]);
+        });
+        UpdateEvaluatorParameter(_evaluators[_eIndex]);
+
+        // Curve
+        _cIndex = _curves.ToList().FindIndex(c => c.GetType().Equals(action.curve.GetType()));
+
+        // CurveParameters
+        this.curveParameters = this.Q<VisualElement>("CurveParameters");
+        this.UpdateCurveParamter(_curves[_cIndex]);
+
+        // Chart
+        this.chart = this.Q<Chart>("Chart");
+        this.UpdateChart(_curves[_cIndex]);
+
+        // InvertedToggle
+        this.invertedToggle = this.Q<Toggle>("InvertedToggle");
+        var curve = _curves.ToList().Find(c => c.GetType().Equals(action.curve.GetType())).Inverted;
+        this.invertedToggle.value = curve;
+        this.invertedToggle.RegisterCallback<ChangeEvent<bool>>(e =>
+        {
+            _curves[_cIndex].Inverted = e.newValue;
+            UpdateChart(_curves[_cIndex]);
+        });
+
+        // CurveDropdown
+        this.curveDropdown = this.Q<DropdownField>("CurveDropdown");
+        this.curveDropdown.choices = _curves.Select((c) => {
+            var att = c.GetType().GetCustomAttributes(typeof(CurveAttribute), false)[0] as CurveAttribute;
+            return att.Name;
+        }).ToList();
+        this.curveDropdown.index = _curves.ToList().FindIndex(c => c.GetType().Equals(action.curve.GetType()));
+        this.curveDropdown.RegisterCallback<ChangeEvent<string>>(e => {
+            _cIndex = this.curveDropdown.index;
+            action.curve = _curves[_cIndex];
+            UpdateCurveParamter(_curves[_cIndex]);
+            UpdateChart(_curves[_cIndex]);
+        });
+    }
+
+    private void UpdateActionParameter(ActionUtility action)
+    {
+        this.actionParameters.Clear();
+
+        var metaInfos = UtilitySystem.CollectActionMetaInfo(action.actionInfo.ownerType);
+        var ai = metaInfos.First(mi => mi.actionInfo.name == action.actionInfo.name);   // (!!) el ACTION QUE RECIVE POR PARAMETROS NUNCA SERA EL MISMO QUE SE BUSCA EN EL METAINFO  
+        
+        if(ai.methodInfo != null)
+        {
+            var meth = ai.methodInfo;
+            var att = ai.atribute;
+            var parms = meth.GetParameters();
+            for (int i = 0; i < parms.Length; i++)
+            {
+                var dropdown = new DropdownField();
+                dropdown.label = att.Inputs[i];
+                //parms[i].ParameterType; // (!!) esto tengo que usarlo para mostrar los valores en el dropdown que sean del tipo correcto
+                actionParameters.Add(dropdown);
+            }
+        }
+        else if(ai.eventInfo != null)
+        {
+            var evnt = ai.eventInfo;
+            // (!!) falta implementar los inputs de los eventos 
+        }
 
     }
 
