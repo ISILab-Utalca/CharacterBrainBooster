@@ -11,14 +11,14 @@ public class SettingsPanel : VisualElement
     private Toggle maxToggle;
     private Toggle averageToggle;
 
-    public Settings settingsData; // (!!) cambiar esto en el futuro a un archivo setting no volatil (json o algo asi)
+    public SettingsCBB settingsData; // (!!) cambiar esto en el futuro a un archivo setting no volatil (json o algo asi)
 
     public SettingsPanel()
     {
         var vt = Resources.Load<VisualTreeAsset>("SettingsPanel");
         vt.CloneTree(this);
 
-        settingsData = Resources.Load<Settings>("CBB_Settings");
+        settingsData = Resources.Load<SettingsCBB>("CBB_Settings");
 
         // Min Toggle
         this.minToggle = this.Q<Toggle>("MinToggle");
@@ -40,38 +40,5 @@ public class SettingsPanel : VisualElement
         this.averageToggle.RegisterCallback<ChangeEvent<bool>>(e => {
             settingsData.globals.showAverageValue = this.averageToggle.value;
         });
-    }
-}
-
-[CreateAssetMenu(menuName = "CBB/Settings")]
-public class Settings : ScriptableObject // (?) mover a su propio archivo script?
-{
-    public Globals globals;
-    public Others others;
-
-    public Settings()
-    {
-        this.globals = new Globals(true, true, true);
-        this.others = new Others();
-    }
-
-    [System.Serializable]
-    public struct Globals
-    {
-        public bool showMinValue;
-        public bool showMaxValue;
-        public bool showAverageValue;
-
-        public Globals(bool showMinValue, bool showMaxValue, bool showAverageValue)
-        {
-            this.showMinValue = showMinValue;
-            this.showMaxValue = showMaxValue;
-            this.showAverageValue = showAverageValue;
-        }
-    }
-
-    [System.Serializable]
-    public struct Others
-    {
     }
 }
