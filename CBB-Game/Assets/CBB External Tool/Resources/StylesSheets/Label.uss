@@ -1,0 +1,8 @@
+Label 
+{
+	-unity-font-style: bold;
+	-unity-font-weight: bold;
+	-unity-text-align: center;
+	font-size: 12px;
+	color: #D3D3D3;
+}
