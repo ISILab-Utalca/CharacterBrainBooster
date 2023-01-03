@@ -18,11 +18,11 @@ public class AgentBrainData
     public List<Consideration> considerations = new List<Consideration>();
 
     [JsonRequired]
-    public List<ActionInfo> actions = new List<ActionInfo>();
+    public List<ActionUtility> actions = new List<ActionUtility>();
 
     public AgentBrainData() { }
 
-    public AgentBrainData(AgentData baseData, List<Consideration> considerations, List<ActionInfo> actions)
+    public AgentBrainData(AgentData baseData, List<Consideration> considerations, List<ActionUtility> actions)
     {
         this.baseData = baseData;
         this.considerations = considerations;
@@ -31,7 +31,7 @@ public class AgentBrainData
 }
 
 [System.Serializable]
-public class Variable
+public class Variable // (!) esta es data simple 
 {
     [JsonRequired]
     public string name;
@@ -80,40 +80,7 @@ public class Variable
 }
 
 [System.Serializable]
-public class Consideration
-{
-    [JsonRequired]
-    public string name;
-    [JsonRequired]
-    public bool isPublic;
-    [JsonRequired, SerializeReference]
-    public UtilityEvaluator evaluator;
-    [JsonRequired, SerializeReference]
-    public Curve curve;
-    [JsonRequired, SerializeReference]
-    private List<Variable> variables;
-
-    public Consideration(string name,bool isPublic, List<Variable> variables, UtilityEvaluator evaluator, Curve curve)
-    {
-        this.name = name;
-        this.isPublic = isPublic;
-        this.variables = variables;
-        this.evaluator = evaluator;
-        this.curve = curve;
-    }
-
-    public override int GetHashCode()
-    {
-        var x = Utils.StringToInt(this.name);
-        var xx = Utils.StringToInt(evaluator.ToString()) * 10;
-        var xxx = curve.GetHashCode() * 100;
-        var xxxx = variables.Sum(v => Utils.StringToInt(v.ToString()));
-        return (x + xx + xxx);
-    }
-}
-
-[System.Serializable]
-public class ActionInfo // (!!) mejorar nombre
+public class ActionInfo // (!!) mejorar nombre // (!) esta es data simple
 {
     [JsonRequired]
     public string name;
@@ -133,6 +100,55 @@ public class ActionInfo // (!!) mejorar nombre
         return (x + xx);
     }
 }
+
+[System.Serializable]
+public class Consideration // (!) esta es data compleja 
+{
+    [JsonRequired]
+    public string name;
+    [JsonRequired]
+    public bool isPublic;
+    [JsonRequired, SerializeReference]
+    public UtilityEvaluator evaluator;
+    [JsonRequired, SerializeReference]
+    public Curve curve;
+    [JsonRequired, SerializeReference]
+    private List<Variable> variables; // (!!) esto deberia poder guardar variables y/o consideraciones
+
+    public Consideration(string name,bool isPublic, List<Variable> variables, UtilityEvaluator evaluator, Curve curve)
+    {
+        this.name = name;
+        this.isPublic = isPublic;
+        this.variables = variables;
+        this.evaluator = evaluator;
+        this.curve = curve;
+    }
+}
+
+[System.Serializable]
+public class ActionUtility // (!) esta es data compleja
+{
+    [JsonRequired]
+    public string name;
+    [JsonRequired]
+    public ActionInfo actionInfo;
+    [JsonRequired, SerializeReference]
+    public UtilityEvaluator evaluator;
+    [JsonRequired, SerializeReference]
+    public Curve curve;
+    [JsonRequired, SerializeReference]
+    private List<Variable> variables; // (!!) esto deberia poder guardar variables y/o consideraciones
+
+    public ActionUtility(string name, ActionInfo actionInfo, UtilityEvaluator evaluator, Curve curve, List<Variable> variables)
+    {
+        this.name = name;
+        this.actionInfo = actionInfo;
+        this.evaluator = evaluator;
+        this.curve = curve;
+        this.variables = variables;
+    }
+}
+
 
 [System.Serializable]
 public class AgentData
