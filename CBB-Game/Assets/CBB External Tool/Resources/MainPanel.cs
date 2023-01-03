@@ -49,11 +49,10 @@ public class MainPanel : MonoBehaviour
 
     }
 
-
     private void CreateBrain()
     {
         var data = new AgentData(_agentType, new List<Variable>(), new List<ActionInfo>());
-        Globals.Current = new AgentBrainData(data, new List<Consideration>(), new List<ActionInfo>());
+        Globals.Current = new AgentBrainData(data, new List<Consideration>(), new List<ActionUtility>());
         this.gameObject.SetActive(false);
         _utilityMain.SetActive(true);
     }
@@ -74,7 +73,7 @@ public static class Globals
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void OnBeforeSceneLoadRuntimeMethod()
     {
-        Debug.Log("Before scene loaded");
+        Debug.Log("<b><color=#d4fffeff>[CBB]</color>:</b> Load all variables");
         var agentTypes = UtilitySystem.CollectAgentTypes();
         var allVariables = agentTypes.Select( t => UtilitySystem.CollectVariables(t)).ToList();
 
