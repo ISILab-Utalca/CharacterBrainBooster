@@ -6,12 +6,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Curvas CBB blabla
+/// </summary>
 [System.Serializable]
 public abstract class Curve
 {
     [JsonRequired]
     public bool Inverted = false;
-
+    
     public abstract float Calc(params float[] parms);
     public abstract float Calc(float v);
 
@@ -288,8 +291,8 @@ public class Sigmoide : Curve
 [System.Serializable]
 public class Constant : Curve
 {
-    [JsonRequired]
-    public float value = 0f;   // X
+    [JsonRequired, Param("Value", 0, 1)]
+    public float value = 0.5f;   // X
 
     public Constant() { }
 
@@ -300,13 +303,14 @@ public class Constant : Curve
 
     public override float Calc(params float[] parms)
     {
-        value = parms[0];
+        //value = parms[0];
         return Calc(value);
     }
 
     public override float Calc(float v)
     {
-        return value;
+        var toR = Mathf.Clamp01(value);
+        return Inverted ? 1 - toR : toR;
     }
 }
 
@@ -316,13 +320,13 @@ public class Bell : Curve
 {
     [JsonRequired]
     public float value;     // X
-    [JsonRequired, Param("O", 1f, 10f)]
-    public float o = 1f;
-    [JsonRequired, Param("U", 1f, 10f)]
+    [JsonRequired, Param("Base", 1f, 10f)]
+    public float b = 10f;
+    [JsonRequired, Param("U", 0f, 3f)]
     public float u = 1f;
-    [JsonRequired, Param("Dx", 0f, 10f)]
-    public float dx = 0f;
-    [JsonRequired, Param("Dy", 0f, 10f)]
+    [JsonRequired, Param("Dx", 0f, 1f)]
+    public float dx = 0.5f;
+    [JsonRequired, Param("Dy", -1f, 1f)]
     public float dy = 0f;
 
     public Bell() { }
@@ -330,7 +334,7 @@ public class Bell : Curve
     public Bell(float value, float o = 1f, float u = 1f, float dx = 0f, float dy = 0f)
     {
         this.value = value;
-        this.o = o;
+        this.b = o;
         this.u = u;
         this.dx = dx;
         this.dy = dy;
@@ -339,7 +343,7 @@ public class Bell : Curve
     public override float Calc(params float[] parms)
     {
         this.value = parms[0];
-        this.o = parms[1];
+        this.b = parms[1];
         this.u = parms[2];
         this.dx = parms[3];
         this.dy = parms[4];
@@ -349,7 +353,9 @@ public class Bell : Curve
 
     public override float Calc(float v)
     {
-        return (1f / o * Mathf.Sqrt(2 * Mathf.PI)) * Mathf.Exp(-(0.5f) * ((Mathf.Pow(value - u, 2) / Mathf.Pow(o, 2)))) + dy;
+        var toR = Mathf.Clamp01((Mathf.Pow(b, -Mathf.Pow(v - dx, 2) * Mathf.Pow(10, u))) + dy);
+        return Inverted ? 1 - toR : toR;
+        //return (1f / b * Mathf.Sqrt(2 * Mathf.PI)) * Mathf.Exp(-(0.5f) * ((Mathf.Pow(value - u, 2) / Mathf.Pow(b, 2)))) + dy;
     }
 }
 
