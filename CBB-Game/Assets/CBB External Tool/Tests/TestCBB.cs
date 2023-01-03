@@ -266,8 +266,12 @@ public class TestCBB
         var cons2 = new Consideration("Cons_1",true, new List<Variable>() { vf }, eva, curve);
         var considerations = new List<Consideration> { cons1, cons2 };
 
+        // ActionUtilities
+        var au1 = new ActionUtility("ActionUtility_1", a1, eva, curve, new List<Variable>() { vf, vv3 });
+        var au2 = new ActionUtility("ActionUtility_2", a1, eva, curve, new List<Variable>() { vf });
+
         // BrainData
-        var brain = new AgentBrainData(data, considerations, new List<ActionInfo>() { a1, a2, a2 });
+        var brain = new AgentBrainData(data, considerations, new List<ActionUtility>() { au1, au2 });
         var path = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<AgentBrainData>(path, "AgentBrainData", brain);
         var rB = Utility.JSONDataManager.LoadData<AgentBrainData>(path, "AgentBrainData");
