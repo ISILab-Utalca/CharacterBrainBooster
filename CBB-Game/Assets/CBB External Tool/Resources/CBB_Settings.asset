@@ -9,6 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 3b3e48dca3b105f40a226f4d8ecb0bb7, type: 3}
   m_Name: CBB_Settings
-  m_EditorClassIdentifier: CBB_External_Tool::Settings
+  m_EditorClassIdentifier: 
+  globals:
+    showMinValue: 1
+    showMaxValue: 1
+    showAverageValue: 1
