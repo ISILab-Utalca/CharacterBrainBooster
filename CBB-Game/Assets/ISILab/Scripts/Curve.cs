@@ -18,6 +18,7 @@ public abstract class Curve
     public abstract float Calc(params float[] parms);
     public abstract float Calc(float v);
 
+
     public static List<Curve> GetCurves()
     {
         IEnumerable<Curve> exporters = typeof(Curve)
