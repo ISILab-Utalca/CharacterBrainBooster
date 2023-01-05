@@ -31,13 +31,22 @@ public class UtilityPanel : VisualElement
     private Chart chart;
     private VisualElement curveParameters;
 
-    private UtilityEvaluator[] _evaluators;
-    private int _eIndex;
+    // internal
     private Type _self;
-    private Curve[] _curves;
-    private int _cIndex;
     private Type[] _others;
     private Type _sOther;
+
+    // internal evaluator
+    private UtilityEvaluator[] _evaluators;
+    private int _eIndex;
+
+    // internal curve
+    private Curve[] _curves;
+    private int _cIndex;
+
+    // internal action
+    private ActionInfo[] _actions;
+    private int _aIndex;
 
 
     public UtilityPanel(AgentBrainData agent, Consideration consideration, Action OnChange)
@@ -152,6 +161,7 @@ public class UtilityPanel : VisualElement
         _evaluators = UtilityEvaluator.GetEvaluators().ToArray(); // (!) esta imeplementacion crea un objeto por cada 'Evalaudor' por cada utilityPanel lo cual puede sr inecesario
         _curves = Curve.GetCurves().ToArray(); // (!) esta imeplementacion crea un objeto por cada 'Curve' por cada utilityPanel lo cual puede sr inecesario
         _self = agent.baseData.agentType;
+        _actions = UtilitySystem.CollectActions(_self);
 
         // AgentLabel 
         this.agentLabel = this.Q<Label>("AgentLabel");
@@ -176,6 +186,15 @@ public class UtilityPanel : VisualElement
         });
         this.publicToggle = this.Q<Toggle>("PublicToggle");
         this.publicToggle.style.display = DisplayStyle.None;
+
+        // ActionField
+        this.actionField = this.Q<DropdownField>("ActionField");
+        this.actionField.choices = _actions.Select(a => a.name).ToList();
+        this.actionField.index = _actions.ToList().FindIndex(a => a.name == action.actionInfo.name);
+        this.actionField.RegisterCallback<ChangeEvent<string>>(a => {
+
+        });
+        //UpdateActionParameter(); // (!!!) implementar
 
         // ActionParameters
         this.actionParameters = this.Q<VisualElement>("ActionParameters");
