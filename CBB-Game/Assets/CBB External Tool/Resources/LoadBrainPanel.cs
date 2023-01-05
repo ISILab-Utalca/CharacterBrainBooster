@@ -40,21 +40,25 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
         this.content = root.Q<VisualElement>("Content");
         UpdateContent();
 
+        // SelectedLabel
         this.selected = root.Q<Label>("Selected");
+
+        // OpenButton
         this.openButton = root.Q<Button>("OpenButton");
         openButton.clicked += () => {
 
-            var p = selected.text;
-            Debug.Log("A: "+ p);
-            //Globals.Current = Utility.JSONDataManager.LoadData<AgentBrainData>(p,); // (!!) reparar
-            //Debug.Log("B: " + Globals.Current);
-            utilityMain.SetActive(true);
-            this.gameObject.SetActive(false);
+            var path = selected.text;
+            var fileInfo = new FileInfo(path);
+            Debug.Log(fileInfo.Directory.FullName);
+            Debug.Log(fileInfo.Name);
+
             try
             {
-                
+                Globals.Current = Utility.JSONDataManager.LoadData<AgentBrainData>(fileInfo.Directory.FullName, fileInfo.Name);
+                utilityMain.SetActive(true);
+                this.gameObject.SetActive(false);
             }
-            catch (Exception e)
+            catch (JsonException e)
             {
                 throw new JsonException();
             }
