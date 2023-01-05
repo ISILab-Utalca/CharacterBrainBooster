@@ -40,11 +40,27 @@ namespace Utility
         public static void SaveData<T>(string directoryName, string fileName, T data)
         {
             string directoryPath = directoryName;
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            string dataPath = directoryPath + '/' + fileName;
+            if (File.Exists(dataPath))
+            {
+                File.Delete(dataPath);
+            }
+
+            SaveData(dataPath, data);
+        }
+
+        public static void SaveData<T>(string directoryName, string fileName, string format, T data)
+        {
+            string directoryPath = directoryName;
             if(!Directory.Exists(directoryPath)) 
             {
                 Directory.CreateDirectory(directoryPath);
             }
-            string dataPath =  directoryPath + '/' + fileName + ".json";
+            string dataPath =  directoryPath + '/' + fileName + "." + format;
             if (File.Exists(dataPath))
             {
                 File.Delete(dataPath);
@@ -56,7 +72,7 @@ namespace Utility
         private static T LoadData<T>(string path)
         {
             // read file and obtain json string
-            using StreamReader reader = new StreamReader(path + ".json");
+            using StreamReader reader = new StreamReader(path);
             string json = reader.ReadToEnd();
 
             // generate serializer setting
@@ -93,6 +109,18 @@ namespace Utility
                 Directory.CreateDirectory(directoryPath);
             }
             string dataPath = directoryPath + '/' + fileName;
+
+            return LoadData<T>(dataPath);
+        }
+
+        public static T LoadData<T>(string directoryName, string fileName, string format)
+        {
+            string directoryPath = directoryName;
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            string dataPath = directoryPath + '/' + fileName +"."+ format;
 
             return LoadData<T>(dataPath);
         }
@@ -173,44 +201,4 @@ namespace Utility
             jo.WriteTo(writer);
         }
     }
-
-    /*
-    public class Vector3Converter : JsonConverter<Vector3>
-    {
-        public override Vector3 ReadJson(JsonReader reader, System.Type objectType, Vector3 existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            JObject jo = JObject.Load(reader);
-            return new Vector3((float)jo["x"], (float)jo["y"], (float)jo["z"]);
-        }
-
-        public override void WriteJson(JsonWriter writer, Vector3 value, JsonSerializer serializer)
-        {
-            Vector3 v = (Vector3)value;
-            JObject jo = new JObject();
-            jo["x"] = v.x;
-            jo["y"] = v.y;
-            jo["z"] = v.z;
-            jo.WriteTo(writer);
-        }
-
-    }
-
-    public class Vector2Converter : JsonConverter<Vector2>
-    {
-        public override Vector2 ReadJson(JsonReader reader, System.Type objectType, Vector2 existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            JObject jo = JObject.Load(reader);
-            return new Vector2((float)jo["x"], (float)jo["y"]);
-        }
-
-        public override void WriteJson(JsonWriter writer, Vector2 value, JsonSerializer serializer)
-        {
-            Vector2 v = (Vector2)value;
-            JObject jo = new JObject();
-            jo["x"] = v.x;
-            jo["y"] = v.y;
-            jo.WriteTo(writer);
-        }
-    }*/
-
 }
