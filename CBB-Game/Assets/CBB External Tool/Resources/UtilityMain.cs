@@ -168,7 +168,7 @@ public class UtilityMain : MonoBehaviour
     public void SaveTest(string fileName)
     {
         var path = Application.persistentDataPath;
-        Utility.JSONDataManager.SaveData<AgentBrainData>(path, fileName, _current);
+        Utility.JSONDataManager.SaveData<AgentBrainData>(path, fileName,".json", _current);
         Debug.LogFormat("Saved on: <a href=\"{0}\">{0}</a>", "file://" + path + "/" + fileName +".json");
         Application.OpenURL("file://" + path + "/" + fileName + ".json");
         //Debug.LogFormat("Haz clic aquí para abrir el archivo de código: <a href=\"{0}\">{0}</a>", "file:///C:/ruta/al/archivo.cs");
