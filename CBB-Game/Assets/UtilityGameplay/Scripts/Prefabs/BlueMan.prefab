@@ -12,10 +12,12 @@ GameObject:
   - component: {fileID: 5381000992840252503}
   - component: {fileID: 5381000992840252497}
   - component: {fileID: 5381000992840252496}
-  - component: {fileID: 5381000992840252499}
-  - component: {fileID: 559623639}
+  - component: {fileID: -9206221435548144204}
+  - component: {fileID: 8473731958037087059}
+  - component: {fileID: 3691984122579467694}
+  - component: {fileID: 4557938578023229350}
   m_Layer: 0
-  m_Name: GreenMan
+  m_Name: BlueMan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +80,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.695566, g: 1, b: 0.6839622, a: 1}
+  m_Color: {r: 0.45882356, g: 0.48131186, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -105,6 +107,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -119,13 +127,32 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &5381000992840252499
+--- !u!114 &-9206221435548144204
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,7 +161,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5381000992840252498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e471dbc0fbf0f243964c414d6d3cf91, type: 3}
+  m_Script: {fileID: 11500000, guid: 25cfa98d5c017194b90b932b4dc95bac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Size: 1
@@ -143,7 +170,7 @@ MonoBehaviour:
   SpeedModifier: 10
   SizeLossModifier: 0.1
   Moving: 0
---- !u!114 &559623639
+--- !u!114 &8473731958037087059
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,6 +179,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 5381000992840252498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc381268074d0f348bb7a8d852496292, type: 3}
+  m_Script: {fileID: 11500000, guid: e778868662f8d9545849862dc99d71e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3691984122579467694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5381000992840252498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f1f5fbfd2d38ea4c9ed2ab5a6c207e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pickMethod: 0
+  _sensors: []
+  _actions: []
+  _defaultAction: {fileID: 0}
+--- !u!114 &4557938578023229350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5381000992840252498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb7a9548111e534f8fc8f3bea9af526, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickedObject: {fileID: 0}
+  _objectives: []
