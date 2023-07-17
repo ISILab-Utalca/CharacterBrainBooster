@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Header" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); height: 20px;" />
+    <ui:VisualElement style="flex-grow: 1; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 6px; margin-right: 6px; margin-top: 6px; margin-bottom: 6px;">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row;">
+            <CBB.ExternalTool.AgentsPanel name="AgentsPanel" style="flex-grow: 1; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px;" />
+            <ui:VisualElement name="InfoAgentPanel" style="flex-grow: 1; background-color: rgb(255, 0, 0); margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="HistoryPanel" style="flex-grow: 1; background-color: rgb(255, 0, 0); margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px;" />
+    </ui:VisualElement>
+</ui:UXML>
