@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,14 +22,16 @@ namespace CBB.ExternalTool
         // View
         private ListView List;
         private EnumField showField;
-        
+        private Tabs tabs;
+        private ScrollView scroll;
+
         // Info
         private List<string> target;
         private ShowType showType = ShowType.Both;
 
         public HistoryPanel()
         {
-            var visualTree = Resources.Load<VisualTreeAsset>("HistorialPanel");
+            var visualTree = Resources.Load<VisualTreeAsset>("HistoryPanel");
             visualTree.CloneTree(this);
 
             // History list
@@ -40,7 +43,10 @@ namespace CBB.ExternalTool
 
             // Show dropdown
             this.showField = this.Q<EnumField>();
+            showField.RegisterCallback<ChangeEvent<Enum>>((evt) => OnChangeShowType(evt));
             // cuando este cambie actualiza la lista. y se deseleciona lo selecionado
+
+
         }
 
         private VisualElement MakeItem() // hacer que esto sea un solo viewElement (!!!)
@@ -83,14 +89,20 @@ namespace CBB.ExternalTool
             }
         }
 
-        public void OnSelectionChange(IEnumerable<object> objs)
+        private void OnSelectionChange(IEnumerable<object> objs)
         {
             Debug.Log("OnSelectionChange");
         }
 
-        public void OnItemChosen(IEnumerable<object> objs)
+        private void OnItemChosen(IEnumerable<object> objs)
         {
             Debug.Log("OnItemChosen");
+        }
+
+        private void OnChangeShowType(ChangeEvent<Enum> evt)
+        {
+            var value = evt.newValue;
+            Debug.Log(value.ToString());
         }
     }
 }

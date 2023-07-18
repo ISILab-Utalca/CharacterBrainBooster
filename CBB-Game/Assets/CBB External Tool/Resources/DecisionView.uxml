@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Foldout text="Decision" name="Foldout" value="true" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;">
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; margin-bottom: 5px;">
+            <CBB.ExternalTool.Chart />
+            <ui:VisualElement name="Content" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+        </ui:VisualElement>
+        <ui:Label tabindex="-1" text="Considerations" display-tooltip-when-elided="true" name="Subtitle" />
+        <ui:VisualElement name="ConsiderationContent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+    </ui:Foldout>
+</ui:UXML>

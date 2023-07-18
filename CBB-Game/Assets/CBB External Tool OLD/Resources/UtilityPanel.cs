@@ -28,7 +28,7 @@ public class UtilityPanel : VisualElement
     // Right panel
     private DropdownField curveDropdown;
     private Toggle invertedToggle;
-    private Chart chart;
+    //private Chart chart;
     private VisualElement curveParameters;
 
     // internal
@@ -124,7 +124,7 @@ public class UtilityPanel : VisualElement
         this.UpdateCurveParamter(_curves[_cIndex]);
 
         // Chart
-        this.chart = this.Q<Chart>("Chart");
+        // this.chart = this.Q<Chart>("Chart");
         this.UpdateChart(_curves[_cIndex]);
 
         // InvertedToggle
@@ -226,7 +226,7 @@ public class UtilityPanel : VisualElement
         this.UpdateCurveParamter(_curves[_cIndex]);
 
         // Chart
-        this.chart = this.Q<Chart>("Chart");
+        //this.chart = this.Q<Chart>("Chart");
         this.UpdateChart(_curves[_cIndex]);
 
         // InvertedToggle
@@ -340,6 +340,6 @@ public class UtilityPanel : VisualElement
     /// <param name="curve"></param>
     private void UpdateChart(Curve curve)
     {
-        chart.SetCurve(curve);
+        //chart.SetCurve(curve);
     }
 }

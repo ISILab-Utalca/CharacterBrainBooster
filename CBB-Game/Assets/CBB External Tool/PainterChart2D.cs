@@ -9,7 +9,7 @@ public class PainterChart2D : VisualElement
     public new class UxmlFactory : UxmlFactory<PainterChart2D, UxmlTraits> { }
 
     private Painter2D paint2D;
-    private Curve curve = new ExponencialInvertida();
+    private (Curve, float)[] curves = { (new ExponencialInvertida(), 0.5f) };
 
     private Color colorLine = new Color(1f, 1f, 1f, .7f);
     private Color colorGrid = new Color(0f, 0f, 0f, .05f);
@@ -40,26 +40,35 @@ public class PainterChart2D : VisualElement
         // Draw backgorund
         DrawBackground(colorLine, colorGrid);
 
-        // Draw curve
-        var points01 = Curve.CalcPoints(curve, 50);
-        var points = AdjustPoints(points01);
-        DrawLine(points, colorCurve);
+        foreach (var curve in curves)
+        {
+            // Draw curve
+            var points01 = Curve.CalcPoints(curve.Item1, 50);
+            var points = AdjustPoints(points01);
+            DrawLine(points, colorCurve);
 
-        // Draw value point
-        var x = 0.5f;
-        var y = curve.Calc(x);
-        var point = AdjustPoint(new Vector2(x,y));
-        DrawPoit(point,2.0f,colorValuePoint);
+            // Draw value point
+            var x = curve.Item2;
+            var y = curve.Item1.Calc(x);
+            var point = AdjustPoint(new Vector2(x, y));
+            DrawPoint(point, 2.0f, colorValuePoint);
 
-        // Draw value lines
-        var start = new Vector2(2, point.y);
-        var end = new Vector2(point.x, Height - 2);
-        DrawLine(new List<Vector2>() { start,point, end }, colorValueLine, 2);
+            // Draw value lines
+            var start = new Vector2(2, point.y);
+            var end = new Vector2(point.x, Height - 2);
+            DrawLine(new List<Vector2>() { start, point, end }, colorValueLine, 2);
+        }
     }
 
-    public void SetCurve(Curve curve)
+    public void SetCurve(Curve curve, float value)
     {
-        this.curve = curve;
+        this.curves = new (Curve, float)[] { (curve, value) };
+        this.MarkDirtyRepaint();
+    }
+
+    public void SetCurves((Curve, float)[] curves)
+    {
+        this.curves = curves;
         this.MarkDirtyRepaint();
     }
 
@@ -119,7 +128,7 @@ public class PainterChart2D : VisualElement
         paint2D.Stroke();
     }
 
-    private void DrawPoit(Vector2 pos, float radius, Color color)
+    private void DrawPoint(Vector2 pos, float radius, Color color)
     {
         paint2D.fillColor = color;
         paint2D.BeginPath();
