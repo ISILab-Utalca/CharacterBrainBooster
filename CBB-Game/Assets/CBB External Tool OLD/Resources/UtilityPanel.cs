@@ -73,11 +73,13 @@ public class UtilityPanel : VisualElement
         });
 
         // DeleteButton
-        this.deleteButton = this.Q<Button>("DeleteButton");
-        this.deleteButton.clicked += () => { 
-            agent.considerations.Remove(consideration);
-            OnChange?.Invoke();
-        };
+        // 14/07/2023 This button was commented because the AgentBrainData doesn't have a considerations property
+        // anymore. Instead, the considerations are nested in the Actions attached to this brain
+        //this.deleteButton = this.Q<Button>("DeleteButton");
+        //this.deleteButton.clicked += () => { 
+        //    agent.considerations.Remove(consideration);
+        //    OnChange?.Invoke();
+        //};
 
         // ConsiderationField (Left panel)
         this.nameField = this.Q<TextField>("NameField"); 

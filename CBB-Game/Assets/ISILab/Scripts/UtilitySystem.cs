@@ -16,6 +16,7 @@ namespace CBB.Api
         private static void OnBeforeSceneLoadRuntimeMethod()
         {
             Debug.Log("<b><color=#d4fffeff>[CBB]</color>:</b> Load agent data.");
+            // We need to send this data over to the external CBB
             CollectAgentBaseData();
         }
 

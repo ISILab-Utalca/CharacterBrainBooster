@@ -50,12 +50,12 @@ public class UtilityMain : MonoBehaviour
         SaveButton.clicked += () => { SaveTest("Test");  }; // (!)
 
         // AddConsideration
-        this.addConsideration = root.Q<Button>("AddConsideration");
-        this.addConsideration.clicked += () => { AddConsideration(); };
+        //this.addConsideration = root.Q<Button>("AddConsideration");
+        //this.addConsideration.clicked += () => { AddConsideration(); };
 
         // AddAction
-        this.addAction = root.Q<Button>("AddAction");
-        this.addAction.clicked += () => { AddAction(); };
+        //this.addAction = root.Q<Button>("AddAction");
+        //this.addAction.clicked += () => { AddAction(); };
 
         // Actions Tab
         this.actionsTab = root.Q<Button>("ActionsTab");
@@ -65,11 +65,11 @@ public class UtilityMain : MonoBehaviour
         };
 
         // Conditions Tab
-        this.conditionsTab = root.Q<Button>("ConditionsTab");
-        this.conditionsTab.clicked += () => {
-            ChangeTab(considerationsContent);
-            UpdateConsiderations();
-        };
+        //this.conditionsTab = root.Q<Button>("ConditionsTab");
+        //this.conditionsTab.clicked += () => {
+        //    ChangeTab(considerationsContent);
+        //    UpdateConsiderations();
+        //};
 
         // Settings Tab
         this.settingsTab = root.Q<Button>("SettingsTab");
@@ -79,7 +79,7 @@ public class UtilityMain : MonoBehaviour
 
         // Init
         ChangeTab(considerationsContent);
-        UpdateConsiderations();
+        //UpdateConsiderations();
 
     }
 
@@ -91,19 +91,19 @@ public class UtilityMain : MonoBehaviour
     }
 
 
-    private void UpdateConsiderations()
-    {
-        this.considerationsContent.Clear();
-        var considerations = _current.considerations;
-        for (int i = 0; i < considerations.Count; i++)
-        {
-            var cons = considerations[i];
-            this.considerationsContent.Add(new UtilityPanel(_current, cons, () => { 
-                UpdateConsiderations();
-            })); 
-        }
-        this.considerationsContent.Add(this.addConsideration);
-    }
+    //private void UpdateConsiderations()
+    //{
+    //    this.considerationsContent.Clear();
+    //    var considerations = _current.considerations;
+    //    for (int i = 0; i < considerations.Count; i++)
+    //    {
+    //        var cons = considerations[i];
+    //        this.considerationsContent.Add(new UtilityPanel(_current, cons, () => { 
+    //            UpdateConsiderations();
+    //        })); 
+    //    }
+    //    this.considerationsContent.Add(this.addConsideration);
+    //}
 
     private void UpdateActions()
     {
@@ -119,51 +119,51 @@ public class UtilityMain : MonoBehaviour
         this.actionsContent.Add(this.addAction);
     }
 
-    private void AddAction()
-    {
-        var newName = "";
-        var iterator = 0;
-        do
-        {
-            newName = "New action " + iterator;
-            iterator++;
-        } while (_current.considerations.Any(c => c.name == newName));
+    //private void AddAction()
+    //{
+    //    var newName = "";
+    //    var iterator = 0;
+    //    do
+    //    {
+    //        newName = "New action " + iterator;
+    //        iterator++;
+    //    } while (_current.considerations.Any(c => c.name == newName));
 
-        var type = _current.baseData.agentType;
-        var action = new ActionUtility( // (????) esto deberia ser utility action y no action info ??
-            newName,
-            UtilitySystem.CollectActions(type)[0],
-            new Normalize(),
-            new Linear(),
-            new List<Variable>()
-            );;
-        _current.actions.Add(action);
-        this.actionsContent.Clear();
-        UpdateActions();
-        this.actionsContent.Add(this.addAction);
-    }
+    //    var type = _current.baseData.agentType;
+    //    var action = new ActionUtility( // (????) esto deberia ser utility action y no action info ??
+    //        newName,
+    //        UtilitySystem.CollectActions(type)[0],
+    //        new Normalize(),
+    //        new Linear(),
+    //        new List<Variable>()
+    //        );;
+    //    _current.actions.Add(action);
+    //    this.actionsContent.Clear();
+    //    UpdateActions();
+    //    this.actionsContent.Add(this.addAction);
+    //}
 
-    private void AddConsideration()
-    {
-        var newName = "";
-        var iterator = 0;
-        do{
-            newName = "New consideration " + iterator;
-            iterator++;
-        } while (_current.considerations.Any( c => c.name == newName));
+    //private void AddConsideration()
+    //{
+    //    var newName = "";
+    //    var iterator = 0;
+    //    do{
+    //        newName = "New consideration " + iterator;
+    //        iterator++;
+    //    } while (_current.considerations.Any( c => c.name == newName));
 
-        var consideration = new Consideration(
-            newName,
-            true,
-            new List<Variable>(),
-            new Normalize(),
-            new Linear()
-            );
-        _current.considerations.Add(consideration);
-        this.considerationsContent.Clear();
-        UpdateConsiderations();
-        this.considerationsContent.Add(this.addConsideration);
-    }
+    //    var consideration = new Consideration(
+    //        newName,
+    //        true,
+    //        new List<Variable>(),
+    //        new Normalize(),
+    //        new Linear()
+    //        );
+    //    _current.considerations.Add(consideration);
+    //    this.considerationsContent.Clear();
+    //    UpdateConsiderations();
+    //    this.considerationsContent.Add(this.addConsideration);
+    //}
 
     public void SaveTest(string fileName)
     {
