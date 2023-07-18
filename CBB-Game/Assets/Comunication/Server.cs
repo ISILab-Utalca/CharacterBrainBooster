@@ -24,6 +24,11 @@ public static class Server
         }
     }
 
+    public static void SetAddressPort(string address,int port)
+    {
+        ServerPort = port;
+    }
+
     public static void Start()
     {
         // Start the client in a separate thread
