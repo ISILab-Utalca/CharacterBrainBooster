@@ -1,16 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Utility
 {
     public static class JSONDataManager
     {
         private static void SaveData<T>(string path, T data)
+        {
+            // generate json string
+            var jsonString = SerializeData(data);
+
+            // write json in a file
+            using StreamWriter writer = new StreamWriter(path);
+            writer.Write(jsonString);
+        }
+        public static string SerializeData<T>(T data)
         {
             // generate serializer setting
             var jsonSerializerSettings = new JsonSerializerSettings()
@@ -27,16 +33,11 @@ namespace Utility
             jsonSerializerSettings.Converters.Add(new Vector2Converter());
 
             // generate json string
-            var jsonString = JsonConvert.SerializeObject(
+            return JsonConvert.SerializeObject(
                 data,
                 jsonSerializerSettings
                 );
-
-            // write json in a file
-            using StreamWriter writer = new StreamWriter(path);
-            writer.Write(jsonString);
         }
-
         public static void SaveData<T>(string directoryName, string fileName, T data)
         {
             string directoryPath = directoryName;
@@ -159,21 +160,22 @@ namespace Utility
 
         public override object ReadJson(JsonReader reader, System.Type objectType, object existingValue, JsonSerializer serializer)
         {
-            JObject obj = JObject.Load(reader);
-            float x = (float)obj["x"];
-            float y = (float)obj["y"];
-            float z = (float)obj["z"];
-            return new Vector3(x, y, z);
+            var value = serializer.Deserialize(reader);
+            return JsonConvert.DeserializeObject<Vector3>(value.ToString());
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            Vector3 v = (Vector3)value;
-            JObject jo = new JObject();
-            jo["x"] = v.x;
-            jo["y"] = v.y;
-            jo["z"] = v.z;
-            jo.WriteTo(writer);
+            var vector3 = (Vector3)value;
+
+            writer.WriteStartObject();
+            writer.WritePropertyName("x");
+            writer.WriteValue(vector3.x);
+            writer.WritePropertyName("y");
+            writer.WriteValue(vector3.y);
+            writer.WritePropertyName("z");
+            writer.WriteValue(vector3.z);
+            writer.WriteEndObject();
         }
     }
 
@@ -186,19 +188,20 @@ namespace Utility
 
         public override object ReadJson(JsonReader reader, System.Type objectType, object existingValue, JsonSerializer serializer)
         {
-            JObject obj = JObject.Load(reader);
-            float x = (float)obj["x"];
-            float y = (float)obj["y"];
-            return new Vector2(x, y);
+            var value = serializer.Deserialize(reader);
+            return JsonConvert.DeserializeObject<Vector2>(value.ToString());
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            Vector2 v = (Vector2)value;
-            JObject jo = new JObject();
-            jo["x"] = v.x;
-            jo["y"] = v.y;
-            jo.WriteTo(writer);
+            var vector3 = (Vector2)value;
+
+            writer.WriteStartObject();
+            writer.WritePropertyName("x");
+            writer.WriteValue(vector3.x);
+            writer.WritePropertyName("y");
+            writer.WriteValue(vector3.y);
+            writer.WriteEndObject();
         }
     }
 }

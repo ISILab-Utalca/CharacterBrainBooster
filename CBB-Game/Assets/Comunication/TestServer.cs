@@ -9,6 +9,7 @@ public class TestServer : MonoBehaviour
     public Button startServer;
     public Button stopServer;
     public Button showRecived;
+    public Button cleanMessages;
 
     public Text text;
 
@@ -28,5 +29,6 @@ public class TestServer : MonoBehaviour
             var list = Server.GetRecived().ToList();
             list.ForEach(s => text.text += "- " + s + "\n");
         });
+        cleanMessages.onClick.AddListener(() => { text.text = string.Empty; });
     }
 }
