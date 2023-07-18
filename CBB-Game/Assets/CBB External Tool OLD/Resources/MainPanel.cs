@@ -15,6 +15,11 @@ public class MainPanel : MonoBehaviour
     [SerializeField]
     private GameObject _openBrainPanel;
 
+    [SerializeField]
+    private GameObject editorView;
+    [SerializeField]
+    private GameObject monitorView;
+
     private DropdownField agentDropdown;
     private Button createBrain;
     private Button openBrain;
