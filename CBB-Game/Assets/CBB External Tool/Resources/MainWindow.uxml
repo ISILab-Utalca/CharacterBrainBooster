@@ -2,7 +2,7 @@
     <ui:VisualElement name="VisualElement" style="flex-grow: 1; position: relative; top: auto; left: auto; right: auto; bottom: auto; justify-content: center; align-items: stretch; flex-shrink: 0; min-width: auto; min-height: auto; align-self: center; transform-origin: center;">
         <ui:Label tabindex="-1" text="Character Brain Boster" display-tooltip-when-elided="true" style="-unity-font-style: bold; -unity-text-align: upper-center;" />
         <ui:TextField picking-mode="Ignore" label="Address" value="127.0.0.1" hide-mobile-input="false" keyboard-type="NumbersAndPunctuation" focusable="true" readonly="false" name="AddressField" />
-        <ui:TextField picking-mode="Ignore" label="Port" value="8888" keyboard-type="NumberPad" name="PortField" />
+        <ui:TextField picking-mode="Ignore" label="Port" value="8888" keyboard-type="NumberPad" name="PortField" readonly="false" />
         <ui:Button text="Start conection" display-tooltip-when-elided="true" />
         <ui:RadioButtonGroup label="Mode" value="0" choices="Monitor,Editor" style="-unity-text-align: middle-left;" />
     </ui:VisualElement>

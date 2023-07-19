@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,11 +12,13 @@ namespace CBB.ExternalTool
         public new class UxmlFactory : UxmlFactory<AgentsPanel, VisualElement.UxmlTraits> { }
         #endregion
 
-        public VisualTreeAsset a;
-
+        // View
         private ListView list;
 
         private List<string> target;
+
+        public Action<IEnumerable<object>> ItemChosen;
+        public Action<IEnumerable<object>> SelectionChange;
 
         public AgentsPanel()
         {
@@ -56,11 +59,13 @@ namespace CBB.ExternalTool
         public void OnSelectionChange(IEnumerable<object> objs)
         {
             Debug.Log("OnSelectionChange");
+            SelectionChange?.Invoke(objs);
         }
 
         public void OnItemChosen(IEnumerable<object> objs)
         {
             Debug.Log("OnItemChosen");
+            ItemChosen?.Invoke(objs);
         }
     }
 }

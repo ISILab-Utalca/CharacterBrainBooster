@@ -20,11 +20,11 @@ public class MainView : MonoBehaviour
         var root = GetComponent<UIDocument>().rootVisualElement;
 
         // AddresField
-        this.addresField = root.Q<TextField>();
+        this.addresField = root.Q<TextField>("AddressField");
         addresField.RegisterCallback<ChangeEvent<string>>(OnAddressChange);
 
         // PortField
-        this.portField = root.Q<TextField>();
+        this.portField = root.Q<TextField>("PortField");
         portField.RegisterCallback<ChangeEvent<string>>(OnPortChange);
 
         // StartButton
@@ -47,9 +47,13 @@ public class MainView : MonoBehaviour
 
     private void OnStartConnection()
     {
-        Debug.Log("Start connection");
+
+        var x = int.Parse(portField.value);
+
         try
         {
+            Debug.Log("Start connection");
+
             var address = addresField.value;
             var port = int.Parse(portField.value);
 

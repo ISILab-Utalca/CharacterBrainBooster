@@ -20,7 +20,7 @@ namespace CBB.ExternalTool
         }
 
         // View
-        private ListView List;
+        private ListView list;
         private EnumField showField;
         private Tabs tabs;
         private ScrollView scroll;
@@ -35,11 +35,11 @@ namespace CBB.ExternalTool
             visualTree.CloneTree(this);
 
             // History list
-            this.List = this.Q<ListView>();
-            List.bindItem += BindItem;
-            List.makeItem += MakeItem;
-            List.itemsChosen += OnItemChosen;
-            List.selectionChanged += OnSelectionChange;
+            this.list = this.Q<ListView>();
+            list.bindItem += BindItem;
+            list.makeItem += MakeItem;
+            list.itemsChosen += OnItemChosen;
+            list.selectionChanged += OnSelectionChange;
 
             // Show dropdown
             this.showField = this.Q<EnumField>();
@@ -87,6 +87,17 @@ namespace CBB.ExternalTool
             {
                 // Impleentar (!!!)
             }
+        }
+
+        public void SetInfo(List<string> history)
+        {
+            this.target = history; 
+        }
+
+        public void Actualize()
+        {
+            list.Clear();
+            list.RefreshItems();
         }
 
         private void OnSelectionChange(IEnumerable<object> objs)
