@@ -1,3 +1,4 @@
+using CBB.Api;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class TestClient : MonoBehaviour
 
     public Text text;
 
+    public AgentDataSender agentDataSender;
     private void Start()
     {
         startClient.onClick.AddListener(() =>
@@ -33,6 +35,7 @@ public class TestClient : MonoBehaviour
         sendText.onClick.AddListener(() =>
         {
             Client.AddToQueue(textfield.text);
+            agentDataSender.SendData();
         });
     }
 }

@@ -11,10 +11,10 @@ public class Test_Evaluator
     [Test(Author = "Nicolas Romero")]
     public void Can_Save_And_Load_Normalize_Evaluator()
     {
-        var eva = new Normalize(UnityEngine.Random.Range(0, 50), 0, UnityEngine.Random.Range(50,100));
+        var eva = new Normalize(UnityEngine.Random.Range(0, 50), 0, UnityEngine.Random.Range(50, 100));
         var pth = Application.dataPath + "/Git-Ignore/Test";
-        Utility.JSONDataManager.SaveData<Normalize>(pth, "Eva","json", eva);
-        var rEva = Utility.JSONDataManager.LoadData<Normalize>(pth, "Eva","json");
+        Utility.JSONDataManager.SaveData<Normalize>(pth, "Eva", "json", eva);
+        var rEva = Utility.JSONDataManager.LoadData<Normalize>(pth, "Eva", "json");
         Assert.That(rEva.ToString() == eva.ToString());
     }
 
@@ -23,15 +23,15 @@ public class Test_Evaluator
     {
         var mult = new Multiply(UnityEngine.Random.Range(1, 100), UnityEngine.Random.Range(1, 100));
         var pth = Application.dataPath + "/Git-Ignore/Test";
-        Utility.JSONDataManager.SaveData<Multiply>(pth, "Mult","json", mult);
-        var rMult = Utility.JSONDataManager.LoadData<Multiply>(pth, "Mult","json");
+        Utility.JSONDataManager.SaveData<Multiply>(pth, "Mult", "json", mult);
+        var rMult = Utility.JSONDataManager.LoadData<Multiply>(pth, "Mult", "json");
         Assert.That(rMult.ToString() == mult.ToString());
     }
 
     [Test(Author = "Nicolas Romero")]
     public void Can_Save_And_Load_Divide_Evaluator()
     {
-        var div = new Divide(UnityEngine.Random.Range(1,100), UnityEngine.Random.Range(1, 100));
+        var div = new Divide(UnityEngine.Random.Range(1, 100), UnityEngine.Random.Range(1, 100));
         var pth = Application.dataPath + "/Git-Ignore/Test";
         Utility.JSONDataManager.SaveData<Divide>(pth, "Div", "json", div);
         var rDiv = Utility.JSONDataManager.LoadData<Divide>(pth, "Div", "json");
@@ -43,7 +43,7 @@ public class Test_Evaluator
     {
         var ident = new Identity(UnityEngine.Random.Range(0, 100));
         var pth = Application.dataPath + "/Git-Ignore/Test";
-        Utility.JSONDataManager.SaveData<Identity>(pth, "Ident","json", ident);
+        Utility.JSONDataManager.SaveData<Identity>(pth, "Ident", "json", ident);
         var rIdent = Utility.JSONDataManager.LoadData<Identity>(pth, "Ident", "json");
         Assert.That(rIdent.ToString() == ident.ToString());
     }
@@ -62,7 +62,7 @@ public class Test_Evaluator
     public void Can_Save_And_Load_Distance_V2_Evaluator()
     {
         var dv2 = new DistanceV2(
-            new Vector2(UnityEngine.Random.Range(0, 100), UnityEngine.Random.Range(0, 100)), 
+            new Vector2(UnityEngine.Random.Range(0, 100), UnityEngine.Random.Range(0, 100)),
             new Vector2(UnityEngine.Random.Range(0, 100), UnityEngine.Random.Range(0, 100))
             );
         var pth = Application.dataPath + "/Git-Ignore/Test";
@@ -220,11 +220,11 @@ public class TestCBB
         var vv3 = new Variable("Var_2", typeof(Vector3), typeof(MonoBehaviour));
         var vs = new Variable("Var_3", typeof(string), typeof(MonoBehaviour));
         var vb = new Variable("Var_4", typeof(bool), typeof(MonoBehaviour));
-        var eva = new Normalize(50,0,100);
+        var eva = new Normalize(50, 0, 100);
         var curve = new Linear(0.5f);
-        var cons = new Consideration("Cons_1",true,new List<Variable>() { vf, vv3, vs, vb }, eva, curve);
+        var cons = new Consideration("Cons_1", true, new List<Variable>() { vf, vv3, vs, vb }, eva, curve);
         var pth1 = Application.dataPath + "/Git-Ignore/Test";
-        Utility.JSONDataManager.SaveData<Consideration>(pth1, "Cons","json", cons);
+        Utility.JSONDataManager.SaveData<Consideration>(pth1, "Cons", "json", cons);
         var rC = Utility.JSONDataManager.LoadData<Consideration>(pth1, "Cons", "json");
         Assert.That(cons.ToString() == rC.ToString());
     }
@@ -235,12 +235,12 @@ public class TestCBB
         var vf = new Variable("Var_1", typeof(float), typeof(MonoBehaviour));
         var vv3 = new Variable("Var_2", typeof(Vector3), typeof(MonoBehaviour));
         var inputs = new List<Variable>() { vf, vv3 };
-        var a1 = new ActionInfo("Action_1",typeof(MonoBehaviour));
+        var a1 = new ActionInfo("Action_1", typeof(MonoBehaviour));
         var a2 = new ActionInfo("Action_1", typeof(MonoBehaviour));
         var action = new List<ActionInfo>() { a1, a2 };
         var data = new AgentData(typeof(MonoBehaviour), inputs, action);
         var path = Application.dataPath + "/Git-Ignore/Test";
-        Utility.JSONDataManager.SaveData<AgentData>(path, "AgentData","json", data);
+        Utility.JSONDataManager.SaveData<AgentData>(path, "AgentData", "json", data);
         var rd = Utility.JSONDataManager.LoadData<AgentData>(path, "AgentData", "json");
         Assert.That(data.ToString() == rd.ToString());
     }
@@ -268,13 +268,13 @@ public class TestCBB
         var curve = new Linear(0.5f);
 
         // Considerations
-        var cons1 = new Consideration("Cons_1",true, new List<Variable>() { vf, vv3}, eva, curve);
-        var cons2 = new Consideration("Cons_1",true, new List<Variable>() { vf }, eva, curve);
+        var cons1 = new Consideration("Cons_1", true, new List<Variable>() { vf, vv3 }, eva, curve);
+        var cons2 = new Consideration("Cons_1", true, new List<Variable>() { vf }, eva, curve);
         var considerations = new List<Consideration> { cons1, cons2 };
 
         // ActionUtilities
-        var au1 = new ActionUtility("ActionUtility_1", a1, eva, curve, new List<Variable>() { vf, vv3 });
-        var au2 = new ActionUtility("ActionUtility_2", a1, eva, curve, new List<Variable>() { vf });
+        var au1 = new ActionUtility("ActionUtility_1", a1, eva, curve, new List<Variable>() { vf, vv3 }, considerations);
+        var au2 = new ActionUtility("ActionUtility_2", a1, eva, curve, new List<Variable>() { vf }, considerations);
 
         // BrainData
         var brain = new AgentBrainData(data, considerations, new List<ActionUtility>() { au1, au2 });

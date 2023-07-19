@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.AI;
 
-namespace MixTheForgotten.Architecture
+namespace ArtificialIntelligence.Utility
 {
     public static class HelperFunctions
     {
@@ -13,13 +13,13 @@ namespace MixTheForgotten.Architecture
             var textures = Resources.FindObjectsOfTypeAll(typeof(Texture))
                 .Where(t => t.name.ToLower().Contains(nameOfTexture))
                 .Cast<Texture>().ToList();
-            
-            if(textures.Count == 0)
+
+            if (textures.Count == 0)
             {
                 textures = Resources.FindObjectsOfTypeAll(typeof(Texture))
                 .Where(t => t.name.ToLower().Contains("heart"))
                 .Cast<Texture>().ToList();
-                
+
             }
             return textures[0];
 
@@ -72,7 +72,7 @@ namespace MixTheForgotten.Architecture
         {
             return targets != null ? targets.Contains(target) : false;
         }
-        public static void AddTargetInList<T>(List<T> targets, T target)
+        public static void AddTargetToList<T>(List<T> targets, T target)
         {
             targets.Add(target);
         }

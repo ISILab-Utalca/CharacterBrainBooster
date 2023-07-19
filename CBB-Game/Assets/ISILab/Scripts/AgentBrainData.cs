@@ -1,13 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 using CBB.Lib;
 using System.Text;
-
-
 [System.Serializable]
 public class AgentBrainData
 {
@@ -15,21 +11,29 @@ public class AgentBrainData
     public AgentData baseData;
 
     [JsonRequired]
-    public List<Consideration> considerations = new List<Consideration>();
-
-    [JsonRequired]
     public List<ActionUtility> actions = new List<ActionUtility>();
-
+    [JsonRequired]
+    public List<SensorData> sensors = new List<SensorData>();
     public AgentBrainData() { }
 
     public AgentBrainData(AgentData baseData, List<Consideration> considerations, List<ActionUtility> actions)
     {
         this.baseData = baseData;
-        this.considerations = considerations;
         this.actions = actions;
     }
 }
+[System.Serializable]
+public class SensorData
+{
+    [JsonRequired]
+    public Type sensorType;
+    public Dictionary<string, object> configurations = new();
 
+    public SensorData() { }
+}
+/// <summary>
+/// Represents a field or a property from a given Type
+/// </summary>
 [System.Serializable]
 public class Variable // (!) esta es data simple 
 {
@@ -40,7 +44,7 @@ public class Variable // (!) esta es data simple
     [JsonRequired]
     public Type ownerType;
 
-    public Variable(string name, Type type,Type ownerType)
+    public Variable(string name, Type type, Type ownerType)
     {
         this.name = name;
         this.type = type;
@@ -115,7 +119,7 @@ public class Consideration // (!) esta es data compleja
     [JsonRequired, SerializeReference]
     private List<Variable> variables; // (!!) esto deberia poder guardar variables y/o consideraciones
 
-    public Consideration(string name,bool isPublic, List<Variable> variables, UtilityEvaluator evaluator, Curve curve)
+    public Consideration(string name, bool isPublic, List<Variable> variables, UtilityEvaluator evaluator, Curve curve)
     {
         this.name = name;
         this.isPublic = isPublic;
@@ -138,14 +142,16 @@ public class ActionUtility // (!) esta es data compleja
     public Curve curve;
     [JsonRequired, SerializeReference]
     private List<Variable> variables; // (!!) esto deberia poder guardar variables y/o consideraciones
-
-    public ActionUtility(string name, ActionInfo actionInfo, UtilityEvaluator evaluator, Curve curve, List<Variable> variables)
+    [JsonRequired]
+    public List<Consideration> considerations = new List<Consideration>();
+    public ActionUtility(string name, ActionInfo actionInfo, UtilityEvaluator evaluator, Curve curve, List<Variable> variables, List<Consideration> considerations)
     {
         this.name = name;
         this.actionInfo = actionInfo;
         this.evaluator = evaluator;
         this.curve = curve;
         this.variables = variables;
+        this.considerations = considerations;
     }
 }
 
@@ -164,7 +170,7 @@ public class AgentData
 
     public AgentData() { }
 
-    public AgentData(Type agentType,List<Variable> inputs, List<ActionInfo> actions)
+    public AgentData(Type agentType, List<Variable> inputs, List<ActionInfo> actions)
     {
         this.agentType = agentType;
         this.inputs = inputs;
@@ -180,7 +186,7 @@ public static class Utils
         var toR = 0;
         for (int i = 0; i < bytes.Length && i < 16; i++)
         {
-            toR += bytes[i] * (int)Math.Pow(10,i);
+            toR += bytes[i] * (int)Math.Pow(10, i);
         }
         return toR;
     }

@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using ArtificialIntelligence.Utility;
 using UnityEngine;
 using Utility;
+
 namespace CBB.Lib
 {
     /// <summary>
@@ -11,13 +11,17 @@ namespace CBB.Lib
     /// </summary>
     public class Transformer : MonoBehaviour
     {
-        public enum Mode { Prefab,SingleClass}
+        public static int tests = 0;
+        public enum Mode { Brain,Prefab,SingleClass}
         public Mode mode = Mode.SingleClass;
-        public GameObject prefab;
-        
-        public void PrefabToJson()
+        public Object brain;
+
+        [ContextMenu("Save data to JSON")]
+        public void BrainToJson()
         {
-            
+            string path = Application.dataPath + "/Git-Ignore/Test";
+            tests++;
+            JSONDataManager.SaveData(path, $"brain_{tests}", "json", brain);
         }
     }
 }

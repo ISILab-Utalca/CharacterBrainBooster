@@ -785,6 +785,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -879,6 +880,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllMinions: []
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a0e4a2386fa4be4daab8aac15f04703, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mode: 2
+  brain: {fileID: 1901347016}
 --- !u!1 &589530429
 GameObject:
   m_ObjectHideFlags: 0
@@ -3105,7 +3120,18 @@ MonoBehaviour:
   defaultActionCooldown: 0
   m_Debug: 0
   _considerations:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 3cdf039d727ca044e9a8f0bb1fd04a6f, type: 2}
+--- !u!114 &1901347016 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3691984122579467694, guid: b23aefe5b71cc2b4c8e88c74261167ac, type: 3}
+  m_PrefabInstance: {fileID: 1901347012}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901347013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f1f5fbfd2d38ea4c9ed2ab5a6c207e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1909408064
 GameObject:
   m_ObjectHideFlags: 0

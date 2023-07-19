@@ -1,5 +1,3 @@
-using MixTheForgotten.AI.Sensors;
-using MixTheForgotten.Architecture;
 using System.Collections.Generic;
 using UnityEngine;
 namespace ArtificialIntelligence.Utility
