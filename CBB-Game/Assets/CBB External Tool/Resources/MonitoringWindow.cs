@@ -9,6 +9,9 @@ namespace CBB.ExternalTool
 {
     public class MonitorView : MonoBehaviour
     {
+        // Data
+        private GameData gameData;
+
         // View
         private VisualElement infoPanel;
         private VisualElement waitingPanel;
@@ -68,8 +71,8 @@ namespace CBB.ExternalTool
 
             try
             {
-                //var history = histories[agent];
-                //historyPanel.SetInfo(history);
+                var history = gameData.GetHistory(agent);
+                historyPanel.SetInfo(history);
                 historyPanel.Actualize();
 
                 // var brain = agent.Brain;
