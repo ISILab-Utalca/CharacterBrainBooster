@@ -24,9 +24,18 @@ namespace CBB.Comunication
 
         private static int sleepTime = 100;
 
-        public static void AddToQueue(object data, Package.Type type)
+        public static void AddToQueue(object data)
         {
-            var text = JSONDataManager.SerializeData(data);
+            string text = "";
+            try
+            {
+                text = JSONDataManager.SerializeData(data);
+            }
+            catch
+            {
+                Debug.Log("'" + data + "' data cannot be serialized in JSON format.");
+                return;
+            }
 
             lock (queueLock)
             {
