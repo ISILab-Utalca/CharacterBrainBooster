@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using ArtificialIntelligence.Utility;
+using System.Collections.Generic;
+using UnityEngine;
 namespace CBB.Lib
 {
     [System.Serializable]
@@ -8,7 +10,7 @@ namespace CBB.Lib
         /// The data structure that is going to be serialized, then sent to CBB
         /// </summary>
         public AgentBasicData BasicData;
-
+        
         [ContextMenu("Invoke Start")]
         private void Start()
         {
