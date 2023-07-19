@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class GameData
 {
     private string id;
@@ -15,9 +16,30 @@ public class GameData
     // List<Brain>
     private List<string> brains = new List<string>();
 
-    public GameData()
+    public List<string> GetHistory(string agent)
     {
+        try
+        {
+            var history = histories[agent];
+            return history;
+        }
+        catch
+        {
+            histories.Add(agent,new List<string>());
+            var history = histories[agent];
+            return history;
+        }
+    }
 
+    public void UpdateHistory(string agent, string decision)
+    {
+        var history = GetHistory(agent);
+        history.Add(decision);
+    }
+
+    public GameData(string id)
+    {
+        this.id = id;
     }
 
 }
