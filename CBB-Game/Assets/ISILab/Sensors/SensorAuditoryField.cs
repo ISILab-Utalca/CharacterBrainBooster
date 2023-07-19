@@ -1,18 +1,9 @@
+using ArtificialIntelligence.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SensorAuditoryField : MonoBehaviour
+public class SensorAuditoryField : SensorBaseClass
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
