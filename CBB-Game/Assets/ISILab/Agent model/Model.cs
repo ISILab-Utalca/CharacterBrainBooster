@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 /*
- * This file defines the plain classes that hold the information about
- * an agent.
- */
+* This file defines the plain classes that hold the information about
+* an agent.
+*/
 
 namespace CBB.Lib
 {
@@ -20,4 +21,5 @@ namespace CBB.Lib
             this.agentName = agentName;
         }
     }
+    
 }
