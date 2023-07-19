@@ -23,7 +23,7 @@ namespace CBB.Api
         {
             if(agent != null)
             {
-                Client.AddToQueue(JSONDataManager.SerializeData(agent.BasicData));
+                //Client.AddToQueue(JSONDataManager.SerializeData(agent.BasicData));
                 Debug.Log($"{this} Client code called");
             }
             else

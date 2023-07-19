@@ -24,9 +24,6 @@ namespace CBB.ExternalTool
         // Logic
         [SerializeField] private GameObject editorWindow;
 
-        // Data
-        private Dictionary<string, List<string>> histories; // Esto deberia estar aqui o estar guardado en otra clase (???)
-
         private void Awake()
         {
             var root = GetComponent<UIDocument>().rootVisualElement;
@@ -55,8 +52,14 @@ namespace CBB.ExternalTool
             // HistoryPanel
             this.historyPanel = root.Q<HistoryPanel>();
 
-            // SimpleText 
-            this.simpleText = root.Q<Label>("SimpleText"); // Temporal (!)
+
+            {// Temporal (!)
+
+                // SimpleText 
+                this.simpleText = root.Q<Label>("SimpleText");
+
+
+            }
         }
 
         private void OnSelectAgent(IEnumerable<object> objs)
@@ -65,8 +68,9 @@ namespace CBB.ExternalTool
 
             try
             {
-                var history = histories[agent];
-                historyPanel.Actualize(history);
+                //var history = histories[agent];
+                //historyPanel.SetInfo(history);
+                historyPanel.Actualize();
 
                 // var brain = agent.Brain;
                 // simpleText.text = brain; // implementar (!!)
