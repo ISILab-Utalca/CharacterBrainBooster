@@ -8,11 +8,13 @@ using System.Threading;
 using System.Text;
 using System.Net;
 using Utility;
+using System;
 
 namespace CBB.Comunication
 {
     public static class Client
     {
+        private static string ClientCode;
         private static string ServerAddress = "127.0.0.1";  // Server IP address
         private static int ServerPort = 8888;               // Server port
 
@@ -41,6 +43,17 @@ namespace CBB.Comunication
             {
                 sendQueue.Enqueue(text);
             }
+        }
+
+        internal static void SetAddressPort(string address, int port)
+        {
+            ServerAddress = address;
+            ServerPort = port;
+        }
+
+        internal static void SetClientID(string code)
+        {
+            ClientCode = code;
         }
 
         public static void Start()
