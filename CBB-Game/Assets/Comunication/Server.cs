@@ -22,8 +22,11 @@ namespace CBB.Comunication
         private static Thread serverThread;
         private static List<Thread> clientThreads = new List<Thread>();
 
-        private static Queue<(string,TcpClient)> receivedMessagesQueue = new Queue<(string, TcpClient)>();
+        private static Queue<(string, TcpClient)> receivedMessagesQueue = new Queue<(string, TcpClient)>();
         private static object queueLock = new object();
+
+        public static Action<TcpClient> OnClientDisconnect;
+        public static Action<TcpClient> OnClinetConnect;
 
         public static void Start()
         {
@@ -44,8 +47,19 @@ namespace CBB.Comunication
                 SendMessageToAllClients(InternalMessage.SERVER_STOPPED.ToString());
 
                 running = false;
+
+                foreach (TcpClient client in clients)
+                {
+                    client.Close();
+                }
+                clients.Clear();
+
                 server.Stop();
                 Debug.Log("Server stopped.");
+            }
+            else
+            {
+                Debug.Log("Server is already stopped.");
             }
         }
 
@@ -78,9 +92,9 @@ namespace CBB.Comunication
             return receivedMessagesQueue.Dequeue();
         }
 
-        public static Queue<(string,TcpClient)> GetQueueRecived()
+        public static Queue<(string, TcpClient)> GetQueueRecived()
         {
-            return new Queue<(string,TcpClient)>(receivedMessagesQueue);
+            return new Queue<(string, TcpClient)>(receivedMessagesQueue);
         }
 
         private static void HandleClientCommunication(TcpClient client)
@@ -96,10 +110,20 @@ namespace CBB.Comunication
                     string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                     Debug.Log("Received: " + message);
 
-                    // Guardar el mensaje recibido en la cola de mensajes
-                    lock (queueLock)
+                    // Check Internal message
+                    object messageType;
+                    Enum.TryParse(typeof(InternalMessage), message, out messageType);
+                    if (messageType != null)
                     {
-                        receivedMessagesQueue.Enqueue((message, client));
+                        InternalCallBack((InternalMessage)messageType, client);
+                    }
+                    else
+                    {
+                        // Guardar el mensaje recibido en la cola de mensajes
+                        lock (queueLock)
+                        {
+                            receivedMessagesQueue.Enqueue((message, client));
+                        }
                     }
                 }
             }
@@ -108,6 +132,19 @@ namespace CBB.Comunication
                 Debug.Log("Client disconnected.");
                 clients.Remove(client);
                 client.Close();
+            }
+        }
+
+        private static void InternalCallBack(InternalMessage message, TcpClient client)
+        {
+            switch(message)
+            {
+                case InternalMessage.CLIENT_CONNECTED:
+                    OnClinetConnect?.Invoke(client);
+                    break;
+                case InternalMessage.CLIENT_STOPPED:
+                    OnClientDisconnect?.Invoke(client);
+                    break;
             }
         }
 
@@ -140,5 +177,10 @@ namespace CBB.Comunication
             stream.Write(messageBytes, 0, messageBytes.Length);
         }
 
+        [RuntimeInitializeOnLoadMethod]
+        private static void RunOnStart()
+        {
+            Application.quitting += Server.Stop;
+        }
     }
 }
