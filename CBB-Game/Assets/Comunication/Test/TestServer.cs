@@ -8,33 +8,45 @@ namespace CBB.Comunication.Test
 {
     public class TestServer : MonoBehaviour
     {
-        public Button startServer;
-        public Button stopServer;
+        public Button startButton;
+        public Button stopButton;
         public Button showRecived;
         public Button cleanMessages;
 
-        public Text text;
+        public Button sendMessage;
+        public InputField inputfield;
+
+        public Text outputText;
 
         private void Start()
         {
-            startServer.onClick.AddListener(() =>
+            startButton.onClick.AddListener(() =>
             {
                 Server.Start();
-                text.text = "Start Server";
+                outputText.text = "Start Server";
             });
 
-            stopServer.onClick.AddListener(() =>
+            stopButton.onClick.AddListener(() =>
             {
                 Server.Stop();
-                text.text = "Stop Server";
+                outputText.text = "Stop Server";
             });
 
             showRecived.onClick.AddListener(() =>
             {
-                var list = Server.GetRecived().ToList();
-                list.ForEach(s => text.text += "- " + s + "\n");
+                var list = Server.GetQueueRecived().ToList();
+                list.ForEach(s => outputText.text += "- " + s.Item1 + "\n");
             });
-            cleanMessages.onClick.AddListener(() => { text.text = string.Empty; });
+
+            cleanMessages.onClick.AddListener(() =>
+            {
+                outputText.text = string.Empty;
+            });
+
+            sendMessage.onClick.AddListener(() =>
+            {
+                Server.SendMessageToClient(0, inputfield.text);
+            });
         }
     }
 }
