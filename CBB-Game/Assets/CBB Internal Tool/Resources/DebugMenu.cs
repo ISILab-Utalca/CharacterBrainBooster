@@ -30,6 +30,7 @@ namespace CBB.InternalTool
 
             // MainContent
             this.mainContent = root.Q<VisualElement>("MainContent");
+            mainContent.visible = false;
 
             // ConnectPanel
             this.connectPanel = root.Q<DebugConnectPanel>();
@@ -38,6 +39,8 @@ namespace CBB.InternalTool
             // SettingPanel
             this.settingPanel = root.Q<DebugSettingPanel>();
             settingPanel.OnDisconnect += () => ChangePanel(true);
+
+
         }
 
         public void Update()
@@ -45,9 +48,6 @@ namespace CBB.InternalTool
             if (Input.GetKeyDown(KeyCode.F8))
             {
                 this.mainContent.visible = !this.mainContent.visible;
-
-                var code = CodeGenerator.Generate(3, 3);
-                Debug.Log(code);
             }
         }
 
