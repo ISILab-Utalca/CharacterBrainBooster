@@ -12,103 +12,98 @@ using System;
 
 namespace CBB.Comunication
 {
+    public enum InternalMessage
+    {
+        CLIENT_STOPPED,
+        SERVER_STOPPED,
+    }
+
     public static class Client
     {
-        private static string ClientCode;
-        private static string ServerAddress = "127.0.0.1";  // Server IP address
-        private static int ServerPort = 8888;               // Server port
+        private static bool running = false;
 
-        private static Queue<string> sendQueue = new Queue<string>();  // Queue for storing messages to be sent
-        private static object queueLock = new object();                 // Lock object for thread synchronization
+        private static string serverAddress = "127.0.0.1";
+        private static int serverPort = 8888;
 
-        private static Thread clientThread;  // Thread for handling client communication
-        private static bool running = false;         // Flag to control the thread execution
+        private static TcpClient client;
 
-        private static int sleepTime = 100;
+        private static Thread clientThread;
 
-        public static void AddToQueue(object data)
-        {
-            string text = "";
-            try
-            {
-                text = JSONDataManager.SerializeData(data);
-            }
-            catch
-            {
-                Debug.Log("'" + data + "' data cannot be serialized in JSON format.");
-                return;
-            }
-
-            lock (queueLock)
-            {
-                sendQueue.Enqueue(text);
-            }
-        }
-
-        internal static void SetAddressPort(string address, int port)
-        {
-            ServerAddress = address;
-            ServerPort = port;
-        }
-
-        internal static void SetClientID(string code)
-        {
-            ClientCode = code;
-        }
+        private static Queue<string> receivedMessagesQueue = new Queue<string>();
+        private static object queueLock = new object();
 
         public static void Start()
         {
-            // Start the client in a separate thread
+            client = new TcpClient();
+            client.Connect(serverAddress, serverPort);
             running = true;
-            clientThread = new Thread(Loop);
+            Debug.Log("Connected to server.");
+
+            // Inicia el hilo para manejar la comunicación con el servidor.
+            clientThread = new Thread(HandleServerCommunication);
             clientThread.Start();
         }
 
         public static void Stop()
         {
-            running = false;
-            clientThread.Join();
+            if (client != null && client.Connected)
+            {
+                SendMessageToServer(InternalMessage.CLIENT_STOPPED.ToString()); // client stopped message
+                running = false;
+                client.Close();
+                Debug.Log("Client stopped.");
+            }
         }
 
-        private static void Loop()
+        public static void SetAddressPort(string address, int port)
         {
-            string msg;
-            while (running)
+            serverPort = port;
+            serverAddress = address;
+        }
+
+        public static string GetRecived()
+        {
+            return receivedMessagesQueue.Dequeue();
+        }
+
+        public static Queue<string> GetQueueRecived()
+        {
+            return new Queue<string>(receivedMessagesQueue);
+        }
+
+        private static void HandleServerCommunication()
+        {
+            try
             {
-                // sleep condition
-                if (sendQueue.Count <= 0)
-                {
-                    Thread.Sleep(sleepTime);
-                    continue;
-                }
+                NetworkStream stream = client.GetStream();
+                byte[] buffer = new byte[1024];
 
-                lock (queueLock)
+                while (true)
                 {
-                    msg = sendQueue.Dequeue();
-                }
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    Debug.Log("Received from server: " + message);
 
-                byte[] messageBytes = Encoding.UTF8.GetBytes(msg);
-
-                // Create a TCP client socket
-                using (TcpClient client = new TcpClient())
-                {
-                    try
+                    // Guardar el mensaje recibido en la cola de mensajes
+                    lock (queueLock)
                     {
-                        // Connect to the server
-                        client.Connect(ServerAddress, ServerPort);
-
-                        using (NetworkStream stream = client.GetStream())
-                        {
-                            stream.Write(messageBytes, 0, messageBytes.Length);
-                            Debug.Log("Sent: " + msg);
-                        }
-                    }
-                    catch (SocketException e)
-                    {
-                        Debug.Log("SocketException: " + e.Message);
+                        receivedMessagesQueue.Enqueue(message);
                     }
                 }
             }
+            catch (SocketException)
+            {
+                Debug.Log("Disconnected from server.");
+                client.Close();
+            }
         }
+
+        public static void SendMessageToServer(string message)
+        {
+            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+            NetworkStream stream = client.GetStream();
+            stream.Write(messageBytes, 0, messageBytes.Length);
+        }
+
     }
 }
