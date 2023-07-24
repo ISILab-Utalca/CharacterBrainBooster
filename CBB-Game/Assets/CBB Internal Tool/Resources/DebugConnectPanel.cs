@@ -27,6 +27,18 @@ namespace CBB.InternalTool
             // ConnectionButon
             this.connectionButon = this.Q<Button>("ConnectionButon");
             connectionButon.clicked += Connect;
+
+            // PortField
+            this.portField = this.Q<TextField>("PortField");
+
+            // AddressField
+            this.addressField = this.Q<TextField>("AddressField");
+
+            // IDField
+            this.idField = this.Q<TextField>("IDField");
+            var code = CodeGenerator.Generate(3, 3);
+            idField.value = code;
+
         }
 
         public void Connect()
@@ -35,7 +47,7 @@ namespace CBB.InternalTool
             var address = addressField.value;
             var port = portField.value;
 
-            Client.SetClientID(code);
+            //Client.SetClientID(code);
             Client.SetAddressPort(address, int.Parse(port));
             Client.Start();
 
