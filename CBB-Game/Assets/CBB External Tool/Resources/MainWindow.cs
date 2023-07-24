@@ -58,7 +58,7 @@ public class MainView : MonoBehaviour
             var address = addresField.value;
             var port = int.Parse(portField.value);
 
-            Server.SetAddressPort(address,port);
+            Server.SetAddressPort(port); //Server.SetAddressPort(address,port);
             Server.Start();
 
             var value = buttonGroup.value;
