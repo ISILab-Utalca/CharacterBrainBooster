@@ -14,12 +14,14 @@ namespace CBB.Comunication
 {
     public enum InternalMessage
     {
+        CLIENT_CONNECTED,
         CLIENT_STOPPED,
         SERVER_STOPPED,
     }
 
     public static class Client
     {
+        private static int bufferSize = 1024;
         private static bool running = false;
 
         private static string serverAddress = "127.0.0.1";
@@ -34,14 +36,24 @@ namespace CBB.Comunication
 
         public static void Start()
         {
-            client = new TcpClient();
-            client.Connect(serverAddress, serverPort);
-            running = true;
-            Debug.Log("Connected to server.");
+            try
+            {
+                client = new TcpClient();
+                client.Connect(serverAddress, serverPort);
+                running = true;
+                Debug.Log("Connected to server.");
 
-            // Inicia el hilo para manejar la comunicación con el servidor.
-            clientThread = new Thread(HandleServerCommunication);
-            clientThread.Start();
+                // Envia el mensaje de CLIENT_CONNECTED al servidor
+                SendMessageToServer(InternalMessage.CLIENT_CONNECTED.ToString());
+
+                // Inicia el hilo para manejar la comunicación con el servidor.
+                clientThread = new Thread(HandleServerCommunication);
+                clientThread.Start();
+            }
+            catch (SocketException e)
+            {
+                Debug.LogError("Error connecting to the server: " + e.Message);
+            }
         }
 
         public static void Stop()
@@ -51,7 +63,12 @@ namespace CBB.Comunication
                 SendMessageToServer(InternalMessage.CLIENT_STOPPED.ToString()); // client stopped message
                 running = false;
                 client.Close();
+                client = null;
                 Debug.Log("Client stopped.");
+            }
+            else
+            {
+                Debug.Log("Client is already stopped.");
             }
         }
 
@@ -76,7 +93,7 @@ namespace CBB.Comunication
             try
             {
                 NetworkStream stream = client.GetStream();
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[bufferSize];
 
                 while (true)
                 {
@@ -105,5 +122,10 @@ namespace CBB.Comunication
             stream.Write(messageBytes, 0, messageBytes.Length);
         }
 
+        [RuntimeInitializeOnLoadMethod]
+        private static void RunOnStart()
+        {
+            Application.quitting += Client.Stop;
+        }
     }
 }
