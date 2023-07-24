@@ -1,6 +1,7 @@
 using CBB.Api;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,37 +10,46 @@ namespace CBB.Comunication.Test
 
     public class TestClient : MonoBehaviour
     {
-        public Button startClient;
-        public Button stopClient;
+        public Button startButton;
+        public Button stopButton;
+        public Button showRecived;
+        public Button cleanMessages;
 
-        public InputField textfield;
-        public Button sendText;
+        public Button sendMessage;
+        public InputField inputfield;
 
-        public Text text;
+        public Text outputText;
 
-        public AgentDataSender agentDataSender;
         private void Start()
         {
-            startClient.onClick.AddListener(() =>
+            startButton.onClick.AddListener(() =>
             {
                 Client.Start();
-                Client.AddToQueue("hola mundo");
-                Client.AddToQueue("Que guapo estas");
-                Client.AddToQueue("Cunado nos vemos BB?");
-                text.text = "Start Client";
+                outputText.text = "Start Client";
             });
 
-            stopClient.onClick.AddListener(() =>
+            stopButton.onClick.AddListener(() =>
             {
                 Client.Stop();
-                text.text = "Stop Client";
+                outputText.text = "Stop Client";
             });
 
-            sendText.onClick.AddListener(() =>
+            showRecived.onClick.AddListener(() =>
             {
-                Client.AddToQueue(textfield.text);
-                agentDataSender.SendData();
+                var list = Client.GetQueueRecived().ToList();
+                list.ForEach(s => outputText.text += "- " + s + "\n");
+            });
+
+            cleanMessages.onClick.AddListener(() =>
+            {
+                outputText.text = string.Empty;
+            });
+
+            sendMessage.onClick.AddListener(() =>
+            {
+                Client.SendMessageToServer(inputfield.text);
             });
         }
+
     }
 }
