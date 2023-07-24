@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -10,72 +11,134 @@ namespace CBB.Comunication
 {
     public static class Server
     {
-        private static int ServerPort = 8888;
-
-        private static Queue<string> reciveQueue = new Queue<string>();  // Queue for storing messages to be sent
-        private static object queueLock = new object();                 // Lock object for thread synchronization
-
-        private static Thread serverThread;  // Thread for handling server communication
+        private static int bufferSize = 1024;
         private static bool running = false;
 
-        public static Queue<string> GetRecived()
-        {
-            lock (queueLock)
-            {
-                return new Queue<string>(reciveQueue);
-            }
-        }
+        private static int serverPort = 8888;
 
-        public static void SetAddressPort(string address, int port)
-        {
-            ServerPort = port;
-        }
+        private static TcpListener server;
+        private static List<TcpClient> clients = new List<TcpClient>();
+
+        private static Thread serverThread;
+        private static List<Thread> clientThreads = new List<Thread>();
+
+        private static Queue<(string,TcpClient)> receivedMessagesQueue = new Queue<(string, TcpClient)>();
+        private static object queueLock = new object();
 
         public static void Start()
         {
-            // Start the client in a separate thread
+            server = new TcpListener(IPAddress.Any, serverPort);
+            server.Start();
             running = true;
-            serverThread = new Thread(Loop);
+
+            Debug.Log("Server started. Waiting for clients...");
+
+            serverThread = new Thread(ReceiveConnections);
             serverThread.Start();
         }
 
         public static void Stop()
         {
-            running = false;
-            serverThread.Join();
+            if (server != null && server.Server.IsBound)
+            {
+                SendMessageToAllClients(InternalMessage.SERVER_STOPPED.ToString());
+
+                running = false;
+                server.Stop();
+                Debug.Log("Server stopped.");
+            }
         }
 
-        private static void Loop()
+        private static void ReceiveConnections()
         {
-            TcpListener listener = new TcpListener(IPAddress.Any, ServerPort);
-            listener.Start();
-
             while (running)
             {
-                // Accept a client connection
-                TcpClient client = listener.AcceptTcpClient();
+                TcpClient client = server.AcceptTcpClient();
 
-                // Get the network stream for receiving data
-                using (NetworkStream stream = client.GetStream())
+                if (client == null)
+                    continue;
+
+                clients.Add(client);
+                Debug.Log("New client connected!");
+
+                // Inicia el hilo para manejar la comunicación con el cliente.
+                var clientThread = new Thread(() => HandleClientCommunication(client));
+                clientThreads.Add(clientThread);
+                clientThread.Start();
+            }
+        }
+
+        public static void SetAddressPort(int port)
+        {
+            serverPort = port;
+        }
+
+        public static (string, TcpClient) GetRecived()
+        {
+            return receivedMessagesQueue.Dequeue();
+        }
+
+        public static Queue<(string,TcpClient)> GetQueueRecived()
+        {
+            return new Queue<(string,TcpClient)>(receivedMessagesQueue);
+        }
+
+        private static void HandleClientCommunication(TcpClient client)
+        {
+            try
+            {
+                NetworkStream stream = client.GetStream();
+                byte[] buffer = new byte[bufferSize];
+
+                while (true)
                 {
-                    // Create a byte array buffer to receive data
-                    byte[] buffer = new byte[1024];
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    Debug.Log("Received: " + message);
 
-                    // Convert received bytes to string
-                    string requestData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-
+                    // Guardar el mensaje recibido en la cola de mensajes
                     lock (queueLock)
                     {
-                        reciveQueue.Enqueue(requestData);
+                        receivedMessagesQueue.Enqueue((message, client));
                     }
                 }
-
+            }
+            catch (SocketException)
+            {
+                Debug.Log("Client disconnected.");
+                clients.Remove(client);
                 client.Close();
             }
-
-            listener.Stop();
-
         }
+
+        public static void SendMessageToAllClients(string message)
+        {
+            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+            foreach (TcpClient client in clients)
+            {
+                try
+                {
+                    NetworkStream cStream = client.GetStream();
+                    cStream.Write(messageBytes, 0, messageBytes.Length);
+                }
+                catch (SocketException)
+                {
+                    Debug.Log("Error sending message to client.");
+                }
+            }
+        }
+
+        public static void SendMessageToClient( int index ,string message)
+        {
+            SendMessageToClient(clients[index], message);
+        }
+
+        public static void SendMessageToClient(TcpClient client, string message)
+        {
+            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+            NetworkStream stream = client.GetStream();
+            stream.Write(messageBytes, 0, messageBytes.Length);
+        }
+
     }
 }
