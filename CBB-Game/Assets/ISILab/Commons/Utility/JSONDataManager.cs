@@ -16,6 +16,24 @@ namespace Utility
             using StreamWriter writer = new StreamWriter(path);
             writer.Write(jsonString);
         }
+        public static string SerializeData<T>(T data, JsonConverter jc)
+        {
+            // generate serializer setting
+            var jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                TypeNameHandling = TypeNameHandling.All,
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore,
+            };
+            if(jc != null) jsonSerializerSettings.Converters.Add(jc);
+            // generate json string
+            return JsonConvert.SerializeObject(
+                data,
+                jsonSerializerSettings
+                );
+        }
         public static string SerializeData<T>(T data)
         {
             // generate serializer setting
@@ -27,11 +45,7 @@ namespace Utility
                 Formatting = Formatting.Indented,
                 NullValueHandling = NullValueHandling.Ignore,
             };
-
-            // add converters to serializer
-            jsonSerializerSettings.Converters.Add(new Vector3Converter());
-            jsonSerializerSettings.Converters.Add(new Vector2Converter());
-
+            
             // generate json string
             return JsonConvert.SerializeObject(
                 data,
