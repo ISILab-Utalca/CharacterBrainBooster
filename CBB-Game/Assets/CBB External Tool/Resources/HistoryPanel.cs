@@ -45,8 +45,6 @@ namespace CBB.ExternalTool
             this.showField = this.Q<EnumField>();
             showField.RegisterCallback<ChangeEvent<Enum>>((evt) => OnChangeShowType(evt));
             // cuando este cambie actualiza la lista. y se deseleciona lo selecionado
-
-
         }
 
         private VisualElement MakeItem() // hacer que esto sea un solo viewElement (!!!)
