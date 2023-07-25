@@ -16,7 +16,6 @@ namespace ArtificialIntelligence.Utility
         protected virtual void Awake()
         {
             _agentMemory = gameObject.GetComponentOnHierarchy<LocalAgentMemory>();
-
         }
         public bool CheckForParentBrain()
         {

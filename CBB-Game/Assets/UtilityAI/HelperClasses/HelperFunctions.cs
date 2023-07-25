@@ -33,7 +33,7 @@ namespace ArtificialIntelligence.Utility
         /// <item>Children of gameObject </item>
         /// </list>
         /// </summary>
-        /// <returns>The Brain component of the agent.</returns>
+        /// <returns>The Brain component of the agent. null if not found</returns>
         public static T GetComponentOnHierarchy<T>(this GameObject gameObj) where T : Component
         {
             T component = null;
