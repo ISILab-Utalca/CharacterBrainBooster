@@ -28,7 +28,11 @@ namespace CBB.Lib
         public Type sensorType;
         public Dictionary<string, object> configurations = new();
 
-        public SensorData() { }
+        public SensorData(Type sensorType, Dictionary<string, object> config)
+        {
+            this.sensorType = sensorType;
+            this.configurations = config;
+        }
     }
     [System.Serializable]
     public class AgentBrainData
