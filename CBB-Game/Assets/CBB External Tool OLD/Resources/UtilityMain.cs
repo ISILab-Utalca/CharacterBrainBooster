@@ -33,8 +33,8 @@ public class UtilityMain : MonoBehaviour
 
         // NameLabel
         this.nameLabel = root.Q<Label>("NameLabel");
-        var type = _current.baseData.agentType;
-        this.nameLabel.text = (type.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
+        //var type = _current.baseData.agentType;
+        //this.nameLabel.text = (type.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
         
         // Considerations Content
         this.considerationsContent = root.Q<VisualElement>("ConsiderationsContent");
@@ -108,15 +108,15 @@ public class UtilityMain : MonoBehaviour
     private void UpdateActions()
     {
         this.actionsContent.Clear();
-        var actions = _current.actions;
-        for (int i = 0; i < actions.Count; i++)
-        {
-            var action = actions[i];
-            this.actionsContent.Add(new UtilityPanel(_current, action, () => {
-                UpdateActions();
-            }));
-        }
-        this.actionsContent.Add(this.addAction);
+        //var actions = _current.actions;
+        //for (int i = 0; i < actions.Count; i++)
+        //{
+        //    var action = actions[i];
+        //    this.actionsContent.Add(new UtilityPanel(_current, action, () => {
+        //        UpdateActions();
+        //    }));
+        //}
+        //this.actionsContent.Add(this.addAction);
     }
 
     //private void AddAction()

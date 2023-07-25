@@ -277,11 +277,11 @@ public class TestCBB
         var au2 = new ActionUtility("ActionUtility_2", a1, eva, curve, new List<Variable>() { vf }, considerations);
 
         // BrainData
-        var brain = new AgentBrainData(data, considerations, new List<ActionUtility>() { au1, au2 });
-        var path = Application.dataPath + "/Git-Ignore/Test";
-        Utility.JSONDataManager.SaveData<AgentBrainData>(path, "AgentBrainData", "json", brain);
-        var rB = Utility.JSONDataManager.LoadData<AgentBrainData>(path, "AgentBrainData", "json");
-        Assert.That(brain.ToString() == rB.ToString());
+        //var brain = new AgentBrainData(data, considerations, new List<ActionUtility>() { au1, au2 });
+        //var path = Application.dataPath + "/Git-Ignore/Test";
+        //Utility.JSONDataManager.SaveData<AgentBrainData>(path, "AgentBrainData", "json", brain);
+        //var rB = Utility.JSONDataManager.LoadData<AgentBrainData>(path, "AgentBrainData", "json");
+        //Assert.That(brain.ToString() == rB.ToString());
     }
 }
 

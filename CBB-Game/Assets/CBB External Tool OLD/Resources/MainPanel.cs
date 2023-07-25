@@ -57,7 +57,7 @@ public class MainPanel : MonoBehaviour
     private void CreateBrain()
     {
         var data = new AgentData(_agentType, new List<Variable>(), new List<ActionInfo>());
-        Globals.Current = new AgentBrainData(data, new List<Consideration>(), new List<ActionUtility>());
+        //Globals.Current = new AgentBrainData(data, new List<Consideration>(), new List<ActionUtility>());
         this.gameObject.SetActive(false);
         _utilityMain.SetActive(true);
     }

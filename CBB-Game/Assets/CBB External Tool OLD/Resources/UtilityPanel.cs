@@ -55,11 +55,11 @@ public class UtilityPanel : VisualElement
         vt.CloneTree(this);
         _evaluators = UtilityEvaluator.GetEvaluators().ToArray(); // (!) esta imeplementacion crea un objeto por cada 'Evalaudor' por cada utilityPanel lo cual puede sr inecesario
         _curves = Curve.GetCurves().ToArray(); // (!) esta imeplementacion crea un objeto por cada 'Curve' por cada utilityPanel lo cual puede sr inecesario
-        _self = agent.baseData.agentType;
+        //_self = agent.baseData.agentType;
 
         // AgentLabel 
         this.agentLabel = this.Q<Label>("AgentLabel");
-        this.agentLabel.text = (agent.baseData.agentType.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
+        //this.agentLabel.text = (agent.baseData.agentType.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
 
         // OtherDropdown
         this.otherDropdown = this.Q<DropdownField>("OtherDropdown");
@@ -162,12 +162,12 @@ public class UtilityPanel : VisualElement
         vt.CloneTree(this);
         _evaluators = UtilityEvaluator.GetEvaluators().ToArray(); // (!) esta imeplementacion crea un objeto por cada 'Evalaudor' por cada utilityPanel lo cual puede sr inecesario
         _curves = Curve.GetCurves().ToArray(); // (!) esta imeplementacion crea un objeto por cada 'Curve' por cada utilityPanel lo cual puede sr inecesario
-        _self = agent.baseData.agentType;
+        //_self = agent.baseData.agentType;
         _actions = UtilitySystem.CollectActions(_self);
 
         // AgentLabel 
         this.agentLabel = this.Q<Label>("AgentLabel");
-        this.agentLabel.text = (agent.baseData.agentType.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
+        //this.agentLabel.text = (agent.baseData.agentType.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
 
         // OtherDropdown
         this.otherDropdown = this.Q<DropdownField>("OtherDropdown");
@@ -176,7 +176,7 @@ public class UtilityPanel : VisualElement
         // DeleteButton
         this.deleteButton = this.Q<Button>("DeleteButton");
         this.deleteButton.clicked += () => {
-            agent.actions.Remove(action);
+            //agent.actions.Remove(action);
             OnChange?.Invoke();
         };
 
