@@ -54,7 +54,7 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
 
             try
             {
-                Globals.Current = Utility.JSONDataManager.LoadData<AgentBrainData>(fileInfo.Directory.FullName, fileInfo.Name);
+                //Globals.Current = Utility.JSONDataManager.LoadData<AgentBrainData>(fileInfo.Directory.FullName, fileInfo.Name);
                 utilityMain.SetActive(true);
                 this.gameObject.SetActive(false);
             }
