@@ -4,33 +4,8 @@ using Newtonsoft.Json;
 using System;
 using CBB.Lib;
 using System.Text;
-[System.Serializable]
-public class AgentBrainData
-{
-    [JsonRequired]
-    public AgentData baseData;
 
-    [JsonRequired]
-    public List<ActionUtility> actions = new List<ActionUtility>();
-    [JsonRequired]
-    public List<SensorData> sensors = new List<SensorData>();
-    public AgentBrainData() { }
 
-    public AgentBrainData(AgentData baseData, List<Consideration> considerations, List<ActionUtility> actions)
-    {
-        this.baseData = baseData;
-        this.actions = actions;
-    }
-}
-[System.Serializable]
-public class SensorData
-{
-    [JsonRequired]
-    public Type sensorType;
-    public Dictionary<string, object> configurations = new();
-
-    public SensorData() { }
-}
 /// <summary>
 /// Represents a field or a property from a given Type
 /// </summary>

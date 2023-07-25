@@ -27,4 +27,10 @@ public class Generators
 
         return firstName + " " + lastName;
     }
+    public static AgentBrainData New_Agent_Brain_Data()
+    {
+        var randomIndex = random.Next(AgentTypes.Count);
+        var randomName = GenerateRandomName();
+        return new AgentBrainData(AgentTypes[randomIndex], randomName);
+    }
 }
