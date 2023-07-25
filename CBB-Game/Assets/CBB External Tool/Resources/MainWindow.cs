@@ -48,13 +48,8 @@ public class MainView : MonoBehaviour
 
     private void OnStartConnection()
     {
-
-        var x = int.Parse(portField.value);
-
         try
         {
-            Debug.Log("Start connection");
-
             var address = addresField.value;
             var port = int.Parse(portField.value);
 
