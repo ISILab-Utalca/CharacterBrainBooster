@@ -1,4 +1,5 @@
 using CBB.Comunication;
+using CBB.Lib;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -9,7 +10,7 @@ public class GameDataManager : MonoBehaviour
     // Esto esta implementado para una instancia,
     // si se decea implementar para mas es necesario
     // cambiar esto por una lista (!)
-    public GameData gameData; 
+    public static GameData gameData; 
 
     void Start()
     {
@@ -28,11 +29,12 @@ public class GameDataManager : MonoBehaviour
         var msg = Server.GetRecived().Item1;
 
         // cast to agent
-        //var agent = JsonUtility.FromJson<Agent>(msg);
-        //if(agent != null)
-        //{
-        //
-        //}
+        var agent = JsonUtility.FromJson<AgentBasicData>(msg);
+        if(agent != null)
+        {
+            OnReadAgent(agent);
+            return;
+        }
 
         // cast to decision
         //var decision = JsonUtility.FromJson<Decision>(msg);
@@ -49,12 +51,17 @@ public class GameDataManager : MonoBehaviour
         //}
     }
 
-    public void OnClientConnect(TcpClient client)
+    private void OnReadAgent(AgentBasicData agent)
+    {
+        gameData.AddAgent(agent);
+    }
+
+    private void OnClientConnect(TcpClient client)
     {
         gameData = new GameData(client);
     }
 
-    public void OnClinetDisconnect(TcpClient client)
+    private void OnClinetDisconnect(TcpClient client)
     {
 
     }
