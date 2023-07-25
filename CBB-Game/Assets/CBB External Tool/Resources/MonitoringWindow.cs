@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System.Linq;
 using CBB.Comunication;
+using CBB.Lib;
 
 namespace CBB.ExternalTool
 {
@@ -19,11 +20,8 @@ namespace CBB.ExternalTool
         private DropdownField modeDropdown;
         private Button disconnectButton;
         private AgentsPanel agentsPanel;
-        //private SimpleBrainView simpleBrainView; // implentar (!)
+        private SimpleBrainView simpleBrainView;
         private HistoryPanel historyPanel;
-
-        // Temporal (!!!)
-        private Label simpleText;
 
         // Logic
         [SerializeField] private GameObject editorWindow;
@@ -52,24 +50,16 @@ namespace CBB.ExternalTool
             agentsPanel.SelectionChange += OnSelectAgent;
 
             // SimpleBrainView
-            // this.simpleBrainView = root.Q<SimpleBrainView>(); // implementar (!)
+            this.simpleBrainView = root.Q<SimpleBrainView>();
 
             // HistoryPanel
             this.historyPanel = root.Q<HistoryPanel>();
 
-
-            {// Temporal (!)
-
-                // SimpleText 
-                this.simpleText = root.Q<Label>("SimpleText");
-
-
-            }
         }
 
         private void OnSelectAgent(IEnumerable<object> objs)
         {
-            var agent = objs.First() as string; // Agent ??
+            var agent = objs.First() as AgentBasicData;
 
             try
             {
@@ -77,6 +67,7 @@ namespace CBB.ExternalTool
                 historyPanel.SetInfo(history);
                 historyPanel.Actualize();
 
+                // simpleBrainView.SetInfo(agent);
                 // var brain = agent.Brain;
                 // simpleText.text = brain; // implementar (!!)
 

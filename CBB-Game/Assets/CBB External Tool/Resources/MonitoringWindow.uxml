@@ -1,15 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement name="Header" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); height: auto; flex-direction: row; justify-content: space-between; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;">
         <ui:DropdownField label="Mode" index="0" choices="Monitor,Editor" name="ModeDropdown" style="flex-grow: 0; justify-content: flex-start; align-items: stretch; -unity-text-align: middle-left;" />
-        <ui:Button text="Disconect" display-tooltip-when-elided="true" name="DisconectButton" style="align-items: flex-end; align-self: flex-end; flex-grow: 1; flex-shrink: 1;" />
+        <ui:Button text="Disconnect" display-tooltip-when-elided="true" name="DisconnectButton" style="align-items: flex-end; align-self: flex-end; flex-grow: 1; flex-shrink: 1;" />
     </ui:VisualElement>
     <ui:VisualElement name="Line" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); margin-bottom: 0; border-left-color: rgb(19, 19, 19); border-right-color: rgb(19, 19, 19); border-top-color: rgb(43, 43, 43); border-bottom-color: rgb(31, 31, 31); border-bottom-width: 1px; border-top-width: 1px;" />
     <ui:VisualElement name="InfoPanel" style="flex-grow: 1; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 6px; margin-right: 6px; margin-top: 6px; margin-bottom: 6px; display: flex;">
         <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row;">
             <CBB.ExternalTool.AgentsPanel name="AgentsPanel" style="flex-grow: 1; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; background-color: rgb(70, 70, 70); padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;" />
-            <ui:VisualElement name="SimpleBrainView" style="flex-grow: 1; background-color: rgb(255, 0, 0); margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; -unity-font-style: normal;">
-                <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="SimpleText" style="flex-grow: 1; flex-shrink: 1;" />
-            </ui:VisualElement>
+            <CBB.ExternalTool.SimpleBrainView name="SimpleBrainView" style="flex-grow: 1; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;" />
         </ui:VisualElement>
         <CBB.ExternalTool.HistoryPanel style="flex-grow: 1; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; background-color: rgb(70, 70, 70); padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;" />
     </ui:VisualElement>
