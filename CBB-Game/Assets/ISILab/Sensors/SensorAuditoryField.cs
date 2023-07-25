@@ -1,4 +1,5 @@
 using ArtificialIntelligence.Utility;
+using CBB.Lib;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ public class SensorAuditoryField : SensorBaseClass
     // Individual memory
     [JsonProperty]
     public List<GameObject> heardObjects = new();
-    
+    private SensorData sensorData;
     // Private references
     private SphereCollider sphereColl;
 

@@ -9,9 +9,12 @@ namespace CBB.Lib
     public class Agent : MonoBehaviour
     {
         /// <summary>
-        /// The data structure that is going to be serialized, then sent to CBB
+        /// Data structures beign serialized, then sent to CBB
         /// </summary>
-        public AgentBasicData BasicData;
+        private AgentBasicData BasicData;
+        private AgentBrainData BrainData;
+        private SensorData[] sensorDatas;
+
         public List<SensorBaseClass> AgentSensors = new();
         [ContextMenu("Invoke Start")]
         private void Start()

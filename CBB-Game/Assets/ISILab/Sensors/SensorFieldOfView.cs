@@ -10,7 +10,7 @@ namespace CBB.Lib
     [RequireComponent(typeof(BoxCollider))]
     public class SensorFieldOfView : SensorBaseClass
     {
-        [SerializeField,SerializeProperty("HorizontalFOV")]
+        [SerializeField, SerializeProperty("HorizontalFOV")]
         private float horizontalFOV = 1;
         private float verticalFOV = 1;
         private float rangeOfSight = 1;
@@ -18,7 +18,7 @@ namespace CBB.Lib
         public List<GameObject> viewedObjects = new();
         // Implementation
         public BoxCollider boxCollider;
-
+        public SensorData sensorData;
         public float HorizontalFOV
         {
             get => horizontalFOV;
