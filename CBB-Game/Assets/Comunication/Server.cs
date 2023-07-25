@@ -26,7 +26,7 @@ namespace CBB.Comunication
         private static object queueLock = new object();
 
         public static Action<TcpClient> OnClientDisconnect;
-        public static Action<TcpClient> OnClinetConnect;
+        public static Action<TcpClient> OnClientConnect;
 
         public static void Start()
         {
@@ -87,6 +87,11 @@ namespace CBB.Comunication
             serverPort = port;
         }
 
+        public static int GetRecivedAmount()
+        {
+            return receivedMessagesQueue.Count;
+        }
+
         public static (string, TcpClient) GetRecived()
         {
             return receivedMessagesQueue.Dequeue();
@@ -140,7 +145,7 @@ namespace CBB.Comunication
             switch(message)
             {
                 case InternalMessage.CLIENT_CONNECTED:
-                    OnClinetConnect?.Invoke(client);
+                    OnClientConnect?.Invoke(client);
                     break;
                 case InternalMessage.CLIENT_STOPPED:
                     OnClientDisconnect?.Invoke(client);

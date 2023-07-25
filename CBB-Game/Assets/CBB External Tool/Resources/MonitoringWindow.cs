@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Linq;
+using CBB.Comunication;
 
 namespace CBB.ExternalTool
 {
@@ -26,6 +27,7 @@ namespace CBB.ExternalTool
 
         // Logic
         [SerializeField] private GameObject editorWindow;
+        [SerializeField] private GameObject mainWindow;
 
         private void Awake()
         {
@@ -34,7 +36,7 @@ namespace CBB.ExternalTool
             // InfoPanel
             this.infoPanel = root.Q<VisualElement>("InfoPanel");
 
-            // waiting
+            // WaitingPanel
             this.waitingPanel = root.Q<VisualElement>("WaitingPanel");
 
             // ModeDropdown
@@ -93,7 +95,9 @@ namespace CBB.ExternalTool
 
         private void OnDisconnect()
         {
-            Debug.Log("OnDisconnect");
+            Server.Stop();
+            this.gameObject.SetActive(false);
+            this.mainWindow.SetActive(true);
         }
     }
 }

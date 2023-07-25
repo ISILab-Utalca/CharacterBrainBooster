@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEngine;
 
 [System.Serializable]
 public class GameData
 {
-    private string id;
+    private TcpClient client;
 
     // Current agent
     private List<(string, bool)> agents = new List<(string, bool)>();
@@ -37,9 +38,9 @@ public class GameData
         history.Add(decision);
     }
 
-    public GameData(string id)
+    public GameData(TcpClient client)
     {
-        this.id = id;
+        this.client = client;
     }
 
 }
