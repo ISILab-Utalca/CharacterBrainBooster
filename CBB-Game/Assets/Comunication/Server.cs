@@ -87,6 +87,11 @@ namespace CBB.Comunication
             serverPort = port;
         }
 
+        public static int ClinetAmount()
+        {
+            return clients.Count;
+        }
+
         public static int GetRecivedAmount()
         {
             return receivedMessagesQueue.Count;
