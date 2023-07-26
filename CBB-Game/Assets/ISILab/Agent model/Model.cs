@@ -1,10 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
-/*
-* This file defines the plain classes that hold the information about
-* an agent.
-*/
 
 namespace CBB.Lib
 {
