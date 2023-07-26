@@ -48,13 +48,14 @@ namespace CBB.InternalTool
             if (Input.GetKeyDown(KeyCode.F8))
             {
                 this.mainContent.visible = !this.mainContent.visible;
+                this.mainContent.SetDisplay(!this.mainContent.IsDisplayed());
             }
         }
 
         public void ChangePanel(bool value)
         {
-            connectPanel.visible = value;
-            settingPanel.visible = !value;
+            connectPanel.SetDisplay(value);
+            settingPanel.SetDisplay(!value);
         }
     }
 }
