@@ -27,6 +27,9 @@ namespace CBB.ExternalTool
         [SerializeField] private GameObject editorWindow;
         [SerializeField] private GameObject mainWindow;
 
+        // Async
+        private List<Action> asyncCallBacks = new List<Action>();
+
         private void Awake()
         {
             var root = GetComponent<UIDocument>().rootVisualElement;
@@ -55,6 +58,27 @@ namespace CBB.ExternalTool
             // HistoryPanel
             this.historyPanel = root.Q<HistoryPanel>();
 
+            // Init
+            Server.OnClientConnect += (client) => asyncCallBacks.Add(SetWaitingMode);
+            Server.OnClientDisconnect += (client) => asyncCallBacks.Add(SetWaitingMode);
+            SetWaitingMode();
+
+        }
+
+        private void Update()
+        {
+            // Async
+            foreach (var callback in asyncCallBacks)
+            {
+                callback?.Invoke();
+            }    
+        }
+
+        private void SetWaitingMode()
+        {
+            var value =  (Server.ClinetAmount() <= 0);
+            infoPanel.SetDisplay(!value);
+            waitingPanel.SetDisplay(value);
         }
 
         private void OnSelectAgent(IEnumerable<object> objs)
