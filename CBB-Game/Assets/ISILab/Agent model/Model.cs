@@ -1,5 +1,11 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
+using UnityEngine;
+/*
+* This file defines the plain classes that hold the information about
+* an agent.
+*/
 
 namespace CBB.Lib
 {
@@ -32,8 +38,6 @@ namespace CBB.Lib
     [System.Serializable]
     public class AgentBrainData
     {
-        //public List<ActionUtility> actions = new List<ActionUtility>();
-        //public List<SensorData> sensors = new List<SensorData>();
         public Type ownerType;
         public string brainName;
         public AgentBrainData() { }
@@ -44,5 +48,20 @@ namespace CBB.Lib
             brainName = name;
         }
     }
+    [System.Serializable]
+    public class AgentData : IAgentInternalState
+    {
+        public Type agentType;
+        public AgentBrainData BrainData;
+        public List<SensorData> sensorsData;
 
+        public AgentData() { }
+
+        public AgentData(Type agentType, AgentBrainData brainData, List<SensorData> sensorsData)
+        {
+            this.agentType = agentType;
+            this.BrainData = brainData;
+            this.sensorsData = sensorsData;
+        }
+    }
 }
