@@ -44,4 +44,9 @@ public class SensorAuditoryField : SensorBaseClass
         string ss = JSONDataManager.SerializeData(this);
         Debug.Log(ss);
     }
+
+    protected override void RenderGui(GLPainter painter)
+    {
+        painter.DrawCilinder(this.transform.position, fieldRadius, 3, Vector3.up, Color.green);
+    }
 }
