@@ -129,30 +129,6 @@ public class ActionUtility // (!) esta es data compleja
         this.considerations = considerations;
     }
 }
-
-
-[System.Serializable]
-public class AgentData
-{
-    [JsonRequired]
-    public Type agentType;
-
-    [JsonRequired, SerializeReference]
-    public List<Variable> inputs = new List<Variable>();
-
-    [JsonRequired, SerializeReference]
-    public List<ActionInfo> actions = new List<ActionInfo>();
-
-    public AgentData() { }
-
-    public AgentData(Type agentType, List<Variable> inputs, List<ActionInfo> actions)
-    {
-        this.agentType = agentType;
-        this.inputs = inputs;
-        this.actions = actions;
-    }
-}
-
 public static class Utils
 {
     public static int StringToInt(string value)

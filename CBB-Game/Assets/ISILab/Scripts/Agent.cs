@@ -6,27 +6,30 @@ using Utility;
 namespace CBB.Lib
 {
     [System.Serializable]
-    public class Agent : MonoBehaviour
+    public class Agent : MonoBehaviour, IAgent
     {
-        /// <summary>
-        /// Data structures beign serialized, then sent to CBB
-        /// </summary>
-        private AgentBasicData BasicData;
-        private AgentBrainData BrainData;
-        private SensorData[] sensorDatas;
-
-        public List<SensorBaseClass> AgentSensors = new();
-        [ContextMenu("Invoke Start")]
-        private void Start()
+        public List<SensorBaseClass> Sensors = new();
+        [SerializeField]
+        private AgentData agentData;
+        private void Awake()
         {
-            BasicData = Generators.New_Agent_Basic_Data();
-            Debug.Log($"{this} data: name = {BasicData.agentName}; type = {BasicData.agentType}");
+            InitializeInternalState();
         }
+        
         [ContextMenu("Serialize sensor data")]
         private void SerializeSensorData()
         {
-            string sensorsData = JSONDataManager.SerializeData(AgentSensors);
+            string sensorsData = JSONDataManager.SerializeData(Sensors);
             Debug.Log(sensorsData);
+        }
+
+        public IAgentInternalState GetInternalState()
+        {
+            return agentData;
+        }
+        private void InitializeInternalState()
+        {
+            agentData = AgentDataGenerators.New_Agent_Data(this);
         }
     }
 }
