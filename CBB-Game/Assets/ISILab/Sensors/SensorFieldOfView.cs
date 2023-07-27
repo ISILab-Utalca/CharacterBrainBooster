@@ -19,6 +19,7 @@ namespace CBB.Lib
         // Implementation
         public BoxCollider boxCollider;
         public SensorData sensorData;
+
         public float HorizontalFOV
         {
             get => horizontalFOV;
@@ -32,12 +33,14 @@ namespace CBB.Lib
                 }
             }
         }
+
         protected override void Awake()
         {
             base.Awake();
             boxCollider = GetComponent<BoxCollider>();
 
         }
+
         private void OnTriggerEnter(Collider other)
         {
             if (isDebug) Debug.Log($"Object detected: {other.name}");
@@ -45,17 +48,24 @@ namespace CBB.Lib
             viewedObjects.Add(other.gameObject);
             OnSensorUpdate?.Invoke();
         }
+
         private void OnTriggerExit(Collider other)
         {
             if (isDebug) Debug.Log($"Object lost: {other.name}");
             viewedObjects.Remove(other.gameObject);
             OnSensorUpdate?.Invoke();
         }
+
         [ContextMenu("Serialize sensor")]
         public void SerializeSensor()
         {
             string ss = JSONDataManager.SerializeData(this);
             Debug.Log(ss);
+        }
+
+        protected override void RenderGui(GLPainter painter)
+        {
+            painter.DrawCilinder(this.transform.position, 5, 3,Vector3.up, Color.red);
         }
     }
 }
