@@ -5,17 +5,12 @@ namespace ArtificialIntelligence.Utility.Actions
     /// <summary>
     /// Replace this summary with a description of the class.
     /// </summary>
-    public class RunAway : ActionBaseClass
+    public class Attack : ActionBaseClass
     {
         #region Fields
-        // public 
-        public float distance;
-        // private
-        private int speed = 1;
+
         #endregion
-        #region Properties
-        public int Speed { get { return speed; } set { speed = value; } }
-        #endregion
+
         #region Methods
         // Replace Awake logic if needed
         protected override void Awake()
@@ -24,7 +19,10 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         public override void StartExecution(GameObject target = null)
         {
-		    base.StartExecution(target);
+		    /*
+			Logic to begin the execution of this action, usually coroutines
+            */
+            throw new System.NotImplementedException();
         }
         public override void InterruptExecution()
         {

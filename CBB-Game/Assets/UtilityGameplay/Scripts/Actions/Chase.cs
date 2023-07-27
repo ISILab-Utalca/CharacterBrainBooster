@@ -19,10 +19,7 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         public override void StartExecution(GameObject target = null)
         {
-		    /*
-			Logic to begin the execution of this action, usually coroutines
-            */
-            throw new System.NotImplementedException();
+		    
         }
         public override void InterruptExecution()
         {
@@ -44,16 +41,10 @@ namespace ArtificialIntelligence.Utility.Actions
             // that may need it)
             OnFinishedAction?.Invoke();
         }
-        public override List<Option> ScoreThisAction()
+        public override List<Option> ScoreOptions()
         {
             // If the action can have multiple targets, you can use this implementation
-            //return GetMultipleScoredOptions(LocalAgentMemory.Objectives);
-
-            // If the action only has one fixed target, self target or none, you can use this one
-            //return GetScoredOption(out Option option, null) != null ? new List<Option> { option } : null;
-
-			// Else, override the scoring method to your own implementation
-            throw new System.NotImplementedException();
+            return GetMultipleScoredOptions(LocalAgentMemory.Objectives);
         }
     #endregion
     }

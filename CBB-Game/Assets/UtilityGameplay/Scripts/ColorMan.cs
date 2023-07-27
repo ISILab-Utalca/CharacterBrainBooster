@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using CBB.Api;
+using UnityEngine;
 
 
 public abstract class ColorMan : MonoBehaviour
@@ -26,11 +24,6 @@ public abstract class ColorMan : MonoBehaviour
         {
             return;
         }
-        if (MinionsObserver.Instance == null)
-        {
-            return;
-        }
-        MinionsObserver.Instance.AddMinion(this);
         isObserved = true;
         rg2D = GetComponent<Rigidbody2D>();
     }
@@ -69,15 +62,10 @@ public abstract class ColorMan : MonoBehaviour
         Moving = false;
     }
 
-    private void OnDestroy()
-    {
-        MinionsObserver.Instance?.RemoveMinion(this);
-    }
-
     public void Eat(ColorMan other)
     {
         transform.localScale *= (Size + other.Size) / Size;
-        Size += other.Size;        
+        Size += other.Size;
         Destroy(other.gameObject);
     }
 
@@ -88,7 +76,7 @@ public abstract class ColorMan : MonoBehaviour
         {
             if (otherMan.Size > Size)
             {
-                otherMan.Eat(this);                
+                otherMan.Eat(this);
             }
         }
     }
