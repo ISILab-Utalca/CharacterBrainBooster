@@ -247,6 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48f15281372c5a7449347a930f541488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fieldRadius: 1
   heardObjects: []
 --- !u!135 &290555401
 SphereCollider:
@@ -575,6 +576,11 @@ GameObject:
   - component: {fileID: 874170260}
   - component: {fileID: 874170261}
   - component: {fileID: 874170262}
+  - component: {fileID: 874170266}
+  - component: {fileID: 874170265}
+  - component: {fileID: 874170264}
+  - component: {fileID: 874170263}
+  - component: {fileID: 874170267}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -612,11 +618,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ff6334286b88304ea02bce7b0cd7221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BasicData:
-    agentName: 
-  AgentSensors:
+  Sensors:
   - {fileID: 511570155}
   - {fileID: 290555400}
+  agentData:
+    BrainData:
+      brainName: 
+    sensorsData: []
 --- !u!54 &874170262
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -644,6 +652,80 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &874170263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874170259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec170c9e09a9835489a8304eda4fcb23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _actionPriority: 1
+  defaultActionCooldown: 0
+  m_Debug: 0
+  _considerations: []
+  distance: 0
+--- !u!114 &874170264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874170259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 907e3f4e00652d44c8ce08739b4e8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _actionPriority: 1
+  defaultActionCooldown: 0
+  m_Debug: 0
+  _considerations:
+  - {fileID: 0}
+--- !u!114 &874170265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874170259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f1f5fbfd2d38ea4c9ed2ab5a6c207e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pickMethod: 0
+  _sensors: []
+  _actions: []
+  _defaultAction: {fileID: 0}
+--- !u!114 &874170266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874170259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e778868662f8d9545849862dc99d71e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &874170267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874170259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f9064c50539894184a31a659a0880a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1639881253
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,33 +838,7 @@ MonoBehaviour:
     name: Hola World
     integer: 90
   brain:
-    baseData:
-      inputs: []
-      actions: []
-    actions:
-    - name: a
-      actionInfo:
-        name: 
-      evaluator:
-        rid: -2
-      curve:
-        rid: -2
-      variables:
-      - rid: -2
-      considerations:
-      - name: uhm
-        isPublic: 1
-        evaluator:
-          rid: -2
-        curve:
-          rid: -2
-        variables: []
-    sensors: []
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    brainName: 
 --- !u!1 &1780484352
 GameObject:
   m_ObjectHideFlags: 0
