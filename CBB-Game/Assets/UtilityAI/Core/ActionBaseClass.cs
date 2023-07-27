@@ -51,7 +51,7 @@ namespace ArtificialIntelligence.Utility
             if (TryGetComponent(out NavMeshAgent nma)) LocalNavMeshAgent = nma;
         }
 
-        public abstract List<Option> ScoreThisAction();
+        public abstract List<Option> ScoreOptions();
         private protected float EvaluateConsiderations(GameObject target = null)
         {
             if (_considerations.Count == 0)
@@ -145,4 +145,3 @@ namespace ArtificialIntelligence.Utility
 
     }
 }
-

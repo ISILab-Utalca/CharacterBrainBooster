@@ -36,7 +36,7 @@ namespace MixTheForgotten.AI
         /// <returns>
         /// The list of available <b>options</b> to execute.
         /// </returns>
-        public List<Option> ScoreThisAction();
+        public List<Option> ScoreOptions();
 
     }
 }

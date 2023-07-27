@@ -7,8 +7,7 @@ using UnityEngine;
 /// for an NPC. Every class that implements this interface should be
 /// prefixed with "Sensor".
 /// </summary>
-public interface ISensible
+public interface ISensor
 {
-    public void CheckForValue();
-    public bool CheckForParentBrain();
+    public string GetSensorData();
 }
