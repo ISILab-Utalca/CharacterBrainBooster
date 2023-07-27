@@ -7,7 +7,7 @@ namespace ArtificialIntelligence.Utility
     /// A "Sensor" should only care (update) about one aspect (property)
     /// of the Agent attached to, e.g. it's health.
     /// </summary>
-    public abstract class SensorBaseClass : MonoBehaviour, ISensible
+    public abstract class SensorBaseClass : MonoBehaviour, ISensor
     {
         // Event for when the sensor detects something
         public System.Action OnSensorUpdate;
@@ -17,15 +17,7 @@ namespace ArtificialIntelligence.Utility
         {
             _agentMemory = gameObject.GetComponentOnHierarchy<LocalAgentMemory>();
         }
-        public bool CheckForParentBrain()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void CheckForValue()
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract string GetSensorData();
     }
 }
 
