@@ -54,13 +54,13 @@ namespace CBB.Api
             return false;
         }
 
-        private AgentData CosntructAgent()
-        {
-            var agent = GetAgent();
-            var inputs = GetInputs(agent, agent.GetType());
-            var actions = GetActions(agent, agent.GetType());
-            return new AgentData(agent.GetType(),inputs,actions);
-        }
+        //private AgentData CosntructAgent()
+        //{
+        //    var agent = GetAgent();
+        //    var inputs = GetInputs(agent, agent.GetType());
+        //    var actions = GetActions(agent, agent.GetType());
+        //    return new AgentData(agent.GetType(), inputs, actions);
+        //}
 
         private List<Variable> GetInputs(object behaviour, Type ownerType)
         {

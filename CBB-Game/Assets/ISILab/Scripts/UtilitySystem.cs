@@ -12,32 +12,32 @@ namespace CBB.Api
     /// </summary>
     public static class UtilitySystem
     {
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void OnBeforeSceneLoadRuntimeMethod()
-        {
-            Debug.Log("<b><color=#d4fffeff>[CBB]</color>:</b> Load agent data.");
-            // We need to send this data over to the external CBB
-            CollectAgentBaseData();
-        }
+        //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        //private static void OnBeforeSceneLoadRuntimeMethod()
+        //{
+        //    Debug.Log("<b><color=#d4fffeff>[CBB]</color>:</b> Load agent data.");
+        //    // We need to send this data over to the external CBB
+        //    CollectAgentBaseData();
+        //}
 
         /// <summary>
         /// Collects basic data about all agents in the utility system.
         /// </summary>
         /// <returns>Array of agent data for each agent in the utility system.</returns>
-        public static AgentData[] CollectAgentBaseData()
-        {
-            var agentTypes = UtilitySystem.CollectAgentTypes();
-            var agents = new List<AgentData>();
-            foreach (var type in agentTypes)
-            {
-                var inputs = UtilitySystem.CollectVariables(type);
-                var actions = UtilitySystem.CollectActions(type);
+        //public static AgentData[] CollectAgentBaseData()
+        //{
+        //    var agentTypes = UtilitySystem.CollectAgentTypes();
+        //    var agents = new List<AgentData>();
+        //    foreach (var type in agentTypes)
+        //    {
+        //        var inputs = UtilitySystem.CollectVariables(type);
+        //        var actions = UtilitySystem.CollectActions(type);
 
-                agents.Add(new AgentData(type, inputs.ToList(), actions.ToList()));
-            }
+        //        agents.Add(new AgentData(type, inputs.ToList(), actions.ToList()));
+        //    }
 
-            return agents.ToArray();
-        }
+        //    return agents.ToArray();
+        //}
 
         /// <summary>
         /// Collects the types of agents in the utility system.
