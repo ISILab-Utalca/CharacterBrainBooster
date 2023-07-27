@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Generators
+public class AgentDataGenerators
 {
     private static System.Random random = new System.Random();
     private static List<Type> AgentTypes = new() { typeof(Goblin), typeof(Villager) };
@@ -16,28 +16,54 @@ public class Generators
     /// Creates a new instance of AgentBasicData with random information
     /// </summary>
     /// <returns></returns>
-    public static AgentBasicData New_Agent_Basic_Data()
+    public static AgentBasicData New_Basic_Data()
     {
         int typeIndex = random.Next(AgentTypes.Count);
-        return new AgentBasicData(AgentTypes[typeIndex], GenerateRandomName());
+        return new AgentBasicData(AgentTypes[typeIndex], RandomName());
     }
-    private static string GenerateRandomName()
+    private static string RandomName()
     {
         string firstName = firstNames[random.Next(firstNames.Length)];
         string lastName = lastNames[random.Next(lastNames.Length)];
 
         return firstName + " " + lastName;
     }
-    public static AgentBrainData New_Agent_Brain_Data()
+    private static Type RandomAgentType()
     {
         var randomIndex = random.Next(AgentTypes.Count);
-        var randomName = GenerateRandomName();
-        return new AgentBrainData(AgentTypes[randomIndex], randomName);
+        return AgentTypes[randomIndex];
+    }
+    private static Type RandomSensorType()
+    {
+        var randomIndex = random.Next(sensorTypes.Count);
+        return sensorTypes[randomIndex];
+    }
+    public static AgentBrainData New_Brain_Data()
+    {
+        return new AgentBrainData(RandomAgentType(), RandomName());
     }
     public static SensorData New_Sensor_Data()
     {
-        var randomIndex = random.Next(sensorTypes.Count);
-        var configurationDictionary = new Dictionary<string, object>() { { "param_a", 1 } };
-        return new SensorData(sensorTypes[randomIndex], configurationDictionary);
+        Dictionary<string, object> configurationDictionary = new() {
+            { "param_a", 1 }, {"param_b", 4 }
+        };
+        return new SensorData(RandomSensorType(), configurationDictionary);
+    }
+    public static AgentData New_Agent_Data(Agent agent)
+    {
+        int numberOfSensors = agent.Sensors.Count;
+        List<SensorData> sensorsData = new();
+        for(int i = 0; i < numberOfSensors; i++)
+        {
+            sensorsData.Add(New_Sensor_Data());
+        }
+        AgentData ad = new()
+        {
+            agentType = RandomAgentType(),
+            BrainData = New_Brain_Data(),
+            sensorsData = sensorsData
+        };
+
+        return ad;
     }
 }
