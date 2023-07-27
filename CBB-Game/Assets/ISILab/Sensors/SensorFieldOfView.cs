@@ -65,7 +65,8 @@ namespace CBB.Lib
 
         protected override void RenderGui(GLPainter painter)
         {
-            painter.DrawCilinder(this.transform.position, 5, 3,Vector3.up, Color.red);
+            painter.DrawCilinder(this.transform.position, 5, 3, Vector3.up, Color.red);
+        }
         public override string GetSensorData()
         {
             throw new System.NotImplementedException();

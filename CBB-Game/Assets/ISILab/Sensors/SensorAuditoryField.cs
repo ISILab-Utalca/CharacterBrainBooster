@@ -48,6 +48,7 @@ public class SensorAuditoryField : SensorBaseClass
     protected override void RenderGui(GLPainter painter)
     {
         painter.DrawCilinder(this.transform.position, fieldRadius, 3, Vector3.up, Color.green);
+    }
     public override string GetSensorData()
     {
         throw new System.NotImplementedException();
