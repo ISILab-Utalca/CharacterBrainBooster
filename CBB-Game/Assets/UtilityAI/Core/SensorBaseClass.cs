@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using CBB.InternalTool;
 
 namespace ArtificialIntelligence.Utility
 {
@@ -15,7 +17,6 @@ namespace ArtificialIntelligence.Utility
         protected bool isDebug = false;
 
         // GUI
-        private static bool showGui = true; // default -> false
         private static GLPainter painter = new GLPainter();
 
         protected virtual void Awake()
@@ -31,9 +32,8 @@ namespace ArtificialIntelligence.Utility
         protected void OnDisable()
         {
             Camera.onPostRender -= InternalGUI;
+            Camera.onPostRender = null;
         }
-
-
 
         public bool CheckForParentBrain()
         {
@@ -47,11 +47,12 @@ namespace ArtificialIntelligence.Utility
 
         private void InternalGUI(object obj)
         {
-            if (showGui) 
+            if (Settings.ShowGUI) 
                 RenderGui(painter);
         }
 
         protected abstract void RenderGui(GLPainter painter);
+
         public abstract string GetSensorData();
     }
 }

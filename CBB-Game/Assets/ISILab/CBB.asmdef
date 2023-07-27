@@ -2,7 +2,8 @@
     "name": "CBB",
     "rootNamespace": "",
     "references": [
-        "utility-ai"
+        "utility-ai",
+        ""
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
