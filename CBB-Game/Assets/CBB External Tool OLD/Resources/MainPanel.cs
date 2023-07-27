@@ -46,7 +46,7 @@ public class MainPanel : MonoBehaviour
 
         // CreateBrain
         this.createBrain = root.Q<Button>("CreateBrain");
-        this.createBrain.clicked += () => { CreateBrain(); };
+        //this.createBrain.clicked += () => { CreateBrain(); };
 
         // OpenBrain
         this.openBrain = root.Q<Button>("OpenBrain");
@@ -54,13 +54,13 @@ public class MainPanel : MonoBehaviour
 
     }
 
-    private void CreateBrain()
-    {
-        var data = new AgentData(_agentType, new List<Variable>(), new List<ActionInfo>());
-        //Globals.Current = new AgentBrainData(data, new List<Consideration>(), new List<ActionUtility>());
-        this.gameObject.SetActive(false);
-        _utilityMain.SetActive(true);
-    }
+    //private void CreateBrain()
+    //{
+    //    var data = new AgentData(_agentType, new List<Variable>(), new List<ActionInfo>());
+    //    Globals.Current = new AgentBrainData(data, new List<Consideration>(), new List<ActionUtility>());
+    //    this.gameObject.SetActive(false);
+    //    _utilityMain.SetActive(true);
+    //}
 
     private void OpenBrain()
     {
