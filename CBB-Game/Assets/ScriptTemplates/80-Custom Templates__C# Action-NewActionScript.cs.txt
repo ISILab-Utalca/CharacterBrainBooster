@@ -44,7 +44,7 @@ namespace ArtificialIntelligence.Utility.Actions
             // that may need it)
             OnFinishedAction?.Invoke();
         }
-        public override List<Option> ScoreThisAction()
+        public override List<Option> ScoreOptions()
         {
             // If the action can have multiple targets, you can use this implementation
             //return GetMultipleScoredOptions(LocalAgentMemory.Objectives);
