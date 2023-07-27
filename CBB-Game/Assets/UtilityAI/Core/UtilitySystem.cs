@@ -28,7 +28,7 @@ namespace ArtificialIntelligence.Utility
             List<Option> scoredOptions = new();
             foreach (ActionBaseClass action in actions)
             {
-                var options = action.ScoreThisAction();
+                var options = action.ScoreOptions();
                 if(options != null) scoredOptions.AddRange(options);
             }
             
