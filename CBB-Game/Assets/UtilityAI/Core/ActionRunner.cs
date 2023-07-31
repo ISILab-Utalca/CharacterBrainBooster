@@ -4,15 +4,23 @@ namespace ArtificialIntelligence.Utility
 {
     public class ActionRunner : MonoBehaviour
     {
-        #region Fields
+        #region FIELDS
         // Cache for current executing action
         private System.Action _onFinishedExecution;
         private ActionBaseClass _currentAction = null;
         #endregion
-        #region Properties
-        public System.Action OnFinishedExecution { get => _onFinishedExecution; set => _onFinishedExecution = value; }
+
+        #region PROPERTIES
+        public System.Action OnFinishedExecution 
+        { 
+            get => _onFinishedExecution; 
+            set => _onFinishedExecution = value; 
+        }
+
         public bool IsRunning { get; private set; }
         #endregion
+
+        #region METHODS
         public void TryExecuteOption(Option newOption)
         {
             // If there is no action running, start the new one
@@ -31,6 +39,7 @@ namespace ArtificialIntelligence.Utility
             option.Action.StartExecution(option.Target);
             IsRunning = true;
         }
+
         /// <summary>
         /// Interrupts the current executing action.
         /// Doesn't invoke OnUnlockedExecution to avoid loops.
@@ -49,6 +58,7 @@ namespace ArtificialIntelligence.Utility
                 Debug.LogWarning("Action is null");
             }
         }
+
         private void FinishExecution()
         {
             if (_currentAction != null)
@@ -60,6 +70,7 @@ namespace ArtificialIntelligence.Utility
             IsRunning = false;
             OnFinishedExecution?.Invoke();
         }
+        #endregion
     }
 }
 
