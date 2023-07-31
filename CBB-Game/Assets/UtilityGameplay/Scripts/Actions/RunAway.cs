@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace ArtificialIntelligence.Utility.Actions
@@ -5,7 +6,7 @@ namespace ArtificialIntelligence.Utility.Actions
     /// <summary>
     /// Replace this summary with a description of the class.
     /// </summary>
-    public class RunAway : ActionBaseClass
+    public class RunAway : ActionBase
     {
         #region Fields
         // public 
@@ -46,7 +47,7 @@ namespace ArtificialIntelligence.Utility.Actions
             // that may need it)
             OnFinishedAction?.Invoke();
         }
-        public override List<Option> ScoreOptions()
+        public override List<Option> GetOptions()
         {
             // If the action can have multiple targets, you can use this implementation
             //return GetMultipleScoredOptions(LocalAgentMemory.Objectives);
@@ -57,6 +58,11 @@ namespace ArtificialIntelligence.Utility.Actions
 			// Else, override the scoring method to your own implementation
             throw new System.NotImplementedException();
         }
-    #endregion
+
+        protected override IEnumerator Act(GameObject target = null)
+        {
+            throw new System.NotImplementedException();
+        }
+        #endregion
     }
 }
