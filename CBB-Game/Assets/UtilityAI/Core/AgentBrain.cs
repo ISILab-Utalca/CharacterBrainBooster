@@ -10,17 +10,17 @@ namespace ArtificialIntelligence.Utility
     public class AgentBrain : MonoBehaviour
     {
         [Tooltip("The brain will tell the Utility System class to pick an action based on this heuristic")]
-        [SerializeField] private UtilitySystem.PickMethod _pickMethod;
+        [SerializeField] private UtilityDecisionMaker.PickMethod _pickMethod;
 
         public List<SensorBaseClass> _sensors;
 
         [Tooltip("The actions that this agent can perform")]
-        [SerializeField] private List<ActionBaseClass> _actions = new();
+        [SerializeField] private List<ActionBase> _actions = new();
         private ActionRunner _actionRunner;
 
         [Tooltip("Default action that this agent will execute if all are scored to 0")]
         [SerializeField]
-        private ActionBaseClass _defaultAction;
+        private ActionBase _defaultAction;
 
         private System.Action<List<Option>> onCompletedScoring;
 
@@ -31,7 +31,7 @@ namespace ArtificialIntelligence.Utility
         {
             _actionRunner = GetComponent<ActionRunner>();
             _sensors = gameObject.GetComponentsOnHierarchy<SensorBaseClass>();
-            _actions.AddRange(gameObject.GetComponentsOnHierarchy<ActionBaseClass>());
+            _actions.AddRange(gameObject.GetComponentsOnHierarchy<ActionBase>());
 
         }
         // Subscribe to sensor updates and finished action events
@@ -71,10 +71,10 @@ namespace ArtificialIntelligence.Utility
         private Option GetNewOption()
         {
             // First, update the score of every action the agent can perform on this frame
-            List<Option> scoredOptions = UtilitySystem.ScorePossibleOptions(_actions);
+            List<Option> scoredOptions = UtilityDecisionMaker.ScorePossibleOptions(_actions);
             OnCompletedScoring?.Invoke(scoredOptions);
             // Then return the action with best score (by default)
-            var bestOption = UtilitySystem.PickFromScoredOptions(scoredOptions, _pickMethod);
+            var bestOption = UtilityDecisionMaker.PickFromScoredOptions(scoredOptions, _pickMethod);
             return bestOption;
         }
         private void SubscribeToSensors(List<SensorBaseClass> sensors)

@@ -7,7 +7,7 @@ namespace ArtificialIntelligence.Utility
         #region Fields
         // Cache for current executing action
         private System.Action _onFinishedExecution;
-        private ActionBaseClass _currentAction = null;
+        private ActionBase _currentAction = null;
         #endregion
         #region Properties
         public System.Action OnFinishedExecution { get => _onFinishedExecution; set => _onFinishedExecution = value; }
@@ -35,7 +35,7 @@ namespace ArtificialIntelligence.Utility
         /// Interrupts the current executing action.
         /// Doesn't invoke OnUnlockedExecution to avoid loops.
         /// </summary>
-        private void InterruptExecution(ActionBaseClass action)
+        private void InterruptExecution(ActionBase action)
         {
             if (action != null)
             {
