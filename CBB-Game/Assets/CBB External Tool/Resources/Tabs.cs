@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,10 +13,12 @@ namespace CBB.ExternalTool
         #endregion
 
         // View
-        private ListView List;
+        private ListView list;
 
         // Info
-        private List<string> target;
+        private List<(string, Action)> target = new List<(string, Action)>();
+
+        public Action OnSelectOption;
 
         public Tabs()
         {
@@ -23,27 +26,43 @@ namespace CBB.ExternalTool
             visualTree.CloneTree(this);
 
             // History list
-            this.List = this.Q<ListView>();
-            List.bindItem += BindItem;
-            List.makeItem += MakeItem;
-            List.itemsChosen += OnItemChosen;
-            List.selectionChanged += OnSelectionChange;
+            this.list = this.Q<ListView>();
+            list.bindItem += BindItem;
+            list.makeItem += MakeItem;
+            list.itemsChosen += OnItemChosen;
+            list.selectionChanged += OnSelectionChange;
         }
 
-
-        private VisualElement MakeItem() // hacer que esto sea un solo viewElement (!!!)
+        public new void Clear()
         {
-            var content = new VisualElement();
-            var textLabel = new Label();
-            textLabel.name = "text";
+            //base.Clear();
+
+            target.Clear();
+            list.Clear();
+        }
+
+        public void AddTabs(string value, Action action)
+        {
+            var tab = new Button();
+            tab.text = value;
+
+            tab.clicked += action;
+            tab.clicked += OnSelectOption;
+        }
+
+        private VisualElement MakeItem() // hacer que esto sea un solo viewElement (!!!) 
+        {
+            var content = new Button();
+            content.name = "text";
 
             return content;
         }
 
         private void BindItem(VisualElement element, int index)
         {
-            var nameLabel = element.Q<Label>("text");
-            nameLabel.text = target[index];
+            var button = element.Q<Button>("text");
+            button.text = target[index].Item1;
+            //button.clicked += target[index].Item2;
         }
 
         public void OnSelectionChange(IEnumerable<object> objs)
