@@ -17,8 +17,10 @@ namespace CBB.Lib
         public int publicInt = 1;
         [JsonProperty]
         private float privFloat = 1.0f;
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public float PrivFloatProperty { get { return privFloat; } }
+
         [ContextMenu("save data to json")]
         public void BrainToJson()
         {
