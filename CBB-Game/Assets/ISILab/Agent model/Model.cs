@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
-/*
-* This file defines the plain classes that hold the information about
-* an agent.
-*/
 
 namespace CBB.Lib
 {
@@ -23,6 +18,7 @@ namespace CBB.Lib
             this.agentName = agentName;
         }
     }
+
     [System.Serializable]
     public class SensorData
     {
@@ -35,6 +31,7 @@ namespace CBB.Lib
             this.configurations = config;
         }
     }
+
     [System.Serializable]
     public class AgentBrainData
     {
@@ -48,6 +45,7 @@ namespace CBB.Lib
             brainName = name;
         }
     }
+
     [System.Serializable]
     public class AgentData : IAgentInternalState
     {

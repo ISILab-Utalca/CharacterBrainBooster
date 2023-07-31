@@ -10,7 +10,6 @@ namespace CBB.Lib
     /// </summary>
     public class Transformer : MonoBehaviour
     {
-
         public int tests = 0;
         //public enum Mode { Brain,Prefab,SingleClass}
         //public Mode mode = Mode.SingleClass;

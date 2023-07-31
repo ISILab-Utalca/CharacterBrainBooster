@@ -7,7 +7,6 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Text;
 using System.Net;
-using Utility;
 using System;
 
 namespace CBB.Comunication
@@ -34,6 +33,10 @@ namespace CBB.Comunication
         private static Queue<string> receivedMessagesQueue = new Queue<string>();
         private static object queueLock = new object();
 
+        public static Action<TcpClient> OnServerDisconnect;
+
+        public static bool IsConnected => running;
+
         public static void Start()
         {
             try
@@ -46,7 +49,6 @@ namespace CBB.Comunication
                 // Envia el mensaje de CLIENT_CONNECTED al servidor
                 SendMessageToServer(InternalMessage.CLIENT_CONNECTED.ToString());
 
-                // Inicia el hilo para manejar la comunicación con el servidor.
                 clientThread = new Thread(HandleServerCommunication);
                 clientThread.Start();
             }
@@ -101,10 +103,19 @@ namespace CBB.Comunication
                     string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                     Debug.Log("Received from server: " + message);
 
-                    // Guardar el mensaje recibido en la cola de mensajes
-                    lock (queueLock)
+                    object messageType;
+                    Enum.TryParse(typeof(InternalMessage), message, out messageType);
+                    if (messageType != null)
                     {
-                        receivedMessagesQueue.Enqueue(message);
+                        InternalCallBack((InternalMessage)messageType, client);
+                    }
+                    else
+                    {
+                        // Guardar el mensaje recibido en la cola de mensajes
+                        lock (queueLock)
+                        {
+                            receivedMessagesQueue.Enqueue(message);
+                        }
                     }
                 }
             }
@@ -112,6 +123,19 @@ namespace CBB.Comunication
             {
                 Debug.Log("Disconnected from server.");
                 client.Close();
+            }
+        }
+
+        private static void InternalCallBack(InternalMessage message, TcpClient client)
+        {
+            switch (message)
+            {
+                case InternalMessage.SERVER_STOPPED:
+                    OnServerDisconnect?.Invoke(client);
+                    break;
+                default:
+                    Debug.LogWarning("El 'InternalMessage:" + message + "' no esta implementado para procesarce.");
+                    break;
             }
         }
 

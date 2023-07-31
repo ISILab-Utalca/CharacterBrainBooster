@@ -27,7 +27,12 @@ namespace CBB.InternalTool
 
             // ShowSensorGui
             this.showSensorGUI = this.Q<Toggle>("ShowSensorGUI");
+            showSensorGUI.RegisterCallback<ChangeEvent<bool>>(OnShowSensor);
+        }
 
+        public void OnShowSensor(ChangeEvent<bool> evt)
+        {
+            Settings.ShowGUI = evt.newValue;
         }
 
         public void Disconnect()

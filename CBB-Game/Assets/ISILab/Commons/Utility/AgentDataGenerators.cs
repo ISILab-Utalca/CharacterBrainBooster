@@ -21,6 +21,7 @@ public class AgentDataGenerators
         int typeIndex = random.Next(AgentTypes.Count);
         return new AgentBasicData(AgentTypes[typeIndex], RandomName());
     }
+
     private static string RandomName()
     {
         string firstName = firstNames[random.Next(firstNames.Length)];
@@ -28,20 +29,24 @@ public class AgentDataGenerators
 
         return firstName + " " + lastName;
     }
+
     private static Type RandomAgentType()
     {
         var randomIndex = random.Next(AgentTypes.Count);
         return AgentTypes[randomIndex];
     }
+
     private static Type RandomSensorType()
     {
         var randomIndex = random.Next(sensorTypes.Count);
         return sensorTypes[randomIndex];
     }
+
     public static AgentBrainData New_Brain_Data()
     {
         return new AgentBrainData(RandomAgentType(), RandomName());
     }
+
     public static SensorData New_Sensor_Data()
     {
         Dictionary<string, object> configurationDictionary = new() {
@@ -49,6 +54,7 @@ public class AgentDataGenerators
         };
         return new SensorData(RandomSensorType(), configurationDictionary);
     }
+
     public static AgentData New_Agent_Data(Agent agent)
     {
         int numberOfSensors = agent.Sensors.Count;

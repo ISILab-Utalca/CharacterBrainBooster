@@ -155,6 +155,9 @@ namespace CBB.Comunication
                 case InternalMessage.CLIENT_STOPPED:
                     OnClientDisconnect?.Invoke(client);
                     break;
+                default:
+                    Debug.LogWarning("El 'InternalMessage:" + message + "' no esta implementado para procesarce.");
+                    break;
             }
         }
 

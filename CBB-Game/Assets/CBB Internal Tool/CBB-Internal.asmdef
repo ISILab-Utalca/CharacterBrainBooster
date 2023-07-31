@@ -1,9 +1,8 @@
 {
-    "name": "utility-ai",
+    "name": "CBB-Internal",
     "rootNamespace": "",
     "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:e6bac9d02a955924cb097c0dd3e7dd04"
+        "GUID:7d235606577a7ce49ae9484c9c966494"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -21,9 +21,6 @@ namespace CBB.InternalTool
         private DebugConnectPanel connectPanel;
         private DebugSettingPanel settingPanel;
 
-        // Data
-        private string Code;
-
         private void Awake()
         {
             var root = GetComponent<UIDocument>().rootVisualElement;
@@ -39,8 +36,6 @@ namespace CBB.InternalTool
             // SettingPanel
             this.settingPanel = root.Q<DebugSettingPanel>();
             settingPanel.OnDisconnect += () => ChangePanel(true);
-
-
         }
 
         public void Update()

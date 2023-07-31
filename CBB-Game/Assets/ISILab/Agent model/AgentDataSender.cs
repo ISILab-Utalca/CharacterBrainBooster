@@ -1,3 +1,4 @@
+using CBB.Comunication;
 using CBB.Lib;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,32 +7,67 @@ using Utility;
 
 namespace CBB.Api
 {
+    [System.Serializable]
+    public struct AgentWrapper // or AgentPackage 
+    {
+        [System.Serializable]
+        public enum Type
+        {
+            NEW,
+            CURRENT,
+            DESTROYED
+        }
+
+        public Type type;
+        public IAgentInternalState state;
+
+        public AgentWrapper(Type type, IAgentInternalState state)
+        {
+            this.type = type;
+            this.state = state;
+        }
+    }
+
     /// <summary>
     /// Allows an agent to send its data towards the external CBB server.
     /// </summary>
-    /// (Out of summary) This class also decouples the logic responsible for
-    /// sending data over the network from the original Agent class.
+    [RequireComponent(typeof(Agent))]
     public class AgentDataSender : MonoBehaviour
     {
         private IAgent agent;
+
         private void Awake()
         {
             agent = GetComponent<IAgent>();
+            SendData(AgentWrapper.Type.NEW);
         }
-        [ContextMenu("Send agent data")]
-        public void SendData()
+
+        private void OnDestroy()
         {
-            if (agent == null)
+            SendData(AgentWrapper.Type.DESTROYED);
+        }
+
+        [ContextMenu("Send agent data")]
+        private void ContexMenuSendData()
+        {
+            SendData();
+        }
+
+        public void SendData(AgentWrapper.Type type = AgentWrapper.Type.CURRENT)
+        {
+            if (!Client.IsConnected)
             {
-                Debug.Log("Agent is null!");
+                Debug.Log("Cannot send data since you are not connected to server.");
+                return;
             }
-            if (agent.GetInternalState() == null)
-            {
-                Debug.Log("Agent internal state is null!");
-            }
+
             try
             {
-                var data = JSONDataManager.SerializeData(agent.GetInternalState());
+                var state = agent.GetInternalState();
+                var wrap = new AgentWrapper(type, state);
+
+                var data = JSONDataManager.SerializeData(wrap);
+                Client.SendMessageToServer(data);
                 Debug.Log($"{data}");
             }
             catch (System.Exception e)
@@ -39,7 +75,6 @@ namespace CBB.Api
                 Debug.Log($"Error: {e}");
                 throw;
             }
-            
         }
     }
 
