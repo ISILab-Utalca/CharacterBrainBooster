@@ -90,11 +90,6 @@ namespace CBB.ExternalTool
                 var history = gameData.GetHistory(agent);
                 historyPanel.SetInfo(history);
                 historyPanel.Actualize();
-
-                // simpleBrainView.SetInfo(agent);
-                // var brain = agent.Brain;
-                // simpleText.text = brain; // implementar (!!)
-
             }
             catch
             {
