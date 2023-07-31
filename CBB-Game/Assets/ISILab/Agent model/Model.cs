@@ -18,6 +18,7 @@ namespace CBB.Lib
             this.agentName = agentName;
         }
     }
+
     [System.Serializable]
     public class SensorData
     {
@@ -30,6 +31,7 @@ namespace CBB.Lib
             this.configurations = config;
         }
     }
+
     [System.Serializable]
     public class AgentBrainData
     {
@@ -43,6 +45,7 @@ namespace CBB.Lib
             brainName = name;
         }
     }
+
     [System.Serializable]
     public class AgentData : IAgentInternalState
     {
