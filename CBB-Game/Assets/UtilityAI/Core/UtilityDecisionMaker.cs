@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ArtificialIntelligence.Utility
 {
-    public static class UtilitySystem
+    public static class UtilityDecisionMaker
     {
         /// <summary>
         /// Enum for possible methods to pick an action from the scored actions list.
@@ -23,12 +23,12 @@ namespace ArtificialIntelligence.Utility
         /// <param name="actions"></param>
         /// <returns></returns>
         /// <param name="pickMethod"></param><param name="topOptionsToConsider"></param>
-        public static List<Option> ScorePossibleOptions(List<ActionBaseClass> actions, PickMethod pickMethod = PickMethod.MaxScore, int topOptionsToConsider = 1)
+        public static List<Option> ScorePossibleOptions(List<ActionBase> actions, PickMethod pickMethod = PickMethod.MaxScore, int topOptionsToConsider = 1)
         {
             List<Option> scoredOptions = new();
-            foreach (ActionBaseClass action in actions)
+            foreach (ActionBase action in actions)
             {
-                var options = action.ScoreOptions();
+                var options = action.GetOptions();
                 if(options != null) scoredOptions.AddRange(options);
             }
             
