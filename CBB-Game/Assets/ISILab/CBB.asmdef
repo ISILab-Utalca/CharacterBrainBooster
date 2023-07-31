@@ -3,7 +3,7 @@
     "rootNamespace": "",
     "references": [
         "utility-ai",
-        ""
+        "CBB-Comunication"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
