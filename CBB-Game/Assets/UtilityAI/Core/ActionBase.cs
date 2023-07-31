@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using ArtificialIntelligence.Utility.Considerations;
 using MixTheForgotten.AI;
+using System.Collections;
 
 namespace ArtificialIntelligence.Utility
 {
@@ -10,7 +11,7 @@ namespace ArtificialIntelligence.Utility
     /// Base class for every action that the AI agent can perform.
     /// Contains common members that every action will need.
     /// </summary>
-    public abstract class ActionBaseClass : MonoBehaviour, IExecutable
+    public abstract class ActionBase : MonoBehaviour, IAction
     {
         #region Fields
         [Header("Action general settings")]
@@ -51,8 +52,8 @@ namespace ArtificialIntelligence.Utility
             if (TryGetComponent(out NavMeshAgent nma)) LocalNavMeshAgent = nma;
         }
 
-        public abstract List<Option> ScoreOptions();
-        private protected float EvaluateConsiderations(GameObject target = null)
+        public abstract List<Option> GetOptions();
+        protected float EvaluateConsiderations(GameObject target = null)
         {
             if (_considerations.Count == 0)
             {
@@ -70,24 +71,19 @@ namespace ArtificialIntelligence.Utility
             return score;
         }
         /// <summary>
-        /// Default implementation for scoring a single action and packaging it,
-        /// along with its score and target (if any) as an executable Option instance
+        /// Evaluate the action against the agent itself, a fixed target or no target at all.
         /// </summary>
         /// <param name="target">The gameObject this action needs, if necessary</param>
         /// <returns>
-        /// The option to be executed. If the action has scored 0, return <b>Null</b>
+        /// The option to be executed.
         /// </returns>
-        protected internal Option GetScoredOption(out Option option, GameObject target = null)
+        protected internal Option ScoreSingleOption(out Option option, GameObject target = null)
         {
-            // Calculate the score of this action under the current context
             float score = EvaluateConsiderations(target);
 
-            // Create the option if the score > 0
-            if (score <= 0f) { option = null; return option; }
             option = new Option(this, score, target);
 
-            // re-scale the score
-            ApplyScaleFactorToOptionScore(option);
+            RescaleOptionScore(option);
 
             // Apply the relative importance (weight) of this action
             option.Score *= _actionPriority;
@@ -95,24 +91,29 @@ namespace ArtificialIntelligence.Utility
             return option;
 
         }
-        protected internal List<Option> GetMultipleScoredOptions(List<GameObject> targets)
+        /// <summary>
+        /// Evaluate the action against several targets
+        /// </summary>
+        /// <param name="targets"></param>
+        /// <returns>All the available options</returns>
+        protected internal List<Option> ScoreMultipleOptions(List<GameObject> targets)
         {
             var options = new List<Option>();
             foreach (var target in targets)
             {
-                GetScoredOption(out Option opt, target);
+                ScoreSingleOption(out Option opt, target);
                 if (opt != null) options.Add(opt);
             }
-            return options.Count > 0 ? options : null;
+            return options;
         }
         /// <summary>
         /// Re-scale the option score based on the number of considerations
-        /// this action has. This avoids that actions with more considerations always
+        /// this option's action has. This avoids that actions with more considerations always
         /// score lower than actions with fewer considerations, because of multiplication
-        /// of several numbers between 0 and 1
+        /// of several values between 0 and 1
         /// </summary>
         /// <param name="option"></param>
-        private protected void ApplyScaleFactorToOptionScore(Option option)
+        protected void RescaleOptionScore(Option option)
         {
             // Debug score before
             float originalScore = option.Score;
@@ -136,12 +137,12 @@ namespace ArtificialIntelligence.Utility
         /// Helper function used to stop manually created coroutines
         /// </summary>
         /// <param name="c"></param>
-        protected internal void ClearCoroutine(Coroutine c)
+        protected void ClearCoroutine(Coroutine c)
         {
             if (c != null) { StopCoroutine(c); }
             c = null;
         }
+        protected abstract IEnumerator Act(GameObject target = null);
         #endregion
-
     }
 }
