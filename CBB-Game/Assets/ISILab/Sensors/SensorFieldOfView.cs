@@ -12,8 +12,10 @@ namespace CBB.Lib
     {
         [SerializeField, SerializeProperty("HorizontalFOV")]
         private float horizontalFOV = 1;
+        [SerializeField, SerializeProperty("VerticalFOV")]
         private float verticalFOV = 1;
-        private float rangeOfSight = 1;
+        [SerializeField, SerializeProperty("FrontalFOV")]
+        private float frontalFOV = 1;
         // Individual memory
         public List<GameObject> viewedObjects = new();
         // Implementation
@@ -30,6 +32,34 @@ namespace CBB.Lib
                 if (boxCollider != null)
                 {
                     boxCollider.size = new Vector3(HorizontalFOV, boxSize.y, boxSize.z);
+                }
+            }
+        }
+        public float VerticalFOV
+        {
+            get => verticalFOV;
+            set
+            {
+                verticalFOV = value;
+                var boxSize = boxCollider.size;
+                if (boxCollider != null)
+                {
+                    boxCollider.size = new Vector3(boxSize.x, verticalFOV, boxSize.z);
+                }
+            }
+        }
+        public float FrontalFOV
+        {
+            get => frontalFOV;
+            set
+            {
+                frontalFOV = value;
+                var boxSize = boxCollider.size;
+                var boxCenter = boxCollider.center;
+                if (boxCollider != null)
+                {
+                    boxCollider.size = new Vector3(boxSize.x, boxSize.y, frontalFOV);
+                    boxCollider.center = new Vector3(boxCenter.x, boxCenter.y, frontalFOV/2);
                 }
             }
         }
