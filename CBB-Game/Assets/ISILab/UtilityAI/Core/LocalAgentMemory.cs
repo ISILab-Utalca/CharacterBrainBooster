@@ -9,12 +9,12 @@ namespace ArtificialIntelligence.Utility
     /// </summary>
     public class LocalAgentMemory : MonoBehaviour
     {
-        [SerializeField] private GameObject pickedObject;
-        [Tooltip("Store here any interesting object for this agent")]
-        [SerializeField] private List<GameObject> _objectives = new();
-        public GameObject PickedObject { get => pickedObject; set => pickedObject = value; }
+        [SerializeField,Tooltip("Store here any interesting object for this agent")]
+        private List<GameObject> _objectives = new();
+        private List<GameObject> heardObjects = new();
         public Vector3 GetPosition { get => transform.position; }
         public List<GameObject> Objectives { get => _objectives; set => _objectives = value; }
+        public List<GameObject> HeardObjects { get => heardObjects; set => heardObjects = value; }
     }
 
 }
