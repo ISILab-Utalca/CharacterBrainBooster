@@ -1,8 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface IAgent
+namespace CBB.Lib
 {
-    public IAgentInternalState GetInternalState();
+    public interface IAgent
+    {
+        public AgentData GetInternalState();
+        public void InitializeInternalState();
+        public void UpdateInternalState();
+    }
 }
