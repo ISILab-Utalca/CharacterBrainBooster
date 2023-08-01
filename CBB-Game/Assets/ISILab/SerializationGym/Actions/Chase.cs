@@ -10,10 +10,13 @@ namespace ArtificialIntelligence.Utility.Actions
     {
         #region Fields
         private const float INITIAL_SPEED = 1;
+        private const float CHASE_TICK = 0.1f;
         [SerializeField]
         float chaseRange = 2f;
         [SerializeField]
         float chaseSpeed = 2f;
+
+        WaitForSeconds chaseCheckTick = new WaitForSeconds(CHASE_TICK);
         #endregion
 
         #region Methods
@@ -49,7 +52,7 @@ namespace ArtificialIntelligence.Utility.Actions
             while (HelperFunctions.TargetIsInRange(transform, target.transform, chaseRange))
             {
                 LocalNavMeshAgent.SetDestination(target.transform.position);
-                yield return null;
+                yield return chaseCheckTick;
             }
             if (viewLog) Debug.Log($"{gameObject.name} finished chasing {target.name}");
             FinishExecution();
