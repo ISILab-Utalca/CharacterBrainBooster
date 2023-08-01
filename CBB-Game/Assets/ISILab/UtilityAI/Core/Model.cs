@@ -24,11 +24,13 @@ namespace CBB.Lib
     {
         public Type sensorType;
         public Dictionary<string, object> configurations = new();
-
-        public SensorData(Type sensorType, Dictionary<string, object> config)
+        public Dictionary<string, object> memory = new();
+        public SensorData() { }
+        public SensorData(Type sensorType, Dictionary<string, object> config, Dictionary<string, object> memory)
         {
             this.sensorType = sensorType;
             this.configurations = config;
+            this.memory = memory;
         }
     }
 
