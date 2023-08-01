@@ -7,21 +7,19 @@ using Utility;
 namespace CBB.Lib
 {
     [System.Serializable]
-    public class Agent : MonoBehaviour, IAgent
+    public class Agent : MonoBehaviour
     {
-        private List<SensorBaseClass> sensors;
+        private List<Sensor> sensors;
         [SerializeField]
         private AgentData agentData;
 
-        public List<SensorBaseClass> Sensors => new List<SensorBaseClass>(sensors); // unnecessary (?)
+        public List<Sensor> Sensors => new List<Sensor>(sensors); // unnecessary (?)
 
-        private void Awake()
+        public static List<Sensor> GetSensors(GameObject agent)
         {
-            sensors = GetComponentsInChildren(typeof(SensorBaseClass), true)
-                .Cast<SensorBaseClass>()
+            return agent.GetComponentsInChildren(typeof(Sensor), true)
+                .Cast<Sensor>()
                 .ToList();
-
-            InitializeInternalState();
         }
         
         [ContextMenu("Serialize sensor data")]
@@ -31,14 +29,9 @@ namespace CBB.Lib
             Debug.Log(sensorsData);
         }
 
-        public IAgentInternalState GetInternalState()
+        public virtual AgentData GetInternalState()
         {
             return agentData;
-        }
-
-        private void InitializeInternalState()
-        {
-            agentData = AgentDataGenerators.New_Agent_Data(this);
         }
     }
 }
