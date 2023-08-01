@@ -1,7 +1,6 @@
 using ArtificialIntelligence.Utility;
 using CBB.Lib;
 using Newtonsoft.Json;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
@@ -35,7 +34,13 @@ public class SensorAuditoryField : Sensor
     {
         base.Awake();
         sphereColl = GetComponent<SphereCollider>();
-
+        Debug.Log($"{gameObject.name} {this} hearingRadius to string: " + hearingRadius.ToString());
+        Dictionary<string, object> config = new()
+        {
+            { hearingRadius.ToString(), hearingRadius }
+        };
+        
+        sensorData = new(typeof(SensorAuditoryField),config,null);
     }
     private void OnTriggerEnter(Collider other)
     {
