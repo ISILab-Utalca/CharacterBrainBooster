@@ -47,10 +47,10 @@ namespace ArtificialIntelligence.Utility.Actions
         public override List<Option> ScoreOptions()
         {
             // If the action can have multiple targets, you can use this implementation
-            //return GetMultipleScoredOptions(LocalAgentMemory.Objectives);
+            //return ScoreMultipleOptions(LocalAgentMemory.Objectives);
 
             // If the action only has one fixed target, self target or none, you can use this one
-            //return GetScoredOption(out Option option, null) != null ? new List<Option> { option } : null;
+            //return ScoreSingleOption(out Option option, null) != null ? new List<Option> { option } : null;
 
 			// Else, override the scoring method to your own implementation
             throw new System.NotImplementedException();
