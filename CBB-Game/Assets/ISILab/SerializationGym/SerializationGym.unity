@@ -367,7 +367,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48f15281372c5a7449347a930f541488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldRadius: 1
+  viewLogs: 0
+  hearingRadius: 1
   heardObjects: []
 --- !u!135 &181384982
 SphereCollider:
@@ -382,7 +383,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -507,7 +508,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48f15281372c5a7449347a930f541488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldRadius: 1
+  viewLogs: 0
+  hearingRadius: 1
   heardObjects: []
 --- !u!135 &290555401
 SphereCollider:
@@ -522,7 +524,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -696,9 +698,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4045fa5554dab9f44a278f8b1449b58c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewLogs: 0
   horizontalFOV: 1
   verticalFOV: 1
-  frontalFOV: 1
   viewedObjects: []
   boxCollider: {fileID: 511570156}
 --- !u!65 &511570156
@@ -714,7 +716,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -869,17 +871,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 639148461}
-  - component: {fileID: 639148460}
   - component: {fileID: 639148459}
-  - component: {fileID: 639148458}
-  - component: {fileID: 639148457}
-  - component: {fileID: 639148456}
-  - component: {fileID: 639148455}
-  - component: {fileID: 639148454}
-  - component: {fileID: 639148453}
   - component: {fileID: 639148452}
+  - component: {fileID: 639148457}
+  - component: {fileID: 639148458}
+  - component: {fileID: 639148454}
+  - component: {fileID: 639148455}
+  - component: {fileID: 639148453}
+  - component: {fileID: 639148462}
   m_Layer: 0
-  m_Name: Goblin_1
+  m_Name: Villager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -956,23 +957,6 @@ MonoBehaviour:
   m_Debug: 0
   _considerations: []
   distance: 0
---- !u!114 &639148456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639148451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 907e3f4e00652d44c8ce08739b4e8462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _actionPriority: 1
-  defaultActionCooldown: 0
-  m_Debug: 0
-  _considerations:
-  - {fileID: 0}
 --- !u!114 &639148457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -988,7 +972,7 @@ MonoBehaviour:
   _pickMethod: 0
   _sensors: []
   _actions: []
-  _defaultAction: {fileID: 0}
+  _defaultAction: {fileID: 639148453}
 --- !u!114 &639148458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1024,26 +1008,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &639148460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639148451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ff6334286b88304ea02bce7b0cd7221, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentData:
-    BrainData:
-      brainName: 
-    sensorsData: []
 --- !u!4 &639148461
 Transform:
   m_ObjectHideFlags: 0
@@ -1062,6 +1030,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &639148462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639148451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7f5d9dddb9cbcc41ad168aaeb36afd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 100
+  Speed: 3
+  agentData:
+    BrainData:
+      brainName: 
+    SensorsData: []
+    fields: []
 --- !u!1 &739049179
 GameObject:
   m_ObjectHideFlags: 0
@@ -1137,7 +1124,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ab98d856416d072418f0653ef27b9eec, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1281,15 +1268,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 874170260}
-  - component: {fileID: 874170261}
   - component: {fileID: 874170262}
+  - component: {fileID: 874170268}
   - component: {fileID: 874170266}
   - component: {fileID: 874170265}
-  - component: {fileID: 874170264}
-  - component: {fileID: 874170263}
-  - component: {fileID: 874170267}
+  - component: {fileID: 874170270}
   - component: {fileID: 874170269}
-  - component: {fileID: 874170268}
+  - component: {fileID: 874170267}
+  - component: {fileID: 874170271}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -1315,22 +1301,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &874170261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 874170259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ff6334286b88304ea02bce7b0cd7221, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentData:
-    BrainData:
-      brainName: 
-    sensorsData: []
 --- !u!54 &874170262
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1354,44 +1324,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &874170263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 874170259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec170c9e09a9835489a8304eda4fcb23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _actionPriority: 1
-  defaultActionCooldown: 0
-  m_Debug: 0
-  _considerations: []
-  distance: 0
---- !u!114 &874170264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 874170259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 907e3f4e00652d44c8ce08739b4e8462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _actionPriority: 1
-  defaultActionCooldown: 0
-  m_Debug: 0
-  _considerations:
-  - {fileID: 0}
 --- !u!114 &874170265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1407,7 +1343,7 @@ MonoBehaviour:
   _pickMethod: 0
   _sensors: []
   _actions: []
-  _defaultAction: {fileID: 0}
+  _defaultAction: {fileID: 874170269}
 --- !u!114 &874170266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1474,6 +1410,40 @@ MonoBehaviour:
   _maxWaitTimer: 5
   _walkRadius: 10
   _tickCheck: 0.2
+--- !u!114 &874170270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874170259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb7a9548111e534f8fc8f3bea9af526, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickedObject: {fileID: 0}
+  _objectives: []
+--- !u!114 &874170271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874170259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4ce396271bf23439641be4fbc15f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 200
+  Speed: 1
+  Attack: 10
+  AgentData:
+    BrainData:
+      brainName: 
+    SensorsData: []
+    fields: []
 --- !u!1 &1076881101
 GameObject:
   m_ObjectHideFlags: 0
@@ -1906,9 +1876,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4045fa5554dab9f44a278f8b1449b58c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewLogs: 0
   horizontalFOV: 1
   verticalFOV: 1
-  frontalFOV: 1
   viewedObjects: []
   boxCollider: {fileID: 1684816053}
 --- !u!65 &1684816053
