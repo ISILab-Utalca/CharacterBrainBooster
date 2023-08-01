@@ -65,9 +65,9 @@ public class AgentDataGenerators
         }
         AgentData ad = new()
         {
-            agentType = RandomAgentType(),
+            AgentType = RandomAgentType(),
             BrainData = New_Brain_Data(),
-            sensorsData = sensorsData
+            SensorsData = sensorsData
         };
 
         return ad;
