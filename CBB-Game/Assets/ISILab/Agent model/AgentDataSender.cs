@@ -19,9 +19,9 @@ namespace CBB.Api
         }
 
         public Type type;
-        public IAgentInternalState state;
+        public AgentData state;
 
-        public AgentWrapper(Type type, IAgentInternalState state)
+        public AgentWrapper(Type type, AgentData state)
         {
             this.type = type;
             this.state = state;
@@ -31,7 +31,7 @@ namespace CBB.Api
     /// <summary>
     /// Allows an agent to send its data towards the external CBB server.
     /// </summary>
-    [RequireComponent(typeof(Agent))]
+    [RequireComponent(typeof(IAgent))]
     public class AgentDataSender : MonoBehaviour
     {
         private IAgent agent;
