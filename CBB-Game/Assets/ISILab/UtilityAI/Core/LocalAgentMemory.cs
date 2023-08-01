@@ -11,6 +11,7 @@ namespace ArtificialIntelligence.Utility
     {
         [SerializeField,Tooltip("Store here any interesting object for this agent")]
         private List<GameObject> _objectives = new();
+        [SerializeField]
         private List<GameObject> heardObjects = new();
         public Vector3 GetPosition { get => transform.position; }
         public List<GameObject> Objectives { get => _objectives; set => _objectives = value; }
