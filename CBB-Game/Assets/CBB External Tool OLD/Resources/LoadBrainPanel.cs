@@ -58,7 +58,7 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
                 utilityMain.SetActive(true);
                 this.gameObject.SetActive(false);
             }
-            catch (JsonException e)
+            catch (JsonException)
             {
                 throw new JsonException();
             }
