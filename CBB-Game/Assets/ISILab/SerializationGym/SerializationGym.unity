@@ -922,7 +922,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionPriority: 1
   defaultActionCooldown: 0
-  m_Debug: 0
+  viewLog: 0
   _considerations: []
   _minWaitTimer: 1
   _maxWaitTimer: 5
@@ -954,8 +954,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionPriority: 1
   defaultActionCooldown: 0
-  m_Debug: 0
-  _considerations: []
+  viewLog: 0
+  _considerations:
+  - {fileID: 11400000, guid: ab3013bbb11cfd64fa4cde34b0aea1f9, type: 2}
   distance: 0
 --- !u!114 &639148457
 MonoBehaviour:
@@ -1273,9 +1274,10 @@ GameObject:
   - component: {fileID: 874170266}
   - component: {fileID: 874170265}
   - component: {fileID: 874170270}
-  - component: {fileID: 874170269}
   - component: {fileID: 874170267}
   - component: {fileID: 874170271}
+  - component: {fileID: 874170269}
+  - component: {fileID: 874170272}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -1404,8 +1406,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionPriority: 1
   defaultActionCooldown: 0
-  m_Debug: 0
-  _considerations: []
+  viewLog: 0
+  _considerations:
+  - {fileID: 11400000, guid: 162ae36199f646c49a82fdd47075673a, type: 2}
   _minWaitTimer: 1
   _maxWaitTimer: 5
   _walkRadius: 10
@@ -1422,7 +1425,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cb7a9548111e534f8fc8f3bea9af526, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickedObject: {fileID: 0}
   _objectives: []
 --- !u!114 &874170271
 MonoBehaviour:
@@ -1444,6 +1446,25 @@ MonoBehaviour:
       brainName: 
     SensorsData: []
     fields: []
+--- !u!114 &874170272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874170259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 907e3f4e00652d44c8ce08739b4e8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _actionPriority: 1
+  defaultActionCooldown: 0
+  viewLog: 0
+  _considerations:
+  - {fileID: 11400000, guid: cdc15eb71c8b9194c9c04fd3b64108b8, type: 2}
+  chaseRange: 2
+  chaseSpeed: 2
 --- !u!1 &1076881101
 GameObject:
   m_ObjectHideFlags: 0

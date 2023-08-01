@@ -19,7 +19,7 @@ namespace ArtificialIntelligence.Utility.Actions
         #endregion
         #region Methods
         // Replace Awake logic if needed
-        protected override void Awake()
+        protected internal override void Awake()
         {
             base.Awake();
         }
@@ -41,13 +41,7 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         public override List<Option> GetOptions()
         {
-            // If the action can have multiple targets, you can use this implementation
-            //return GetMultipleScoredOptions(LocalAgentMemory.Objectives);
-
             return ScoreSingleOption(out Option option, null) != null ? new List<Option> { option } : null;
-
-			// Else, override the scoring method to your own implementation
-            throw new System.NotImplementedException();
         }
 
         protected override IEnumerator Act(GameObject target = null)

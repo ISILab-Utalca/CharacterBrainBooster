@@ -26,7 +26,7 @@ namespace CBB.InternalTool
         #endregion
 
         #region Methods
-        protected override void Awake()
+        protected internal override void Awake()
         {
             base.Awake();
             _distanceCheckTime = new WaitForSeconds(_tickCheck);

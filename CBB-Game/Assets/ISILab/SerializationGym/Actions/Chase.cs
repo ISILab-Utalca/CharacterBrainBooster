@@ -9,39 +9,33 @@ namespace ArtificialIntelligence.Utility.Actions
     public class Chase : ActionBase
     {
         #region Fields
-
+        private const float INITIAL_SPEED = 1;
+        [SerializeField]
+        float chaseRange = 2f;
+        [SerializeField]
+        float chaseSpeed = 2f;
         #endregion
 
         #region Methods
         // Replace Awake logic if needed
-        protected override void Awake()
+        protected internal override void Awake()
         {
             base.Awake();
         }
 
         public override void StartExecution(GameObject target = null)
         {
-		    
+            StartCoroutine(Act(target));
         }
         public override void InterruptExecution()
         {
-		    /*
-            Reset variables, stop coroutines or anything that needs to be cleaned
-            if this action is interrupted
-            */
-            throw new System.NotImplementedException();
+            LocalNavMeshAgent.speed = INITIAL_SPEED;
+            base.InterruptExecution();
         }
         public override void FinishExecution()
         {
-            /*
-			Logic to finish normally this action.
-            Reset variables, stop coroutines or anything that needs to be cleaned.
-            If you started multiple coroutines, make sure that at least one of them
-            has an ending criteria and call this method at that point.
-			*/
-			// Raise this event to notify finalization to the Action Runner (and other classes
-            // that may need it)
-            OnFinishedAction?.Invoke();
+            LocalNavMeshAgent.speed = INITIAL_SPEED;
+            base.FinishExecution();
         }
         public override List<Option> GetOptions()
         {
@@ -51,8 +45,16 @@ namespace ArtificialIntelligence.Utility.Actions
 
         protected override IEnumerator Act(GameObject target = null)
         {
-            throw new System.NotImplementedException();
+            LocalNavMeshAgent.speed = chaseSpeed;
+            while (HelperFunctions.TargetIsInRange(transform, target.transform, chaseRange))
+            {
+                LocalNavMeshAgent.SetDestination(target.transform.position);
+                yield return null;
+            }
+            if (viewLog) Debug.Log($"{gameObject.name} finished chasing {target.name}");
+            FinishExecution();
         }
+        
         #endregion
     }
 }

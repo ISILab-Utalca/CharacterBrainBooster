@@ -14,7 +14,7 @@ namespace ArtificialIntelligence.Utility.Actions
 
         #region Methods
         // Replace Awake logic if needed
-        protected override void Awake()
+        protected internal override void Awake()
         {
             base.Awake();
         }
