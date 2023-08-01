@@ -19,7 +19,7 @@ namespace ArtificialIntelligence.Utility
         [SerializeField]
         internal protected float defaultActionCooldown;
         [SerializeField, Tooltip("Do you want to see the logs of this Action?")]
-        protected internal bool m_Debug = false;
+        protected internal bool viewLog = false;
         [SerializeField]
         private protected List<UtilityConsideration> _considerations = new();
 
@@ -27,6 +27,7 @@ namespace ArtificialIntelligence.Utility
         private System.Action onFinishedAction;
         private System.Action onStartedAction;
         #endregion
+
         #region Properties
         public NavMeshAgent LocalNavMeshAgent { get; protected set; }
         public float ActionCooldown { get; set; }
