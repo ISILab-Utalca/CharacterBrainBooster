@@ -11,31 +11,43 @@ namespace CBB.Lib
         public float Speed = 1.0f;
         [UtilityInput("Attack")]
         public int Attack = 10;
+        [UtilityInput("Can attack")]
+        public bool CanAttack { get;set; }
 
         public AgentData AgentData;
+        private void Awake()
+        {
+            InitializeInternalState();
+        }
         public AgentData GetInternalState()
         {
             UpdateInternalState();
             return AgentData;
         }
-
+        [ContextMenu("New goblin internal state")]
         public void InitializeInternalState()
         {
             AgentData = new AgentData
             {
-                AgentType = typeof(Goblin)
+                AgentType = typeof(Goblin),
+                SensorsData = new(),
+                BrainData = new(typeof(Goblin),gameObject.name),
+                fields = null
             };
-            UpdateInternalState();
+            // Find sensors on this agent
+            var sensors = gameObject.GetComponentsOnHierarchy<Sensor>();
+            Debug.Log($"Total sensors on {gameObject.name}: " + sensors.Count);
+            Debug.Log($"Sensors on {gameObject.name}: " + sensors);
+            foreach ( var sensor in sensors )
+            {
+                AgentData.SensorsData.Add(sensor.SensorData);
+            }
+            AgentData.fields = UtilitySystem.CollectVariables(typeof(Goblin));
         }
 
         public void UpdateInternalState()
         {
-            AgentData.fields = UtilitySystem.CollectVariables(typeof(Goblin));
-            var sensors = gameObject.GetComponent<AgentBrain>()._sensors;
-            foreach (var sensor in sensors)
-            {
-                //AgentData.SensorsData.Add(sensor.GetSensorData());
-            }
+            
         }
     }
 }
