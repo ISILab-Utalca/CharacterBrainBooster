@@ -44,7 +44,6 @@ namespace ArtificialIntelligence.Utility
             // Return the evaluation
             return _responseCurve.Evaluate(value);
         }
-
         private void OnValidate()
         {
             ResetMethods();

@@ -21,7 +21,7 @@ namespace ArtificialIntelligence.Utility
         #endregion
 
         #region METHODS
-        public void TryExecuteOption(Option newOption)
+        public void ExecuteOption(Option newOption)
         {
             // If there is no action running, start the new one
             if (_currentAction == null) BeginNewExecution(newOption);

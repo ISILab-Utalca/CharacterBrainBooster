@@ -52,7 +52,7 @@ public class AgentDataGenerators
         Dictionary<string, object> configurationDictionary = new() {
             { "param_a", 1 }, {"param_b", 4 }
         };
-        return new SensorData(RandomSensorType(), configurationDictionary);
+        return new SensorData(RandomSensorType(), configurationDictionary, null);
     }
 
     public static AgentData New_Agent_Data(Agent agent)

@@ -99,6 +99,10 @@ namespace ArtificialIntelligence.Utility
             }
             return false;
         }
+        public static bool TargetIsInRange(Transform agent, Transform target, float range)
+        {
+            return Vector3.Distance(target.position, agent.position) < range;
+        }
     }
 
 

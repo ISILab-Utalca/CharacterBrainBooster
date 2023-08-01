@@ -56,7 +56,7 @@ namespace ArtificialIntelligence.Utility
             Option newOption = GetNewOption();
             if (newOption != null)
             {
-                _actionRunner.TryExecuteOption(newOption);
+                _actionRunner.ExecuteOption(newOption);
             }
             else
             {
@@ -65,15 +65,13 @@ namespace ArtificialIntelligence.Utility
                 // TODO: add a Custom Editor that shows this warning
                 Debug.LogWarning("Executing default action on:" + gameObject.name);
                 newOption = new Option(_defaultAction, 1, null);
-                _actionRunner.TryExecuteOption(newOption);
+                _actionRunner.ExecuteOption(newOption);
             }
         }
         private Option GetNewOption()
         {
-            // First, update the score of every action the agent can perform on this frame
             List<Option> scoredOptions = UtilityDecisionMaker.ScorePossibleOptions(_actions);
             OnCompletedScoring?.Invoke(scoredOptions);
-            // Then return the action with best score (by default)
             var bestOption = UtilityDecisionMaker.PickFromScoredOptions(scoredOptions, _pickMethod);
             return bestOption;
         }

@@ -14,8 +14,8 @@ public class ConsiderationDrawer : Editor
     void OnEnable()
     {
         showBookends = serializedObject.FindProperty("_bookends");
-        maxBookend = serializedObject.FindProperty("_maxValue");
         minBookend = serializedObject.FindProperty("_minValue");
+        maxBookend = serializedObject.FindProperty("_maxValue");
         responseCurve = serializedObject.FindProperty("_responseCurve");
         Implementation = serializedObject.FindProperty("ImplementationReference");
     }
@@ -26,8 +26,8 @@ public class ConsiderationDrawer : Editor
 
         if (showBookends.boolValue)
         {
-            EditorGUILayout.PropertyField(maxBookend);
             EditorGUILayout.PropertyField(minBookend);
+            EditorGUILayout.PropertyField(maxBookend);
         }
 
         // Make a dropdown with all the methods
