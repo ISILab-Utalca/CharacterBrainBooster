@@ -8,13 +8,13 @@ using Utility;
 namespace CBB.Lib
 {
     [RequireComponent(typeof(BoxCollider))]
-    public class SensorFieldOfView : SensorBaseClass
+    public class SensorFieldOfView : Sensor
     {
         [SerializeField, SerializeProperty("HorizontalFOV")]
         private float horizontalFOV = 1;
         [SerializeField, SerializeProperty("VerticalFOV")]
         private float verticalFOV = 1;
-        [SerializeField, SerializeProperty("FrontalFOV")]
+        [SerializeProperty("FrontalFOV")]
         private float frontalFOV = 1;
         // Individual memory
         public List<GameObject> viewedObjects = new();
@@ -73,7 +73,7 @@ namespace CBB.Lib
 
         private void OnTriggerEnter(Collider other)
         {
-            if (isDebug) Debug.Log($"Object detected: {other.name}");
+            if (viewLogs) Debug.Log($"Object detected: {other.name}");
 
             viewedObjects.Add(other.gameObject);
             OnSensorUpdate?.Invoke();
@@ -81,7 +81,7 @@ namespace CBB.Lib
 
         private void OnTriggerExit(Collider other)
         {
-            if (isDebug) Debug.Log($"Object lost: {other.name}");
+            if (viewLogs) Debug.Log($"Object lost: {other.name}");
             viewedObjects.Remove(other.gameObject);
             OnSensorUpdate?.Invoke();
         }

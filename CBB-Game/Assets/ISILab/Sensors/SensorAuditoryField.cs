@@ -7,11 +7,11 @@ using UnityEngine;
 using Utility;
 
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class SensorAuditoryField : SensorBaseClass
+public class SensorAuditoryField : Sensor
 {
     // Configuration
     [JsonProperty, SerializeField]
-    private float fieldRadius = 1f;
+    private float hearingRadius = 1f;
     // Individual memory
     [JsonProperty]
     public List<GameObject> heardObjects = new();
@@ -19,6 +19,18 @@ public class SensorAuditoryField : SensorBaseClass
     // Private references
     private SphereCollider sphereColl;
 
+    public float HearingRadius
+    {
+        get => hearingRadius;
+        set
+        {
+            hearingRadius = value;
+            if (sphereColl != null)
+            {
+                sphereColl.radius = hearingRadius;
+            }
+        }
+    }
     protected override void Awake()
     {
         base.Awake();
@@ -27,14 +39,14 @@ public class SensorAuditoryField : SensorBaseClass
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (isDebug) Debug.Log($"Object detected: {other.name}");
+        if (viewLogs) Debug.Log($"Object detected: {other.name}");
 
         heardObjects.Add(other.gameObject);
         OnSensorUpdate?.Invoke();
     }
     private void OnTriggerExit(Collider other)
     {
-        if (isDebug) Debug.Log($"Object lost: {other.name}");
+        if (viewLogs) Debug.Log($"Object lost: {other.name}");
         heardObjects.Remove(other.gameObject);
         OnSensorUpdate?.Invoke();
     }
@@ -47,7 +59,7 @@ public class SensorAuditoryField : SensorBaseClass
 
     protected override void RenderGui(GLPainter painter)
     {
-        painter.DrawCilinder(this.transform.position, fieldRadius, 3, Vector3.up, Color.green);
+        painter.DrawCilinder(this.transform.position, hearingRadius, 3, Vector3.up, Color.green);
     }
 
     public override string GetSensorData()
