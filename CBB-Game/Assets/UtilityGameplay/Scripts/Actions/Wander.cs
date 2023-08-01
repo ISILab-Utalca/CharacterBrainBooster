@@ -34,6 +34,7 @@ namespace CBB.InternalTool
         public override void StartExecution(GameObject target = null)
         {
             base.StartExecution();
+            StartCoroutine(Act());
         }
         public override void InterruptExecution()
         {
@@ -41,8 +42,7 @@ namespace CBB.InternalTool
         }
         public override void FinishExecution()
         {
-            IsRunning = false;
-            OnFinishedAction?.Invoke();
+            base.FinishExecution();
         }
         public override List<Option> GetOptions()
         {

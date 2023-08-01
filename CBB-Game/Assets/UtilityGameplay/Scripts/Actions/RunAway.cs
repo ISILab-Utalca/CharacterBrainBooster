@@ -37,23 +37,14 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         public override void FinishExecution()
         {
-            /*
-			Logic to finish normally this action.
-            Reset variables, stop coroutines or anything that needs to be cleaned.
-            If you started multiple coroutines, make sure that at least one of them
-            has an ending criteria and call this method at that point.
-			*/
-			// Raise this event to notify finalization to the Action Runner (and other classes
-            // that may need it)
-            OnFinishedAction?.Invoke();
+            base.FinishExecution();
         }
         public override List<Option> GetOptions()
         {
             // If the action can have multiple targets, you can use this implementation
             //return GetMultipleScoredOptions(LocalAgentMemory.Objectives);
 
-            // If the action only has one fixed target, self target or none, you can use this one
-            //return GetScoredOption(out Option option, null) != null ? new List<Option> { option } : null;
+            return ScoreSingleOption(out Option option, null) != null ? new List<Option> { option } : null;
 
 			// Else, override the scoring method to your own implementation
             throw new System.NotImplementedException();
