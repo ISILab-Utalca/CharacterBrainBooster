@@ -25,7 +25,7 @@ namespace CBB.Api
 
     /// <summary>
     /// This attribute allows the CBB system to identify the fields
-    /// and properties of an agenof an agent, these will be displayed on a general board.
+    /// and properties of an agent, these will be displayed on a general board.
     /// </summary>
     [System.AttributeUsage(System.AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
     public class UtilityInputAttribute : Attribute
