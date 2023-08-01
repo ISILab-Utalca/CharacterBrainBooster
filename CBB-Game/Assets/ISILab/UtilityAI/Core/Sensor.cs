@@ -1,4 +1,5 @@
 using CBB.InternalTool;
+using CBB.Lib;
 using UnityEngine;
 
 namespace ArtificialIntelligence.Utility
@@ -13,6 +14,7 @@ namespace ArtificialIntelligence.Utility
         // Event for when the sensor detects something
         public System.Action OnSensorUpdate;
         protected LocalAgentMemory _agentMemory;
+        public SensorData SensorData = new();
         [SerializeField]
         protected bool viewLogs = false;
         
