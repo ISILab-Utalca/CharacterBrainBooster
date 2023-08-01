@@ -12,7 +12,7 @@ namespace ArtificialIntelligence.Utility
         [Tooltip("The brain will tell the Utility System class to pick an action based on this heuristic")]
         [SerializeField] private UtilityDecisionMaker.PickMethod _pickMethod;
 
-        public List<SensorBaseClass> _sensors;
+        public List<Sensor> _sensors;
 
         [Tooltip("The actions that this agent can perform")]
         [SerializeField] private List<ActionBase> _actions = new();
@@ -30,7 +30,7 @@ namespace ArtificialIntelligence.Utility
         private void Awake()
         {
             _actionRunner = GetComponent<ActionRunner>();
-            _sensors = gameObject.GetComponentsOnHierarchy<SensorBaseClass>();
+            _sensors = gameObject.GetComponentsOnHierarchy<Sensor>();
             _actions.AddRange(gameObject.GetComponentsOnHierarchy<ActionBase>());
 
         }
@@ -77,16 +77,16 @@ namespace ArtificialIntelligence.Utility
             var bestOption = UtilityDecisionMaker.PickFromScoredOptions(scoredOptions, _pickMethod);
             return bestOption;
         }
-        private void SubscribeToSensors(List<SensorBaseClass> sensors)
+        private void SubscribeToSensors(List<Sensor> sensors)
         {
-            foreach (SensorBaseClass sensor in sensors)
+            foreach (Sensor sensor in sensors)
             {
                 sensor.OnSensorUpdate += TryStartNewAction;
             }
         }
-        private void UnsubscribeFromSensors(List<SensorBaseClass> sensors)
+        private void UnsubscribeFromSensors(List<Sensor> sensors)
         {
-            foreach (SensorBaseClass sensor in sensors)
+            foreach (Sensor sensor in sensors)
             {
                 sensor.OnSensorUpdate -= TryStartNewAction;
             }

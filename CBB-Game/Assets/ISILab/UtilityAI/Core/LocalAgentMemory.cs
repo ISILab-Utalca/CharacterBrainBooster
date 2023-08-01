@@ -13,7 +13,7 @@ namespace ArtificialIntelligence.Utility
         [Tooltip("Store here any interesting object for this agent")]
         [SerializeField] private List<GameObject> _objectives = new();
         public GameObject PickedObject { get => pickedObject; set => pickedObject = value; }
-        public Vector3 GetPosition { get { return transform.position; } }
+        public Vector3 GetPosition { get => transform.position; }
         public List<GameObject> Objectives { get => _objectives; set => _objectives = value; }
     }
 

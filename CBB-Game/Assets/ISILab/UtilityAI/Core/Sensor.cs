@@ -1,6 +1,5 @@
-using System;
-using UnityEngine;
 using CBB.InternalTool;
+using UnityEngine;
 
 namespace ArtificialIntelligence.Utility
 {
@@ -9,13 +8,14 @@ namespace ArtificialIntelligence.Utility
     /// A "Sensor" should only care (update) about one aspect (property)
     /// of the Agent attached to, e.g. it's health.
     /// </summary>
-    public abstract class SensorBaseClass : MonoBehaviour, ISensor
+    public abstract class Sensor : MonoBehaviour, ISensor
     {
         // Event for when the sensor detects something
         public System.Action OnSensorUpdate;
         protected LocalAgentMemory _agentMemory;
-        protected bool isDebug = false;
-
+        [SerializeField]
+        protected bool viewLogs = false;
+        
         // GUI
         private static GLPainter painter = new GLPainter();
 
@@ -34,17 +34,6 @@ namespace ArtificialIntelligence.Utility
             Camera.onPostRender -= InternalGUI;
             Camera.onPostRender = null;
         }
-
-        public bool CheckForParentBrain()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void CheckForValue()
-        {
-            throw new System.NotImplementedException();
-        }
-
         private void InternalGUI(object obj)
         {
             if (Settings.ShowGUI) 

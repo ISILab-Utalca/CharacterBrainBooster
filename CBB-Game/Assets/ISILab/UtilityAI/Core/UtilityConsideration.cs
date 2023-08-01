@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace ArtificialIntelligence.Utility.Considerations
+namespace ArtificialIntelligence.Utility
 {
     /// <summary>
     /// Type of consideration that evaluates accross a range of values 
     /// </summary>
     [CreateAssetMenu(fileName = "New consideration", menuName = "Utility AI/Float consideration")]
-    public class Consideration : ScriptableObject
+    public class UtilityConsideration : ScriptableObject
     {
         [Header("Bookends")]
         [SerializeField, Tooltip("Set this to true if input for response curve needs to be normalized")]

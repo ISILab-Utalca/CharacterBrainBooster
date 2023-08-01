@@ -2,8 +2,9 @@
     "name": "CBB",
     "rootNamespace": "",
     "references": [
-        "utility-ai",
-        "CBB-Comunication"
+        "CBB-Comunication",
+        "Unity.TextMeshPro",
+        "CBB-Internal"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,9 +1,8 @@
 #if UNITY_EDITOR
-using ArtificialIntelligence.Utility.Considerations;
-using System.ComponentModel;
 using UnityEditor;
 using UnityEngine;
-[CustomEditor(typeof(Consideration)), CanEditMultipleObjects]
+using ArtificialIntelligence.Utility;
+[CustomEditor(typeof(UtilityConsideration)), CanEditMultipleObjects]
 public class ConsiderationDrawer : Editor
 {
     SerializedProperty showBookends;
@@ -32,7 +31,7 @@ public class ConsiderationDrawer : Editor
         }
 
         // Make a dropdown with all the methods
-        Consideration consideration = (Consideration)target;
+        UtilityConsideration consideration = (UtilityConsideration)target;
         EditorGUILayout.PropertyField(responseCurve);
         EditorGUILayout.PropertyField(Implementation);
         GUIContent arrayList = new()

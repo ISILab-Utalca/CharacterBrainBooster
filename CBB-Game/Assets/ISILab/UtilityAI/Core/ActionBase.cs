@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using ArtificialIntelligence.Utility.Considerations;
 using MixTheForgotten.AI;
 using System.Collections;
 
@@ -22,13 +21,12 @@ namespace ArtificialIntelligence.Utility
         [SerializeField, Tooltip("Do you want to see the logs of this Action?")]
         protected internal bool m_Debug = false;
         [SerializeField]
-        private protected List<Consideration> _considerations = new();
+        private protected List<UtilityConsideration> _considerations = new();
 
         protected internal int _numberOfExecutions;
         private System.Action onFinishedAction;
         private System.Action onStartedAction;
         #endregion
-
         #region Properties
         public NavMeshAgent LocalNavMeshAgent { get; protected set; }
         public float ActionCooldown { get; set; }
@@ -39,9 +37,7 @@ namespace ArtificialIntelligence.Utility
         public System.Action OnStartedAction { get => onStartedAction; set => onStartedAction = value; }
 
         #endregion
-
         #region Methods
-
         protected internal virtual void Awake()
         {
             // Warning: this assumes that the agent has a NavMeshAgent component
@@ -51,7 +47,6 @@ namespace ArtificialIntelligence.Utility
             if (TryGetComponent(out LocalAgentMemory lam)) LocalAgentMemory = lam;
             if (TryGetComponent(out NavMeshAgent nma)) LocalNavMeshAgent = nma;
         }
-
         public abstract List<Option> GetOptions();
         protected float EvaluateConsiderations(GameObject target = null)
         {
@@ -132,7 +127,11 @@ namespace ArtificialIntelligence.Utility
             IsRunning = false;
             StopAllCoroutines();
         }
-        public abstract void FinishExecution();
+        public virtual void FinishExecution() 
+        { 
+            IsRunning = false;
+            OnFinishedAction?.Invoke();
+        }
         /// <summary>
         /// Helper function used to stop manually created coroutines
         /// </summary>
