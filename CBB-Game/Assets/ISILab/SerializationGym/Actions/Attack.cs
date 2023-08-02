@@ -20,30 +20,15 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         public override void StartExecution(GameObject target = null)
         {
-		    /*
-			Logic to begin the execution of this action, usually coroutines
-            */
-            throw new System.NotImplementedException();
+		    
         }
         public override void InterruptExecution()
         {
-		    /*
-            Reset variables, stop coroutines or anything that needs to be cleaned
-            if this action is interrupted
-            */
-            throw new System.NotImplementedException();
+		    base.InterruptExecution();
         }
         public override void FinishExecution()
         {
-            /*
-			Logic to finish normally this action.
-            Reset variables, stop coroutines or anything that needs to be cleaned.
-            If you started multiple coroutines, make sure that at least one of them
-            has an ending criteria and call this method at that point.
-			*/
-			// Raise this event to notify finalization to the Action Runner (and other classes
-            // that may need it)
-            OnFinishedAction?.Invoke();
+            base.FinishExecution();
         }
         public override List<Option> GetOptions()
         {
