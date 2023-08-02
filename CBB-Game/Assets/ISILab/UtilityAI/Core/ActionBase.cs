@@ -19,7 +19,7 @@ namespace ArtificialIntelligence.Utility
         [SerializeField]
         internal protected float defaultActionCooldown;
         [SerializeField, Tooltip("Do you want to see the logs of this Action?")]
-        protected internal bool viewLog = false;
+        protected internal bool viewLogs = false;
         [SerializeField]
         private protected List<UtilityConsideration> _considerations = new();
 
@@ -53,7 +53,7 @@ namespace ArtificialIntelligence.Utility
         {
             if (_considerations.Count == 0)
             {
-                Debug.LogWarning($"_considerations is empty in {name}. Returning 0");
+                if (viewLogs) Debug.LogWarning($"_considerations is empty in {name}. Returning 0");
                 return 0f;
             }
             float score = 1, considerationScore;
@@ -121,7 +121,7 @@ namespace ArtificialIntelligence.Utility
         {
             IsRunning = true;
             _numberOfExecutions++;
-            Debug.Log($"Starting execution of {GetType().Name}, number of executions: {_numberOfExecutions}");
+            if (viewLogs) Debug.Log($"Starting execution of {GetType().Name}, number of executions: {_numberOfExecutions}");
         }
         public virtual void InterruptExecution()
         {
