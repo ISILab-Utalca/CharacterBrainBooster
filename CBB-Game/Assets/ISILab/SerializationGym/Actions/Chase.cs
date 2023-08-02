@@ -9,20 +9,21 @@ namespace ArtificialIntelligence.Utility.Actions
     public class Chase : ActionBase
     {
         #region Fields
-        private const float INITIAL_SPEED = 1;
+        private float initialSpeed = 1;
         private const float CHASE_TICK = 0.1f;
         [SerializeField]
         float chaseRange = 2f;
         [SerializeField]
         float chaseSpeed = 2f;
 
-        WaitForSeconds chaseCheckTick = new WaitForSeconds(CHASE_TICK);
+        readonly WaitForSeconds chaseCheckTick = new(CHASE_TICK);
         #endregion
 
         #region Methods
         // Replace Awake logic if needed
         protected internal override void Awake()
         {
+            initialSpeed = LocalNavMeshAgent.speed;
             base.Awake();
         }
 
@@ -32,12 +33,12 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         public override void InterruptExecution()
         {
-            LocalNavMeshAgent.speed = INITIAL_SPEED;
+            LocalNavMeshAgent.speed = initialSpeed;
             base.InterruptExecution();
         }
         public override void FinishExecution()
         {
-            LocalNavMeshAgent.speed = INITIAL_SPEED;
+            LocalNavMeshAgent.speed = initialSpeed;
             base.FinishExecution();
         }
         public override List<Option> GetOptions()

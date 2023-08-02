@@ -9,44 +9,55 @@ namespace ArtificialIntelligence.Utility.Actions
     public class RunAway : ActionBase
     {
         #region Fields
-        // public 
-        public float distance;
-        // private
-        private int speed = 1;
+        private float initialSpeed = 1;
+        private const float RUN_TICK = 0.1f;
+        WaitForSeconds runCheckTick = new(RUN_TICK);
+
+        [SerializeField]
+        private float safeDistance = 3;
+        [SerializeField]
+        private int runSpeed = 2;
         #endregion
         #region Properties
-        public int Speed { get { return speed; } set { speed = value; } }
+        
         #endregion
         #region Methods
         // Replace Awake logic if needed
         protected internal override void Awake()
         {
+            initialSpeed = LocalNavMeshAgent.speed;
             base.Awake();
         }
         public override void StartExecution(GameObject target = null)
         {
 		    base.StartExecution(target);
+            StartCoroutine(Act(target));
         }
         public override void InterruptExecution()
         {
-		    /*
-            Reset variables, stop coroutines or anything that needs to be cleaned
-            if this action is interrupted
-            */
-            throw new System.NotImplementedException();
+            LocalNavMeshAgent.speed = initialSpeed;
+		    base.InterruptExecution();
         }
         public override void FinishExecution()
         {
+            LocalNavMeshAgent.speed = initialSpeed;
             base.FinishExecution();
         }
         public override List<Option> GetOptions()
         {
-            return ScoreSingleOption(out Option option, null) != null ? new List<Option> { option } : null;
+            return ScoreMultipleOptions(LocalAgentMemory.HeardObjects);
         }
 
         protected override IEnumerator Act(GameObject target = null)
         {
-            throw new System.NotImplementedException();
+            Vector3 runAwayDirection = (LocalAgentMemory.GetPosition - target.transform.position).normalized;
+            LocalNavMeshAgent.speed = runSpeed;
+            LocalNavMeshAgent.SetDestination(LocalAgentMemory.GetPosition + runAwayDirection * safeDistance);
+            while (!LocalNavMeshAgent.ReachedDestination())
+            {
+                yield return runCheckTick;
+            }
+            FinishExecution();
         }
         #endregion
     }
