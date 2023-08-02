@@ -14,7 +14,7 @@ namespace CBB.Lib
         private float horizontalFOV = 1;
         [SerializeField, SerializeProperty("VerticalFOV")]
         private float verticalFOV = 1;
-        [SerializeProperty("FrontalFOV")]
+        [SerializeField, SerializeProperty("FrontalFOV")]
         private float frontalFOV = 1;
         // Individual memory
         public List<GameObject> viewedObjects = new();
