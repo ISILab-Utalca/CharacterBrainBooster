@@ -67,10 +67,10 @@ namespace CBB.InternalTool
             // If no random point is found, halt for a second
             else
             {
-                Debug.Log("No random point found");
+                if (viewLogs) Debug.Log("No random point found");
                 yield return new WaitForSeconds(1f);
             }
-            Debug.Log("Reached destination. Waiting ...");
+            if (viewLogs) Debug.Log("Reached destination. Waiting ...");
             yield return new WaitForSeconds(Random.Range(_minWaitTimer, _maxWaitTimer));
             FinishExecution();
         }
