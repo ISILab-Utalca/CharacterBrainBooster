@@ -876,9 +876,10 @@ GameObject:
   - component: {fileID: 639148457}
   - component: {fileID: 639148458}
   - component: {fileID: 639148454}
-  - component: {fileID: 639148455}
-  - component: {fileID: 639148453}
   - component: {fileID: 639148462}
+  - component: {fileID: 639148463}
+  - component: {fileID: 639148453}
+  - component: {fileID: 639148455}
   m_Layer: 0
   m_Name: Villager
   m_TagString: Untagged
@@ -1050,6 +1051,20 @@ MonoBehaviour:
       brainName: 
     SensorsData: []
     fields: []
+--- !u!114 &639148463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639148451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb7a9548111e534f8fc8f3bea9af526, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectives: []
+  heardObjects: []
 --- !u!1 &739049179
 GameObject:
   m_ObjectHideFlags: 0
@@ -1426,6 +1441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectives: []
+  heardObjects: []
 --- !u!114 &874170271
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -23,8 +23,8 @@ namespace ArtificialIntelligence.Utility.Actions
         // Replace Awake logic if needed
         protected internal override void Awake()
         {
-            initialSpeed = LocalNavMeshAgent.speed;
             base.Awake();
+            initialSpeed = LocalNavMeshAgent.speed;
         }
 
         public override void StartExecution(GameObject target = null)
@@ -44,7 +44,7 @@ namespace ArtificialIntelligence.Utility.Actions
         public override List<Option> GetOptions()
         {
             // If the action can have multiple targets, you can use this implementation
-            return ScoreMultipleOptions(LocalAgentMemory.Objectives);
+            return ScoreMultipleOptions(LocalAgentMemory.HeardObjects);
         }
 
         protected override IEnumerator Act(GameObject target = null)

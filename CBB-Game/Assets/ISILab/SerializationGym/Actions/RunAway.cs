@@ -25,8 +25,8 @@ namespace ArtificialIntelligence.Utility.Actions
         // Replace Awake logic if needed
         protected internal override void Awake()
         {
-            initialSpeed = LocalNavMeshAgent.speed;
             base.Awake();
+            initialSpeed = LocalNavMeshAgent.speed;
         }
         public override void StartExecution(GameObject target = null)
         {
