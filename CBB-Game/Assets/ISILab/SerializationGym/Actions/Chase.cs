@@ -29,6 +29,7 @@ namespace ArtificialIntelligence.Utility.Actions
 
         public override void StartExecution(GameObject target = null)
         {
+            base.StartExecution(target);
             StartCoroutine(Act(target));
         }
         public override void InterruptExecution()

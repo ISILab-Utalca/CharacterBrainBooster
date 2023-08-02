@@ -20,7 +20,7 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         public override void StartExecution(GameObject target = null)
         {
-		    
+            base.StartExecution();
         }
         public override void InterruptExecution()
         {
