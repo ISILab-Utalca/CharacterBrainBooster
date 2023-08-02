@@ -9,13 +9,14 @@ using Utility;
 public class SensorAuditoryField : Sensor
 {
     // Configuration
-    [JsonProperty, SerializeField]
+    [JsonProperty, SerializeField, SerializeProperty("HearingRadius")]
     private float hearingRadius = 1f;
     // Individual memory
     [JsonProperty]
     public List<GameObject> heardObjects = new();
     private SensorData sensorData;
     // Private references
+    [SerializeField]
     private SphereCollider sphereColl;
 
     public float HearingRadius
@@ -33,7 +34,6 @@ public class SensorAuditoryField : Sensor
     protected override void Awake()
     {
         base.Awake();
-        sphereColl = GetComponent<SphereCollider>();
         Debug.Log($"{gameObject.name} {this} hearingRadius to string: " + hearingRadius.ToString());
         Dictionary<string, object> config = new()
         {
