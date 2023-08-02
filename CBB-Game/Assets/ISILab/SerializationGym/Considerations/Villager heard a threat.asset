@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaf40e39ad9bac40accb29411ca06fd, type: 3}
   m_Name: Villager heard a threat
   m_EditorClassIdentifier: 
-  _bookends: 1
+  _bookends: 0
   _minValue: 1
   _maxValue: 3
   _responseCurve:
@@ -27,6 +27,24 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
+    - serializedVersion: 3
+      time: 0.11895342
+      value: 0.815225
+      inSlope: 1.3749964
+      outSlope: 1.3749964
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.52193636
+      value: 0.94990605
+      inSlope: 0.054814972
+      outSlope: 0.054814972
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
@@ -43,5 +61,6 @@ MonoBehaviour:
   _methods:
   - DistanceToTarget
   - ThreatHeard
+  - Idle
   flags: 26
   _selectedMethodIndex: 1
