@@ -47,12 +47,14 @@ public class SensorAuditoryField : Sensor
         if (viewLogs) Debug.Log($"Object detected: {other.name}");
 
         heardObjects.Add(other.gameObject);
+        _agentMemory.HeardObjects.Add(other.gameObject);
         OnSensorUpdate?.Invoke();
     }
     private void OnTriggerExit(Collider other)
     {
         if (viewLogs) Debug.Log($"Object lost: {other.name}");
         heardObjects.Remove(other.gameObject);
+        _agentMemory.HeardObjects.Remove(other.gameObject);
         OnSensorUpdate?.Invoke();
     }
     [ContextMenu("Serialize sensor")]
