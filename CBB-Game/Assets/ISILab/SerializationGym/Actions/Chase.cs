@@ -55,7 +55,7 @@ namespace ArtificialIntelligence.Utility.Actions
                 LocalNavMeshAgent.SetDestination(target.transform.position);
                 yield return chaseCheckTick;
             }
-            if (viewLog) Debug.Log($"{gameObject.name} finished chasing {target.name}");
+            if (viewLogs) Debug.Log($"{gameObject.name} finished chasing {target.name}");
             FinishExecution();
         }
         
