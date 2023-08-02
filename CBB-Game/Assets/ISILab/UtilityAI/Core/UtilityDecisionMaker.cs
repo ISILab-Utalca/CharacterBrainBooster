@@ -23,13 +23,13 @@ namespace ArtificialIntelligence.Utility
         /// <param name="actions"></param>
         /// <returns></returns>
         /// <param name="pickMethod"></param><param name="topOptionsToConsider"></param>
-        public static List<Option> ScorePossibleOptions(List<ActionBase> actions, PickMethod pickMethod = PickMethod.MaxScore, int topOptionsToConsider = 1)
+        public static List<Option> ScorePossibleOptions(List<ActionBase> actions)
         {
             List<Option> scoredOptions = new();
             foreach (ActionBase action in actions)
             {
                 var options = action.GetOptions();
-                if(options != null) scoredOptions.AddRange(options);
+                scoredOptions.AddRange(options);
             }
             
             return scoredOptions;

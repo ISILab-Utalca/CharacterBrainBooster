@@ -95,11 +95,19 @@ namespace ArtificialIntelligence.Utility
         protected internal List<Option> ScoreMultipleOptions(List<GameObject> targets)
         {
             var options = new List<Option>();
-            foreach (var target in targets)
+            if(targets.Count > 0)
             {
-                ScoreSingleOption(out Option opt, target);
-                if (opt != null) options.Add(opt);
+                foreach (var target in targets)
+                {
+                    ScoreSingleOption(out Option opt, target);
+                    if (opt != null) options.Add(opt);
+                }
             }
+            else
+            {
+                options.Add(new Option(this,0,null));
+            }
+            
             return options;
         }
         /// <summary>
