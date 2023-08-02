@@ -12,7 +12,11 @@ namespace dnorambu.AI.Utility
         }
         public static float ThreatHeard(LocalAgentMemory agentMemory, GameObject target)
         {
-            return agentMemory.HeardObjects.Count;
+            return agentMemory.HeardObjects.Count > 0 ? 1 : 0;
+        }
+        public static float Idle(LocalAgentMemory agentMemory, GameObject target)
+        {
+            return 0;
         }
     }
 }
