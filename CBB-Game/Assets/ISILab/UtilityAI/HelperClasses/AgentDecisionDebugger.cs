@@ -3,23 +3,19 @@ using UnityEngine;
 using TMPro;
 using System.Text;
 using ArtificialIntelligence.Utility;
+using UnityEngine.UI;
+using UnityEngine.AI;
 
-public class LoggerClass : MonoBehaviour
+public class AgentDecisionDebugger : MonoBehaviour
 {
-    public TextMeshProUGUI AgentTextBox;
-    public TextMeshProUGUI NavigationTextBox;
+    public Text AgentTextBox;
+    public Text NavigationTextBox;
     [Tooltip("Which agent is beign observed")]
     public AgentBrain Brain;
-    public UnityEngine.AI.NavMeshAgent navMeshAgent;
-
-    private GameObject destiny;
-    private void Start()
-    {
-        destiny = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        destiny.GetComponent<SphereCollider>().enabled = false;
-    }
+    public NavMeshAgent navMeshAgent;
     private void OnEnable()
     {
+        
         Brain.OnCompletedScoring += DebugOptions;
         //Brain.gameObject.GetComponent<ActionMoveToRandomDirection>().OnStartedAction += UpdateNavmeshAgent;
         Debug.Log("Debugger set correctly");
@@ -43,7 +39,6 @@ public class LoggerClass : MonoBehaviour
             NavigationTextBox.text += "\nDestination: " + navMeshAgent.destination;
             NavigationTextBox.text += "\nCurrent position: " + navMeshAgent.transform.position;
         }
-        destiny.transform.position = navMeshAgent.destination;
     }
 
     public void DebugOptions(List<Option> options)
@@ -55,5 +50,6 @@ public class LoggerClass : MonoBehaviour
             sb.AppendLine($"Name: {option.Action.GetType().Name} \t S: {option.Score}");
         }
         AgentTextBox.text = sb.ToString();
+        Debug.Log(sb.ToString());
     }
 }
