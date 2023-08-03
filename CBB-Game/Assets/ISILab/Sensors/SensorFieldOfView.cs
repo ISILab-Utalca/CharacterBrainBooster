@@ -97,7 +97,7 @@ namespace CBB.Lib
         {
             painter.DrawCilinder(this.transform.position, 5, 3, Vector3.up, Color.red);
         }
-        public override string GetSensorData()
+        public override SensorData GetSensorData()
         {
             throw new System.NotImplementedException();
         }

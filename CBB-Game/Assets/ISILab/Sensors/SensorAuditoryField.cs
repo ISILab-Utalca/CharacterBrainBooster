@@ -2,23 +2,29 @@ using ArtificialIntelligence.Utility;
 using CBB.Lib;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 using Utility;
 
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
 public class SensorAuditoryField : Sensor
 {
-    // Configuration
-    [JsonProperty, SerializeField, SerializeProperty("HearingRadius")]
-    private float hearingRadius = 1f;
-    // Individual memory
+    [Header("Memory")]
     [JsonProperty]
     public List<GameObject> heardObjects = new();
     private SensorData sensorData;
-    // Private references
+
+    [Header("Configurations")]
+    [JsonProperty, SerializeField, SerializeProperty("HearingRadius")]
+    private float hearingRadius = 1f;
+    [SerializeField, TagSelector, Tooltip("Which gameObjects with certain tags will this sensor detect")]
+    private List<string> hearingTags = new();
+    [SerializeField]
+    private bool UpdateOnEnter = true;
+    [SerializeField]
+    private bool UpdateOnExit = false;
     [SerializeField]
     private SphereCollider sphereColl;
-
     public float HearingRadius
     {
         get => hearingRadius;
@@ -31,32 +37,31 @@ public class SensorAuditoryField : Sensor
             }
         }
     }
+
+    #region Methods
     protected override void Awake()
     {
         base.Awake();
-        Debug.Log($"{gameObject.name} {this} hearingRadius to string: " + hearingRadius.ToString());
-        Dictionary<string, object> config = new()
-        {
-            { hearingRadius.ToString(), hearingRadius }
-        };
-        
-        sensorData = new(typeof(SensorAuditoryField),config,null);
     }
+    
     private void OnTriggerEnter(Collider other)
     {
+        if (!hearingTags.Contains(other.tag)) return;
         if (viewLogs) Debug.Log($"Object detected: {other.name}");
-
         heardObjects.Add(other.gameObject);
         _agentMemory.HeardObjects.Add(other.gameObject);
-        OnSensorUpdate?.Invoke();
+        if(UpdateOnEnter) OnSensorUpdate?.Invoke();
     }
+    
     private void OnTriggerExit(Collider other)
     {
+        if (!hearingTags.Contains(other.tag)) return;
         if (viewLogs) Debug.Log($"Object lost: {other.name}");
         heardObjects.Remove(other.gameObject);
         _agentMemory.HeardObjects.Remove(other.gameObject);
-        OnSensorUpdate?.Invoke();
+        if (UpdateOnExit) OnSensorUpdate?.Invoke();
     }
+    
     [ContextMenu("Serialize sensor")]
     public void SerializeSensor()
     {
@@ -66,11 +71,16 @@ public class SensorAuditoryField : Sensor
 
     protected override void RenderGui(GLPainter painter)
     {
-        painter.DrawCilinder(this.transform.position, hearingRadius, 3, Vector3.up, Color.green);
+        painter.DrawCircle(this.transform.position, hearingRadius, Vector3.up, Color.green);
     }
 
-    public override string GetSensorData()
+    public override SensorData GetSensorData()
     {
-        throw new System.NotImplementedException();
+        sensorData = new SensorData();
+        sensorData.sensorType = typeof(SensorAuditoryField);
+        sensorData.memory = new Dictionary<string, object>();
+        sensorData.configurations = new Dictionary<string, object>();
+        return sensorData;
     }
+    #endregion
 }
