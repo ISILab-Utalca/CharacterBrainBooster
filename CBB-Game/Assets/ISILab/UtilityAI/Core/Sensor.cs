@@ -44,7 +44,7 @@ namespace ArtificialIntelligence.Utility
 
         protected abstract void RenderGui(GLPainter painter);
 
-        public abstract string GetSensorData();
+        public abstract SensorData GetSensorData();
     }
 }
 

@@ -11,10 +11,10 @@ namespace ArtificialIntelligence.Utility
     /// </summary>
     public class Option
     {
-        public ActionBase Action { get; set; }
+        public ActionState Action { get; set; }
         public float Score { get; set; }
         public GameObject Target { get; set; }
-        public Option(ActionBase action, float score, GameObject target = null)
+        public Option(ActionState action, float score, GameObject target = null)
         {
             Action = action;
             Score = score;

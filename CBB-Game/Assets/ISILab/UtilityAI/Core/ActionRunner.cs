@@ -7,7 +7,7 @@ namespace ArtificialIntelligence.Utility
         #region FIELDS
         // Cache for current executing action
         private System.Action _onFinishedExecution;
-        private ActionBase _currentAction = null;
+        private ActionState _currentAction = null;
         [SerializeField]
         private bool viewLogs = false;
         #endregion
@@ -46,7 +46,7 @@ namespace ArtificialIntelligence.Utility
         /// Interrupts the current executing action.
         /// Doesn't invoke OnUnlockedExecution to avoid loops.
         /// </summary>
-        private void InterruptExecution(ActionBase action)
+        private void InterruptExecution(ActionState action)
         {
             if (action != null)
             {

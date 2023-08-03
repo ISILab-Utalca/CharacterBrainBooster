@@ -7,10 +7,9 @@ using System.Collections;
 namespace ArtificialIntelligence.Utility
 {
     /// <summary>
-    /// Base class for every action that the AI agent can perform.
-    /// Contains common members that every action will need.
+    /// Base class for any action that the AI agent can perform.
     /// </summary>
-    public abstract class ActionBase : MonoBehaviour, IAction
+    public abstract class ActionState : MonoBehaviour, IAction
     {
         #region Fields
         [Header("Action general settings")]
@@ -24,20 +23,20 @@ namespace ArtificialIntelligence.Utility
         private protected List<UtilityConsideration> _considerations = new();
 
         protected internal int _numberOfExecutions;
-        private System.Action onFinishedAction;
-        private System.Action onStartedAction;
         #endregion
 
         #region Properties
         public NavMeshAgent LocalNavMeshAgent { get; protected set; }
+        [field:SerializeField]
         public float ActionCooldown { get; set; }
         public LocalAgentMemory LocalAgentMemory { get; protected set; }
         public bool IsRunning { get; set; }
         public float ActionPriority { get => _actionPriority; }
-        public System.Action OnFinishedAction { get => onFinishedAction; set => onFinishedAction = value; }
-        public System.Action OnStartedAction { get => onStartedAction; set => onStartedAction = value; }
-
+        public System.Action OnFinishedAction { get; set; }
+        public System.Action OnStartedAction { get; set; }
+        public bool IsBlocked { get; protected set; }
         #endregion
+
         #region Methods
         protected internal virtual void Awake()
         {
@@ -139,6 +138,7 @@ namespace ArtificialIntelligence.Utility
         public virtual void FinishExecution() 
         { 
             IsRunning = false;
+            if (viewLogs) Debug.Log($"Finish execution of {GetType().Name}");
             OnFinishedAction?.Invoke();
         }
         /// <summary>
@@ -150,7 +150,10 @@ namespace ArtificialIntelligence.Utility
             if (c != null) { StopCoroutine(c); }
             c = null;
         }
-        protected abstract IEnumerator Act(GameObject target = null);
+        protected virtual IEnumerator Act(GameObject target = null)
+        {
+            yield return null;
+        }
         #endregion
     }
 }
