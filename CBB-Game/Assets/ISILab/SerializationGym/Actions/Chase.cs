@@ -6,16 +6,15 @@ namespace ArtificialIntelligence.Utility.Actions
     /// <summary>
     /// Replace this summary with a description of the class.
     /// </summary>
-    public class Chase : ActionBase
+    public class Chase : ActionState
     {
         #region Fields
+        
+        [SerializeField]
+        private float chaseSpeed = 2f;
+        
         private float initialSpeed = 1;
         private const float CHASE_TICK = 0.1f;
-        [SerializeField]
-        float chaseRange = 2f;
-        [SerializeField]
-        float chaseSpeed = 2f;
-
         readonly WaitForSeconds chaseCheckTick = new(CHASE_TICK);
         #endregion
 
@@ -51,9 +50,9 @@ namespace ArtificialIntelligence.Utility.Actions
         protected override IEnumerator Act(GameObject target = null)
         {
             LocalNavMeshAgent.speed = chaseSpeed;
-            while (HelperFunctions.TargetIsInRange(transform, target.transform, chaseRange))
+            LocalNavMeshAgent.SetDestination(target.transform.position);
+            while (!LocalNavMeshAgent.ReachedDestination())
             {
-                LocalNavMeshAgent.SetDestination(target.transform.position);
                 yield return chaseCheckTick;
             }
             if (viewLogs) Debug.Log($"{gameObject.name} finished chasing {target.name}");

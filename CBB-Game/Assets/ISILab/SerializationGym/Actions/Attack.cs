@@ -1,3 +1,4 @@
+using CBB.Lib;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +7,11 @@ namespace ArtificialIntelligence.Utility.Actions
     /// <summary>
     /// Replace this summary with a description of the class.
     /// </summary>
-    public class Attack : ActionBase
+    public class Attack : ActionState
     {
         #region Fields
-
+        [SerializeField]
+        private float damage = 20;
         #endregion
 
         #region Methods
@@ -17,14 +19,28 @@ namespace ArtificialIntelligence.Utility.Actions
         protected internal override void Awake()
         {
             base.Awake();
+            ActionCooldown = defaultActionCooldown;
+            StartCoroutine(DecreaseCooldown());
+        }
+        private IEnumerator DecreaseCooldown()
+        {
+            while(true)
+            {
+                if (ActionCooldown > 0)
+                {
+                    ActionCooldown -= Time.deltaTime;
+                }
+                yield return null;
+            }
         }
         public override void StartExecution(GameObject target = null)
         {
             base.StartExecution();
+            StartCoroutine(Act(target));
         }
         public override void InterruptExecution()
         {
-		    base.InterruptExecution();
+            base.InterruptExecution();
         }
         public override void FinishExecution()
         {
@@ -32,19 +48,22 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         public override List<Option> GetOptions()
         {
-            // If the action can have multiple targets, you can use this implementation
-            //return GetMultipleScoredOptions(LocalAgentMemory.Objectives);
-
-            // If the action only has one fixed target, self target or none, you can use this one
-            //return GetScoredOption(out Option option, null) != null ? new List<Option> { option } : null;
-
-			// Else, override the scoring method to your own implementation
-            throw new System.NotImplementedException();
+            return ScoreMultipleOptions(LocalAgentMemory.HeardObjects);
         }
 
         protected override IEnumerator Act(GameObject target = null)
         {
-            throw new System.NotImplementedException();
+            if (target.TryGetComponent<Villager>(out var villager))
+            {
+                villager.Health -= damage;
+                ActionCooldown = defaultActionCooldown;
+            }
+            else
+            {
+                Debug.LogError($"No Villager component found on {target.name}");
+            }
+            yield return null;
+            FinishExecution();
         }
         #endregion
     }

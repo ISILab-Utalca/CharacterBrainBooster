@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace CBB.InternalTool
 {
-    public class Wander : ActionBase
+    public class Wander : ActionState
     {
         #region Fields
         [SerializeField, Tooltip("Min time the agent will wait after reaching destination")]
