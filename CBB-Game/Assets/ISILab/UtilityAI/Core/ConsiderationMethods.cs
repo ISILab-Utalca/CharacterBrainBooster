@@ -1,4 +1,5 @@
 ﻿using ArtificialIntelligence.Utility;
+using ArtificialIntelligence.Utility.Actions;
 using UnityEngine;
 
 namespace dnorambu.AI.Utility
@@ -16,6 +17,15 @@ namespace dnorambu.AI.Utility
         }
         public static float Idle(LocalAgentMemory agentMemory, GameObject target)
         {
+            return 0;
+        }
+        public static float AttackOnCooldown(LocalAgentMemory agentMemory, GameObject target)
+        {
+            if(agentMemory.gameObject.TryGetComponent(out Attack attackAction))
+            {
+                return attackAction.ActionCooldown > 0 ? 1 : 0;
+            }
+            Debug.LogError($"Attack action not found on {agentMemory.gameObject.name}");
             return 0;
         }
     }
