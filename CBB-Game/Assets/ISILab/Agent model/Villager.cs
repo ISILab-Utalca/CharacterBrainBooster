@@ -13,6 +13,7 @@ namespace CBB.Lib
         [JsonProperty]
         public float Speed = 3;
 
+        public System.Action OnDeath { get; set; }
         // The data member this class has
         public AgentData agentData;
 
