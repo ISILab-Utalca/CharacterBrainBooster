@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cdaf40e39ad9bac40accb29411ca06fd, type: 3}
-  m_Name: Villager Idle
+  m_Name: Goblin Attack is on cooldown
   m_EditorClassIdentifier: 
   _bookends: 0
   _minValue: 0
@@ -19,19 +19,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.0000000018626451
-      value: 0.21717171
-      inSlope: 0.000000014861212
-      outSlope: 0.000000014861212
+      time: 0
+      value: 1
+      inSlope: -1
+      outSlope: -1
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1.0026882
-      value: 0.21717173
-      inSlope: 0.000000014861212
-      outSlope: 0.000000014861212
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: -1
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -43,5 +43,7 @@ MonoBehaviour:
   _methods:
   - DistanceToTarget
   - ThreatHeard
+  - Idle
+  - AttackOnCooldown
   flags: 26
-  _selectedMethodIndex: 0
+  _selectedMethodIndex: 3
