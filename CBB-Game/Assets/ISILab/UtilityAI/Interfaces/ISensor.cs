@@ -1,3 +1,4 @@
+using CBB.Lib;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,5 +10,5 @@ using UnityEngine;
 /// </summary>
 public interface ISensor
 {
-    public string GetSensorData();
+    public SensorData GetSensorData();
 }
