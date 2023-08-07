@@ -16,7 +16,7 @@ namespace CBB.Tests
         public string pathToJson;
         public string jsonFileName;
         public int testNum = 0;
-        public SimpleData sd;
+        
         public AgentBrainData brain = new();
         private Dictionary<string, object> data = new();
         [ContextMenu("Convert class to JSON")]
@@ -25,7 +25,7 @@ namespace CBB.Tests
             string sdJson = JsonConvert.SerializeObject(brain);
             JSONDataManager.SaveData<AgentBrainData>(pathToJson, jsonFileName + $"{testNum}.json", brain);
             Debug.Log(sdJson);
-            
+
             testNum++;
             System.Diagnostics.Process.Start("explorer.exe", @"C:\Users\Diego\Desktop\Desktop\CodingPlayground");
         }
@@ -36,41 +36,30 @@ namespace CBB.Tests
             pathToJson = EditorUtility.OpenFolderPanel("Save Json into folder ...", "", "");
         }
 #endif
-        [ContextMenu("Load from Json")]
-        private void LoadFromJson()
+        
+        [ContextMenu("Serialize dictionary")]
+        private void SerializeDictionary()
         {
-            sd = JSONDataManager.LoadData<SimpleData>(pathToJson, jsonFileName + $"{testNum - 1}.json");
-            Debug.Log(sd);
+            data = new Dictionary<string, object>
+            {
+                { "Key1", 3 },
+                { "Key2", true }
+            };
+            var temp = JsonConvert.SerializeObject(data);
+            Debug.Log(temp);
         }
-        [ContextMenu("Object test")]
-        public void ObjectTest(object o)
+        [ContextMenu("Serialize List of strings")]
+        private void SerializeStringList()
         {
-            Debug.Log("Argument type: " +  o.GetType());
-        }
-        private void Start()
-        {
-            var o = new SimpleData();
-            ObjectTest(o);
-        }
-        private AgentBrainData CreateNewAgent()
-        {
-
-            return new AgentBrainData();
-        }
-    }
-    /// <summary>
-    /// A simple Plain 
-    /// </summary>
-    [System.Serializable]
-    public class SimpleData
-    {
-        public string name;
-        public int integer;
-        public SimpleData() { }
-        public SimpleData(string n, int i)
-        {
-            this.name = n;
-            this.integer = i;
+            var ls = new List<string>
+            {
+                "Hola1",
+                "Hola2",
+                "Hola3",
+                "Hola4"
+            };
+            var temp = JsonConvert.SerializeObject(ls,Formatting.Indented);
+            Debug.Log(temp);    
         }
     }
 }

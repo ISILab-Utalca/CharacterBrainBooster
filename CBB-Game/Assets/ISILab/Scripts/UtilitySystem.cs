@@ -68,7 +68,7 @@ namespace CBB.Api
         public static Dictionary<string, object> CollectSensorConfiguration(Sensor sensorInstance)
         {
             Dictionary<string, object> sensorConfig = new();
-            var sensorFields = sensorInstance.GetType().GetFields(BindingFlags.Instance);
+            var sensorFields = sensorInstance.GetType().GetFields(BindingFlags.Instance | BindingFlags.GetField | BindingFlags.Public | BindingFlags.NonPublic);
             foreach (var field in sensorFields)
             {
                 var atts = field.GetCustomAttributes();
@@ -79,7 +79,7 @@ namespace CBB.Api
                     sensorConfig.Add(fieldName, fieldValue);
                 }
             }
-            var sensorProperties = sensorInstance.GetType().GetProperties(BindingFlags.Instance);
+            var sensorProperties = sensorInstance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.NonPublic);
             foreach (var property in sensorProperties)
             {
                 var atts = property.GetCustomAttributes();

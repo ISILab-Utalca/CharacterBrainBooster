@@ -87,7 +87,7 @@ namespace CBB.Comunication
             serverPort = port;
         }
 
-        public static int ClinetAmount()
+        public static int ClientAmount()
         {
             return clients.Count;
         }

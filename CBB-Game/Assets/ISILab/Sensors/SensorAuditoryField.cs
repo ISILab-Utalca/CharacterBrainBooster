@@ -65,8 +65,31 @@ public class SensorAuditoryField : Sensor
     [ContextMenu("Serialize sensor")]
     public void SerializeSensor()
     {
-        string ss = JSONDataManager.SerializeData(this);
+        // Create sensor specific data
+        var sd = GetSensorData();
+        Debug.Log($"Serializing {this}");
+        Debug.Log($"Configurations: ");
+        foreach (var kvp in sd.configurations)
+        {
+            Debug.Log($"{kvp.Key} : {kvp.Value}");
+        }
+        Debug.Log($"Memory: ");
+        foreach (var kvp in sd.memory)
+        {
+            Debug.Log($"{kvp.Key} : {kvp.Value}");
+        }
+        List<JsonConverter> converters = new()
+                {
+                    new GameObjectConverter(),
+                    new Vector3Converter()
+                };
+        string ss = JSONDataManager.SerializeData(this, converters);
         Debug.Log(ss);
+    }
+    [ContextMenu("Serialize sensor heard objects")]
+    public void SerializeSensorHeardObjects()
+    {
+        Debug.Log($"Number of elements in hear objects: {heardObjects.Count}");
     }
 
     protected override void RenderGui(GLPainter painter)

@@ -134,13 +134,15 @@ namespace CBB.Api
             {
                 var state = agentComp.GetInternalState();
                 var wrap = new AgentWrapper(type, state);
-
+                
+                // Why Am I doing this here?
                 List<JsonConverter> converters = new()
                 {
                     new GameObjectConverter(),
                     new Vector3Converter()
                 };
                 var data = JSONDataManager.SerializeData(wrap,converters);
+                
                 Client.SendMessageToServer(data);
                 Debug.Log($"{data}");
             }

@@ -76,7 +76,7 @@ namespace CBB.ExternalTool
 
         private void SetWaitingMode()
         {
-            var value = (Server.ClinetAmount() <= 0);
+            var value = (Server.ClientAmount() <= 0);
             infoPanel.SetDisplay(!value);
             waitingPanel.SetDisplay(value);
         }
