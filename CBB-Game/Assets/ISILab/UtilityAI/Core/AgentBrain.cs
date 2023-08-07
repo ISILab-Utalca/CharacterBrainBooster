@@ -9,9 +9,10 @@ namespace ArtificialIntelligence.Utility
     [RequireComponent(typeof(ActionRunner))]
     public class AgentBrain : MonoBehaviour
     {
-        [Tooltip("The brain will tell the Utility System class to pick an action based on this heuristic")]
-        [SerializeField] private UtilityDecisionMaker.PickMethod _pickMethod;
-
+        [SerializeField, Tooltip("The brain will tell the Utility System class to pick an option based on this heuristic")]
+        private UtilityDecisionMaker.PickMethod _pickMethod;
+        [SerializeField, Range(0, 5), Tooltip("If Pick method is top N, define how many options to consider")]
+        private int topN = 1;
         [Tooltip("The actions that this agent can perform")]
         [SerializeField]
         private List<ActionState> _actions = new();
@@ -22,11 +23,11 @@ namespace ArtificialIntelligence.Utility
 
         [SerializeField]
         private bool viewLogs = false;
-        private System.Action<List<Option>> onCompletedScoring;
         private ActionRunner _actionRunner;
         private List<Sensor> sensors;
 
-        public System.Action<List<Option>> OnCompletedScoring { get => onCompletedScoring; set => onCompletedScoring = value; }
+        public System.Action<List<Option>> OnCompletedScoring { get; set; }
+        public System.Action<Option, List<Option>> OnDecisionTaken { get; set; }
         public List<Sensor> Sensors { get => sensors; set => sensors = value; }
 
         // Get references to the action runner and all sensors and actions on the agent
@@ -75,7 +76,9 @@ namespace ArtificialIntelligence.Utility
         {
             List<Option> scoredOptions = UtilityDecisionMaker.ScorePossibleOptions(_actions);
             OnCompletedScoring?.Invoke(scoredOptions);
-            var bestOption = UtilityDecisionMaker.PickFromScoredOptions(scoredOptions, _pickMethod);
+            var bestOption = UtilityDecisionMaker.PickFromScoredOptions(scoredOptions, _pickMethod, topN);
+            scoredOptions.Remove(bestOption);
+            OnDecisionTaken?.Invoke(bestOption, scoredOptions);
             return bestOption;
         }
         private void SubscribeToSensors(List<Sensor> sensors)
