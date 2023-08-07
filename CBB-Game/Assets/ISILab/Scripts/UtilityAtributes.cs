@@ -42,7 +42,33 @@ namespace CBB.Api
             this.general = general;
         }
     }
+    /// <summary>
+    /// This attribute allows the CBB system to identify the fields
+    /// and properties of a sensor that are part of its configuration
+    /// </summary>
+    [System.AttributeUsage(System.AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+    public class SensorConfigurationAttribute : Attribute
+    {
+        
+    }
+    /// <summary>
+    /// This attribute allows the CBB system to identify the fields
+    /// and properties of a sensor that are part of its individual memory
+    /// </summary>
+    [System.AttributeUsage(System.AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+    public class SensorMemoryAttribute : Attribute
+    {
 
+    }
+    /// <summary>
+    /// This attribute allows the CBB system to identify the fields
+    /// and properties of an agent that are part of its internal state
+    /// </summary>
+    [System.AttributeUsage(System.AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+    public class AgentInternalStateAttribute : Attribute
+    {
+
+    }
     /// <summary>
     /// This attribute allows the CBB system to identify the methods, events
     /// and actions of an agent, these will be exposed on a general board.

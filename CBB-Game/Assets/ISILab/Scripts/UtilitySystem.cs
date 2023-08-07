@@ -1,9 +1,12 @@
+using ArtificialIntelligence.Utility;
+using CBB.Lib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Windows;
 
 namespace CBB.Api
 {
@@ -57,7 +60,108 @@ namespace CBB.Api
             }
             return types.ToArray();
         }
-
+        /// <summary>
+        /// Collects the fields and properties that are part of its configuration.
+        /// </summary>
+        /// <param name="sensorInstance">The specific sensor instance to inspect</param>
+        /// <returns>The configuration dictionary.</returns>
+        public static Dictionary<string, object> CollectSensorConfiguration(Sensor sensorInstance)
+        {
+            Dictionary<string, object> sensorConfig = new();
+            var sensorFields = sensorInstance.GetType().GetFields(BindingFlags.Instance);
+            foreach (var field in sensorFields)
+            {
+                var atts = field.GetCustomAttributes();
+                if (atts.Any(a => a.GetType() == typeof(SensorConfigurationAttribute)))
+                {
+                    string fieldName = field.Name;
+                    object fieldValue = field.GetValue(sensorInstance);
+                    sensorConfig.Add(fieldName, fieldValue);
+                }
+            }
+            var sensorProperties = sensorInstance.GetType().GetProperties(BindingFlags.Instance);
+            foreach (var property in sensorProperties)
+            {
+                var atts = property.GetCustomAttributes();
+                if (atts.Any(a => a.GetType() == typeof(SensorConfigurationAttribute)))
+                {
+                    string propertyName = property.Name;
+                    object propertyValue = property.GetValue(sensorInstance);
+                    sensorConfig.Add(propertyName, propertyValue);
+                }
+            }
+            return sensorConfig;
+        }
+        /// <summary>
+        /// Collects fields and properties that are part of a sensor's individual memory
+        /// </summary>
+        /// <param name="sensorInstance">The specific sensor instance to inspect</param>
+        /// <returns>The configuration dictionary.</returns>
+        public static Dictionary<string, object> CollectSensorMemory(Sensor sensorInstance)
+        {
+            Dictionary<string, object> sensorConfig = new();
+            var sensorFields = sensorInstance.GetType().GetFields(BindingFlags.Instance);
+            foreach (var field in sensorFields)
+            {
+                var atts = field.GetCustomAttributes();
+                if (atts.Any(a => a.GetType() == typeof(SensorMemoryAttribute)))
+                {
+                    string fieldName = field.Name;
+                    object fieldValue = field.GetValue(sensorInstance);
+                    sensorConfig.Add(fieldName, fieldValue);
+                }
+            }
+            var sensorProperties = sensorInstance.GetType().GetProperties(BindingFlags.Instance);
+            foreach (var property in sensorProperties)
+            {
+                var atts = property.GetCustomAttributes();
+                if (atts.Any(a => a.GetType() == typeof(SensorMemoryAttribute)))
+                {
+                    string propertyName = property.Name;
+                    object propertyValue = property.GetValue(sensorInstance);
+                    sensorConfig.Add(propertyName, propertyValue);
+                }
+            }
+            return sensorConfig;
+        }
+        /// <summary>
+        /// Collects fields and properties that are part of a agent's internal state
+        /// </summary>
+        /// <param name="sensorInstance">The specific agent instance to inspect</param>
+        /// <returns>The internal state represented by a list of its fields/properties</returns>
+        public static List<AgentStateVariable> CollectAgentInternalState(IAgent agent)
+        {
+            List<AgentStateVariable> agentState = new();
+            var agentFields = agent.GetType().GetFields(BindingFlags.Instance);
+            foreach (var field in agentFields)
+            {
+                var atts = field.GetCustomAttributes();
+                if (atts.Any(a => a.GetType() == typeof(AgentInternalStateAttribute)))
+                {
+                    agentState.Add(new AgentStateVariable
+                    {
+                        variableType = field.GetType(),
+                        variableName = field.Name,
+                        value = field.GetValue(agent)
+                    });
+                }
+            }
+            var agentProperties = agent.GetType().GetProperties(BindingFlags.Instance);
+            foreach (var property in agentProperties)
+            {
+                var atts = property.GetCustomAttributes();
+                if (atts.Any(a => a.GetType() == typeof(AgentInternalStateAttribute)))
+                {
+                    agentState.Add(new AgentStateVariable
+                    {
+                        variableType = property.GetType(),
+                        variableName = property.Name,
+                        value = property.GetValue(agent)
+                    });
+                }
+            }
+            return agentState;
+        }
         /// <summary>
         /// Collects variables for a specific agent type.
         /// </summary>
