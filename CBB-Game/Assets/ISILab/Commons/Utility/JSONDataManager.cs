@@ -34,6 +34,30 @@ namespace Utility
                 jsonSerializerSettings
                 );
         }
+        public static string SerializeData<T>(T data, List<JsonConverter> jc)
+        {
+            // generate serializer setting
+            var jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                TypeNameHandling = TypeNameHandling.All,
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore,
+            };
+            if (jc != null)
+            {
+                foreach (JsonConverter jsonConverter in jc)
+                {
+                    jsonSerializerSettings.Converters.Add(jsonConverter);
+                }
+            }
+            // generate json string
+            return JsonConvert.SerializeObject(
+                data,
+                jsonSerializerSettings
+                );
+        }
         public static string SerializeData<T>(T data)
         {
             // generate serializer setting
