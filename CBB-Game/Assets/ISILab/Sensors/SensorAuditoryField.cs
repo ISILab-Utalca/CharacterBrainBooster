@@ -1,8 +1,8 @@
 using ArtificialIntelligence.Utility;
+using CBB.Api;
 using CBB.Lib;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using UnityEditor.UIElements;
 using UnityEngine;
 using Utility;
 
@@ -10,18 +10,18 @@ using Utility;
 public class SensorAuditoryField : Sensor
 {
     [Header("Memory")]
-    [JsonProperty]
+    [SensorMemory]
     public List<GameObject> heardObjects = new();
     private SensorData sensorData;
 
     [Header("Configurations")]
-    [JsonProperty, SerializeField, SerializeProperty("HearingRadius")]
+    [SensorConfiguration, SerializeField, SerializeProperty("HearingRadius")]
     private float hearingRadius = 1f;
-    [SerializeField, TagSelector, Tooltip("Which gameObjects with certain tags will this sensor detect")]
+    [SensorConfiguration, SerializeField, TagSelector, Tooltip("Which gameObjects with certain tags will this sensor detect")]
     private List<string> hearingTags = new();
-    [SerializeField]
+    [SensorConfiguration,SerializeField]
     private bool UpdateOnEnter = true;
-    [SerializeField]
+    [SensorConfiguration,SerializeField]
     private bool UpdateOnExit = false;
     [SerializeField]
     private SphereCollider sphereColl;
@@ -76,10 +76,12 @@ public class SensorAuditoryField : Sensor
 
     public override SensorData GetSensorData()
     {
-        sensorData = new SensorData();
-        sensorData.sensorType = typeof(SensorAuditoryField);
-        sensorData.memory = new Dictionary<string, object>();
-        sensorData.configurations = new Dictionary<string, object>();
+        sensorData = new SensorData
+        {
+            sensorType = typeof(SensorAuditoryField),
+            configurations = UtilitySystem.CollectSensorConfiguration(this),
+            memory = UtilitySystem.CollectSensorMemory(this)
+        };
         return sensorData;
     }
     #endregion
