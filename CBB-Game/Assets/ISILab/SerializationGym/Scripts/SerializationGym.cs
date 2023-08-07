@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft;
 using Newtonsoft.Json;
-using Unity.VisualScripting;
 using UnityEditor;
-using System.IO;
 using Utility;
 using CBB.Lib;
+using System.Collections.Generic;
 
 namespace CBB.Tests
 {
@@ -22,6 +18,7 @@ namespace CBB.Tests
         public int testNum = 0;
         public SimpleData sd;
         public AgentBrainData brain = new();
+        private Dictionary<string, object> data = new();
         [ContextMenu("Convert class to JSON")]
         private void ConvertToJson()
         {
