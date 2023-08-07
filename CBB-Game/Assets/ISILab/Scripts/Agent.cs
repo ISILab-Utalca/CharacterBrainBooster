@@ -33,5 +33,22 @@ namespace CBB.Lib
         {
             return agentData;
         }
+        public static void FindSensorData(IAgent agent)
+        {
+            // Find sensors on this agent
+            var agentMb = agent as MonoBehaviour;
+            if(agentMb == null)
+            {
+                Debug.LogError($"This {agent} can't be used as MonoBehaviuor");
+            }
+            
+            var sensors = agentMb.gameObject.GetComponentsOnHierarchy<Sensor>();
+            Debug.Log($"Total sensors on {agentMb.gameObject.name}: " + sensors.Count);
+            Debug.Log($"Sensors on {agentMb.gameObject.name}: " + sensors);
+            foreach (var sensor in sensors )
+            {
+                agent.AgentData.SensorsData.Add(sensor.SensorData);
+            }
+}
     }
 }
