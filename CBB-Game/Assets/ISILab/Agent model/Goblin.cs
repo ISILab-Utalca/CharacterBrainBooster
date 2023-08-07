@@ -13,8 +13,8 @@ namespace CBB.Lib
         public int Attack = 10;
         [UtilityInput("Can attack")]
         public bool CanAttack { get;set; }
+        public AgentData AgentData { get; set; }
 
-        public AgentData AgentData;
         private void Awake()
         {
             InitializeInternalState();
@@ -32,7 +32,7 @@ namespace CBB.Lib
                 AgentType = typeof(Goblin),
                 SensorsData = new(),
                 BrainData = new(typeof(Goblin),gameObject.name),
-                fields = null
+                internalVariables = null
             };
             // Find sensors on this agent
             var sensors = gameObject.GetComponentsOnHierarchy<Sensor>();
@@ -42,12 +42,12 @@ namespace CBB.Lib
             {
                 AgentData.SensorsData.Add(sensor.SensorData);
             }
-            AgentData.fields = UtilitySystem.CollectVariables(typeof(Goblin));
+            UpdateInternalState();
         }
 
         public void UpdateInternalState()
         {
-            
+            AgentData.internalVariables = UtilitySystem.CollectAgentInternalState(this);
         }
     }
 }

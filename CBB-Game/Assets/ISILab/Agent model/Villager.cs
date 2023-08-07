@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using ArtificialIntelligence.Utility;
+using CBB.Api;
+using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
@@ -8,34 +10,58 @@ namespace CBB.Lib
     public class Villager : MonoBehaviour, IAgent
     {
         // Tipical stats for an NPC
-        [JsonProperty]
+        [AgentInternalState]
         public float Health = 100;
-        [JsonProperty]
+        [AgentInternalState]
         public float Speed = 3;
 
         public System.Action OnDeath { get; set; }
-        // The data member this class has
-        public AgentData agentData;
+        public AgentData AgentData { get; set; }
 
-        public AgentData SetInternalState()
+        private void Update()
         {
-            return agentData;
+            if (Health <= 0)
+            {
+                KillVillager();
+            }
+        }
+        private void KillVillager()
+        {
+            Destroy(gameObject);
+        }
+        private void Awake()
+        {
+            InitializeInternalState();
         }
         public void InitializeInternalState()
         {
-            agentData = new AgentData();
-            agentData.AgentType = typeof(Villager);
-            
+            AgentData = new AgentData
+            {
+                AgentType = typeof(Villager),
+                SensorsData = new(),
+                BrainData = new(typeof(Villager), gameObject.name),
+                internalVariables = null
+            };
+            // Find sensors on this agent
+            var sensors = gameObject.GetComponentsOnHierarchy<Sensor>();
+            Debug.Log($"Total sensors on {gameObject.name}: " + sensors.Count);
+            Debug.Log($"Sensors on {gameObject.name}: " + sensors);
+            foreach (var sensor in sensors)
+            {
+                AgentData.SensorsData.Add(sensor.SensorData);
+            }
+            UpdateInternalState();
         }
 
         public AgentData GetInternalState()
         {
-            throw new System.NotImplementedException();
+            UpdateInternalState();
+            return AgentData;
         }
 
         public void UpdateInternalState()
         {
-            throw new System.NotImplementedException();
+            AgentData.internalVariables = UtilitySystem.CollectAgentInternalState(this);
         }
     }
 }
