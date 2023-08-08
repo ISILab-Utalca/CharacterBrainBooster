@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace CBB.Lib
 {
-    [JsonObject(MemberSerialization.OptIn)]
     public class Villager : MonoBehaviour, IAgent
     {
         // Tipical stats for an NPC
