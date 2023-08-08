@@ -70,10 +70,15 @@ public class GameObjectConverter : JsonConverter
         var targetGameObject = (GameObject)value;
 
         writer.WriteStartObject();
-        writer.WritePropertyName("targetName");
+        writer.WritePropertyName("Target Name");
         writer.WriteValue(targetGameObject.name);
-        writer.WritePropertyName("targetPosition");
-        writer.WriteValue(targetGameObject.transform.position);
+        Vector3 targetPosition = targetGameObject.transform.position;
+        writer.WritePropertyName("Target Position X");
+        writer.WriteValue(targetPosition.x);
+        writer.WritePropertyName("Target Position Y");
+        writer.WriteValue(targetPosition.y);
+        writer.WritePropertyName("Target Position Z");
+        writer.WriteValue(targetPosition.z);
         writer.WriteEndObject();
     }
 }

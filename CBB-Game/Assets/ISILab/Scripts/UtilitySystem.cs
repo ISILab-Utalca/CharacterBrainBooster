@@ -15,6 +15,9 @@ namespace CBB.Api
     /// </summary>
     public static class UtilitySystem
     {
+        private const BindingFlags SENSOR_MEMORY_BFLAGS = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.Public | BindingFlags.NonPublic;
+        private const BindingFlags SENSOR_CONFIG_BFLAGS = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.Public | BindingFlags.NonPublic;
+        private const BindingFlags AGENT_INTERNAL_STATE_BFLAGS = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.Public | BindingFlags.NonPublic;
         //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         //private static void OnBeforeSceneLoadRuntimeMethod()
         //{
@@ -68,18 +71,34 @@ namespace CBB.Api
         public static Dictionary<string, object> CollectSensorConfiguration(Sensor sensorInstance)
         {
             Dictionary<string, object> sensorConfig = new();
-            var sensorFields = sensorInstance.GetType().GetFields(BindingFlags.Instance | BindingFlags.GetField | BindingFlags.Public | BindingFlags.NonPublic);
+            string fieldName;
+            object fieldValue;
+            var sensorFields = sensorInstance.GetType().GetFields(SENSOR_CONFIG_BFLAGS);
             foreach (var field in sensorFields)
             {
                 var atts = field.GetCustomAttributes();
                 if (atts.Any(a => a.GetType() == typeof(SensorConfigurationAttribute)))
                 {
-                    string fieldName = field.Name;
-                    object fieldValue = field.GetValue(sensorInstance);
+                    fieldName = field.Name;
+                    //if (typeof(IList).IsAssignableFrom(field.FieldType))
+                    //{
+                    //    var fieldListValue = field.GetValue(sensorInstance) as IList;
+                    //    List<object> values = new List<object>();
+                    //    foreach (var value in fieldListValue)
+                    //    {
+                    //            values.Add(value);
+                    //    }
+                    //    fieldValue = values.ToArray();
+                    //}
+                    //else
+                    //{
+                       
+                    //}
+                    fieldValue = field.GetValue(sensorInstance);
                     sensorConfig.Add(fieldName, fieldValue);
                 }
             }
-            var sensorProperties = sensorInstance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.NonPublic);
+            var sensorProperties = sensorInstance.GetType().GetProperties(SENSOR_CONFIG_BFLAGS);
             foreach (var property in sensorProperties)
             {
                 var atts = property.GetCustomAttributes();
@@ -100,7 +119,7 @@ namespace CBB.Api
         public static Dictionary<string, object> CollectSensorMemory(Sensor sensorInstance)
         {
             Dictionary<string, object> sensorConfig = new();
-            var sensorFields = sensorInstance.GetType().GetFields(BindingFlags.Instance);
+            var sensorFields = sensorInstance.GetType().GetFields(SENSOR_MEMORY_BFLAGS);
             foreach (var field in sensorFields)
             {
                 var atts = field.GetCustomAttributes();
@@ -111,7 +130,7 @@ namespace CBB.Api
                     sensorConfig.Add(fieldName, fieldValue);
                 }
             }
-            var sensorProperties = sensorInstance.GetType().GetProperties(BindingFlags.Instance);
+            var sensorProperties = sensorInstance.GetType().GetProperties(SENSOR_MEMORY_BFLAGS);
             foreach (var property in sensorProperties)
             {
                 var atts = property.GetCustomAttributes();
@@ -132,7 +151,7 @@ namespace CBB.Api
         public static List<AgentStateVariable> CollectAgentInternalState(IAgent agent)
         {
             List<AgentStateVariable> agentState = new();
-            var agentFields = agent.GetType().GetFields(BindingFlags.Instance);
+            var agentFields = agent.GetType().GetFields(AGENT_INTERNAL_STATE_BFLAGS);
             foreach (var field in agentFields)
             {
                 var atts = field.GetCustomAttributes();
@@ -146,7 +165,7 @@ namespace CBB.Api
                     });
                 }
             }
-            var agentProperties = agent.GetType().GetProperties(BindingFlags.Instance);
+            var agentProperties = agent.GetType().GetProperties(AGENT_INTERNAL_STATE_BFLAGS);
             foreach (var property in agentProperties)
             {
                 var atts = property.GetCustomAttributes();

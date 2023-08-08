@@ -35,27 +35,27 @@ namespace CBB.Api
     [RequireComponent(typeof(IAgent))]
     public class AgentDataSender : MonoBehaviour
     {
+        [SerializeField]
+        private bool NeedAServer = false;
         private IAgent agentComp;
-        private AgentBrain agentBrain;
+        private IAgentBrain agentBrain;
         
         private void Awake()
         {
             agentComp = GetComponent<IAgent>();
-            agentBrain = GetComponent<AgentBrain>();
-            
-
+            agentBrain = GetComponent<IAgentBrain>();
+            agentBrain.OnDecisionTaken += ReceiveDecisionHandler;
+            agentBrain.OnSetupDone += SubscribeToSensors;
         }
-        private void Start()
-        {
 
+        private void SubscribeToSensors()
+        {
             foreach (Sensor sensor in agentBrain.Sensors)
             {
                 sensor.OnSensorUpdate += ReceiveSensorUpdateHandler;
             }
-            agentBrain.OnDecisionTaken += ReceiveDecisionHandler;
-            SendData(AgentWrapper.Type.NEW);
+            Debug.Log($"{gameObject.name} Agent Data Sender set up done");
         }
-
         private void ReceiveSensorUpdateHandler()
         {
             SendData(AgentWrapper.Type.CURRENT);
@@ -69,12 +69,12 @@ namespace CBB.Api
             {
                 agentType = agentState.AgentType,
                 agentName = gameObject.name,
-                bestOption = CreateDecisionData(best),
+                bestOption = new DecisionData(best),
                 otherOptions = new List<DecisionData>()
             };
             foreach (Option option in otherOptions)
             {
-                decisionPackage.otherOptions.Add(CreateDecisionData(option));
+                decisionPackage.otherOptions.Add(new DecisionData(option));
             }
             SendData(decisionPackage);
             // We also need to send the agent state when OnDecisionTaken is fired
@@ -92,6 +92,11 @@ namespace CBB.Api
         }
         private void SendData(DecisionPackage decisionPackage)
         {
+            if (!NeedAServer)
+            {
+                Debug.Log(JSONDataManager.SerializeData(decisionPackage));
+                return;
+            }
             if (!ClientIsConnected()) return;
 
             try
@@ -106,17 +111,11 @@ namespace CBB.Api
                 throw;
             }
         }
-
-        private DecisionData CreateDecisionData(Option option)
-        {
-            return new DecisionData(option);
-        }
-        private void OnDisable()
-        {
-            agentBrain.OnDecisionTaken -= ReceiveDecisionHandler;
-        }
+        
         private void OnDestroy()
         {
+            agentBrain.OnDecisionTaken -= ReceiveDecisionHandler;
+            agentBrain.OnSetupDone -= SubscribeToSensors;
             SendData(AgentWrapper.Type.DESTROYED);
         }
 
@@ -128,21 +127,17 @@ namespace CBB.Api
 
         public void SendData(AgentWrapper.Type type = AgentWrapper.Type.CURRENT)
         {
+            if (!NeedAServer)
+            {
+                Debug.Log(SerializeAgentWrapperData());
+                return;
+            }
             if (!ClientIsConnected()) return;
 
             try
             {
-                var state = agentComp.GetInternalState();
-                var wrap = new AgentWrapper(type, state);
-                
-                // Why Am I doing this here?
-                List<JsonConverter> converters = new()
-                {
-                    new GameObjectConverter(),
-                    new Vector3Converter()
-                };
-                var data = JSONDataManager.SerializeData(wrap,converters);
-                
+                var data = SerializeAgentWrapperData(type);
+
                 Client.SendMessageToServer(data);
                 Debug.Log($"{data}");
             }
@@ -151,6 +146,19 @@ namespace CBB.Api
                 Debug.Log($"Error: {e}");
                 throw;
             }
+        }
+        private string SerializeAgentWrapperData(AgentWrapper.Type type = AgentWrapper.Type.CURRENT)
+        {
+            var state = agentComp.GetInternalState();
+            var wrap = new AgentWrapper(type, state);
+
+            // Why Am I doing this here?
+            List<JsonConverter> converters = new()
+                {
+                    new GameObjectConverter(),
+                    new Vector3Converter()
+                };
+            return JSONDataManager.SerializeData(wrap, converters);
         }
     }
 

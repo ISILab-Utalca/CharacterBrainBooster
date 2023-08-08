@@ -39,7 +39,7 @@ namespace CBB.Lib
                 AgentType = typeof(Villager),
                 SensorsData = new(),
                 BrainData = new(typeof(Villager), gameObject.name),
-                internalVariables = null
+                internalVariables = new()
             };
             // Find sensors on this agent
             var sensors = gameObject.GetComponentsOnHierarchy<Sensor>();
@@ -47,7 +47,7 @@ namespace CBB.Lib
             Debug.Log($"Sensors on {gameObject.name}: " + sensors);
             foreach (var sensor in sensors)
             {
-                AgentData.SensorsData.Add(sensor.SensorData);
+                AgentData.SensorsData.Add(sensor.GetSensorData());
             }
             UpdateInternalState();
         }
@@ -60,6 +60,7 @@ namespace CBB.Lib
 
         public void UpdateInternalState()
         {
+
             AgentData.internalVariables = UtilitySystem.CollectAgentInternalState(this);
         }
     }
