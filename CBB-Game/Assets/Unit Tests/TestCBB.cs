@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using CBB.Lib;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 public class Test_Evaluator
 {
@@ -285,3 +282,21 @@ public class TestCBB
     }
 }
 
+public class Test_Agent_Model
+{
+    [Test(Author = "noram")]
+    public void Can_Save_And_Load_Consideration()
+    {
+        var vf = new Variable("Var_1", typeof(float), typeof(MonoBehaviour));
+        var vv3 = new Variable("Var_2", typeof(Vector3), typeof(MonoBehaviour));
+        var vs = new Variable("Var_3", typeof(string), typeof(MonoBehaviour));
+        var vb = new Variable("Var_4", typeof(bool), typeof(MonoBehaviour));
+        var eva = new Normalize(50, 0, 100);
+        var curve = new Linear(0.5f);
+        var cons = new Consideration("Cons_1", true, new List<Variable>() { vf, vv3, vs, vb }, eva, curve);
+        var pth1 = Application.dataPath + "/Git-Ignore/Test";
+        Utility.JSONDataManager.SaveData<Consideration>(pth1, "Cons", "json", cons);
+        var rC = Utility.JSONDataManager.LoadData<Consideration>(pth1, "Cons", "json");
+        Assert.That(cons.ToString() == rC.ToString());
+    }
+}
