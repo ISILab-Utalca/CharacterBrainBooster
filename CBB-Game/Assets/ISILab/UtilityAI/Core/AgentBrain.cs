@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 namespace ArtificialIntelligence.Utility
 {
@@ -7,7 +8,7 @@ namespace ArtificialIntelligence.Utility
     /// to start new behaviours
     /// </summary>
     [RequireComponent(typeof(ActionRunner))]
-    public class AgentBrain : MonoBehaviour
+    public class AgentBrain : MonoBehaviour, IAgentBrain
     {
         [SerializeField, Tooltip("The brain will tell the Utility System class to pick an option based on this heuristic")]
         private UtilityDecisionMaker.PickMethod _pickMethod;
@@ -24,18 +25,19 @@ namespace ArtificialIntelligence.Utility
         [SerializeField]
         private bool viewLogs = false;
         private ActionRunner _actionRunner;
-        private List<Sensor> sensors;
 
         public System.Action<List<Option>> OnCompletedScoring { get; set; }
+        public System.Action OnSetupDone { get; set; }
         public System.Action<Option, List<Option>> OnDecisionTaken { get; set; }
-        public List<Sensor> Sensors { get => sensors; set => sensors = value; }
+        
+        public List<ISensor> Sensors { get; private set; }
 
         // Get references to the action runner and all sensors and actions on the agent
         private void Awake()
         {
             _actionRunner = GetComponent<ActionRunner>();
-            Sensors = gameObject.GetComponentsOnHierarchy<Sensor>();
-            _actions.AddRange(gameObject.GetComponentsOnHierarchy<ActionState>());
+            Sensors = gameObject.GetComponentsInChildren<ISensor>().ToList();
+            _actions.AddRange(gameObject.GetComponents<ActionState>());
 
         }
         // Subscribe to sensor updates and finished action events
@@ -43,6 +45,7 @@ namespace ArtificialIntelligence.Utility
         {
             SubscribeToSensors(Sensors);
             _actionRunner.OnFinishedExecution += TryStartNewAction;
+            OnSetupDone?.Invoke();
         }
         // Unsubscribe from sensor updates and finished action events
         private void OnDisable()
@@ -81,16 +84,16 @@ namespace ArtificialIntelligence.Utility
             OnDecisionTaken?.Invoke(bestOption, scoredOptions);
             return bestOption;
         }
-        private void SubscribeToSensors(List<Sensor> sensors)
+        private void SubscribeToSensors(List<ISensor> sensors)
         {
-            foreach (Sensor sensor in sensors)
+            foreach (ISensor sensor in sensors)
             {
                 sensor.OnSensorUpdate += TryStartNewAction;
             }
         }
-        private void UnsubscribeFromSensors(List<Sensor> sensors)
+        private void UnsubscribeFromSensors(List<ISensor> sensors)
         {
-            foreach (Sensor sensor in sensors)
+            foreach (ISensor sensor in sensors)
             {
                 sensor.OnSensorUpdate -= TryStartNewAction;
             }

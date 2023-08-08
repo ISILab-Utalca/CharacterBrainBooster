@@ -1,5 +1,6 @@
 using CBB.InternalTool;
 using CBB.Lib;
+using System;
 using UnityEngine;
 
 namespace ArtificialIntelligence.Utility
@@ -12,7 +13,6 @@ namespace ArtificialIntelligence.Utility
     public abstract class Sensor : MonoBehaviour, ISensor
     {
         // Event for when the sensor detects something
-        public System.Action OnSensorUpdate;
         protected LocalAgentMemory _agentMemory;
         public SensorData SensorData = new();
         [SerializeField]
@@ -20,6 +20,8 @@ namespace ArtificialIntelligence.Utility
         
         // GUI
         private static GLPainter painter = new GLPainter();
+
+        public Action OnSensorUpdate { get ; set; }
 
         protected virtual void Awake()
         {

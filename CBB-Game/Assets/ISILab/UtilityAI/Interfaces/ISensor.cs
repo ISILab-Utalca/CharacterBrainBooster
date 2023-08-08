@@ -10,5 +10,6 @@ using UnityEngine;
 /// </summary>
 public interface ISensor
 {
+    System.Action OnSensorUpdate { get; set; }
     public SensorData GetSensorData();
 }
