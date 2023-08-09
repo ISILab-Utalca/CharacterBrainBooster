@@ -14,7 +14,6 @@ public class SensorDataSender : MonoBehaviour
         var sensorData = sensor.GetSensorData();
 
         Debug.Log("Sensor Data:");
-        // Create sensor specific data
         Debug.Log($"Serializing {this}");
         Debug.Log($"Configurations: ");
         foreach (var kvp in sensorData.configurations)

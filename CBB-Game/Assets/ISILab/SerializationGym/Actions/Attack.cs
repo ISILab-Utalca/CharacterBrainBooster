@@ -11,7 +11,7 @@ namespace ArtificialIntelligence.Utility.Actions
     {
         #region Fields
         [SerializeField]
-        private float damage = 20;
+        private int damage = 20;
         #endregion
 
         #region Methods

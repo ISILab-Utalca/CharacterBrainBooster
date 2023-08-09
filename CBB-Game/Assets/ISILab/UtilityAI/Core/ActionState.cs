@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using MixTheForgotten.AI;
 using System.Collections;
 
 namespace ArtificialIntelligence.Utility

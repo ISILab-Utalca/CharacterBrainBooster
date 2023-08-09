@@ -32,7 +32,7 @@ namespace CBB.Lib
                 AgentType = typeof(Goblin),
                 SensorsData = new(),
                 BrainData = new(typeof(Goblin),gameObject.name),
-                internalVariables = null
+                InternalVariables = null
             };
             // Find sensors on this agent
             var sensors = gameObject.GetComponentsOnHierarchy<Sensor>();
@@ -47,7 +47,7 @@ namespace CBB.Lib
 
         public void UpdateInternalState()
         {
-            AgentData.internalVariables = UtilitySystem.CollectAgentInternalState(this);
+            AgentData.InternalVariables = UtilitySystem.CollectAgentInternalState(this);
         }
     }
 }

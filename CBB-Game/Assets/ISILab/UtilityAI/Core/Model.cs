@@ -55,7 +55,7 @@ namespace CBB.Lib
         public Type AgentType;
         public AgentBrainData BrainData;
         public List<SensorData> SensorsData;
-        public List<AgentStateVariable> internalVariables;
+        public List<AgentStateVariable> InternalVariables;
         public AgentData() { }
 
         public AgentData(Type agentType, AgentBrainData brainData, List<SensorData> sensorsData)

@@ -10,7 +10,7 @@ namespace CBB.Lib
     {
         // Tipical stats for an NPC
         [AgentInternalState]
-        public float Health = 100;
+        public int Health = 100;
         [AgentInternalState]
         public float Speed = 3;
 
@@ -39,7 +39,7 @@ namespace CBB.Lib
                 AgentType = typeof(Villager),
                 SensorsData = new(),
                 BrainData = new(typeof(Villager), gameObject.name),
-                internalVariables = new()
+                InternalVariables = new()
             };
             // Find sensors on this agent
             var sensors = gameObject.GetComponentsOnHierarchy<Sensor>();
@@ -61,7 +61,7 @@ namespace CBB.Lib
         public void UpdateInternalState()
         {
 
-            AgentData.internalVariables = UtilitySystem.CollectAgentInternalState(this);
+            AgentData.InternalVariables = UtilitySystem.CollectAgentInternalState(this);
         }
     }
 }
