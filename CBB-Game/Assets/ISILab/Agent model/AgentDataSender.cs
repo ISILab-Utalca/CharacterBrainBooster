@@ -40,6 +40,7 @@ namespace CBB.Api
         private IAgent agentComp;
         private IAgentBrain agentBrain;
         
+        public System.Action<string> OnSerializedData { get; set; }
         private void Awake()
         {
             agentComp = GetComponent<IAgent>();
@@ -116,20 +117,16 @@ namespace CBB.Api
         {
             agentBrain.OnDecisionTaken -= ReceiveDecisionHandler;
             agentBrain.OnSetupDone -= SubscribeToSensors;
-            SendData(AgentWrapper.Type.DESTROYED);
-        }
-
-        [ContextMenu("Send agent data")]
-        private void ContexMenuSendData()
-        {
-            SendData();
+            //SendData(AgentWrapper.Type.DESTROYED);
         }
 
         public void SendData(AgentWrapper.Type type = AgentWrapper.Type.CURRENT)
         {
             if (!NeedAServer)
             {
-                Debug.Log(SerializeAgentWrapperData());
+                string agentState = SerializeAgentWrapperData();
+                OnSerializedData?.Invoke(agentState);
+                Debug.Log("Printing agent state:\n" + agentState);
                 return;
             }
             if (!ClientIsConnected()) return;

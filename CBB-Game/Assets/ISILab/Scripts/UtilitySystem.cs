@@ -159,7 +159,7 @@ namespace CBB.Api
                 {
                     agentState.Add(new AgentStateVariable
                     {
-                        variableType = field.GetType(),
+                        variableType = field.FieldType,
                         variableName = field.Name,
                         value = field.GetValue(agent)
                     });
@@ -173,7 +173,7 @@ namespace CBB.Api
                 {
                     agentState.Add(new AgentStateVariable
                     {
-                        variableType = property.GetType(),
+                        variableType = property.PropertyType,
                         variableName = property.Name,
                         value = property.GetValue(agent)
                     });

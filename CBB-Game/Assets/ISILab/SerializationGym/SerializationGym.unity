@@ -496,6 +496,7 @@ GameObject:
   - component: {fileID: 290555402}
   - component: {fileID: 290555401}
   - component: {fileID: 290555400}
+  - component: {fileID: 290555403}
   m_Layer: 0
   m_Name: Sensor Auditory Field
   m_TagString: Untagged
@@ -560,6 +561,18 @@ Transform:
   m_Father: {fileID: 874170260}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &290555403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 290555399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e680a06f3a9c6844ebb3d750b464d3d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &309196632
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,7 +1030,7 @@ GameObject:
   - component: {fileID: 563929505}
   - component: {fileID: 563929504}
   m_Layer: 0
-  m_Name: Serializator
+  m_Name: Serialization Gym
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1181,6 +1194,7 @@ GameObject:
   - component: {fileID: 639148466}
   - component: {fileID: 639148465}
   - component: {fileID: 639148464}
+  - component: {fileID: 639148467}
   m_Layer: 0
   m_Name: Villager
   m_TagString: Friendly NPC
@@ -1280,7 +1294,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pickMethod: 0
   topN: 1
-  _actions: []
   _defaultAction: {fileID: 639148453}
   viewLogs: 0
 --- !u!114 &639148458
@@ -1439,6 +1452,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 639148451}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &639148467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639148451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b13625acf74c7b45a858f5234a8433b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentDataSender: {fileID: 0}
 --- !u!1 &667611997
 GameObject:
   m_ObjectHideFlags: 0
@@ -1870,7 +1896,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pickMethod: 0
   topN: 1
-  _actions: []
   _defaultAction: {fileID: 874170269}
   viewLogs: 0
 --- !u!114 &874170266
