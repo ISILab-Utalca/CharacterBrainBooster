@@ -23,10 +23,10 @@ namespace ArtificialIntelligence.Utility
         /// <param name="actions"></param>
         /// <returns></returns>
         /// <param name="pickMethod"></param><param name="topOptionsToConsider"></param>
-        public static List<Option> ScorePossibleOptions(List<ActionState> actions)
+        public static List<Option> ScorePossibleOptions(List<IAction> actions)
         {
             List<Option> scoredOptions = new();
-            foreach (ActionState action in actions)
+            foreach (IAction action in actions)
             {
                 var options = action.GetOptions();
                 scoredOptions.AddRange(options);

@@ -16,7 +16,7 @@ namespace ArtificialIntelligence.Utility
         private int topN = 1;
         [Tooltip("The actions that this agent can perform")]
         [SerializeField]
-        private List<ActionState> _actions = new();
+        private List<IAction> _actions = new();
 
         [Tooltip("Default action that this agent will execute if all are scored to 0")]
         [SerializeField]
@@ -37,7 +37,7 @@ namespace ArtificialIntelligence.Utility
         {
             _actionRunner = GetComponent<ActionRunner>();
             Sensors = gameObject.GetComponentsInChildren<ISensor>().ToList();
-            _actions.AddRange(gameObject.GetComponents<ActionState>());
+            _actions.AddRange(gameObject.GetComponents<IAction>());
 
         }
         // Subscribe to sensor updates and finished action events

@@ -1,9 +1,8 @@
-using ArtificialIntelligence.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixTheForgotten.AI
+namespace ArtificialIntelligence.Utility
 {
     /// <summary>
     /// This interface declares a contract for execute, interrupt and stop actions.
