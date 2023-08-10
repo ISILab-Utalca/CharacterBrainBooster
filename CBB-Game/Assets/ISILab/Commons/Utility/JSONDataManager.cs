@@ -179,6 +179,7 @@ namespace Utility
             // add converters to serializer
             jsonSerializerSettings.Converters.Add(new Vector3Converter());
             jsonSerializerSettings.Converters.Add(new Vector2Converter());
+            jsonSerializerSettings.Converters.Add(new GameObjectConverter());
 
             // generate data from string
             var data = JsonConvert.DeserializeObject<object>(
@@ -191,7 +192,34 @@ namespace Utility
 
             return data;
         }
+        public static T DeserializeData<T>(string json)
+        {
+            // generate serializer setting
+            var jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                TypeNameHandling = TypeNameHandling.All,
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore,
+            };
 
+            // add converters to serializer
+            jsonSerializerSettings.Converters.Add(new Vector3Converter());
+            jsonSerializerSettings.Converters.Add(new Vector2Converter());
+            jsonSerializerSettings.Converters.Add(new GameObjectConverter());
+
+            // generate data from string
+            var data = JsonConvert.DeserializeObject<T>(
+                json,
+                jsonSerializerSettings
+                );
+
+            if (data == null)
+                Debug.LogWarning("Error trying to deserialize json '" + json + "'.");
+
+            return data;
+        }
         public static List<string> GetJSONFiles(string path)
         {
             if(!Directory.Exists(path))
