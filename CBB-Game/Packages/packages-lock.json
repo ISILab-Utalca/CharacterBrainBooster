@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.chenpipi.project-pin-board": {
+      "version": "https://github.com/ichenpipi/unity-project-pin-board.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "7d2478b667a1ba5a87fb453af16aa228c9f330c4"
+    },
     "com.unity.2d.animation": {
       "version": "9.0.3",
       "depth": 1,
