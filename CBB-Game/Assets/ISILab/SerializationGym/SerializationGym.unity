@@ -1066,7 +1066,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &596904296
 GameObject:
@@ -1195,6 +1195,7 @@ GameObject:
   - component: {fileID: 639148465}
   - component: {fileID: 639148464}
   - component: {fileID: 639148467}
+  - component: {fileID: 639148468}
   m_Layer: 0
   m_Name: Villager
   m_TagString: Friendly NPC
@@ -1462,6 +1463,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b13625acf74c7b45a858f5234a8433b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentDataSender: {fileID: 0}
+--- !u!114 &639148468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639148451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6dcd5baef676114493b5eb094edfe1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   agentDataSender: {fileID: 0}
@@ -2317,7 +2331,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1478792138
 MonoBehaviour:

@@ -41,6 +41,7 @@ namespace CBB.Api
         private IAgentBrain agentBrain;
         
         public System.Action<string> OnSerializedData { get; set; }
+        public System.Action<string> OnSerializedDecision { get; set; }
         private void Awake()
         {
             agentComp = GetComponent<IAgent>();
@@ -95,7 +96,9 @@ namespace CBB.Api
         {
             if (!NeedAServer)
             {
-                Debug.Log(JSONDataManager.SerializeData(decisionPackage));
+                string serializedDecisionPackage = JSONDataManager.SerializeData(decisionPackage);
+                Debug.Log(serializedDecisionPackage);
+                OnSerializedDecision?.Invoke(serializedDecisionPackage);
                 return;
             }
             if (!ClientIsConnected()) return;

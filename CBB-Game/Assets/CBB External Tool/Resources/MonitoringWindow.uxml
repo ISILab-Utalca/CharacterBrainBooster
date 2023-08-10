@@ -1,4 +1,4 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <ui:VisualElement name="Header" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); height: auto; flex-direction: row; justify-content: space-between; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;">
         <ui:DropdownField label="Mode" index="0" choices="Monitor,Editor" name="ModeDropdown" style="flex-grow: 0; justify-content: flex-start; align-items: stretch; -unity-text-align: middle-left;" />
         <ui:Button text="Disconnect" display-tooltip-when-elided="true" name="DisconnectButton" style="align-items: flex-end; align-self: flex-end; flex-grow: 1; flex-shrink: 1;" />
@@ -12,6 +12,6 @@
         <CBB.ExternalTool.HistoryPanel style="flex-grow: 1; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; background-color: rgb(70, 70, 70); padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;" />
     </ui:VisualElement>
     <ui:VisualElement name="WaitingPanel" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none; visibility: visible;">
-        <ui:Label tabindex="-1" text="Waiting for a game to connect." display-tooltip-when-elided="true" style="align-self: center; align-items: center; justify-content: space-around; flex-grow: 1; -unity-text-align: middle-left; font-size: 24px;" />
+        <ui:Label tabindex="-1" text="Waiting for a game to connect." display-tooltip-when-elided="true" name="Label" style="align-self: center; align-items: center; justify-content: space-around; flex-grow: 1; -unity-text-align: middle-left; font-size: 24px;" />
     </ui:VisualElement>
 </ui:UXML>

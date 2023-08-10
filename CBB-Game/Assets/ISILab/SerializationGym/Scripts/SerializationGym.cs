@@ -61,5 +61,40 @@ namespace CBB.Tests
             var temp = JsonConvert.SerializeObject(ls,Formatting.Indented);
             Debug.Log(temp);    
         }
+        [ContextMenu("Catch deserialization error")]
+        public void DeserializationError()
+        {
+            var dummy = new DummySimpleData("darius");
+            string dummySerialized = JsonConvert.SerializeObject(dummy);
+            Debug.Log(dummySerialized);
+            // try to deserialize into an incorrect object
+            try
+            {
+                JsonSerializerSettings settings = new()
+                {
+                    TypeNameHandling = TypeNameHandling.All,
+                    SerializationBinder = new SensorData(),
+                };
+                SensorData fail = JsonConvert.DeserializeObject<SensorData>(dummySerialized, settings);
+                Debug.Log("yay");
+                Debug.Log(fail.GetType());
+                Debug.Log(fail.sensorType);
+
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log("Fail raised: " + e);
+            }
+            
+        }
+
+        public class DummySimpleData
+        {
+            public string name;
+            public DummySimpleData(string name)
+            {
+                this.name = name;
+            }
+        }
     }
 }

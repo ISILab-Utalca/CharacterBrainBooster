@@ -1,4 +1,5 @@
 using ArtificialIntelligence.Utility;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,7 @@ namespace CBB.Lib
     }
 
     [System.Serializable]
-    public class SensorData
+    public class SensorData : ISerializationBinder
     {
         public Type sensorType;
         public Dictionary<string, object> configurations = new();
@@ -32,6 +33,26 @@ namespace CBB.Lib
             this.sensorType = sensorType;
             this.configurations = config;
             this.memory = memory;
+        }
+
+        public void BindToName(Type serializedType, out string assemblyName, out string typeName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Type BindToType(string assemblyName, string typeName)
+        {
+            if(assemblyName != typeof(SensorData).Assembly.FullName)
+            {
+                Debug.Log("Assemblies don't match");
+                throw new TypeLoadException($"Error on BindToType: assembly names of {typeof(SensorData).Assembly.FullName} and {assemblyName} don't match");
+            }
+            if (typeName != typeof(SensorData).Name)
+            {
+                Debug.Log("types name don't match");
+                throw new TypeLoadException($"Error on BindToType: assembly type of {typeof(SensorData).Name} and {typeName} don't match");
+            }
+            return typeof(SensorData);
         }
     }
 

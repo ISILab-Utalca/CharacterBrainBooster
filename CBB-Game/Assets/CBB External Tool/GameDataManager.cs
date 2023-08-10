@@ -1,9 +1,11 @@
+using CBB.Api;
 using CBB.Comunication;
 using CBB.Lib;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
+using Utility;
 
 public class GameDataManager : MonoBehaviour
 {
@@ -15,7 +17,7 @@ public class GameDataManager : MonoBehaviour
     void Start()
     {
         Server.OnClientConnect += OnClientConnect;
-        Server.OnClientDisconnect += OnClinetDisconnect;
+        Server.OnClientDisconnect += OnClientDisconnect;
     }
 
     void Update()
@@ -28,13 +30,21 @@ public class GameDataManager : MonoBehaviour
 
         var msg = Server.GetRecived().Item1;
 
+        //try
+        //{
+        //    var agent = JSONDataManager.DeserializeData<AgentWrapper>(msg);
+        //}
+        //catch
+        //{
+
+        //}
         // cast to agent
-        var agent = JsonUtility.FromJson<AgentBasicData>(msg);
-        if(agent != null)
-        {
-            OnReadAgent(agent);
-            return;
-        }
+        
+        //if(agent != null)
+        //{
+        //    OnReadAgent(agent);
+        //    return;
+        //}
 
         // cast to decision
         //var decision = JsonUtility.FromJson<Decision>(msg);
@@ -61,7 +71,7 @@ public class GameDataManager : MonoBehaviour
         gameData = new GameData(client);
     }
 
-    private void OnClinetDisconnect(TcpClient client)
+    private void OnClientDisconnect(TcpClient client)
     {
 
     }
