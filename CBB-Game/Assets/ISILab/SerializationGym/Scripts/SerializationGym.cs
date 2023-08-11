@@ -65,7 +65,7 @@ namespace CBB.Tests
         public void DeserializationError()
         {
             var dummy = new DummySimpleData("darius");
-            string dummySerialized = JsonConvert.SerializeObject(dummy);
+            string dummySerialized = JSONDataManager.SerializeData(dummy);
             Debug.Log(dummySerialized);
             // try to deserialize into an incorrect object
             try
@@ -79,7 +79,6 @@ namespace CBB.Tests
                 Debug.Log("yay");
                 Debug.Log(fail.GetType());
                 Debug.Log(fail.sensorType);
-
             }
             catch (System.Exception e)
             {
@@ -87,7 +86,7 @@ namespace CBB.Tests
             }
             
         }
-
+        [System.Serializable]
         public class DummySimpleData
         {
             public string name;

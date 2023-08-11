@@ -45,11 +45,13 @@ namespace CBB.Lib
             if(assemblyName != typeof(SensorData).Assembly.FullName)
             {
                 Debug.Log("Assemblies don't match");
+                return null;
                 throw new TypeLoadException($"Error on BindToType: assembly names of {typeof(SensorData).Assembly.FullName} and {assemblyName} don't match");
             }
             if (typeName != typeof(SensorData).Name)
             {
                 Debug.Log("types name don't match");
+                return null;
                 throw new TypeLoadException($"Error on BindToType: assembly type of {typeof(SensorData).Name} and {typeName} don't match");
             }
             return typeof(SensorData);

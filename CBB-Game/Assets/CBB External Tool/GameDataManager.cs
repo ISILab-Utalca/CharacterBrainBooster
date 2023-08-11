@@ -1,6 +1,7 @@
 using CBB.Api;
 using CBB.Comunication;
 using CBB.Lib;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -30,35 +31,17 @@ public class GameDataManager : MonoBehaviour
 
         var msg = Server.GetRecived().Item1;
 
-        //try
-        //{
-        //    var agent = JSONDataManager.DeserializeData<AgentWrapper>(msg);
-        //}
-        //catch
-        //{
+        try
+        {
+            var ambiguous = JsonConvert.DeserializeObject<object>(msg);
+            var type = ambiguous.GetType();
 
-        //}
-        // cast to agent
-        
-        //if(agent != null)
-        //{
-        //    OnReadAgent(agent);
-        //    return;
-        //}
-
-        // cast to decision
-        //var decision = JsonUtility.FromJson<Decision>(msg);
-        //if(decision != null)
-        //{
-        //
-        //}
-
-        // cast to brain
-        //var brain = JsonUtility.FromJson<Brain>(msg);
-        //if(brain != null)
-        //{
-        //
-        //}
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogException(e);
+            throw;
+        }
     }
 
     private void OnReadAgent(AgentBasicData agent)
