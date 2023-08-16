@@ -43,8 +43,6 @@ namespace CBB.Lib
             };
             // Find sensors on this agent
             var sensors = gameObject.GetComponentsOnHierarchy<Sensor>();
-            Debug.Log($"Total sensors on {gameObject.name}: " + sensors.Count);
-            Debug.Log($"Sensors on {gameObject.name}: " + sensors);
             foreach (var sensor in sensors)
             {
                 AgentData.SensorsData.Add(sensor.GetSensorData());

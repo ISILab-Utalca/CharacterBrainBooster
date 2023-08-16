@@ -4,6 +4,7 @@ using UnityEditor;
 using Utility;
 using CBB.Lib;
 using System.Collections.Generic;
+using Newtonsoft.Json.Serialization;
 
 namespace CBB.Tests
 {
@@ -16,7 +17,7 @@ namespace CBB.Tests
         public string pathToJson;
         public string jsonFileName;
         public int testNum = 0;
-        
+
         public AgentBrainData brain = new();
         private Dictionary<string, object> data = new();
         [ContextMenu("Convert class to JSON")]
@@ -36,7 +37,7 @@ namespace CBB.Tests
             pathToJson = EditorUtility.OpenFolderPanel("Save Json into folder ...", "", "");
         }
 #endif
-        
+
         [ContextMenu("Serialize dictionary")]
         private void SerializeDictionary()
         {
@@ -58,42 +59,57 @@ namespace CBB.Tests
                 "Hola3",
                 "Hola4"
             };
-            var temp = JsonConvert.SerializeObject(ls,Formatting.Indented);
-            Debug.Log(temp);    
+            var temp = JsonConvert.SerializeObject(ls, Formatting.Indented);
+            Debug.Log(temp);
         }
         [ContextMenu("Catch deserialization error")]
         public void DeserializationError()
         {
+            // Create a list of valid types for de/serialization
+            List<(System.Type, ISerializationBinder)> validTypesAndBinders = new()
+            {
+                { (typeof(SensorData), new SensorDataBinder() )},
+                { (typeof(AgentBasicData), new AgentBasicDataBinder() )},
+                { (typeof(DummySimpleData), new DummySimpleDataBinder() )}
+            };
+            // Serialize the test case
             var dummy = new DummySimpleData("darius");
             string dummySerialized = JSONDataManager.SerializeData(dummy);
             Debug.Log(dummySerialized);
-            // try to deserialize into an incorrect object
-            try
+            // Set initial settings for detecting errors on deserialization
+            JsonSerializerSettings settings = new()
             {
-                JsonSerializerSettings settings = new()
+                TypeNameHandling = TypeNameHandling.All,
+                MissingMemberHandling = MissingMemberHandling.Error
+            };
+            // Loop through the list until a valid type is found
+            foreach(var pair in validTypesAndBinders)
+            {
+                settings.SerializationBinder = pair.Item2;
+                try
                 {
-                    TypeNameHandling = TypeNameHandling.All,
-                    SerializationBinder = new SensorData(),
-                };
-                SensorData fail = JsonConvert.DeserializeObject<SensorData>(dummySerialized, settings);
-                Debug.Log("yay");
-                Debug.Log(fail.GetType());
-                Debug.Log(fail.sensorType);
-            }
-            catch (System.Exception e)
-            {
-                Debug.Log("Fail raised: " + e);
-            }
-            
-        }
-        [System.Serializable]
-        public class DummySimpleData
-        {
-            public string name;
-            public DummySimpleData(string name)
-            {
-                this.name = name;
+                    // try to deserialize into an incorrect object
+                    var fail = JsonConvert.DeserializeObject(dummySerialized, settings);
+                    Debug.Log("yay");
+                    Debug.Log(fail.GetType());
+                    break;
+                }
+                catch (System.Exception e)
+                {
+                    // try to deserialize into an incorrect object
+                    //AgentData fail = JsonConvert.DeserializeObject<AgentData>(dummySerialized, settings);
+                    Debug.Log("Fail raised: " + e);
+                }
             }
         }
+    }
+}
+[System.Serializable]
+public class DummySimpleData
+{
+    public string name;
+    public DummySimpleData(string name)
+    {
+        this.name = name;
     }
 }
