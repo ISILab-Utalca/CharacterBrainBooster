@@ -9,7 +9,7 @@ using Utility;
 namespace CBB.Api
 {
     [System.Serializable]
-    public struct AgentWrapper // or AgentPackage 
+    public class AgentWrapper // or AgentPackage 
     {
         [System.Serializable]
         public enum Type
@@ -39,20 +39,29 @@ namespace CBB.Api
         private bool NeedAServer = false;
         private IAgent agentComp;
         private IAgentBrain agentBrain;
-        
+        private int agentID;
         public System.Action<string> OnSerializedData { get; set; }
         public System.Action<string> OnSerializedDecision { get; set; }
         private void Awake()
         {
             agentComp = GetComponent<IAgent>();
+            agentID = gameObject.GetInstanceID();
             agentBrain = GetComponent<IAgentBrain>();
             agentBrain.OnDecisionTaken += ReceiveDecisionHandler;
             agentBrain.OnSetupDone += SubscribeToSensors;
+
+            Client.OnConnectedToServer += SendAgentInitialData;
+        }
+
+        private void SendAgentInitialData()
+        {
+            SendData(AgentWrapper.Type.NEW);
+            Debug.Log("Initial data sent to the Server");
         }
 
         private void SubscribeToSensors()
         {
-            foreach (Sensor sensor in agentBrain.Sensors)
+            foreach (ISensor sensor in agentBrain.Sensors)
             {
                 sensor.OnSensorUpdate += ReceiveSensorUpdateHandler;
             }
@@ -150,6 +159,8 @@ namespace CBB.Api
         private string SerializeAgentWrapperData(AgentWrapper.Type type = AgentWrapper.Type.CURRENT)
         {
             var state = agentComp.GetInternalState();
+            state.agentName = gameObject.name;
+            state.ID = agentID;
             var wrap = new AgentWrapper(type, state);
 
             // Why Am I doing this here?

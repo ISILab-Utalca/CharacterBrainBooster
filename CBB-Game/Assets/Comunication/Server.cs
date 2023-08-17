@@ -25,9 +25,10 @@ namespace CBB.Comunication
         private static Queue<(string, TcpClient)> receivedMessagesQueue = new Queue<(string, TcpClient)>();
         private static object queueLock = new object();
 
-        public static Action<TcpClient> OnClientDisconnect;
-        public static Action<TcpClient> OnClientConnect;
+        public static Action<TcpClient> OnClientConnect { get; set; }
+        public static Action<TcpClient> OnClientDisconnect { get; set; }
 
+        #region Methods
         public static void Start()
         {
             server = new TcpListener(IPAddress.Any, serverPort);
@@ -195,5 +196,6 @@ namespace CBB.Comunication
         {
             Application.quitting += Server.Stop;
         }
+        #endregion
     }
 }

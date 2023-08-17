@@ -33,9 +33,10 @@ namespace CBB.Comunication
         private static Queue<string> receivedMessagesQueue = new Queue<string>();
         private static object queueLock = new object();
 
-        public static Action<TcpClient> OnServerDisconnect;
-
         public static bool IsConnected => running;
+
+        public static Action<TcpClient> OnServerDisconnect { get; set; }
+        public static Action OnConnectedToServer { get; set; }
 
         public static void Start()
         {
@@ -51,6 +52,7 @@ namespace CBB.Comunication
 
                 clientThread = new Thread(HandleServerCommunication);
                 clientThread.Start();
+                OnConnectedToServer?.Invoke();
             }
             catch (SocketException e)
             {

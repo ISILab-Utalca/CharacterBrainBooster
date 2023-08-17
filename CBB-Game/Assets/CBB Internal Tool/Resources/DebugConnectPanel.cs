@@ -17,7 +17,7 @@ namespace CBB.InternalTool
         private TextField portField;
         private Button connectionButon;
 
-        public Action OnConnect;
+        public Action OnConnect { get; set; }
 
         public DebugConnectPanel()
         {

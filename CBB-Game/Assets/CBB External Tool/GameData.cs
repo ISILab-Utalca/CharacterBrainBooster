@@ -1,3 +1,4 @@
+using CBB.Api;
 using CBB.Lib;
 using System;
 using System.Collections;
@@ -12,20 +13,20 @@ public class GameData
     private TcpClient client;
 
     // Current agent
-    private Dictionary<AgentBasicData, bool> agents = new Dictionary<AgentBasicData, bool>();
+    private Dictionary<int, bool> agents = new();
 
     // Dictionary<Actor, List<Desicions>>
-    private Dictionary<AgentBasicData, List<string>> histories = new Dictionary<AgentBasicData, List<string>>();
-    
+    private Dictionary<int, List<DecisionPackage>> histories = new();
+
     // List<Brain>
     private List<string> brains = new List<string>();
     #endregion
 
     #region EVENTS
-    public Action<GameData, AgentBasicData> OnAddAgent;
-    public Action<GameData, AgentBasicData> OnAgentSetAsDestroyed;
-    public Action<GameData, AgentBasicData, string> OnAddDecision;
-    public Action<GameData, List<string>> OnAddBrains;
+    public Action<GameData, AgentWrapper> OnAddAgent { get; set; }
+    public Action<GameData, AgentWrapper> OnAgentSetAsDestroyed { get; set; }
+    public Action<GameData, AgentWrapper, DecisionPackage> OnAddDecision { get; set; }
+    public Action<GameData, List<string>> OnAddBrains { get; set; }
     #endregion
 
     #region CONSTRUCTORS
@@ -36,42 +37,42 @@ public class GameData
     #endregion
 
     #region METHODS
-    public List<string> GetHistory(AgentBasicData agent)
+    public List<DecisionPackage> GetHistory(AgentWrapper agent)
     {
         try
         {
-            var history = histories[agent];
+            var history = histories[agent.state.ID];
             return history;
         }
         catch
         {
-            histories.Add(agent,new List<string>());
-            var history = histories[agent];
+            histories.Add(agent.state.ID, new List<DecisionPackage>());
+            var history = histories[agent.state.ID];
             return history;
         }
     }
 
-    public void UpdateHistory(AgentBasicData agent, string decision)
+    public void UpdateHistory(AgentWrapper agent, DecisionPackage decision)
     {
         var history = GetHistory(agent);
         history.Add(decision);
         OnAddDecision?.Invoke(this, agent, decision);
     }
 
-    public void AddAgent(AgentBasicData agent)
+    public void AddAgent(AgentWrapper agent)
     {
-        agents.Add(agent, true);
+        agents.Add(agent.state.ID, true);
         OnAddAgent?.Invoke(this, agent);
     }
 
-    public void RemoveAgent(AgentBasicData agent)
+    public void RemoveAgent(AgentWrapper agent)
     {
-        agents.Remove(agent);
+        agents.Remove(agent.state.ID);
     }
 
-    public void SetAgentAsDestroyed(AgentBasicData agent)
+    public void SetAgentAsDestroyed(AgentWrapper agent)
     {
-        agents[agent] = false;
+        agents[agent.state.ID] = false;
         OnAgentSetAsDestroyed?.Invoke(this, agent);
     }
     #endregion

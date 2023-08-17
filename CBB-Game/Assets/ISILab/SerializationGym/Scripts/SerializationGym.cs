@@ -24,7 +24,7 @@ namespace CBB.Tests
         private void ConvertToJson()
         {
             string sdJson = JsonConvert.SerializeObject(brain);
-            JSONDataManager.SaveData<AgentBrainData>(pathToJson, jsonFileName + $"{testNum}.json", brain);
+            JSONDataManager.SaveData(pathToJson, jsonFileName + $"{testNum}.json", brain);
             Debug.Log(sdJson);
 
             testNum++;
@@ -62,42 +62,43 @@ namespace CBB.Tests
             var temp = JsonConvert.SerializeObject(ls, Formatting.Indented);
             Debug.Log(temp);
         }
+
         [ContextMenu("Catch deserialization error")]
         public void DeserializationError()
         {
             // Create a list of valid types for de/serialization
-            List<(System.Type, ISerializationBinder)> validTypesAndBinders = new()
+            List<System.Type> deserializableTypes = new()
             {
-                { (typeof(SensorData), new SensorDataBinder() )},
-                { (typeof(AgentBasicData), new AgentBasicDataBinder() )},
-                { (typeof(DummySimpleData), new DummySimpleDataBinder() )}
+                typeof(SensorData),
+                typeof(AgentBasicData),
+                typeof(DummySimpleData)
             };
+
             // Serialize the test case
             var dummy = new DummySimpleData("darius");
             string dummySerialized = JSONDataManager.SerializeData(dummy);
             Debug.Log(dummySerialized);
+            
             // Set initial settings for detecting errors on deserialization
             JsonSerializerSettings settings = new()
             {
                 TypeNameHandling = TypeNameHandling.All,
                 MissingMemberHandling = MissingMemberHandling.Error
             };
+            
             // Loop through the list until a valid type is found
-            foreach(var pair in validTypesAndBinders)
+            
+            foreach(System.Type t in deserializableTypes)
             {
-                settings.SerializationBinder = pair.Item2;
+                settings.SerializationBinder = new GeneralBinder(t);
                 try
                 {
-                    // try to deserialize into an incorrect object
                     var fail = JsonConvert.DeserializeObject(dummySerialized, settings);
-                    Debug.Log("yay");
-                    Debug.Log(fail.GetType());
+                    Debug.Log($"Successful deserialization: {fail.GetType()}");
                     break;
                 }
                 catch (System.Exception e)
                 {
-                    // try to deserialize into an incorrect object
-                    //AgentData fail = JsonConvert.DeserializeObject<AgentData>(dummySerialized, settings);
                     Debug.Log("Fail raised: " + e);
                 }
             }

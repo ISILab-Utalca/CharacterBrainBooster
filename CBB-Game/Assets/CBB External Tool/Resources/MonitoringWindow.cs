@@ -6,10 +6,11 @@ using UnityEngine.UIElements;
 using System.Linq;
 using CBB.Comunication;
 using CBB.Lib;
+using CBB.Api;
 
 namespace CBB.ExternalTool
 {
-    public class MonitorView : MonoBehaviour
+    public class MonitoringWindow : MonoBehaviour
     {
         // Data
         private GameData gameData;
@@ -24,14 +25,17 @@ namespace CBB.ExternalTool
         private HistoryPanel historyPanel;
 
         // Logic
-        [SerializeField] private GameObject editorWindow;
-        [SerializeField] private GameObject mainWindow;
+        [SerializeField]
+        private GameObject editorWindow;
+        [SerializeField]
+        private GameObject mainWindow;
 
         // Async
         private List<Action> asyncCallBacks = new List<Action>();
 
         private void Awake()
         {
+            
             var root = GetComponent<UIDocument>().rootVisualElement;
 
             // InfoPanel
@@ -50,6 +54,7 @@ namespace CBB.ExternalTool
 
             // AgentsPanel
             this.agentsPanel = root.Q<AgentsPanel>();
+            
             agentsPanel.SelectionChange += OnSelectAgent;
 
             // SimpleBrainView
@@ -63,6 +68,18 @@ namespace CBB.ExternalTool
             Server.OnClientDisconnect += (client) => asyncCallBacks.Add(SetWaitingMode);
             SetWaitingMode();
 
+            GameDataManager.OnClientConnected += InitGameData;
+        }
+
+        private void InitGameData(GameData gameData)
+        {
+            this.gameData = gameData;
+            gameData.OnAddAgent += AddAgentToPanel;
+        }
+
+        private void AddAgentToPanel(GameData data, AgentWrapper wrapper)
+        {
+            agentsPanel.AddAgent(data, wrapper);
         }
 
         private void Update()
@@ -83,7 +100,7 @@ namespace CBB.ExternalTool
 
         private void OnSelectAgent(IEnumerable<object> objs)
         {
-            var agent = objs.First() as AgentBasicData;
+            var agent = objs.First() as AgentWrapper;
 
             try
             {

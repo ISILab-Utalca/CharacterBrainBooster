@@ -1,3 +1,4 @@
+using CBB.Api;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace CBB.ExternalTool
         // View
         private ListView list;
 
-        private List<string> target;
+        private List<(string,int)> targetAgentAndID;
 
         public Action<IEnumerable<object>> ItemChosen;
         public Action<IEnumerable<object>> SelectionChange;
@@ -50,10 +51,10 @@ namespace CBB.ExternalTool
         private void BindItem(VisualElement element, int index)
         {
             var nameLabel = element.Q<Label>("name");
-            nameLabel.text = target[index];
+            nameLabel.text = targetAgentAndID[index].Item1;
 
             var idLabel = element.Q<Label>("id");
-            idLabel.text = index.ToString(); // sacar el indice del agente y no de la propia lista (!!!)
+            idLabel.text = targetAgentAndID[index].Item2.ToString(); // sacar el indice del agente y no de la propia lista (!!!)
         }
 
         public void OnSelectionChange(IEnumerable<object> objs)
@@ -66,6 +67,11 @@ namespace CBB.ExternalTool
         {
             Debug.Log("OnItemChosen");
             ItemChosen?.Invoke(objs);
+        }
+
+        internal void AddAgent(GameData data, AgentWrapper wrapper)
+        {
+            targetAgentAndID.Add((wrapper.state.agentName,wrapper.state.ID));
         }
     }
 }

@@ -1,3 +1,4 @@
+using CBB.Lib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace CBB.ExternalTool
         private ScrollView scroll;
 
         // Info
-        private List<string> target;
+        private List<DecisionPackage> target;
         private ShowType showType = ShowType.Both;
 
         public HistoryPanel()
@@ -81,7 +82,7 @@ namespace CBB.ExternalTool
         private void BindItem(VisualElement element, int index)
         {
             var nameLabel = element.Q<Label>("name");
-            nameLabel.text = target[index];
+            nameLabel.text = target[index].GetType().ToString();
 
             if (showType == ShowType.Both || showType == ShowType.Decisions) // Decision
             {
@@ -96,7 +97,7 @@ namespace CBB.ExternalTool
             }
         }
 
-        public void SetInfo(List<string> history)
+        public void SetInfo(List<DecisionPackage> history)
         {
             this.target = history; 
         }
