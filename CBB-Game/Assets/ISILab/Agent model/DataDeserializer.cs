@@ -12,7 +12,7 @@ namespace CBB.Comunication
     {
         [SerializeField]
         private AgentDataSender agentDataSender;
-        private void Awake()
+        private void Start()
         {
             agentDataSender = GetComponent<AgentDataSender>();
             agentDataSender.OnSerializedData += DeserializeAgentData;

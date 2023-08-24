@@ -14,7 +14,7 @@ namespace CBB.InternalTool
         private Button disconnectButton;
         private Toggle showSensorGUI;
 
-        public Action OnDisconnect;
+        public Action OnDisconnect { get; set; }
 
         public DebugSettingPanel()
         {

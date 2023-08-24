@@ -10,7 +10,7 @@ public class DecisionDeserializer : MonoBehaviour
 {
     [SerializeField]
     private AgentDataSender agentDataSender;
-    private void Awake()
+    private void Start()
     {
         agentDataSender = GetComponent<AgentDataSender>();
         agentDataSender.OnSerializedDecision += DeserializeDecisionData;

@@ -3,6 +3,8 @@ using CBB.Comunication;
 using CBB.Lib;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using Utility;
 
@@ -65,7 +67,6 @@ namespace CBB.Api
             {
                 sensor.OnSensorUpdate += ReceiveSensorUpdateHandler;
             }
-            Debug.Log($"{gameObject.name} Agent Data Sender set up done");
         }
         private void ReceiveSensorUpdateHandler()
         {
@@ -106,7 +107,6 @@ namespace CBB.Api
             if (!NeedAServer)
             {
                 string serializedDecisionPackage = JSONDataManager.SerializeData(decisionPackage);
-                Debug.Log(serializedDecisionPackage);
                 OnSerializedDecision?.Invoke(serializedDecisionPackage);
                 return;
             }
@@ -116,7 +116,6 @@ namespace CBB.Api
             {
                 var data = JSONDataManager.SerializeData(decisionPackage);
                 Client.SendMessageToServer(data);
-                Debug.Log($"{data}");
             }
             catch (System.Exception e)
             {
@@ -139,6 +138,9 @@ namespace CBB.Api
                 string agentState = SerializeAgentWrapperData();
                 OnSerializedData?.Invoke(agentState);
                 Debug.Log("Printing agent state:\n" + agentState);
+                byte[] messageBytes = Encoding.UTF8.GetBytes(agentState);
+                Debug.Log($"Message length: {messageBytes.Length}");
+
                 return;
             }
             if (!ClientIsConnected()) return;

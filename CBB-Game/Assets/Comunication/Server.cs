@@ -17,9 +17,9 @@ namespace CBB.Comunication
         private static int serverPort = 8888;
 
         private static TcpListener server;
-        private static List<TcpClient> clients = new List<TcpClient>();
-
         private static Thread serverThread;
+
+        private static List<TcpClient> clients = new List<TcpClient>();
         private static List<Thread> clientThreads = new List<Thread>();
 
         private static Queue<(string, TcpClient)> receivedMessagesQueue = new Queue<(string, TcpClient)>();
@@ -29,6 +29,7 @@ namespace CBB.Comunication
         public static Action<TcpClient> OnClientDisconnect { get; set; }
 
         #region Methods
+
         public static void Start()
         {
             server = new TcpListener(IPAddress.Any, serverPort);
@@ -36,8 +37,10 @@ namespace CBB.Comunication
             running = true;
 
             Debug.Log("Server started. Waiting for clients...");
+            Debug.Log("Server ip address: " + server.LocalEndpoint.ToString());
 
             serverThread = new Thread(ReceiveConnections);
+            serverThread.IsBackground = true;
             serverThread.Start();
         }
 
@@ -194,7 +197,8 @@ namespace CBB.Comunication
         [RuntimeInitializeOnLoadMethod]
         private static void RunOnStart()
         {
-            Application.quitting += Server.Stop;
+            Start();
+            Application.quitting += Stop;
         }
         #endregion
     }

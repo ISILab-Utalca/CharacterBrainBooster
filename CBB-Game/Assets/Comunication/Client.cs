@@ -43,6 +43,7 @@ namespace CBB.Comunication
             try
             {
                 client = new TcpClient();
+                // Blocking call
                 client.Connect(serverAddress, serverPort);
                 running = true;
                 Debug.Log("Connected to server.");
@@ -99,7 +100,7 @@ namespace CBB.Comunication
                 NetworkStream stream = client.GetStream();
                 byte[] buffer = new byte[bufferSize];
 
-                while (true)
+                while (client.Connected)
                 {
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
                     string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
@@ -121,7 +122,11 @@ namespace CBB.Comunication
                     }
                 }
             }
-            catch (SocketException)
+            catch (Exception e)
+            {
+                Debug.LogError($"Client socket error: {e}");
+            }
+            finally
             {
                 Debug.Log("Disconnected from server.");
                 client.Close();
@@ -151,6 +156,7 @@ namespace CBB.Comunication
         [RuntimeInitializeOnLoadMethod]
         private static void RunOnStart()
         {
+            Start();
             Application.quitting += Client.Stop;
         }
     }
