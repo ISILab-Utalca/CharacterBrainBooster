@@ -44,10 +44,10 @@ namespace CBB.Comunication.Test
                 outputText.text = string.Empty;
             });
 
-            sendMessage.onClick.AddListener(() =>
-            {
-                Client.SendMessageToServer(inputfield.text);
-            });
+            //sendMessage.onClick.AddListener(() =>
+            //{
+            //    Client.SendMessageToServer(inputfield.text);
+            //});
         }
 
     }

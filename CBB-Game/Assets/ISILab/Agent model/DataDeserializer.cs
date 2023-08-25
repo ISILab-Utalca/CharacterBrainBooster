@@ -40,9 +40,7 @@ namespace CBB.Comunication
                 }
                 foreach (var item in agentWrapper.state.InternalVariables)
                 {
-                    Debug.Log(item.variableName);
-                    Debug.Log(item.variableType);
-                    Debug.Log(item.value);
+                    Debug.Log($"Var name: {item.variableName}; var type: {item.variableType}; var value: {item.value}");
                 }
                 Debug.Log("Done printing wrapper");
 

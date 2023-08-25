@@ -42,7 +42,7 @@ namespace ArtificialIntelligence.Utility
             // Warning: this assumes that the agent has a NavMeshAgent component
             // and a LocalAgentMemory component at the same level in the hierarchy
             // TODO: make this more robust
-            Debug.Log("Cache basic components");
+            //Debug.Log("Cache basic components");
             if (TryGetComponent(out LocalAgentMemory lam)) LocalAgentMemory = lam;
             if (TryGetComponent(out NavMeshAgent nma)) LocalNavMeshAgent = nma;
         }

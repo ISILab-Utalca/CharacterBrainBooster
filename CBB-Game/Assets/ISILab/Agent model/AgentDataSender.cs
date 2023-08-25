@@ -4,7 +4,7 @@ using CBB.Lib;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
-using UnityEditor.VersionControl;
+using System.Threading.Tasks;
 using UnityEngine;
 using Utility;
 
@@ -42,8 +42,12 @@ namespace CBB.Api
         private IAgent agentComp;
         private IAgentBrain agentBrain;
         private int agentID;
+        private int decisionsSent = 0;
+        private int dataSent = 0;
+
         public System.Action<string> OnSerializedData { get; set; }
         public System.Action<string> OnSerializedDecision { get; set; }
+
         private void Awake()
         {
             agentComp = GetComponent<IAgent>();
@@ -54,25 +58,26 @@ namespace CBB.Api
 
             Client.OnConnectedToServer += SendAgentInitialData;
         }
-
-        private void SendAgentInitialData()
+        private void OnDestroy()
         {
-            SendData(AgentWrapper.Type.NEW);
-            Debug.Log("Initial data sent to the Server");
+            agentBrain.OnDecisionTaken -= ReceiveDecisionHandler;
+            agentBrain.OnSetupDone -= SubscribeToSensors;
+            //SendData(AgentWrapper.Type.DESTROYED);
         }
 
-        private void SubscribeToSensors()
+        private bool ClientIsConnected()
         {
-            foreach (ISensor sensor in agentBrain.Sensors)
+            if (!Client.IsConnected)
             {
-                sensor.OnSensorUpdate += ReceiveSensorUpdateHandler;
+                Debug.Log("Cannot send data since you are not connected to server.");
+                return false;
             }
+            return true;
         }
         private void ReceiveSensorUpdateHandler()
         {
             SendData(AgentWrapper.Type.CURRENT);
         }
-
         private void ReceiveDecisionHandler(Option best, List<Option> otherOptions)
         {
             var agentState = agentComp.GetInternalState();
@@ -92,15 +97,33 @@ namespace CBB.Api
             // We also need to send the agent state when OnDecisionTaken is fired
             SendData();
         }
-
-        private bool ClientIsConnected()
+        private string SerializeAgentWrapperData(AgentWrapper.Type type = AgentWrapper.Type.CURRENT)
         {
-            if (!Client.IsConnected)
+            var state = agentComp.GetInternalState();
+            state.agentName = gameObject.name;
+            state.ID = agentID;
+            var wrap = new AgentWrapper(type, state);
+
+            // Why Am I doing this here?
+            List<JsonConverter> converters = new()
+                {
+                    new GameObjectConverter(),
+                    new Vector3Converter()
+                };
+            return JSONDataManager.SerializeData(wrap, converters);
+        }
+        private void SubscribeToSensors()
+        {
+            foreach (ISensor sensor in agentBrain.Sensors)
             {
-                Debug.Log("Cannot send data since you are not connected to server.");
-                return false;
+                sensor.OnSensorUpdate += ReceiveSensorUpdateHandler;
             }
-            return true;
+        }
+
+        private void SendAgentInitialData()
+        {
+            SendData(AgentWrapper.Type.NEW);
+            Debug.Log("Initial data sent to the Server");
         }
         private void SendData(DecisionPackage decisionPackage)
         {
@@ -116,6 +139,8 @@ namespace CBB.Api
             {
                 var data = JSONDataManager.SerializeData(decisionPackage);
                 Client.SendMessageToServer(data);
+                decisionsSent++;
+                Debug.Log($"{name} has sent {decisionsSent} decisions");
             }
             catch (System.Exception e)
             {
@@ -123,23 +148,15 @@ namespace CBB.Api
                 throw;
             }
         }
-        
-        private void OnDestroy()
-        {
-            agentBrain.OnDecisionTaken -= ReceiveDecisionHandler;
-            agentBrain.OnSetupDone -= SubscribeToSensors;
-            //SendData(AgentWrapper.Type.DESTROYED);
-        }
-
         public void SendData(AgentWrapper.Type type = AgentWrapper.Type.CURRENT)
         {
             if (!NeedAServer)
             {
-                string agentState = SerializeAgentWrapperData();
-                OnSerializedData?.Invoke(agentState);
-                Debug.Log("Printing agent state:\n" + agentState);
-                byte[] messageBytes = Encoding.UTF8.GetBytes(agentState);
-                Debug.Log($"Message length: {messageBytes.Length}");
+                //string agentState = SerializeAgentWrapperData();
+                //OnSerializedData?.Invoke(agentState);
+                //Debug.Log("Printing agent state:\n" + agentState);
+                //byte[] messageBytes = Encoding.UTF8.GetBytes(agentState);
+                //Debug.Log($"Message length: {messageBytes.Length}");
 
                 return;
             }
@@ -150,28 +167,15 @@ namespace CBB.Api
                 var data = SerializeAgentWrapperData(type);
 
                 Client.SendMessageToServer(data);
-                Debug.Log($"{data}");
+                dataSent++;
+                Debug.Log($"{name} has sent {dataSent} data packages");
+                Debug.Log($"Data sent: {data}");
             }
             catch (System.Exception e)
             {
                 Debug.Log($"Error: {e}");
                 throw;
             }
-        }
-        private string SerializeAgentWrapperData(AgentWrapper.Type type = AgentWrapper.Type.CURRENT)
-        {
-            var state = agentComp.GetInternalState();
-            state.agentName = gameObject.name;
-            state.ID = agentID;
-            var wrap = new AgentWrapper(type, state);
-
-            // Why Am I doing this here?
-            List<JsonConverter> converters = new()
-                {
-                    new GameObjectConverter(),
-                    new Vector3Converter()
-                };
-            return JSONDataManager.SerializeData(wrap, converters);
         }
     }
 

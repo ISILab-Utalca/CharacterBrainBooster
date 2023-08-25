@@ -11,7 +11,8 @@ namespace CBB.Comunication
 {
     public static class Server
     {
-        private static int bufferSize = 1024;
+        #region Fields
+        private static int bufferSize = 8096;
         private static bool running = false;
 
         private static int serverPort = 8888;
@@ -24,10 +25,11 @@ namespace CBB.Comunication
 
         private static Queue<(string, TcpClient)> receivedMessagesQueue = new Queue<(string, TcpClient)>();
         private static object queueLock = new object();
-
+        #endregion
+        #region Events
         public static Action<TcpClient> OnClientConnect { get; set; }
         public static Action<TcpClient> OnClientDisconnect { get; set; }
-
+        #endregion
         #region Methods
 
         public static void Start()
@@ -43,115 +45,83 @@ namespace CBB.Comunication
             serverThread.IsBackground = true;
             serverThread.Start();
         }
-
-        public static void Stop()
-        {
-            if (server != null && server.Server.IsBound)
-            {
-                SendMessageToAllClients(InternalMessage.SERVER_STOPPED.ToString());
-
-                running = false;
-
-                foreach (TcpClient client in clients)
-                {
-                    client.Close();
-                }
-                clients.Clear();
-
-                server.Stop();
-                Debug.Log("Server stopped.");
-            }
-            else
-            {
-                Debug.Log("Server is already stopped.");
-            }
-        }
-
         private static void ReceiveConnections()
         {
-            while (running)
+            try
             {
-                TcpClient client = server.AcceptTcpClient();
+                while (running)
+                {
+                    // Blocking call
+                    TcpClient client = server.AcceptTcpClient();
 
-                if (client == null)
-                    continue;
+                    if (client == null)
+                        continue;
 
-                clients.Add(client);
-                Debug.Log("New client connected!");
+                    clients.Add(client);
+                    Debug.Log("New client connected!");
 
-                // Inicia el hilo para manejar la comunicación con el cliente.
-                var clientThread = new Thread(() => HandleClientCommunication(client));
-                clientThreads.Add(clientThread);
-                clientThread.Start();
+                    // Inicia el hilo para manejar la comunicación con el cliente.
+                    var clientThread = new Thread(() => HandleClientCommunication(client));
+                    clientThreads.Add(clientThread);
+                    clientThread.Start();
+                }
+            }
+            catch (SocketException SocketExcep)
+            {
+                Debug.Log("<color=orange>Socket exception detected: </color>" + SocketExcep);
             }
         }
-
-        public static void SetAddressPort(int port)
-        {
-            serverPort = port;
-        }
-
-        public static int ClientAmount()
-        {
-            return clients.Count;
-        }
-
-        public static int GetRecivedAmount()
-        {
-            return receivedMessagesQueue.Count;
-        }
-
-        public static (string, TcpClient) GetRecived()
-        {
-            return receivedMessagesQueue.Dequeue();
-        }
-
-        public static Queue<(string, TcpClient)> GetQueueRecived()
-        {
-            return new Queue<(string, TcpClient)>(receivedMessagesQueue);
-        }
-
         private static void HandleClientCommunication(TcpClient client)
         {
             try
             {
-                NetworkStream stream = client.GetStream();
+                using NetworkStream stream = client.GetStream();
                 byte[] buffer = new byte[bufferSize];
 
-                while (true)
+                while (running)
                 {
-                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
-                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    Debug.Log("Received: " + message);
+                    int bytesRead;
+                    while ((bytesRead = stream.Read(buffer, 0, bufferSize)) != 0)
+                    {
 
-                    // Check Internal message
-                    object messageType;
-                    Enum.TryParse(typeof(InternalMessage), message, out messageType);
-                    if (messageType != null)
-                    {
-                        InternalCallBack((InternalMessage)messageType, client);
-                    }
-                    else
-                    {
-                        // Guardar el mensaje recibido en la cola de mensajes
-                        lock (queueLock)
-                        {
-                            receivedMessagesQueue.Enqueue((message, client));
-                        }
+                        // Receiver
+                        string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                        Debug.Log("Server received message bytes size: " + bytesRead);
+                        Debug.Log("Server received: " + message);
+
+                        //// Check Internal message
+                        //object messageType;
+                        //Enum.TryParse(typeof(InternalMessage), message, out messageType);
+                        //if (messageType != null)
+                        //{
+                        //    InternalCallBack((InternalMessage)messageType, client);
+                        //}
+                        //else
+                        //{
+                        //    // Guardar el mensaje recibido en la cola de mensajes
+                        //    lock (queueLock)
+                        //    {
+                        //        receivedMessagesQueue.Enqueue((message, client));
+                        //    }
+                        //}
                     }
                 }
             }
-            catch (SocketException)
+            catch (ObjectDisposedException disposedExcep)
             {
-                Debug.Log("Client disconnected.");
+                Debug.Log("<color=orange>Server communication thread error: </color>" + disposedExcep);
                 clients.Remove(client);
-                client.Close();
             }
+            catch (SocketException socketExcep)
+            {
+                Debug.Log("<color=orange>Server communication thread error: </color>" + socketExcep);
+                clients.Remove(client);
+            }
+            Debug.Log("<color=green>Server communication thread finished</color>");
         }
-
         private static void InternalCallBack(InternalMessage message, TcpClient client)
         {
-            switch(message)
+            switch (message)
             {
                 case InternalMessage.CLIENT_CONNECTED:
                     OnClientConnect?.Invoke(client);
@@ -163,6 +133,44 @@ namespace CBB.Comunication
                     Debug.LogWarning("El 'InternalMessage:" + message + "' no esta implementado para procesarce.");
                     break;
             }
+        }
+        public static void Stop()
+        {
+            if (server != null && server.Server.IsBound)
+            {
+                SendMessageToAllClients(InternalMessage.SERVER_STOPPED.ToString());
+
+                running = false;
+                clients.Clear();
+
+                server.Stop();
+                Debug.Log("Server stopped.");
+            }
+            else
+            {
+                Debug.Log("Server is already stopped.");
+            }
+        }
+
+        public static void SetAddressPort(int port)
+        {
+            serverPort = port;
+        }
+        public static (string, TcpClient) GetRecived()
+        {
+            return receivedMessagesQueue.Dequeue();
+        }
+        public static int ClientAmount()
+        {
+            return clients.Count;
+        }
+        public static int GetRecivedAmount()
+        {
+            return receivedMessagesQueue.Count;
+        }
+        public static Queue<(string, TcpClient)> GetQueueRecived()
+        {
+            return new Queue<(string, TcpClient)>(receivedMessagesQueue);
         }
 
         public static void SendMessageToAllClients(string message)
@@ -181,24 +189,15 @@ namespace CBB.Comunication
                 }
             }
         }
-
-        public static void SendMessageToClient( int index ,string message)
+        public static void SendMessageToClient(int index, string message)
         {
             SendMessageToClient(clients[index], message);
         }
-
         public static void SendMessageToClient(TcpClient client, string message)
         {
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
             NetworkStream stream = client.GetStream();
             stream.Write(messageBytes, 0, messageBytes.Length);
-        }
-
-        [RuntimeInitializeOnLoadMethod]
-        private static void RunOnStart()
-        {
-            Start();
-            Application.quitting += Stop;
         }
         #endregion
     }
