@@ -12,7 +12,6 @@ namespace CBB.Comunication
     public static class Server
     {
         #region Fields
-        private static int bufferSize = 8096;
         private static bool running = false;
 
         private static int serverPort = 8888;
@@ -20,6 +19,7 @@ namespace CBB.Comunication
         private static TcpListener server;
         private static Thread serverThread;
 
+        private static TcpClient gameInstanceClient;
         private static List<TcpClient> clients = new List<TcpClient>();
         private static List<Thread> clientThreads = new List<Thread>();
 
@@ -60,7 +60,7 @@ namespace CBB.Comunication
                     clients.Add(client);
                     Debug.Log("New client connected!");
 
-                    // Inicia el hilo para manejar la comunicación con el cliente.
+                    // Handles the client communication on a different thread
                     var clientThread = new Thread(() => HandleClientCommunication(client));
                     clientThreads.Add(clientThread);
                     clientThread.Start();
@@ -70,24 +70,34 @@ namespace CBB.Comunication
             {
                 Debug.Log("<color=orange>Socket exception detected: </color>" + SocketExcep);
             }
+            catch(Exception excep)
+            {
+                Debug.Log("<color=orange>General exception detected: </color>" + excep);
+            }
         }
         private static void HandleClientCommunication(TcpClient client)
         {
             try
             {
                 using NetworkStream stream = client.GetStream();
-                byte[] buffer = new byte[bufferSize];
+                // 
+                byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
 
                 while (running)
                 {
                     int bytesRead;
-                    while ((bytesRead = stream.Read(buffer, 0, bufferSize)) != 0)
+                    // receive the header
+                    while ((bytesRead = stream.Read(header, 0, header.Length)) != 0)
                     {
+                        // header contains the length of the message we really care about
+                        int messageLength = BitConverter.ToInt32(header, 0);
+                        Debug.Log($"[SERVER] Header size: {messageLength}");
 
-                        // Receiver
-                        string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                        Debug.Log("Server received message bytes size: " + bytesRead);
-                        Debug.Log("Server received: " + message);
+                        byte[] messageBytes = new byte[messageLength];
+                        // Blocking call
+                        stream.Read(messageBytes, 0, messageLength);
+                        string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
+                        Debug.Log("Server received: " + receivedJsonMessage);
 
                         //// Check Internal message
                         //object messageType;

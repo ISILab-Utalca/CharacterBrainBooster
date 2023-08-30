@@ -9,16 +9,13 @@ using System.Threading.Tasks;
 
 namespace CBB.Comunication
 {
-    public enum InternalMessage
-    {
-        CLIENT_CONNECTED,
-        CLIENT_STOPPED,
-        SERVER_STOPPED,
-    }
-
     public static class Client
     {
         #region Fields
+        /// <summary>
+        /// Use this to sync calls to static methods if there are many requesters at the same time
+        /// </summary>
+        public static readonly object syncObject = new();
         private static int bufferSize = 1024;
         private static bool running = false;
 
@@ -121,8 +118,10 @@ namespace CBB.Comunication
         public static void SendMessageToServer(string message)
         {
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+            
             NetworkStream stream = client.GetStream();
             Debug.Log($"Client sent a {messageBytes.Length} bytes size message");
+            stream.Write(BitConverter.GetBytes(messageBytes.Length),0,InternalNetworkManager.HEADER_SIZE);
             stream.Write(messageBytes, 0, messageBytes.Length);
         }
         private static void InternalCallBack(InternalMessage message, TcpClient client)

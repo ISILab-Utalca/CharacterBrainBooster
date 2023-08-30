@@ -4,61 +4,70 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class InternalNetworkManager : MonoBehaviour
+namespace CBB.Comunication
 {
-    private static int hEADER_SIZE = 4;
-
-    public static int HEADER_SIZE { get => hEADER_SIZE;}
-
-    [ContextMenu("Begin internal network")]
-    public void Begin()
+    public enum InternalMessage
     {
-        Application.quitting += End;
-        try
-        {
-            Server.Start();
-            Debug.Log("<color=green>Server started correctly</color>");
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("Server error: " + e);
-        }
-        Thread.Sleep(0);
-        try
-        {
-            Client.Start();
-            Debug.Log("<color=green>Internal client started correctly</color>");
-
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("Internal client error: " + e);
-        }
-        Debug.Log("<color=green>Internal connection set</color>");
+        CLIENT_CONNECTED,
+        CLIENT_STOPPED,
+        SERVER_STOPPED,
     }
-    [ContextMenu("End internal network")]
-    public void End()
+    public class InternalNetworkManager : MonoBehaviour
     {
-        try
-        {
-            Client.Stop();
-            Debug.Log("<color=green>Client stopped correctly</color>");
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("Internal client error: " + e);
-        }
-        Thread.Sleep(0);
-        try
-        {
-            Server.Stop();
-            Debug.Log("<color=green>Server stopped correctly</color>");
+        private static readonly int header_size = 4;
 
-        }
-        catch (System.Exception e)
+        public static int HEADER_SIZE { get => header_size; }
+
+        [ContextMenu("Begin internal network")]
+        public void Begin()
         {
-            Debug.LogError("Server error: " + e);
+            Application.quitting += End;
+            try
+            {
+                Server.Start();
+                Debug.Log("<color=yellow>Server started correctly</color>");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Server error: " + e);
+            }
+            Thread.Sleep(0);
+            try
+            {
+                Client.Start();
+                Debug.Log("<color=yellow>Internal client started correctly</color>");
+
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Internal client error: " + e);
+            }
+            Debug.Log("<color=yellow>Internal connection set</color>");
         }
-        Debug.Log("<color=green>Internal connection stoppped</color>");
+        [ContextMenu("End internal network")]
+        public void End()
+        {
+            try
+            {
+                Client.Stop();
+                Debug.Log("<color=yellow>Client stopped correctly</color>");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Internal client error: " + e);
+            }
+            Thread.Sleep(0);
+            try
+            {
+                Server.Stop();
+                Debug.Log("<color=yellow>Server stopped correctly</color>");
+
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Server error: " + e);
+            }
+            Debug.Log("<color=yellow>Internal connection stoppped</color>");
+        }
     }
 }
