@@ -165,8 +165,10 @@ namespace CBB.Api
             try
             {
                 var data = SerializeAgentWrapperData(type);
-
-                Client.SendMessageToServer(data);
+                lock(Client.syncObject)
+                {
+                    Client.SendMessageToServer(data);
+                }
                 dataSent++;
                 Debug.Log($"{name} has sent {dataSent} data packages");
                 Debug.Log($"Data sent: {data}");
