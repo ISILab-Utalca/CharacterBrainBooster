@@ -9,10 +9,10 @@ using UnityEngine;
 public class DummySensor : Sensor
 {
     // Some random variables for its configuration
-    [SensorConfiguration]
-    private float floatVar = 0f;
-    [SensorConfiguration]
-    private int intVar = 0;
+    //[SensorConfiguration]
+    //private float floatVar = 0f;
+    //[SensorConfiguration]
+    //private int intVar = 0;
     [SensorConfiguration]
     public List<GameObject> randomObjects;
     [SensorConfiguration]

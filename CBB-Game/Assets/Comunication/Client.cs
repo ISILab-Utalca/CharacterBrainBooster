@@ -6,6 +6,7 @@ using System.Text;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace CBB.Comunication
 {
@@ -46,8 +47,9 @@ namespace CBB.Comunication
                 // Blocking call
                 client.Connect(serverAddress, serverPort);
                 running = true;
-                Debug.Log("Connected to server.");
-
+                Debug.Log("[INTERNAL CLIENT] Connected to server.");
+                Debug.Log($"[INTERNAL CLIENT] Local endpoint: {client.Client.LocalEndPoint}");
+                Debug.Log($"[INTERNAL CLIENT] Remote endpoint: {client.Client.RemoteEndPoint}");
                 // Envia el mensaje de CLIENT_CONNECTED al servidor
                 SendMessageToServer(InternalMessage.CLIENT_CONNECTED.ToString());
 

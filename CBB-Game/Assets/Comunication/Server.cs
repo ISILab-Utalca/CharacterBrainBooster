@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -38,8 +39,9 @@ namespace CBB.Comunication
             server.Start();
             running = true;
 
-            Debug.Log("Server started. Waiting for clients...");
-            Debug.Log("Server ip address: " + server.LocalEndpoint.ToString());
+            Debug.Log("[SERVER] Started. Waiting for clients...");
+            Debug.Log("[SERVER] Local Endpoint: " + server.LocalEndpoint.ToString());
+            Debug.Log("[SERVER] Remote Endpoint: " + server.Server.RemoteEndPoint);
 
             serverThread = new Thread(ReceiveConnections);
             serverThread.IsBackground = true;
@@ -57,6 +59,7 @@ namespace CBB.Comunication
                     if (client == null)
                         continue;
 
+                    // Identify type of client (is it a external monitor or the game client)
                     clients.Add(client);
                     Debug.Log("New client connected!");
 
@@ -97,9 +100,9 @@ namespace CBB.Comunication
                         // Blocking call
                         stream.Read(messageBytes, 0, messageLength);
                         string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
-                        Debug.Log("Server received: " + receivedJsonMessage);
+                        Debug.Log("[SERVER] Message received: " + receivedJsonMessage);
 
-                        //// Check Internal message
+                        // Check Internal message
                         //object messageType;
                         //Enum.TryParse(typeof(InternalMessage), message, out messageType);
                         //if (messageType != null)
@@ -126,6 +129,10 @@ namespace CBB.Comunication
             {
                 Debug.Log("<color=orange>Server communication thread error: </color>" + socketExcep);
                 clients.Remove(client);
+            }
+            catch(IOException IOexcep)
+            {
+                Debug.Log("<color=orange>Server communication thread error: </color>" + IOexcep);
             }
             Debug.Log("<color=green>Server communication thread finished</color>");
         }

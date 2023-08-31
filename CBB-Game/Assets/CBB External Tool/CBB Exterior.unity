@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 291235147}
   - component: {fileID: 291235146}
   m_Layer: 0
-  m_Name: MonitorWindow
+  m_Name: Monitoring Window
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 1167354337}
   - component: {fileID: 1167354336}
   m_Layer: 0
-  m_Name: MainWindow
+  m_Name: Main Window
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e106ddbeba795fa4ea6f9dbcedabdda9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monitorWindow: {fileID: 291235145}
+  monitorWindow: {fileID: 291235146}
   editorWindow: {fileID: 1204376766}
 --- !u!114 &1167354337
 MonoBehaviour:

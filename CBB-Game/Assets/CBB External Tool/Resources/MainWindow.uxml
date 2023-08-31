@@ -5,5 +5,6 @@
         <ui:TextField picking-mode="Ignore" label="Port" value="8888" keyboard-type="NumberPad" name="PortField" readonly="false" />
         <ui:Button text="Start conection" display-tooltip-when-elided="true" />
         <ui:RadioButtonGroup label="Mode" value="0" choices="Monitor,Editor" style="-unity-text-align: middle-left;" />
+        <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="ConnectionInformation" text="No information" style="background-color: rgba(159, 67, 67, 0); border-left-color: rgba(238, 233, 233, 0); border-right-color: rgba(238, 233, 233, 0); border-top-color: rgba(238, 233, 233, 0); border-bottom-color: rgba(238, 233, 233, 0); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; opacity: 1; display: flex; visibility: visible;" />
     </ui:VisualElement>
 </ui:UXML>

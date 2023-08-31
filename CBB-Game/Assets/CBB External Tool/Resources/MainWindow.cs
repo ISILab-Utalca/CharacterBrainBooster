@@ -1,21 +1,20 @@
-using CBB.Comunication;
-using System.Collections;
-using System.Collections.Generic;
+using CBB.ExternalTool;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class MainView : MonoBehaviour
+public class MainWindow : MonoBehaviour
 {
     // View
     private TextField addresField;
     private TextField portField;
     private Button startButton;
     private RadioButtonGroup buttonGroup;
+    private Label connectionInformation;
 
     // Logic
-    [SerializeField] private GameObject monitorWindow;
+    [SerializeField] private MonitoringWindow monitorWindow;
     [SerializeField] private GameObject editorWindow;
-
+    [SerializeField] private ExternalMonitor monitorClient;
     private void Awake()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
@@ -34,6 +33,9 @@ public class MainView : MonoBehaviour
 
         // ButtonGroup
         this.buttonGroup = root.Q<RadioButtonGroup>();
+
+        // InformationLabel
+        this.connectionInformation = root.Q<Label>("ConnectionInformation");
     }
 
     private void OnAddressChange(ChangeEvent<string> evt)
@@ -50,41 +52,48 @@ public class MainView : MonoBehaviour
     {
         try
         {
-            var address = addresField.value;
-            var port = int.Parse(portField.value);
+            var serverAddress = addresField.value;
+            var serverPort = int.Parse(portField.value);
 
-            Server.SetAddressPort(port); //Server.SetAddressPort(address,port);
-            Server.Start();
-
+            monitorClient = new();
+            monitorClient.ConnectToServer(serverAddress, serverPort);
+            monitorWindow.ExternalMonitor = monitorClient;
             var value = buttonGroup.value;
             OpenWindow(value);
         }
-        catch
+        catch (System.Exception e)
         {
-            OnFailConnection();
+            OpenWindow(-1);
+            OnFailConnection(e);
         }
     }
 
     private void OpenWindow(int value)
     {
-        switch(value)
+        switch (value)
         {
             case 0:
-                monitorWindow.SetActive(true);
+                monitorWindow.gameObject.SetActive(true);
+                this.gameObject.SetActive(false);
                 break;
 
             case 1:
                 editorWindow.SetActive(true);
+                this.gameObject.SetActive(false);
                 break;
-
+            case -1:
+                editorWindow.SetActive(false);
+                monitorWindow.gameObject.SetActive(false);
+                // Redundant?
+                this.gameObject.SetActive(true);
+                break;
             default:
                 return;
         }
-        this.gameObject.SetActive(false);
     }
 
-    private void OnFailConnection()
+    private void OnFailConnection(System.Exception error)
     {
-        Debug.Log("Failed to start the connection.");
+        connectionInformation.text = $"Failed to start the connection: {error}";
     }
 }

@@ -14,15 +14,15 @@ namespace CBB.ExternalTool
     {
         // Data
         private GameData gameData;
-
+        private ExternalMonitor externalMonitor;
         // View
         private VisualElement infoPanel;
         private VisualElement waitingPanel;
         private DropdownField modeDropdown;
         private Button disconnectButton;
         private AgentsPanel agentsPanel;
-        private SimpleBrainView simpleBrainView;
         private HistoryPanel historyPanel;
+        private SimpleBrainView simpleBrainView;
 
         // Logic
         [SerializeField]
@@ -32,6 +32,8 @@ namespace CBB.ExternalTool
 
         // Async
         private List<Action> asyncCallBacks = new List<Action>();
+
+        public ExternalMonitor ExternalMonitor { get => externalMonitor; set => externalMonitor = value; }
 
         private void Awake()
         {
@@ -51,6 +53,7 @@ namespace CBB.ExternalTool
             // DisconnectButton
             this.disconnectButton = root.Q<Button>("DisconnectButton");
             disconnectButton.clicked += OnDisconnect;
+            disconnectButton.clicked += ExternalMonitor.RemoveClient;
 
             // AgentsPanel
             this.agentsPanel = root.Q<AgentsPanel>();
@@ -62,11 +65,6 @@ namespace CBB.ExternalTool
 
             // HistoryPanel
             this.historyPanel = root.Q<HistoryPanel>();
-
-            // Init
-            Server.OnClientConnect += (client) => asyncCallBacks.Add(SetWaitingMode);
-            Server.OnClientDisconnect += (client) => asyncCallBacks.Add(SetWaitingMode);
-            SetWaitingMode();
 
             GameDataManager.OnClientConnected += InitGameData;
         }
@@ -80,22 +78,6 @@ namespace CBB.ExternalTool
         private void AddAgentToPanel(GameData data, AgentWrapper wrapper)
         {
             agentsPanel.AddAgent(data, wrapper);
-        }
-
-        private void Update()
-        {
-            // Async
-            foreach (var callback in asyncCallBacks)
-            {
-                callback?.Invoke();
-            }    
-        }
-
-        private void SetWaitingMode()
-        {
-            var value = (Server.ClientAmount() <= 0);
-            infoPanel.SetDisplay(!value);
-            waitingPanel.SetDisplay(value);
         }
 
         private void OnSelectAgent(IEnumerable<object> objs)
@@ -122,7 +104,7 @@ namespace CBB.ExternalTool
 
         private void OnDisconnect()
         {
-            Server.Stop();
+
             this.gameObject.SetActive(false);
             this.mainWindow.SetActive(true);
         }

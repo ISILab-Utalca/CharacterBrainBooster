@@ -39,12 +39,13 @@ namespace CBB.Api
     {
         [SerializeField]
         private bool NeedAServer = false;
+        private bool showLogs = false;
         private IAgent agentComp;
         private IAgentBrain agentBrain;
         private int agentID;
         private int decisionsSent = 0;
         private int dataSent = 0;
-
+        [SerializeField]
         public System.Action<string> OnSerializedData { get; set; }
         public System.Action<string> OnSerializedDecision { get; set; }
 
@@ -69,7 +70,7 @@ namespace CBB.Api
         {
             if (!Client.IsConnected)
             {
-                Debug.Log("Cannot send data since you are not connected to server.");
+                if (showLogs) Debug.Log("Cannot send data since you are not connected to server.");
                 return false;
             }
             return true;
@@ -123,7 +124,7 @@ namespace CBB.Api
         private void SendAgentInitialData()
         {
             SendData(AgentWrapper.Type.NEW);
-            Debug.Log("Initial data sent to the Server");
+            if (showLogs) Debug.Log("Initial data sent to the Server");
         }
         private void SendData(DecisionPackage decisionPackage)
         {
@@ -140,7 +141,7 @@ namespace CBB.Api
                 var data = JSONDataManager.SerializeData(decisionPackage);
                 Client.SendMessageToServer(data);
                 decisionsSent++;
-                Debug.Log($"{name} has sent {decisionsSent} decisions");
+                if (showLogs) Debug.Log($"{name} has sent {decisionsSent} decisions");
             }
             catch (System.Exception e)
             {
@@ -165,13 +166,16 @@ namespace CBB.Api
             try
             {
                 var data = SerializeAgentWrapperData(type);
-                lock(Client.syncObject)
+                lock (Client.syncObject)
                 {
                     Client.SendMessageToServer(data);
                 }
                 dataSent++;
-                Debug.Log($"{name} has sent {dataSent} data packages");
-                Debug.Log($"Data sent: {data}");
+                if (showLogs)
+                {
+                    Debug.Log($"{name} has sent {dataSent} data packages");
+                    Debug.Log($"Data sent: {data}");
+                }
             }
             catch (System.Exception e)
             {
