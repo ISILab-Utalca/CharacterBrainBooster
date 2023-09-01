@@ -20,10 +20,13 @@ public class ExternalMonitor
     {
         // Blocking call
         client = new TcpClient(serverAddress, serverPort);
-
+        
+        // Ensure Exit if user quits app
+        Application.quitting += RemoveClient;
         Debug.Log("[MONITOR] Connected to server.");
         Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
         Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
+        
         ThreadPool.QueueUserWorkItem(HandleServerCommunication);
     }
     public async Task ConnectToServerAsync(string serverAddress, int serverPort)
@@ -31,7 +34,7 @@ public class ExternalMonitor
         // Blocking call
         client = new TcpClient();
         await client.ConnectAsync(serverAddress, serverPort);
-
+        IsConnected = true;
         Debug.Log("[MONITOR] Connected to server.");
         Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
         Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
@@ -57,13 +60,13 @@ public class ExternalMonitor
                 {
                     // header contains the length of the message we really care about
                     int messageLength = BitConverter.ToInt32(header, 0);
-                    Debug.Log($"[EXT-MONITOR] Header size: {messageLength}");
+                    Debug.Log($"[MONITOR] Header size: {messageLength}");
 
                     byte[] messageBytes = new byte[messageLength];
                     // Blocking call
                     stream.Read(messageBytes, 0, messageLength);
                     string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
-                    Debug.Log("[EXT-MONITOR] Message received: " + receivedJsonMessage);
+                    Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
 
                     // Check Internal message
                     object messageType;
@@ -71,6 +74,10 @@ public class ExternalMonitor
                     if (messageType != null)
                     {
                         InternalCallBack((InternalMessage)messageType, client);
+                    }
+                    else
+                    {
+                        Debug.LogError("[MONITOR] Failed type casting");
                     }
                     //else
                     //{
@@ -85,13 +92,13 @@ public class ExternalMonitor
         }
         catch (ObjectDisposedException disposedExcep)
         {
-            Debug.Log("<color=orange>Server communication thread error: </color>" + disposedExcep);
+            Debug.Log("<color=orange>Monitor communication thread error: </color>" + disposedExcep);
         }
         catch (SocketException socketExcep)
         {
-            Debug.Log("<color=orange>Server communication thread error: </color>" + socketExcep);
+            Debug.Log("<color=orange>Monitor communication thread error: </color>" + socketExcep);
         }
-        Debug.Log("<color=yellow>Server communication thread finished</color>");
+        Debug.Log("<color=yellow>Monitor communication thread finished</color>");
     }
     private void InternalCallBack(InternalMessage message, TcpClient client)
     {
