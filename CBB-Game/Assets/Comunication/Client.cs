@@ -66,7 +66,6 @@ namespace CBB.Comunication
         {
             if (client != null && client.Connected)
             {
-                SendMessageToServer(InternalMessage.CLIENT_STOPPED.ToString()); // client stopped message
                 running = false;
                 client.Close();
                 client = null;
@@ -122,7 +121,7 @@ namespace CBB.Comunication
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
             
             NetworkStream stream = client.GetStream();
-            Debug.Log($"Client sent a {messageBytes.Length} bytes size message");
+            //Debug.Log($"Client sent a {messageBytes.Length} bytes size message");
             stream.Write(BitConverter.GetBytes(messageBytes.Length),0,InternalNetworkManager.HEADER_SIZE);
             stream.Write(messageBytes, 0, messageBytes.Length);
         }
@@ -140,6 +139,11 @@ namespace CBB.Comunication
             }
         }
         
+        public static void DisconnectFromServer()
+        {
+            SendMessageToServer(InternalMessage.CLIENT_STOPPED.ToString()); // client stopped message
+            Stop();
+        }
         private static void RemoveClient()
         {
             running = false;
@@ -147,6 +151,7 @@ namespace CBB.Comunication
             client = null;
             Debug.Log("Client stopped.");
         }
+        
         public static void SetAddressPort(string address, int port)
         {
             serverPort = port;

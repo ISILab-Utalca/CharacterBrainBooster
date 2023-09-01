@@ -19,13 +19,11 @@ namespace CBB.Comunication
 
         private static TcpListener server;
         private static Thread serverThread;
+        private static List<TcpClient> clients = new();
+        private static List<Thread> clientThreads = new();
 
-        private static TcpClient gameInstanceClient;
-        private static List<TcpClient> clients = new List<TcpClient>();
-        private static List<Thread> clientThreads = new List<Thread>();
-
-        private static Queue<(string, TcpClient)> receivedMessagesQueue = new Queue<(string, TcpClient)>();
-        private static object queueLock = new object();
+        private static readonly Queue<(string, TcpClient)> receivedMessagesQueue = new Queue<(string, TcpClient)>();
+        private static readonly object queueLock = new();
         #endregion
         #region Events
         public static Action<TcpClient> OnClientConnect { get; set; }
@@ -94,21 +92,21 @@ namespace CBB.Comunication
                     {
                         // header contains the length of the message we really care about
                         int messageLength = BitConverter.ToInt32(header, 0);
-                        Debug.Log($"[SERVER] Header size: {messageLength}");
+                        //Debug.Log($"[SERVER] Header size: {messageLength}");
 
                         byte[] messageBytes = new byte[messageLength];
                         // Blocking call
                         stream.Read(messageBytes, 0, messageLength);
                         string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
-                        Debug.Log("[SERVER] Message received: " + receivedJsonMessage);
+                        //Debug.Log("[SERVER] Message received: " + receivedJsonMessage);
 
-                        // Check Internal message
-                        //object messageType;
-                        //Enum.TryParse(typeof(InternalMessage), message, out messageType);
-                        //if (messageType != null)
-                        //{
-                        //    InternalCallBack((InternalMessage)messageType, client);
-                        //}
+                        //Check Internal message
+                        object messageType;
+                        Enum.TryParse(typeof(InternalMessage), receivedJsonMessage, out messageType);
+                        if (messageType != null)
+                        {
+                            InternalCallBack((InternalMessage)messageType, client);
+                        }
                         //else
                         //{
                         //    // Guardar el mensaje recibido en la cola de mensajes
@@ -169,6 +167,34 @@ namespace CBB.Comunication
             }
         }
 
+        public static void SendMessageToAllClients(string message)
+        {
+            foreach (TcpClient client in clients)
+            {
+                try
+                {
+                    SendMessageToClient(client, message);
+                }
+                catch (SocketException)
+                {
+                    Debug.Log("Error sending message to client.");
+                }
+            }
+        }
+        public static void SendMessageToClient(int index, string message)
+        {
+            SendMessageToClient(clients[index], message);
+        }
+        public static void SendMessageToClient(TcpClient client, string message)
+        {
+            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+            NetworkStream stream = client.GetStream();
+            
+            // Blocking operations, length prefix protocol
+            stream.Write(BitConverter.GetBytes(messageBytes.Length), 0, InternalNetworkManager.HEADER_SIZE);
+            stream.Write(messageBytes, 0, messageBytes.Length);
+        }
+        
         public static void SetAddressPort(int port)
         {
             serverPort = port;
@@ -188,33 +214,6 @@ namespace CBB.Comunication
         public static Queue<(string, TcpClient)> GetQueueRecived()
         {
             return new Queue<(string, TcpClient)>(receivedMessagesQueue);
-        }
-
-        public static void SendMessageToAllClients(string message)
-        {
-            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
-            foreach (TcpClient client in clients)
-            {
-                try
-                {
-                    NetworkStream cStream = client.GetStream();
-                    cStream.Write(messageBytes, 0, messageBytes.Length);
-                }
-                catch (SocketException)
-                {
-                    Debug.Log("Error sending message to client.");
-                }
-            }
-        }
-        public static void SendMessageToClient(int index, string message)
-        {
-            SendMessageToClient(clients[index], message);
-        }
-        public static void SendMessageToClient(TcpClient client, string message)
-        {
-            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
-            NetworkStream stream = client.GetStream();
-            stream.Write(messageBytes, 0, messageBytes.Length);
         }
         #endregion
     }

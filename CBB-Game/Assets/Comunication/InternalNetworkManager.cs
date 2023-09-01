@@ -49,6 +49,16 @@ namespace CBB.Comunication
         {
             try
             {
+                Server.Stop();
+                Debug.Log("<color=yellow>Server stopped correctly</color>");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Server error: " + e);
+            }
+
+            try
+            {
                 Client.Stop();
                 Debug.Log("<color=yellow>Client stopped correctly</color>");
             }
@@ -56,17 +66,7 @@ namespace CBB.Comunication
             {
                 Debug.LogError("Internal client error: " + e);
             }
-            Thread.Sleep(0);
-            try
-            {
-                Server.Stop();
-                Debug.Log("<color=yellow>Server stopped correctly</color>");
-
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError("Server error: " + e);
-            }
+            
             Debug.Log("<color=yellow>Internal connection stoppped</color>");
         }
     }
