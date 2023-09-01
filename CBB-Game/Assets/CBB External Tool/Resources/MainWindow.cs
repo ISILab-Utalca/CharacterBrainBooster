@@ -48,7 +48,7 @@ public class MainWindow : MonoBehaviour
         //Debug.Log(evt.newValue);
     }
 
-    private void OnStartConnection()
+    private async void OnStartConnection()
     {
         try
         {
@@ -56,10 +56,12 @@ public class MainWindow : MonoBehaviour
             var serverPort = int.Parse(portField.value);
 
             monitorClient = new();
-            monitorClient.ConnectToServer(serverAddress, serverPort);
+            //monitorClient.ConnectToServer(serverAddress, serverPort);
+            await monitorClient.ConnectToServerAsync(serverAddress, serverPort);
             monitorWindow.ExternalMonitor = monitorClient;
             var value = buttonGroup.value;
             OpenWindow(value);
+            Debug.Log("[MONITOR] Client connection done");
         }
         catch (System.Exception e)
         {

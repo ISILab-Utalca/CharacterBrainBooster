@@ -3,6 +3,7 @@ using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -11,12 +12,25 @@ using UnityEngine;
 public class ExternalMonitor
 {
     private TcpClient client;
+
+    public Action OnDisconnectedFromServer { get;set; }
     public bool IsConnected { get; private set; }
 
     public void ConnectToServer(string serverAddress, int serverPort)
     {
         // Blocking call
         client = new TcpClient(serverAddress, serverPort);
+
+        Debug.Log("[MONITOR] Connected to server.");
+        Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
+        Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
+        ThreadPool.QueueUserWorkItem(HandleServerCommunication);
+    }
+    public async Task ConnectToServerAsync(string serverAddress, int serverPort)
+    {
+        // Blocking call
+        client = new TcpClient();
+        await client.ConnectAsync(serverAddress, serverPort);
 
         Debug.Log("[MONITOR] Connected to server.");
         Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
@@ -51,13 +65,13 @@ public class ExternalMonitor
                     string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
                     Debug.Log("[EXT-MONITOR] Message received: " + receivedJsonMessage);
 
-                    //// Check Internal message
-                    //object messageType;
-                    //Enum.TryParse(typeof(InternalMessage), message, out messageType);
-                    //if (messageType != null)
-                    //{
-                    //    InternalCallBack((InternalMessage)messageType, client);
-                    //}
+                    // Check Internal message
+                    object messageType;
+                    Enum.TryParse(typeof(InternalMessage), receivedJsonMessage, out messageType);
+                    if (messageType != null)
+                    {
+                        InternalCallBack((InternalMessage)messageType, client);
+                    }
                     //else
                     //{
                     //    // Guardar el mensaje recibido en la cola de mensajes
@@ -77,14 +91,13 @@ public class ExternalMonitor
         {
             Debug.Log("<color=orange>Server communication thread error: </color>" + socketExcep);
         }
-        Debug.Log("<color=green>Server communication thread finished</color>");
+        Debug.Log("<color=yellow>Server communication thread finished</color>");
     }
     private void InternalCallBack(InternalMessage message, TcpClient client)
     {
         switch (message)
         {
             case InternalMessage.SERVER_STOPPED:
-                //OnServerDisconnect?.Invoke(client);
                 RemoveClient();
                 break;
             default:
@@ -92,12 +105,14 @@ public class ExternalMonitor
                 break;
         }
     }
+    // Unsafe code
     public void RemoveClient()
     {
         IsConnected = false;
         client.Close();
         client = null;
         // Invoke disconnection event
+        OnDisconnectedFromServer?.Invoke();
         Debug.Log("Client stopped.");
     }
 

@@ -52,7 +52,7 @@ namespace CBB.ExternalTool
 
             // DisconnectButton
             this.disconnectButton = root.Q<Button>("DisconnectButton");
-            disconnectButton.clicked += OnDisconnect;
+            disconnectButton.clicked += ReturnToMainView;
             disconnectButton.clicked += ExternalMonitor.RemoveClient;
 
             // AgentsPanel
@@ -67,6 +67,8 @@ namespace CBB.ExternalTool
             this.historyPanel = root.Q<HistoryPanel>();
 
             GameDataManager.OnClientConnected += InitGameData;
+            // Handle server desconection
+            ExternalMonitor.OnDisconnectedFromServer += ReturnToMainView;
         }
 
         private void InitGameData(GameData gameData)
@@ -102,7 +104,7 @@ namespace CBB.ExternalTool
             Debug.Log("OnModeChange");
         }
 
-        private void OnDisconnect()
+        private void ReturnToMainView()
         {
 
             this.gameObject.SetActive(false);
