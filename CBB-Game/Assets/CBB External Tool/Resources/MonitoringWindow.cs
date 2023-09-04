@@ -52,7 +52,6 @@ namespace CBB.ExternalTool
 
             // DisconnectButton
             this.disconnectButton = root.Q<Button>("DisconnectButton");
-            disconnectButton.clicked += ReturnToMainView;
             disconnectButton.clicked += ExternalMonitor.RemoveClient;
 
             // AgentsPanel

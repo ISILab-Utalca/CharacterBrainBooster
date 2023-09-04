@@ -12,7 +12,7 @@ using UnityEngine;
 public class ExternalMonitor
 {
     private TcpClient client;
-
+    private Thread serverCommunicationThread;
     public Action OnDisconnectedFromServer { get;set; }
     public bool IsConnected { get; private set; }
 
@@ -20,14 +20,14 @@ public class ExternalMonitor
     {
         // Blocking call
         client = new TcpClient(serverAddress, serverPort);
-        
+        IsConnected = true;
         // Ensure Exit if user quits app
         Application.quitting += RemoveClient;
-        Debug.Log("[MONITOR] Connected to server.");
+        Debug.Log("<color=green>[MONITOR] Sync connection to server done.</color>");
         Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
         Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
         
-        ThreadPool.QueueUserWorkItem(HandleServerCommunication);
+        serverCommunicationThread = new(HandleServerCommunication);
     }
     public async Task ConnectToServerAsync(string serverAddress, int serverPort)
     {
@@ -35,10 +35,10 @@ public class ExternalMonitor
         client = new TcpClient();
         await client.ConnectAsync(serverAddress, serverPort);
         IsConnected = true;
-        Debug.Log("[MONITOR] Connected to server.");
+        Debug.Log("<color=green>[MONITOR] Async connection to server done.</color>");
         Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
         Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
-        ThreadPool.QueueUserWorkItem(HandleServerCommunication);
+        serverCommunicationThread = new(HandleServerCommunication);
     }
     /// <summary>
     /// Read and dispatches information received from the server like agent state,
@@ -54,11 +54,13 @@ public class ExternalMonitor
 
             while (IsConnected)
             {
-                int bytesRead;
                 // receive the header
-                while ((bytesRead = stream.Read(header, 0, header.Length)) != 0)
+                //while ((bytesRead = stream.Read(header, 0, header.Length)) != 0)
+                while (stream.DataAvailable)
                 {
                     // header contains the length of the message we really care about
+                    // Since Data Available is true, the Read operation returns inmediately
+                    stream.Read(header, 0, header.Length);
                     int messageLength = BitConverter.ToInt32(header, 0);
                     Debug.Log($"[MONITOR] Header size: {messageLength}");
 
@@ -69,8 +71,7 @@ public class ExternalMonitor
                     Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
 
                     // Check Internal message
-                    object messageType;
-                    Enum.TryParse(typeof(InternalMessage), receivedJsonMessage, out messageType);
+                    Enum.TryParse(typeof(InternalMessage), receivedJsonMessage, out object messageType);
                     if (messageType != null)
                     {
                         InternalCallBack((InternalMessage)messageType, client);
@@ -88,7 +89,9 @@ public class ExternalMonitor
                     //    }
                     //}
                 }
+                Debug.Log("<color=cyan>[MONITOR] While Stream Data Available terminated</color>");
             }
+            Debug.Log("<color=cyan>[MONITOR] While Is Connected terminated</color>");
         }
         catch (ObjectDisposedException disposedExcep)
         {
@@ -97,6 +100,10 @@ public class ExternalMonitor
         catch (SocketException socketExcep)
         {
             Debug.Log("<color=orange>Monitor communication thread error: </color>" + socketExcep);
+        }
+        catch(System.Exception excep)
+        {
+            Debug.Log("<color=orange>Monitor communication thread error: </color>" + excep);
         }
         Debug.Log("<color=yellow>Monitor communication thread finished</color>");
     }
@@ -116,8 +123,19 @@ public class ExternalMonitor
     public void RemoveClient()
     {
         IsConnected = false;
-        client.Close();
-        client = null;
+        try
+        {
+            client.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("[EXTERNAL MONITOR] Error on Remove client: " + e);
+            throw;
+        }
+        finally
+        {
+            client = null;
+        }
         // Invoke disconnection event
         OnDisconnectedFromServer?.Invoke();
         Debug.Log("Client stopped.");

@@ -15,6 +15,7 @@ public class MainWindow : MonoBehaviour
     [SerializeField] private MonitoringWindow monitorWindow;
     [SerializeField] private GameObject editorWindow;
     [SerializeField] private ExternalMonitor monitorClient;
+    [SerializeField] private bool doAsyncConnection = false;
     private void Awake()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
@@ -56,8 +57,14 @@ public class MainWindow : MonoBehaviour
             var serverPort = int.Parse(portField.value);
 
             monitorClient = new();
-            //monitorClient.ConnectToServer(serverAddress, serverPort);
-            await monitorClient.ConnectToServerAsync(serverAddress, serverPort);
+            if (doAsyncConnection)
+            {
+                await monitorClient.ConnectToServerAsync(serverAddress, serverPort);
+            }
+            else
+            {
+                monitorClient.ConnectToServer(serverAddress, serverPort);
+            }
             monitorWindow.ExternalMonitor = monitorClient;
             var value = buttonGroup.value;
             OpenWindow(value);
@@ -66,7 +73,7 @@ public class MainWindow : MonoBehaviour
         catch (System.Exception e)
         {
             OpenWindow(-1);
-            OnFailConnection(e);
+            FailedConnection(e);
         }
     }
 
@@ -94,8 +101,10 @@ public class MainWindow : MonoBehaviour
         }
     }
 
-    private void OnFailConnection(System.Exception error)
+    private void FailedConnection(System.Exception error)
     {
-        connectionInformation.text = $"Failed to start the connection: {error}";
+        string errorLog = $"Failed to start the connection: {error}";
+        Debug.LogError(errorLog);
+        connectionInformation.text = errorLog;
     }
 }
