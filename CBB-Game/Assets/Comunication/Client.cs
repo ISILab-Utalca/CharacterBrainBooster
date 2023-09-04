@@ -77,32 +77,42 @@ namespace CBB.Comunication
             }
             Application.quitting -= Client.Stop;
         }
-        
+
         private static void HandleServerCommunication()
         {
             try
             {
                 NetworkStream stream = client.GetStream();
-                byte[] buffer = new byte[bufferSize];
+                byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
 
                 while (IsConnected)
                 {
-                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
-                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    Debug.Log("Received from server: " + message);
+                    while (stream.DataAvailable)
+                    {
+                        // Non blocking since there is data on the stream
+                        stream.Read(header, 0, header.Length);
+                        // header contains the length of the message we really care about
+                        int messageLength = BitConverter.ToInt32(header, 0);
+                        //Debug.Log($"[SERVER] Header size: {messageLength}");
 
-                    object messageType;
-                    Enum.TryParse(typeof(InternalMessage), message, out messageType);
-                    if (messageType != null)
-                    {
-                        InternalCallBack((InternalMessage)messageType, client);
-                    }
-                    else
-                    {
-                        // Guardar el mensaje recibido en la cola de mensajes
-                        lock (queueLock)
+                        byte[] messageBytes = new byte[messageLength];
+                        // Blocking call
+                        stream.Read(messageBytes, 0, messageLength);
+                        string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
+                        Debug.Log("Received from server: " + receivedJsonMessage);
+
+                        Enum.TryParse(typeof(InternalMessage), receivedJsonMessage, out object messageType);
+                        if (messageType != null)
                         {
-                            receivedMessagesQueue.Enqueue(message);
+                            InternalCallBack((InternalMessage)messageType, client);
+                        }
+                        else
+                        {
+                            // Guardar el mensaje recibido en la cola de mensajes
+                            lock (queueLock)
+                            {
+                                receivedMessagesQueue.Enqueue(receivedJsonMessage);
+                            }
                         }
                     }
                 }
@@ -119,10 +129,10 @@ namespace CBB.Comunication
         public static void SendMessageToServer(string message)
         {
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
-            
+
             NetworkStream stream = client.GetStream();
             //Debug.Log($"Client sent a {messageBytes.Length} bytes size message");
-            stream.Write(BitConverter.GetBytes(messageBytes.Length),0,InternalNetworkManager.HEADER_SIZE);
+            stream.Write(BitConverter.GetBytes(messageBytes.Length), 0, InternalNetworkManager.HEADER_SIZE);
             stream.Write(messageBytes, 0, messageBytes.Length);
         }
         private static void InternalCallBack(InternalMessage message, TcpClient client)
@@ -138,7 +148,7 @@ namespace CBB.Comunication
                     break;
             }
         }
-        
+
         public static void DisconnectFromServer()
         {
             SendMessageToServer(InternalMessage.CLIENT_STOPPED.ToString()); // client stopped message
@@ -151,7 +161,7 @@ namespace CBB.Comunication
             client = null;
             Debug.Log("Client stopped.");
         }
-        
+
         public static void SetAddressPort(string address, int port)
         {
             serverPort = port;
