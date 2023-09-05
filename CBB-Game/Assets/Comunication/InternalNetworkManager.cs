@@ -18,10 +18,9 @@ namespace CBB.Comunication
 
         public static int HEADER_SIZE { get => header_size; }
 
-        [ContextMenu("Begin internal network")]
-        public void Begin()
+        [ContextMenu("Start internal server")]
+        public void StartServer()
         {
-            Application.quitting += End;
             try
             {
                 Server.Start();
@@ -31,7 +30,12 @@ namespace CBB.Comunication
             {
                 Debug.LogError("Server error: " + e);
             }
-            Thread.Sleep(0);
+            Debug.Log("<color=yellow>Internal connection set</color>");
+        }
+
+        [ContextMenu("Start internal client")]
+        private static void StartClient()
+        {
             try
             {
                 Client.Start();
@@ -42,9 +46,9 @@ namespace CBB.Comunication
             {
                 Debug.LogError("Internal client error: " + e);
             }
-            Debug.Log("<color=yellow>Internal connection set</color>");
         }
-        [ContextMenu("End internal network")]
+
+        [ContextMenu("End internal server")]
         public void End()
         {
             try
@@ -56,7 +60,11 @@ namespace CBB.Comunication
             {
                 Debug.LogError("Server error: " + e);
             }
+        }
 
+        [ContextMenu("Stop internal client")]
+        private static void StopInteralClient()
+        {
             try
             {
                 Client.Stop();
@@ -66,8 +74,6 @@ namespace CBB.Comunication
             {
                 Debug.LogError("Internal client error: " + e);
             }
-            
-            Debug.Log("<color=yellow>Internal connection stoppped</color>");
         }
     }
 }

@@ -45,7 +45,7 @@ namespace CBB.Comunication.Test
 
             sendMessage.onClick.AddListener(() =>
             {
-                Server.SendMessageToClient(0, inputfield.text);
+                //Server.SendMessageToClient(0, inputfield.text);
             });
         }
     }

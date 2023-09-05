@@ -1,21 +1,44 @@
 using CBB.Comunication;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
 /// Represents an external client that observes changes on the game.
 /// </summary>
-public class ExternalMonitor
+public class ExternalMonitor : MonoBehaviour
 {
     private TcpClient client;
     private Thread serverCommunicationThread;
-    public Action OnDisconnectedFromServer { get;set; }
+    private Queue<string> receivedMessages = new();
+
+    public Action OnDisconnectedFromServer { get; set; }
     public bool IsConnected { get; private set; }
 
+    private void Awake()
+    {
+        IsConnected = false;
+        receivedMessages = new Queue<string>();
+    }
+    private void Update()
+    {
+        if(receivedMessages.Count > 0)
+        {
+            var msg = receivedMessages.Dequeue();
+            if(msg != null)
+            {
+                MessageHandler(msg);
+            }
+        }
+    }
+
+    // Connections
     public void ConnectToServer(string serverAddress, int serverPort)
     {
         // Blocking call
@@ -26,8 +49,9 @@ public class ExternalMonitor
         Debug.Log("<color=green>[MONITOR] Sync connection to server done.</color>");
         Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
         Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
-        
+
         serverCommunicationThread = new(HandleServerCommunication);
+        serverCommunicationThread.Start();
     }
     public async Task ConnectToServerAsync(string serverAddress, int serverPort)
     {
@@ -39,6 +63,7 @@ public class ExternalMonitor
         Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
         Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
         serverCommunicationThread = new(HandleServerCommunication);
+        serverCommunicationThread.Start();
     }
     /// <summary>
     /// Read and dispatches information received from the server like agent state,
@@ -49,9 +74,9 @@ public class ExternalMonitor
         try
         {
             using NetworkStream stream = client.GetStream();
-            // 
-            byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
 
+            byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
+            Debug.Log("[MONITOR] Handle Server coms started");
             while (IsConnected)
             {
                 // receive the header
@@ -62,34 +87,17 @@ public class ExternalMonitor
                     // Since Data Available is true, the Read operation returns inmediately
                     stream.Read(header, 0, header.Length);
                     int messageLength = BitConverter.ToInt32(header, 0);
-                    Debug.Log($"[MONITOR] Header size: {messageLength}");
+                    Debug.Log($"[MONITOR] Header's message length size: {messageLength}");
 
                     byte[] messageBytes = new byte[messageLength];
-                    // Blocking call
+                    // Blocking call maybe?
                     stream.Read(messageBytes, 0, messageLength);
                     string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
                     Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
 
                     // Check Internal message
-                    Enum.TryParse(typeof(InternalMessage), receivedJsonMessage, out object messageType);
-                    if (messageType != null)
-                    {
-                        InternalCallBack((InternalMessage)messageType, client);
-                    }
-                    else
-                    {
-                        Debug.LogError("[MONITOR] Failed type casting");
-                    }
-                    //else
-                    //{
-                    //    // Guardar el mensaje recibido en la cola de mensajes
-                    //    lock (queueLock)
-                    //    {
-                    //        receivedMessagesQueue.Enqueue((message, client));
-                    //    }
-                    //}
+                    receivedMessages.Enqueue((receivedJsonMessage));
                 }
-                Debug.Log("<color=cyan>[MONITOR] While Stream Data Available terminated</color>");
             }
             Debug.Log("<color=cyan>[MONITOR] While Is Connected terminated</color>");
         }
@@ -101,13 +109,32 @@ public class ExternalMonitor
         {
             Debug.Log("<color=orange>Monitor communication thread error: </color>" + socketExcep);
         }
-        catch(System.Exception excep)
+        catch (System.Exception excep)
         {
             Debug.Log("<color=orange>Monitor communication thread error: </color>" + excep);
         }
         Debug.Log("<color=yellow>Monitor communication thread finished</color>");
     }
-    private void InternalCallBack(InternalMessage message, TcpClient client)
+
+    // Operations
+    private void MessageHandler(string msg)
+    {
+        if(Enum.TryParse(typeof(InternalMessage), msg, out object messageType))
+        {
+            switch (messageType)
+            {
+                case InternalMessage internalMessage:
+                    Debug.Log("[MONITOR] Received message is of type Internal Message");
+                    InternalCallback(internalMessage);
+                    break;
+                default:
+                    Debug.Log("[MONITOR] Received message is not Internal Message");
+                    break;
+            }
+        }
+        // More cases
+    }
+    private void InternalCallback(InternalMessage message)
     {
         switch (message)
         {
@@ -119,7 +146,6 @@ public class ExternalMonitor
                 break;
         }
     }
-    // Unsafe code
     public void RemoveClient()
     {
         IsConnected = false;
@@ -129,8 +155,7 @@ public class ExternalMonitor
         }
         catch (Exception e)
         {
-            Debug.LogError("[EXTERNAL MONITOR] Error on Remove client: " + e);
-            throw;
+            Debug.LogError("[MONITOR] Error on Remove client: " + e);
         }
         finally
         {
@@ -140,7 +165,6 @@ public class ExternalMonitor
         OnDisconnectedFromServer?.Invoke();
         Debug.Log("Client stopped.");
     }
-
     public void SendMessageToServer(string message)
     {
         byte[] messageBytes = Encoding.UTF8.GetBytes(message);
