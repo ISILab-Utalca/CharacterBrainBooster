@@ -40,13 +40,10 @@ namespace CBB.Comunication
             server.Start();
             running = true;
 
+            ThreadPool.QueueUserWorkItem(ReceiveConnections);
             Debug.Log("[SERVER] Started. Waiting for clients...");
             Debug.Log("[SERVER] Local Endpoint: " + server.LocalEndpoint.ToString());
             Debug.Log("[SERVER] Remote Endpoint: " + server.Server.RemoteEndPoint);
-
-            ThreadPool.QueueUserWorkItem(ReceiveConnections);
-
-            serverThread.Start();
         }
         private async static void ReceiveConnections(object context = null)
         {
