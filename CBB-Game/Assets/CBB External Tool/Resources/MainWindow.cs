@@ -16,6 +16,7 @@ public class MainWindow : MonoBehaviour
     [SerializeField] private GameObject editorWindow;
     [SerializeField] private ExternalMonitor monitorClient;
     [SerializeField] private bool doAsyncConnection = false;
+
     private void Awake()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
@@ -38,17 +39,6 @@ public class MainWindow : MonoBehaviour
         // InformationLabel
         this.connectionInformation = root.Q<Label>("ConnectionInformation");
     }
-
-    private void OnAddressChange(ChangeEvent<string> evt)
-    {
-        //Debug.Log(evt.newValue);
-    }
-
-    private void OnPortChange(ChangeEvent<string> evt)
-    {
-        //Debug.Log(evt.newValue);
-    }
-
     private async void OnStartConnection()
     {
         try
@@ -56,7 +46,6 @@ public class MainWindow : MonoBehaviour
             var serverAddress = addresField.value;
             var serverPort = int.Parse(portField.value);
 
-            monitorClient = new();
             if (doAsyncConnection)
             {
                 await monitorClient.ConnectToServerAsync(serverAddress, serverPort);
@@ -100,11 +89,18 @@ public class MainWindow : MonoBehaviour
                 return;
         }
     }
-
     private void FailedConnection(System.Exception error)
     {
         string errorLog = $"Failed to start the connection: {error}";
         Debug.LogError(errorLog);
         connectionInformation.text = errorLog;
+    }
+    private void OnAddressChange(ChangeEvent<string> evt)
+    {
+        //Debug.Log(evt.newValue);
+    }
+    private void OnPortChange(ChangeEvent<string> evt)
+    {
+        //Debug.Log(evt.newValue);
     }
 }
