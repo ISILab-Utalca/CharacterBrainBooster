@@ -22,8 +22,11 @@ namespace CBB.Comunication
         private static List<TcpClient> clients = new();
         private static List<Thread> clientThreads = new();
 
-        private static readonly Queue<(string, TcpClient)> receivedMessagesQueue = new Queue<(string, TcpClient)>();
+        private static readonly Queue<(string, TcpClient)> receivedMessagesQueue = new();
         private static readonly object queueLock = new();
+
+        private static TcpClient localClient = new();
+        private static Thread localClientThread;
         #endregion
         #region Events
         public static Action<TcpClient> OnClientConnect { get; set; }
@@ -58,20 +61,37 @@ namespace CBB.Comunication
                         continue;
 
                     // Identify type of client (is it a external monitor or the game client)
-                    clients.Add(client);
+                    var cle = client.Client.LocalEndPoint;
+                    var cre = client.Client.RemoteEndPoint;
+                    var clientIPAddress = ((IPEndPoint)cre).Address;
+                    if (clientIPAddress.Equals(IPAddress.Parse("127.0.0.1")))
+                    {
+                        localClient = client;
+                        Debug.Log("Local client added");
+                        localClientThread = new Thread(() => HandleClientCommunication(localClient));
+                        localClientThread.IsBackground = true;
+                        localClientThread.Start();
+                    }
+                    else
+                    {
+                        clients.Add(client);
+                        // Handles the client communication on a different thread
+                        var clientThread = new Thread(() => HandleClientCommunication(client));
+                        clientThreads.Add(clientThread);
+                        clientThread.IsBackground = true;
+                        clientThread.Start();
+                        Debug.Log("Remote client added");
+                    }
                     Debug.Log("New client connected!");
 
-                    // Handles the client communication on a different thread
-                    var clientThread = new Thread(() => HandleClientCommunication(client));
-                    clientThreads.Add(clientThread);
-                    clientThread.Start();
+                    
                 }
             }
             catch (SocketException SocketExcep)
             {
                 Debug.Log("<color=orange>Socket exception detected: </color>" + SocketExcep);
             }
-            catch(Exception excep)
+            catch (Exception excep)
             {
                 Debug.Log("<color=orange>General exception detected: </color>" + excep);
             }
@@ -128,11 +148,11 @@ namespace CBB.Comunication
                 Debug.Log("<color=orange>Server communication thread error: </color>" + socketExcep);
                 clients.Remove(client);
             }
-            catch(IOException IOexcep)
+            catch (IOException IOexcep)
             {
                 Debug.Log("<color=orange>Server communication thread error: </color>" + IOexcep);
             }
-            Debug.Log("<color=green>Server communication thread finished</color>");
+            Debug.Log("<color=yellpw>Server communication thread finished</color>");
         }
         private static void InternalCallBack(InternalMessage message, TcpClient client)
         {
@@ -175,9 +195,9 @@ namespace CBB.Comunication
                 {
                     SendMessageToClient(client, message);
                 }
-                catch (SocketException)
+                catch (Exception e)
                 {
-                    Debug.Log("Error sending message to client.");
+                    Debug.LogError("Error sending message to client: " + e);
                 }
             }
         }
@@ -189,12 +209,12 @@ namespace CBB.Comunication
         {
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
             NetworkStream stream = client.GetStream();
-            
+
             // Blocking operations, length prefix protocol
             stream.Write(BitConverter.GetBytes(messageBytes.Length), 0, InternalNetworkManager.HEADER_SIZE);
             stream.Write(messageBytes, 0, messageBytes.Length);
         }
-        
+
         public static void SetAddressPort(int port)
         {
             serverPort = port;

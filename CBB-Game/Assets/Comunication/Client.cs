@@ -17,7 +17,6 @@ namespace CBB.Comunication
         /// Use this to sync calls to static methods if there are many requesters at the same time
         /// </summary>
         public static readonly object syncObject = new();
-        private static int bufferSize = 1024;
         private static bool running = false;
 
         private static string serverAddress = "127.0.0.1";
@@ -87,7 +86,7 @@ namespace CBB.Comunication
 
                 while (IsConnected)
                 {
-                    while (stream.DataAvailable)
+                    while (stream != null && stream.DataAvailable && stream.CanRead)
                     {
                         // Non blocking since there is data on the stream
                         stream.Read(header, 0, header.Length);
