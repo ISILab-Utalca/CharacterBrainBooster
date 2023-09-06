@@ -49,9 +49,13 @@ namespace CBB.Comunication
         {
             if (server != null && server.Server.IsBound)
             {
+                running = false;
                 try
                 {
+                    Thread.Sleep(0);
+                    SendMessageToAllClients(InternalMessage.SERVER_STOPPED.ToString());
                     server.Stop();
+                    Debug.Log("<color=pink>[SERVER] Stopped correctly.</color>");
                 }
                 catch (Exception e)
                 {
@@ -59,9 +63,8 @@ namespace CBB.Comunication
                 }
                 finally
                 {
-                    running = false;
                     clients.Clear();
-                    Debug.Log("<color=yellow>[SERVER] Stopped.</color>");
+                    Debug.Log("<color=yellow>[SERVER] Clients dictionary cleared.</color>");
                 }
             }
             else
