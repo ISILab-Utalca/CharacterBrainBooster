@@ -172,7 +172,7 @@ namespace CBB.Comunication
         }
         private static void SendInformationToClients(object context = null)
         {
-            while (true)
+            while (running)
             {
                 try
                 {
