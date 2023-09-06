@@ -87,16 +87,14 @@ public class ExternalMonitor : MonoBehaviour
         {
             try
             {
-                // header contains the length of the message we really care about
                 bytesRead = await stream.ReadAsync(header, 0, header.Length);
+                // Convention: 0 bytes read mean that the other endpoint closed the connection
                 if (bytesRead == 0)
                 {
-                    // Convention: connection closed by the server
-                    // let's try it out
-                    Debug.Log("<color=cyan>[SERVER] Client </color>" + client.Client.RemoteEndPoint + "<color=cyan> quit.</color>");
-
+                    Debug.Log("<color=cyan>[MONITOR] Client </color>" + client.Client.RemoteEndPoint + "<color=cyan> quit.</color>");
                     break;
                 }
+                // header contains the length of the message we really care about
                 int messageLength = BitConverter.ToInt32(header, 0);
                 Debug.Log($"[MONITOR] Header's message length size: {messageLength}");
 
@@ -113,19 +111,20 @@ public class ExternalMonitor : MonoBehaviour
             }
             catch (ObjectDisposedException disposedExcep)
             {
-                Debug.Log("<color=orange>[MONITOR] communication thread error: </color>" + disposedExcep);
+                Debug.Log("<color=orange>[MONITOR] Communication thread error: </color>" + disposedExcep);
             }
             catch (SocketException socketExcep)
             {
-                Debug.Log("<color=orange>[MONITOR] communication thread error: </color>" + socketExcep);
+                Debug.Log("<color=orange>[MONITOR] Communication thread error: </color>" + socketExcep);
             }
             catch (System.Exception excep)
             {
-                Debug.Log("<color=orange>[MONITOR] communication thread error: </color>" + excep);
+                Debug.Log("<color=orange>[MONITOR] Communication thread error: </color>" + excep);
             }
             Debug.Log("<color=cyan>[MONITOR] While Is Connected terminated</color>");
         }
-        Debug.Log("<color=yellow>[MONITOR] communication thread finished</color>");
+        RemoveClient();
+        Debug.Log("<color=yellow>[MONITOR] Communication thread finished</color>");
     }
 
     // Operations
@@ -149,7 +148,7 @@ public class ExternalMonitor : MonoBehaviour
         {
             if (TryDeserializeIntoData(msg, t, out object result))
             {
-                
+
             }
         }
     }
@@ -191,20 +190,28 @@ public class ExternalMonitor : MonoBehaviour
     public void RemoveClient()
     {
         IsConnected = false;
-        try
+        if (client != null)
         {
-            client.Close();
+            try
+            {
+                client.Close();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("[MONITOR] Error on Remove client: " + e);
+            }
+            finally
+            {
+                client = null;
+                OnDisconnectedFromServer?.Invoke();
+                Debug.Log("[MONITOR] Client stopped.");
+            }
         }
-        catch (Exception e)
+        else
         {
-            Debug.LogError("[MONITOR] Error on Remove client: " + e);
+            Debug.Log("<color=yellow>[MONITOR] Client is null already</color>");
         }
-        finally
-        {
-            client = null;
-            OnDisconnectedFromServer?.Invoke();
-            Debug.Log("[MONITOR] Client stopped.");
-        }
+
     }
     public void SendMessageToServer(string message)
     {

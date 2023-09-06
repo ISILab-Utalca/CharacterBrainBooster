@@ -39,7 +39,7 @@ namespace CBB.Comunication
         }
 
         [ContextMenu("Start internal client")]
-        private void StartClient()
+        public void StartClient()
         {
             try
             {
@@ -68,7 +68,7 @@ namespace CBB.Comunication
         }
 
         [ContextMenu("Stop internal client")]
-        private void StopInternalClient()
+        public void StopInternalClient()
         {
             try
             {

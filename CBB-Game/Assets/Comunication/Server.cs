@@ -83,8 +83,8 @@ namespace CBB.Comunication
                         continue;
 
                     // Identify type of client (is it a external monitor or the game client)
-                    var newClientremoteEndopoint = client.Client.RemoteEndPoint;
-                    var clientIPAddress = ((IPEndPoint)newClientremoteEndopoint).Address;
+                    var newClientRemoteEndpoint = client.Client.RemoteEndPoint;
+                    var clientIPAddress = ((IPEndPoint)newClientRemoteEndpoint).Address;
 
                     if (clientIPAddress.Equals(IPAddress.Parse("127.0.0.1")))
                     {
@@ -107,7 +107,7 @@ namespace CBB.Comunication
                     Debug.Log("<color=orange>[SERVER] General exception detected: </color>" + excep);
                 }
             }
-            Debug.Log("<color=yellow>[SERVER] Connections thread stopped");
+            Debug.Log("<color=yellow>[SERVER] Connections thread stopped</color>");
         }
         private async static void HandleClientCommunication(object clientContext)
         {
