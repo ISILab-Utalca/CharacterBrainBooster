@@ -106,7 +106,7 @@ public class ExternalMonitor : MonoBehaviour
                 Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
 
                 // Check Internal message
-                receivedMessages.Enqueue((receivedJsonMessage));
+                lock(receivedMessages) receivedMessages.Enqueue(receivedJsonMessage);
 
             }
             catch (ObjectDisposedException disposedExcep)
