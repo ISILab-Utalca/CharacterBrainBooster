@@ -21,9 +21,9 @@ namespace CBB.Comunication
 
         private static TcpListener server;
         private static Thread serverThread;
-        private static Dictionary<IPAddress,TcpClient> clients = new();
+        private static Dictionary<IPAddress, TcpClient> clients = new();
 
-        private static readonly Queue<(string, TcpClient)> receivedMessagesQueue = new();
+        private static readonly Queue<(string, TcpClient)> receivedMessages = new();
         private static readonly object queueLock = new();
 
         private static TcpClient localClient = new();
@@ -41,10 +41,35 @@ namespace CBB.Comunication
             running = true;
 
             ThreadPool.QueueUserWorkItem(ReceiveConnections);
+            ThreadPool.QueueUserWorkItem(SendInformationToClients);
             Debug.Log("[SERVER] Started. Waiting for clients...");
             Debug.Log("[SERVER] Local Endpoint: " + server.LocalEndpoint.ToString());
-            Debug.Log("[SERVER] Remote Endpoint: " + server.Server.RemoteEndPoint);
         }
+        public static void Stop()
+        {
+            if (server != null && server.Server.IsBound)
+            {
+                try
+                {
+                    server.Stop();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("<color=orange>[SERVER] Trouble when stopping server: </color>" + e);
+                }
+                finally
+                {
+                    running = false;
+                    clients.Clear();
+                    Debug.Log("<color=yellow>[SERVER] Stopped.</color>");
+                }
+            }
+            else
+            {
+                Debug.Log("<color=yellow>[SERVER] Already stopped.</color>");
+            }
+        }
+
         private async static void ReceiveConnections(object context = null)
         {
             while (running)
@@ -68,7 +93,7 @@ namespace CBB.Comunication
                     }
                     else
                     {
-                        clients.Add(clientIPAddress,client);
+                        clients.Add(clientIPAddress, client);
                         Debug.Log("[SERVER] Remote client added");
                     }
                     ThreadPool.QueueUserWorkItem(HandleClientCommunication, client);
@@ -82,15 +107,14 @@ namespace CBB.Comunication
                     Debug.Log("<color=orange>[SERVER] General exception detected: </color>" + excep);
                 }
             }
-
+            Debug.Log("<color=yellow>[SERVER] Connections thread stopped");
         }
-        private async static void HandleClientCommunication(object clientContext = null)
+        private async static void HandleClientCommunication(object clientContext)
         {
             TcpClient client = (TcpClient)clientContext;
+            IPAddress clientIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address;
             using NetworkStream stream = client.GetStream();
-            // 
             byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
-
             int bytesRead;
             while (true)
             {
@@ -100,36 +124,34 @@ namespace CBB.Comunication
                     bytesRead = await stream.ReadAsync(header, 0, header.Length);
                     if (bytesRead == 0)
                     {
-                        // Connection closed by the server
-                        // Convention, let's try it out
+                        // Convention: connection closed by the client
+                        // let's try it out
+                        Debug.Log("<color=cyan>[SERVER] Client </color>" + client.Client.RemoteEndPoint + "<color=cyan> quit.</color>");
+                        clients.Remove(((IPEndPoint)client.Client.RemoteEndPoint).Address);
                         break;
                     }
-                    // header contains the length of the message we really care about
-                    int messageLength = BitConverter.ToInt32(header, 0);
-                    //Debug.Log($"[SERVER] Header size: {messageLength}");
 
+                    int messageLength = BitConverter.ToInt32(header, 0);
                     byte[] messageBytes = new byte[messageLength];
-                    // Blocking call
-                    stream.Read(messageBytes, 0, messageLength);
+
+                    // Read until the expected amoun of data is reached
+                    await stream.ReadAsync(messageBytes, 0, messageLength);
                     string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
-                    //Debug.Log("[SERVER] Message received: " + receivedJsonMessage);
 
                     //Check Internal message
-                    object messageType;
-                    Enum.TryParse(typeof(InternalMessage), receivedJsonMessage, out messageType);
+                    Enum.TryParse(typeof(InternalMessage), receivedJsonMessage, out object messageType);
                     if (messageType != null)
                     {
                         InternalCallBack((InternalMessage)messageType, client);
                     }
-                    //else
-                    //{
-                    //    // Guardar el mensaje recibido en la cola de mensajes
-                    //    lock (queueLock)
-                    //    {
-                    //        receivedMessagesQueue.Enqueue((message, client));
-                    //    }
-                    //}
-
+                    else
+                    {
+                        // Save message on queue
+                        lock (queueLock)
+                        {
+                            receivedMessages.Enqueue((receivedJsonMessage, client));
+                        }
+                    }
                 }
                 catch (ObjectDisposedException disposedExcep)
                 {
@@ -138,54 +160,32 @@ namespace CBB.Comunication
                 }
                 catch (SocketException socketExcep)
                 {
-                    Debug.Log("<color=orange>Server communication thread error: </color>" + socketExcep);
+                    Debug.Log("<color=orange>[SERVER] communication thread error: </color>" + socketExcep);
                     clients.Remove(((IPEndPoint)client.Client.RemoteEndPoint).Address);
                 }
                 catch (IOException IOexcep)
                 {
-                    Debug.Log("<color=orange>Server communication thread error: </color>" + IOexcep);
+                    Debug.Log("<color=orange>[SERVER] Communication thread error: </color>" + IOexcep);
                 }
             }
-            Debug.Log("<color=yellow>Server communication thread finished</color>");
+            Debug.Log("<color=yellow>[SERVER] Communication thread finished with: </color>" + clientIP.ToString());
         }
-        private static void InternalCallBack(InternalMessage message, TcpClient client)
+        private static void SendInformationToClients(object context = null)
         {
-            switch (message)
-            {
-                case InternalMessage.CLIENT_CONNECTED:
-                    OnClientConnect?.Invoke(client);
-                    break;
-                case InternalMessage.CLIENT_STOPPED:
-                    OnClientDisconnect?.Invoke(client);
-                    break;
-                default:
-                    Debug.LogWarning("El 'InternalMessage:" + message + "' no esta implementado para procesarce.");
-                    break;
-            }
-        }
-        public static void Stop()
-        {
-            if (server != null && server.Server.IsBound)
+            while (true)
             {
                 try
                 {
-                    SendMessageToAllClients(InternalMessage.SERVER_STOPPED.ToString());
+                    if (receivedMessages.Count > 0)
+                    {
+                        var msg = receivedMessages.Dequeue();
+                        SendMessageToAllClients(msg.Item1);
+                    }
                 }
-                catch (Exception e)
+                catch (Exception excep)
                 {
-                    Debug.LogError("<color=orange>[SERVER] Trouble when sending disconnection message to clients: " + e);
+                    Debug.Log("<color=orange>[SERVER] Send thread error: </color>" + excep);
                 }
-                finally
-                {
-                    running = false;
-                    clients.Clear();
-                    server.Stop();
-                    Debug.Log("Server stopped.");
-                }
-            }
-            else
-            {
-                Debug.Log("Server is already stopped.");
             }
         }
 
@@ -217,13 +217,28 @@ namespace CBB.Comunication
             stream.Write(messageBytes, 0, messageBytes.Length);
         }
 
+        private static void InternalCallBack(InternalMessage message, TcpClient client)
+        {
+            switch (message)
+            {
+                case InternalMessage.CLIENT_CONNECTED:
+                    OnClientConnect?.Invoke(client);
+                    break;
+                case InternalMessage.CLIENT_STOPPED:
+                    OnClientDisconnect?.Invoke(client);
+                    break;
+                default:
+                    Debug.LogWarning("El 'InternalMessage:" + message + "' no esta implementado para procesarce.");
+                    break;
+            }
+        }
         public static void SetAddressPort(int port)
         {
             serverPort = port;
         }
         public static (string, TcpClient) GetRecived()
         {
-            return receivedMessagesQueue.Dequeue();
+            return receivedMessages.Dequeue();
         }
         public static int ClientAmount()
         {
@@ -231,11 +246,7 @@ namespace CBB.Comunication
         }
         public static int GetRecivedAmount()
         {
-            return receivedMessagesQueue.Count;
-        }
-        public static Queue<(string, TcpClient)> GetQueueRecived()
-        {
-            return new Queue<(string, TcpClient)>(receivedMessagesQueue);
+            return receivedMessages.Count;
         }
         #endregion
     }

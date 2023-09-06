@@ -34,8 +34,8 @@ namespace CBB.Comunication.Test
 
             showRecived.onClick.AddListener(() =>
             {
-                var list = Server.GetQueueRecived().ToList();
-                list.ForEach(s => outputText.text += "- " + s.Item1 + "\n");
+                //var list = Server.GetQueueRecived().ToList();
+                //list.ForEach(s => outputText.text += "- " + s.Item1 + "\n");
             });
 
             cleanMessages.onClick.AddListener(() =>

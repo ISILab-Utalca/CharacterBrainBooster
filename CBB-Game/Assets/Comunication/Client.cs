@@ -41,7 +41,7 @@ namespace CBB.Comunication
         {
             try
             {
-                Application.quitting += Client.Stop;
+                Application.quitting += Stop;
                 client = new TcpClient();
                 // Blocking call
                 client.Connect(serverAddress, serverPort);
