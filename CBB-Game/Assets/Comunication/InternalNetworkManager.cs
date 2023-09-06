@@ -18,6 +18,11 @@ namespace CBB.Comunication
 
         public static int HEADER_SIZE { get => header_size; }
 
+        private void Awake()
+        {
+            Application.quitting += StopInternalServer;
+            Application.quitting += StopInternalClient;
+        }
         [ContextMenu("Start internal server")]
         public void StartServer()
         {
@@ -49,7 +54,7 @@ namespace CBB.Comunication
         }
 
         [ContextMenu("End internal server")]
-        public void End()
+        public void StopInternalServer()
         {
             try
             {
@@ -63,7 +68,7 @@ namespace CBB.Comunication
         }
 
         [ContextMenu("Stop internal client")]
-        private void StopInteralClient()
+        private void StopInternalClient()
         {
             try
             {
