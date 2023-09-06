@@ -116,7 +116,7 @@ namespace CBB.Comunication
             using NetworkStream stream = client.GetStream();
             byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
             int bytesRead;
-            while (true)
+            while (running)
             {
                 try
                 // receive the header
@@ -191,15 +191,18 @@ namespace CBB.Comunication
 
         public static void SendMessageToAllClients(string message)
         {
-            foreach (IPAddress clientIP in clients.Keys)
+            lock (clients)
             {
-                try
+                foreach (IPAddress clientIP in clients.Keys)
                 {
-                    SendMessageToClient(clientIP, message);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError("Error sending message to client: " + e);
+                    try
+                    {
+                        SendMessageToClient(clientIP, message);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError("Error sending message to client: " + e);
+                    }
                 }
             }
         }

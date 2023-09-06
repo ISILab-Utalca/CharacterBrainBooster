@@ -117,7 +117,7 @@ public class ExternalMonitor : MonoBehaviour
             {
                 Debug.Log("<color=orange>[MONITOR] Communication thread error: </color>" + socketExcep);
             }
-            catch (System.Exception excep)
+            catch (Exception excep)
             {
                 Debug.Log("<color=orange>[MONITOR] Communication thread error: </color>" + excep);
             }
