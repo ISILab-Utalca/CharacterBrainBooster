@@ -106,7 +106,7 @@ public class ExternalMonitor : MonoBehaviour
                 Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
 
                 // Check Internal message
-                lock(receivedMessages) receivedMessages.Enqueue(receivedJsonMessage);
+                //lock(receivedMessages) receivedMessages.Enqueue(receivedJsonMessage);
 
             }
             catch (ObjectDisposedException disposedExcep)
@@ -137,7 +137,7 @@ public class ExternalMonitor : MonoBehaviour
                 case InternalMessage internalMessage:
                     Debug.Log("[MONITOR] Received message is of type Internal Message");
                     InternalCallback(internalMessage);
-                    break;
+                    return;
                 default:
                     Debug.Log("[MONITOR] Received message is not Internal Message");
                     break;
