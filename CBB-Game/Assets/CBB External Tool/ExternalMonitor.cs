@@ -83,7 +83,7 @@ public class ExternalMonitor : MonoBehaviour
         byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
         Debug.Log("[MONITOR] Handle Server Communication started");
         int bytesRead;
-        while (true)
+        while (IsConnected)
         {
             try
             {
@@ -113,19 +113,19 @@ public class ExternalMonitor : MonoBehaviour
             }
             catch (ObjectDisposedException disposedExcep)
             {
-                Debug.Log("<color=orange>Monitor communication thread error: </color>" + disposedExcep);
+                Debug.Log("<color=orange>[MONITOR] communication thread error: </color>" + disposedExcep);
             }
             catch (SocketException socketExcep)
             {
-                Debug.Log("<color=orange>Monitor communication thread error: </color>" + socketExcep);
+                Debug.Log("<color=orange>[MONITOR] communication thread error: </color>" + socketExcep);
             }
             catch (System.Exception excep)
             {
-                Debug.Log("<color=orange>Monitor communication thread error: </color>" + excep);
+                Debug.Log("<color=orange>[MONITOR] communication thread error: </color>" + excep);
             }
             Debug.Log("<color=cyan>[MONITOR] While Is Connected terminated</color>");
         }
-        Debug.Log("<color=yellow>Monitor communication thread finished</color>");
+        Debug.Log("<color=yellow>[MONITOR] communication thread finished</color>");
     }
 
     // Operations
@@ -203,7 +203,7 @@ public class ExternalMonitor : MonoBehaviour
         {
             client = null;
             OnDisconnectedFromServer?.Invoke();
-            Debug.Log("Client stopped.");
+            Debug.Log("[MONITOR] Client stopped.");
         }
     }
     public void SendMessageToServer(string message)
