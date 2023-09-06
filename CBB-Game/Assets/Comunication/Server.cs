@@ -24,7 +24,7 @@ namespace CBB.Comunication
         private static Dictionary<IPAddress, TcpClient> clients = new();
 
         private static readonly Queue<(string, TcpClient)> receivedMessages = new();
-        private static readonly object queueLock = new();
+        public static readonly object syncObject = new();
 
         private static TcpClient localClient = new();
         #endregion
@@ -150,7 +150,7 @@ namespace CBB.Comunication
                     else
                     {
                         // Save message on queue
-                        lock (queueLock)
+                        lock (syncObject)
                         {
                             receivedMessages.Enqueue((receivedJsonMessage, client));
                         }

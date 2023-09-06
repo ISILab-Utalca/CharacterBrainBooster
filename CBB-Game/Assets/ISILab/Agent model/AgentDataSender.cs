@@ -166,9 +166,9 @@ namespace CBB.Api
             try
             {
                 var data = SerializeAgentWrapperData(type);
-                lock (Client.syncObject)
+                lock (Server.syncObject)
                 {
-                    Client.SendMessageToServer(data);
+                    Server.SendMessageToAllClients(data);
                 }
                 dataSent++;
                 if (showLogs)
