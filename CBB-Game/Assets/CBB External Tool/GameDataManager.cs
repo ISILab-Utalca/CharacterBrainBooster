@@ -1,98 +1,145 @@
 using CBB.Api;
 using CBB.Comunication;
+using CBB.Lib;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using UnityEngine;
 
 public class GameDataManager : MonoBehaviour
 {
-    // Esto esta implementado para una instancia,
-    // si se decea implementar para mas es necesario
-    // cambiar esto por una lista (!)
-    public static GameData gameData;
+    private readonly List<Type> deserializableTypes = new(){
+                typeof(SensorData),
+                typeof(AgentWrapper),
+                typeof(DecisionPackage)
+            };
 
-    // Create a list of valid types for de/serialization
-    readonly List<System.Type> deserializableTypes = new();
-
-    public static System.Action<GameData> OnClientConnected { get; set; }
-
+    public static Action OnClientConnected { get; set; }
+    public Action<InternalMessage> OnInternalMessageReceived { get; set; }
     // Set initial settings for detecting errors on deserialization
     readonly JsonSerializerSettings settings = new()
     {
         TypeNameHandling = TypeNameHandling.All,
         MissingMemberHandling = MissingMemberHandling.Error
     };
-    void Start()
-    {
-        Server.OnClientConnect += OnClientConnect;
-        Server.OnClientDisconnect += OnClientDisconnect;
-    }
 
+    #region Events
+
+    #endregion
     void Update()
     {
-        if (gameData == null)
-            return;
+        //string msg = "";
+        //System.Type messageType = null;
+        //object deserializedMessage = null;
+        //// Find which type is represented by the msg string
+        //foreach (System.Type t in deserializableTypes)
+        //{
+        //    settings.SerializationBinder = new GeneralBinder(t);
+        //    try
+        //    {
+        //        deserializedMessage = JsonConvert.DeserializeObject(msg, settings);
+        //        Debug.Log($"Successful deserialization: {deserializedMessage.GetType()}");
+        //        messageType = t;
+        //        break;
+        //    }
+        //    catch (System.Exception e)
+        //    {
+        //        Debug.Log("Incorrect type: " + e);
+        //    }
+        //}
 
-        if (Server.GetRecivedAmount() <= 0)
-            return;
-
-        var msg = Server.GetRecived().Item1;
-
-        System.Type messageType = null;
-        object deserializedMessage = null;
-        // Find which type is represented by the msg string
-        foreach (System.Type t in deserializableTypes)
-        {
-            settings.SerializationBinder = new GeneralBinder(t);
-            try
-            {
-                deserializedMessage = JsonConvert.DeserializeObject(msg, settings);
-                Debug.Log($"Successful deserialization: {deserializedMessage.GetType()}");
-                messageType = t;
-                break;
-            }
-            catch (System.Exception e)
-            {
-                Debug.Log("Incorrect type: " + e);
-            }
-        }
-
-        if (messageType == null)
-        {
-            Debug.LogWarning($"{name} didn't find any valid message type");
-            return;
-        }
-        if (messageType == typeof(AgentWrapper))
-        {
-            var agent = deserializedMessage as AgentWrapper;
-            if(agent.type == AgentWrapper.Type.NEW) 
-            {
-                OnReadAgent(agent);
-            }
-            else if(agent.type == AgentWrapper.Type.CURRENT)
-            {
-                //TODO: whatever should be done here
-            }else if (agent.type == AgentWrapper.Type.DESTROYED)
-            {
-                gameData.RemoveAgent(agent);
-            }
-        }
+        //if (messageType == null)
+        //{
+        //    Debug.LogWarning($"{name} didn't find any valid message type");
+        //    return;
+        //}
+        //if (messageType == typeof(AgentWrapper))
+        //{
+        //    var agent = deserializedMessage as AgentWrapper;
+        //    if (agent.type == AgentWrapper.Type.NEW)
+        //    {
+        //        OnReadAgent(agent);
+        //    }
+        //    else if (agent.type == AgentWrapper.Type.CURRENT)
+        //    {
+        //        //TODO: whatever should be done here
+        //    }
+        //    else if (agent.type == AgentWrapper.Type.DESTROYED)
+        //    {
+        //        GameData.RemoveAgent(agent);
+        //    }
+        //}
     }
 
     private void OnReadAgent(AgentWrapper agent)
     {
-        gameData.AddAgent(agent);
+        GameData.AddAgent(agent);
     }
-
-    private void OnClientConnect(TcpClient client)
+    public void HandleMessage(string msg)
     {
-        gameData = new GameData(client);
-        OnClientConnected?.Invoke(gameData);
+        if (Enum.TryParse(typeof(InternalMessage), msg, out object messageType))
+        {
+            switch (messageType)
+            {
+                case InternalMessage internalMessage:
+                    Debug.Log("[MONITOR] Received message is of type Internal Message");
+                    // Raised since the External Monitor needs to observe this event
+                    OnInternalMessageReceived?.Invoke(internalMessage);
+                    return;
+                default:
+                    Debug.Log("[MONITOR] Received message is not Internal Message");
+                    break;
+            }
+        }
+        //More cases
+        object result = null;
+        Type msgType = null;
+        foreach (Type deserializableType in deserializableTypes)
+        {
+            if (TryDeserializeIntoData(msg, deserializableType, out result))
+            {
+                msgType = deserializableType;
+                Debug.Log("[GAME DATA MANAGER] Deserialized correctly: " + result);
+                break;
+            }
+        }
+        if (msgType == null)
+        {
+            Debug.Log("<color=red>[GAME DATA MANAGER] Message is not deserializable");
+            return;
+        }
+        switch (result)
+        {
+            case AgentWrapper agentWrapper:
+                GameData.HandleAgentWrapper(agentWrapper);
+                break;
+            case DecisionPackage decisionPackage:
+                GameData.HandleDecisionPackage(decisionPackage);
+                break;
+            default:
+                break;
+        }
     }
-
-    private void OnClientDisconnect(TcpClient client)
+    public bool TryDeserializeIntoData(string message, Type t, out object result)
     {
-
+        // Set initial settings for detecting errors on deserialization
+        JsonSerializerSettings settings = new()
+        {
+            TypeNameHandling = TypeNameHandling.All,
+            MissingMemberHandling = MissingMemberHandling.Error,
+            SerializationBinder = new GeneralBinder(t)
+        };
+        try
+        {
+            result = JsonConvert.DeserializeObject(message, settings);
+            Debug.Log($"Successful deserialization: {result.GetType()}");
+            return true;
+        }
+        catch (Exception)
+        {
+            Debug.Log("<color=orange>[GAME DATA MANAGER] Error on deserialization</color>");
+        }
+        result = null;
+        return false;
     }
 }

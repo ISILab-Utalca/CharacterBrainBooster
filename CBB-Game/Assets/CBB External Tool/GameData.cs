@@ -4,76 +4,98 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
-public class GameData
+public static class GameData
 {
     #region FIELDS
-    private TcpClient client;
+    private static TcpClient client;
 
     // Current agent
-    private Dictionary<int, bool> agents = new();
+    private static Dictionary<int, bool> agents = new();
 
     // Dictionary<Actor, List<Desicions>>
-    private Dictionary<int, List<DecisionPackage>> histories = new();
+    private static Dictionary<int, List<DecisionPackage>> histories = new();
 
     // List<Brain>
-    private List<string> brains = new List<string>();
+    private static List<string> brains = new List<string>();
     #endregion
-
+    #region PROPERTIES
+    public static TcpClient Client { get => client; set => client = value; }
+    public static Dictionary<int, bool> Agents { get => agents; set => agents = value; }
+    public static Dictionary<int, List<DecisionPackage>> Histories { get => histories; set => histories = value; }
+    #endregion
     #region EVENTS
-    public Action<GameData, AgentWrapper> OnAddAgent { get; set; }
-    public Action<GameData, AgentWrapper> OnAgentSetAsDestroyed { get; set; }
-    public Action<GameData, AgentWrapper, DecisionPackage> OnAddDecision { get; set; }
-    public Action<GameData, List<string>> OnAddBrains { get; set; }
+    public static Action<AgentWrapper> OnAddAgent { get; set; }
+    public static Action<AgentWrapper> OnAgentSetAsDestroyed { get; set; }
+    public static Action<AgentWrapper, DecisionPackage> OnAddDecision { get; set; }
+    public static Action<List<string>> OnAddBrains { get; set; }
+    public static Action<DecisionPackage> OnDecisionPackageReceived { get; set; }
     #endregion
 
     #region CONSTRUCTORS
-    public GameData(TcpClient client)
-    {
-        this.client = client;
-    }
+
     #endregion
 
     #region METHODS
-    public List<DecisionPackage> GetHistory(AgentWrapper agent)
+    public static List<DecisionPackage> GetHistory(AgentWrapper agent)
     {
         try
         {
-            var history = histories[agent.state.ID];
+            var history = Histories[agent.state.ID];
             return history;
         }
         catch
         {
-            histories.Add(agent.state.ID, new List<DecisionPackage>());
-            var history = histories[agent.state.ID];
+            Histories.Add(agent.state.ID, new List<DecisionPackage>());
+            var history = Histories[agent.state.ID];
             return history;
         }
     }
 
-    public void UpdateHistory(AgentWrapper agent, DecisionPackage decision)
+    public static void UpdateHistory(AgentWrapper agent, DecisionPackage decision)
     {
         var history = GetHistory(agent);
         history.Add(decision);
-        OnAddDecision?.Invoke(this, agent, decision);
+        OnAddDecision?.Invoke(agent, decision);
     }
 
-    public void AddAgent(AgentWrapper agent)
+    public static void AddAgent(AgentWrapper agent)
     {
-        agents.Add(agent.state.ID, true);
-        OnAddAgent?.Invoke(this, agent);
+        Agents.Add(agent.state.ID, true);
+        OnAddAgent?.Invoke(agent);
     }
 
-    public void RemoveAgent(AgentWrapper agent)
+    public static void RemoveAgent(AgentWrapper agent)
     {
-        agents.Remove(agent.state.ID);
+        Agents.Remove(agent.state.ID);
     }
 
-    public void SetAgentAsDestroyed(AgentWrapper agent)
+    public static void SetAgentAsDestroyed(AgentWrapper agent)
     {
-        agents[agent.state.ID] = false;
-        OnAgentSetAsDestroyed?.Invoke(this, agent);
+        Agents[agent.state.ID] = false;
+        OnAgentSetAsDestroyed?.Invoke(agent);
+    }
+    public static void HandleAgentWrapper(AgentWrapper agent)
+    {
+        switch (agent.type)
+        {
+            case AgentWrapper.Type.DESTROYED:
+                RemoveAgent(agent);
+                break;
+            case AgentWrapper.Type.CURRENT:
+                //GameData.UpdateHistory(agent);
+                break;
+            default:
+                break;
+        }
+    }
+
+    internal static void HandleDecisionPackage(DecisionPackage decisionPackage)
+    {
+        OnDecisionPackageReceived?.Invoke(decisionPackage);
     }
     #endregion
 }

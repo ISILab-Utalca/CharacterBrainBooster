@@ -17,24 +17,29 @@ using Utility;
 /// <summary>
 /// Represents an external client that observes changes on the game.
 /// </summary>
+[RequireComponent(typeof(GameDataManager))]
 public class ExternalMonitor : MonoBehaviour
 {
-    private TcpClient client;
+    #region Fields
     private Queue<string> receivedMessages = new();
-    // Create a list of valid types for de/serialization
-    private readonly List<Type> deserializableTypes = new()
-            {
-                typeof(SensorData),
-                typeof(AgentBasicData),
-                typeof(DummySimpleData)
-            };
+    private TcpClient client;
+    private GameDataManager gameDataManager;
+    #endregion
+
+    #region Events
     public Action OnDisconnectedFromServer { get; set; }
     public bool IsConnected { get; private set; }
+    #endregion
 
     private void Awake()
     {
         IsConnected = false;
         receivedMessages = new Queue<string>();
+        if(TryGetComponent(out gameDataManager))
+        {
+            gameDataManager.OnInternalMessageReceived += InternalCallback;
+        }
+
         Application.quitting += RemoveClient;
     }
     private void Update()
@@ -44,12 +49,11 @@ public class ExternalMonitor : MonoBehaviour
             var msg = receivedMessages.Dequeue();
             if (msg != null)
             {
-                MessageHandler(msg);
+                gameDataManager.HandleMessage(msg);
             }
         }
     }
 
-    // Connections
     public void ConnectToServer(string serverAddress, int serverPort)
     {
         // Blocking call
@@ -73,10 +77,6 @@ public class ExternalMonitor : MonoBehaviour
         Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
         ThreadPool.QueueUserWorkItem(HandleServerCommunication);
     }
-    /// <summary>
-    /// Read and dispatches information received from the server like agent state,
-    /// decision packages, etc.
-    /// </summary>
     private async void HandleServerCommunication(object state = null)
     {
         using NetworkStream stream = client.GetStream();
@@ -89,7 +89,7 @@ public class ExternalMonitor : MonoBehaviour
             {
                 bytesRead = await stream.ReadAsync(header, 0, header.Length);
                 // Convention: 0 bytes read mean that the other endpoint closed the connection
-                if (bytesRead == 0)
+                if (bytesRead <= 0)
                 {
                     Debug.Log("<color=cyan>[MONITOR] Client </color>" + client.Client.RemoteEndPoint + "<color=cyan> quit.</color>");
                     break;
@@ -106,7 +106,7 @@ public class ExternalMonitor : MonoBehaviour
                 Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
 
                 // Check Internal message
-                //lock(receivedMessages) receivedMessages.Enqueue(receivedJsonMessage);
+                lock (receivedMessages) receivedMessages.Enqueue(receivedJsonMessage);
 
             }
             catch (ObjectDisposedException disposedExcep)
@@ -127,31 +127,6 @@ public class ExternalMonitor : MonoBehaviour
         Debug.Log("<color=yellow>[MONITOR] Communication thread finished</color>");
     }
 
-    // Operations
-    private void MessageHandler(string msg)
-    {
-        if (Enum.TryParse(typeof(InternalMessage), msg, out object messageType))
-        {
-            switch (messageType)
-            {
-                case InternalMessage internalMessage:
-                    Debug.Log("[MONITOR] Received message is of type Internal Message");
-                    InternalCallback(internalMessage);
-                    return;
-                default:
-                    Debug.Log("[MONITOR] Received message is not Internal Message");
-                    break;
-            }
-        }
-        // More cases
-        foreach (Type t in deserializableTypes)
-        {
-            if (TryDeserializeIntoData(msg, t, out object result))
-            {
-
-            }
-        }
-    }
     private void InternalCallback(InternalMessage message)
     {
         switch (message)
@@ -160,33 +135,10 @@ public class ExternalMonitor : MonoBehaviour
                 RemoveClient();
                 break;
             default:
-                Debug.LogWarning("El InternalMessage:" + message + "' no esta implementado para procesarce.");
+                Debug.LogWarning($"Message: {message} | Is not being implemented yet");
                 break;
         }
     }
-    public bool TryDeserializeIntoData(string message, Type t, out object result)
-    {
-        // Set initial settings for detecting errors on deserialization
-        JsonSerializerSettings settings = new()
-        {
-            TypeNameHandling = TypeNameHandling.All,
-            MissingMemberHandling = MissingMemberHandling.Error,
-            SerializationBinder = new GeneralBinder(t)
-        };
-        try
-        {
-            result = JsonConvert.DeserializeObject(message, settings);
-            Debug.Log($"Successful deserialization: {result.GetType()}");
-            return true;
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Fail raised: " + e);
-        }
-        result = null;
-        return false;
-    }
-
     public void RemoveClient()
     {
         IsConnected = false;

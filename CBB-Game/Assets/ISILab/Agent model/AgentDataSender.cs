@@ -39,13 +39,15 @@ namespace CBB.Api
     {
         [SerializeField]
         private bool NeedAServer = false;
+        [SerializeField]
         private bool showLogs = false;
+        
         private IAgent agentComp;
         private IAgentBrain agentBrain;
         private int agentID;
         private int decisionsSent = 0;
         private int dataSent = 0;
-        [SerializeField]
+        
         public System.Action<string> OnSerializedData { get; set; }
         public System.Action<string> OnSerializedDecision { get; set; }
 
@@ -66,15 +68,6 @@ namespace CBB.Api
             //SendData(AgentWrapper.Type.DESTROYED);
         }
 
-        private bool ClientIsConnected()
-        {
-            if (!Client.IsConnected)
-            {
-                if (showLogs) Debug.Log("Cannot send data since you are not connected to server.");
-                return false;
-            }
-            return true;
-        }
         private void ReceiveSensorUpdateHandler()
         {
             SendData(AgentWrapper.Type.CURRENT);
@@ -134,12 +127,11 @@ namespace CBB.Api
                 OnSerializedDecision?.Invoke(serializedDecisionPackage);
                 return;
             }
-            if (!ClientIsConnected()) return;
-
+            if (!Server.ServerIsRunning) return;
             try
             {
                 var data = JSONDataManager.SerializeData(decisionPackage);
-                Client.SendMessageToServer(data);
+                Server.SendMessageToAllClients(data);
                 decisionsSent++;
                 if (showLogs) Debug.Log($"{name} has sent {decisionsSent} decisions");
             }
@@ -161,15 +153,11 @@ namespace CBB.Api
 
                 return;
             }
-            if (!ClientIsConnected()) return;
-
+            if (!Server.ServerIsRunning) return;
             try
             {
                 var data = SerializeAgentWrapperData(type);
-                lock (Server.syncObject)
-                {
-                    Server.SendMessageToAllClients(data);
-                }
+                Server.SendMessageToAllClients(data);
                 dataSent++;
                 if (showLogs)
                 {
@@ -179,7 +167,7 @@ namespace CBB.Api
             }
             catch (System.Exception e)
             {
-                Debug.Log($"Error: {e}");
+                Debug.Log($"[AGENT DATA SENDER {gameObject.name}] Error sending data: {e}");
                 throw;
             }
         }

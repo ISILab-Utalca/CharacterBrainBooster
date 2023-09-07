@@ -15,22 +15,20 @@ namespace CBB.Comunication
     public static class Server
     {
         #region Fields
-        private static bool running = false;
 
         private static int serverPort = 8888;
 
         private static TcpListener server;
-        private static Thread serverThread;
         private static Dictionary<IPAddress, TcpClient> clients = new();
 
         private static readonly Queue<(string, TcpClient)> receivedMessages = new();
         public static readonly object syncObject = new();
 
-        private static TcpClient localClient = new();
         #endregion
         #region Events
         public static Action<TcpClient> OnClientConnect { get; set; }
         public static Action<TcpClient> OnClientDisconnect { get; set; }
+        public static bool ServerIsRunning { get; set; } = false;
         #endregion
         #region Methods
 
@@ -38,10 +36,10 @@ namespace CBB.Comunication
         {
             server = new TcpListener(IPAddress.Any, serverPort);
             server.Start();
-            running = true;
+            ServerIsRunning = true;
 
             ThreadPool.QueueUserWorkItem(ReceiveConnections);
-            ThreadPool.QueueUserWorkItem(SendInformationToClients);
+            //ThreadPool.QueueUserWorkItem(SendInformationToClients);
             Debug.Log("[SERVER] Started. Waiting for clients...");
             Debug.Log("[SERVER] Local Endpoint: " + server.LocalEndpoint.ToString());
         }
@@ -49,13 +47,13 @@ namespace CBB.Comunication
         {
             if (server != null && server.Server.IsBound)
             {
-                running = false;
+                ServerIsRunning = false;
                 try
                 {
                     Thread.Sleep(0);
                     SendMessageToAllClients(InternalMessage.SERVER_STOPPED.ToString());
                     server.Stop();
-                    Debug.Log("<color=pink>[SERVER] Stopped correctly.</color>");
+                    Debug.Log("<color=lime>[SERVER] Stopped correctly.</color>");
                 }
                 catch (Exception e)
                 {
@@ -75,7 +73,7 @@ namespace CBB.Comunication
 
         private async static void ReceiveConnections(object context = null)
         {
-            while (running)
+            while (ServerIsRunning)
             {
                 try
                 {
@@ -89,24 +87,31 @@ namespace CBB.Comunication
                     var newClientRemoteEndpoint = client.Client.RemoteEndPoint;
                     var clientIPAddress = ((IPEndPoint)newClientRemoteEndpoint).Address;
 
-                    if (clientIPAddress.Equals(IPAddress.Parse("127.0.0.1")))
-                    {
-                        localClient = client;
-                        Debug.Log("[SERVER] Local client added");
-                    }
-                    else
-                    {
-                        clients.Add(clientIPAddress, client);
-                        Debug.Log("[SERVER] Remote client added");
-                    }
+                    //if (clientIPAddress.Equals(IPAddress.Parse("127.0.0.1")))
+                    //{
+                    //    localClient = client;
+                    //    Debug.Log("[SERVER] Local client added");
+                    //}
+                    //else
+                    //{
+                    clients.Add(clientIPAddress, client);
+                    Debug.Log("[SERVER] Remote client added");
+                    //}
                     ThreadPool.QueueUserWorkItem(HandleClientCommunication, client);
                 }
                 catch (SocketException SocketExcep)
                 {
                     Debug.Log("<color=orange>[SERVER] Socket exception detected: </color>" + SocketExcep);
                 }
+                catch (ObjectDisposedException objDisposed)
+                {
+                    Debug.Log("<color=orange>[SERVER] Socket disposed exception detected: </color>" + objDisposed);
+                }
                 catch (Exception excep)
                 {
+                    // This exception is usually caused by AcceptTcpClientAsync, which is referencing
+                    // the underlying listener socket after its disposed but still tries to accept new
+                    // connections
                     Debug.Log("<color=orange>[SERVER] General exception detected: </color>" + excep);
                 }
             }
@@ -119,7 +124,8 @@ namespace CBB.Comunication
             using NetworkStream stream = client.GetStream();
             byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
             int bytesRead;
-            while (running)
+            bool threadIsRunningCorrectly = true;
+            while (ServerIsRunning && threadIsRunningCorrectly)
             {
                 try
                 // receive the header
@@ -149,33 +155,32 @@ namespace CBB.Comunication
                     }
                     else
                     {
-                        // Save message on queue
-                        lock (syncObject)
-                        {
-                            receivedMessages.Enqueue((receivedJsonMessage, client));
-                        }
+                        receivedMessages.Enqueue((receivedJsonMessage, client));
                     }
                 }
                 catch (ObjectDisposedException disposedExcep)
                 {
                     Debug.Log("<color=orange>[SERVER] Communication thread error: </color>" + disposedExcep);
-                    clients.Remove(((IPEndPoint)client.Client.RemoteEndPoint).Address);
                 }
                 catch (SocketException socketExcep)
                 {
-                    Debug.Log("<color=orange>[SERVER] communication thread error: </color>" + socketExcep);
-                    clients.Remove(((IPEndPoint)client.Client.RemoteEndPoint).Address);
+                    Debug.Log("<color=orange>[SERVER] Communication thread error: </color>" + socketExcep);
                 }
                 catch (IOException IOexcep)
                 {
                     Debug.Log("<color=orange>[SERVER] Communication thread error: </color>" + IOexcep);
+                }
+                finally
+                {
+                    clients.Remove(((IPEndPoint)client.Client.RemoteEndPoint).Address);
+                    threadIsRunningCorrectly = false;
                 }
             }
             Debug.Log("<color=yellow>[SERVER] Communication thread finished with: </color>" + clientIP.ToString());
         }
         private static void SendInformationToClients(object context = null)
         {
-            while (running)
+            while (ServerIsRunning)
             {
                 try
                 {
@@ -204,7 +209,7 @@ namespace CBB.Comunication
                     }
                     catch (Exception e)
                     {
-                        Debug.LogError("Error sending message to client: " + e);
+                        Debug.LogError($"Error sending message to client {clientIP}: {e}");
                     }
                 }
             }
