@@ -11,7 +11,8 @@ public class GameDataManager : MonoBehaviour
     private readonly List<Type> deserializableTypes = new(){
                 typeof(SensorData),
                 typeof(AgentWrapper),
-                typeof(DecisionPackage)
+                typeof(DecisionPackage),
+                typeof(DecisionData)
             };
 
     public static Action OnClientConnected { get; set; }
@@ -87,7 +88,6 @@ public class GameDataManager : MonoBehaviour
                     OnInternalMessageReceived?.Invoke(internalMessage);
                     return;
                 default:
-                    Debug.Log("[MONITOR] Received message is not Internal Message");
                     break;
             }
         }
@@ -105,7 +105,7 @@ public class GameDataManager : MonoBehaviour
         }
         if (msgType == null)
         {
-            Debug.Log("<color=red>[GAME DATA MANAGER] Message is not deserializable");
+            Debug.Log("<color=red>[GAME DATA MANAGER] Message is not deserializable</color>");
             return;
         }
         switch (result)
@@ -135,9 +135,9 @@ public class GameDataManager : MonoBehaviour
             Debug.Log($"Successful deserialization: {result.GetType()}");
             return true;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            Debug.Log("<color=orange>[GAME DATA MANAGER] Error on deserialization</color>");
+            Debug.Log("<color=orange>[GAME DATA MANAGER] Error on deserialization: </color>" + e);
         }
         result = null;
         return false;

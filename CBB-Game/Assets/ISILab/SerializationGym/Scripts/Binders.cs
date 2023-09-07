@@ -19,17 +19,15 @@ public class GeneralBinder : ISerializationBinder
 
     Type ISerializationBinder.BindToType(string assemblyName, string typeName)
     {
-        Debug.Log($"Assembly name argument: {assemblyName}");
-        Debug.Log($"Assembly of Agent Basic Data: {bindType.Assembly.GetName().Name}");
+        Debug.Log($"Trying to deserialize {typeName} into {bindType.Name}");
+        Debug.Log($"Assembly names: (source: {assemblyName}) (dest:{bindType.Assembly.GetName().Name}");
         if (assemblyName != bindType.Assembly.GetName().Name)
         {
             Debug.Log("Assemblies don't match");
-
             return null;
             throw new TypeLoadException($"Error on BindToType: assembly names of {bindType.Assembly.FullName} and {assemblyName} don't match");
         }
-        Debug.Log($"type name argument: {typeName}");
-        Debug.Log($"Full Type name of Sensor Data: {bindType.FullName}");
+        Debug.Log($"Type names: (source:{typeName}) (dest:{bindType.FullName}");
         if (typeName != bindType.FullName)
         {
             Debug.Log("types name don't match");
