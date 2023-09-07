@@ -69,7 +69,7 @@ namespace CBB.ExternalTool
             ItemChosen?.Invoke(objs);
         }
 
-        internal void AddAgent(GameData data, AgentWrapper wrapper)
+        internal void AddAgent(AgentWrapper wrapper)
         {
             targetAgentAndID.Add((wrapper.state.agentName,wrapper.state.ID));
         }

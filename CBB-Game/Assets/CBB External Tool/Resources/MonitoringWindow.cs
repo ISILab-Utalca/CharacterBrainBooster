@@ -13,7 +13,6 @@ namespace CBB.ExternalTool
     public class MonitoringWindow : MonoBehaviour
     {
         // Data
-        private GameData gameData;
         private ExternalMonitor externalMonitor;
         // View
         private VisualElement infoPanel;
@@ -29,9 +28,6 @@ namespace CBB.ExternalTool
         private GameObject editorWindow;
         [SerializeField]
         private GameObject mainWindow;
-
-        // Async
-        private List<Action> asyncCallBacks = new List<Action>();
 
         public ExternalMonitor ExternalMonitor { get => externalMonitor; set => externalMonitor = value; }
 
@@ -70,15 +66,14 @@ namespace CBB.ExternalTool
             ExternalMonitor.OnDisconnectedFromServer += ReturnToMainView;
         }
 
-        private void InitGameData(GameData gameData)
+        private void InitGameData()
         {
-            this.gameData = gameData;
-            gameData.OnAddAgent += AddAgentToPanel;
+            GameData.OnAddAgent += AddAgentToPanel;
         }
 
-        private void AddAgentToPanel(GameData data, AgentWrapper wrapper)
+        private void AddAgentToPanel(AgentWrapper wrapper)
         {
-            agentsPanel.AddAgent(data, wrapper);
+            agentsPanel.AddAgent(wrapper);
         }
 
         private void OnSelectAgent(IEnumerable<object> objs)
@@ -87,7 +82,7 @@ namespace CBB.ExternalTool
 
             try
             {
-                var history = gameData.GetHistory(agent);
+                var history = GameData.GetHistory(agent);
                 historyPanel.SetInfo(history);
                 historyPanel.Actualize();
             }
