@@ -1,6 +1,4 @@
 using ArtificialIntelligence.Utility;
-using Newtonsoft.Json;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
@@ -59,7 +57,7 @@ namespace CBB.Lib
                 if (boxCollider != null)
                 {
                     boxCollider.size = new Vector3(boxSize.x, boxSize.y, frontalFOV);
-                    boxCollider.center = new Vector3(boxCenter.x, boxCenter.y, frontalFOV/2);
+                    boxCollider.center = new Vector3(boxCenter.x, boxCenter.y, frontalFOV / 2);
                 }
             }
         }

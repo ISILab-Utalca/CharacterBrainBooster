@@ -1,7 +1,6 @@
 using CBB.Api;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -29,7 +28,7 @@ namespace CBB.Lib
     /// </summary>
     [Evaluator(name: "Normalize", "Value", "Min", "Max")]
     [System.Serializable]
-    [ParamsAllowed(typeof(float),typeof(int))]
+    [ParamsAllowed(typeof(float), typeof(int))]
     public class Normalize : UtilityEvaluator
     {
         [JsonRequired, Param("Value")]

@@ -1,14 +1,12 @@
 using CBB.Api;
 using CBB.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
 
 namespace CBB
-    { 
+{
     public class Utility
     {
         public AgentBeahaviour self;
@@ -17,7 +15,7 @@ namespace CBB
         public Curve curve;
         public List<Tuple<string, object>> others;
 
-        public Utility(AgentBeahaviour self, UtilityEvaluator evaluator,Curve curve, object action, List<Tuple<string, object>> others = null)
+        public Utility(AgentBeahaviour self, UtilityEvaluator evaluator, Curve curve, object action, List<Tuple<string, object>> others = null)
         {
             this.self = self;
             this.evaluator = evaluator;
@@ -46,7 +44,7 @@ namespace CBB
             }
 
             var act = (MethodInfo)action;
-            act.Invoke(self,inputs.Select(i => i.Item2).ToArray());
+            act.Invoke(self, inputs.Select(i => i.Item2).ToArray());
         }
     }
 }

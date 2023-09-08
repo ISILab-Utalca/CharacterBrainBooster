@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Reflection;
-using System.Linq;
-using CBB.Api;
 using System;
-using CBB.Lib;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using UnityEngine;
 
 namespace CBB.Api
 {
@@ -46,7 +43,7 @@ namespace CBB.Api
 
         public bool IsAvailable()
         {
-            if((Time.time - lastTime) > cooldown)
+            if ((Time.time - lastTime) > cooldown)
             {
                 lastTime = Time.time;
                 return true;
@@ -72,7 +69,7 @@ namespace CBB.Api
                 var atts = field.GetCustomAttributes();
                 if (atts.Any(a => a.GetType() == typeof(UtilityInputAttribute)))
                 {
-                    var variable = new Variable(field.Name,field.FieldType, ownerType);
+                    var variable = new Variable(field.Name, field.FieldType, ownerType);
                     inputs.Add(variable);
                 }
             }

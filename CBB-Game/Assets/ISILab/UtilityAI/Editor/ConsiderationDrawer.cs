@@ -1,14 +1,14 @@
 #if UNITY_EDITOR
+using ArtificialIntelligence.Utility;
 using UnityEditor;
 using UnityEngine;
-using ArtificialIntelligence.Utility;
 [CustomEditor(typeof(UtilityConsideration)), CanEditMultipleObjects]
 public class ConsiderationDrawer : Editor
 {
     SerializedProperty showBookends;
     SerializedProperty minBookend;
     SerializedProperty maxBookend;
-    
+
     SerializedProperty responseCurve;
     SerializedProperty Implementation;
     void OnEnable()
@@ -40,7 +40,7 @@ public class ConsiderationDrawer : Editor
             tooltip = "What piece of information from the game is this consideration evaluating"
         };
         consideration._selectedMethodIndex = EditorGUILayout.Popup(arrayList, consideration._selectedMethodIndex, consideration._methods.ToArray());
-        
+
         serializedObject.ApplyModifiedProperties();
     }
 }

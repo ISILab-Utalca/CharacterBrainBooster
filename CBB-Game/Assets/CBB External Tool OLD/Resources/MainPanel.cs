@@ -1,7 +1,6 @@
 using CBB.Api;
 using CBB.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -29,17 +28,19 @@ public class MainPanel : MonoBehaviour
     private void Awake()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
-        
+
         // AgentDropdown
         this.agentDropdown = root.Q<DropdownField>("AgentDropdown");
         var agentTypes = UtilitySystem.CollectAgentTypes();
-        this.agentDropdown.choices = agentTypes.Select((t) => {
-            var att = t.GetCustomAttributes(typeof(UtilityAgentAttribute),false)[0] as UtilityAgentAttribute;
+        this.agentDropdown.choices = agentTypes.Select((t) =>
+        {
+            var att = t.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute;
             return att.Name;
-            }).ToList();
+        }).ToList();
         this.agentDropdown.index = 0;
         _agentType = agentTypes[0];
-        this.agentDropdown.RegisterCallback<ChangeEvent<string>>(e => {
+        this.agentDropdown.RegisterCallback<ChangeEvent<string>>(e =>
+        {
             var index = this.agentDropdown.index;
             _agentType = agentTypes[index];
         });
@@ -80,7 +81,7 @@ public static class Globals
     {
         Debug.Log("<b><color=#d4fffeff>[CBB]</color>:</b> Load all variables");
         var agentTypes = UtilitySystem.CollectAgentTypes();
-        var allVariables = agentTypes.Select( t => UtilitySystem.CollectVariables(t)).ToList();
+        var allVariables = agentTypes.Select(t => UtilitySystem.CollectVariables(t)).ToList();
 
         allVariables.ForEach(vs => globalVariables.AddRange(vs));
     }

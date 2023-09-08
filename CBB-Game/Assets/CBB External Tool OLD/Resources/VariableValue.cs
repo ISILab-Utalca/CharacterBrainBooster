@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -29,11 +26,15 @@ public class VariableValue : VisualElement
 
         // MinToggle
         this.minToggle = this.Q<Toggle>("MinToggle");
-        this.minToggle.RegisterCallback<ChangeEvent<bool>>(e => {
-            if (e.newValue) {
+        this.minToggle.RegisterCallback<ChangeEvent<bool>>(e =>
+        {
+            if (e.newValue)
+            {
                 minField.style.display = DisplayStyle.Flex;
                 minDropdown.style.display = DisplayStyle.None;
-            } else {
+            }
+            else
+            {
                 minField.style.display = DisplayStyle.None;
                 minDropdown.style.display = DisplayStyle.Flex;
             }
@@ -48,7 +49,8 @@ public class VariableValue : VisualElement
 
         // MaxToggle
         this.maxToggle = this.Q<Toggle>("MaxToggle");
-        this.maxToggle.RegisterCallback<ChangeEvent<bool>>(e => {
+        this.maxToggle.RegisterCallback<ChangeEvent<bool>>(e =>
+        {
             if (e.newValue)
             {
                 maxField.style.display = DisplayStyle.Flex;

@@ -9,7 +9,7 @@ namespace ArtificialIntelligence.Utility
     /// </summary>
     public class LocalAgentMemory : MonoBehaviour
     {
-        [SerializeField,Tooltip("Store here any interesting object for this agent")]
+        [SerializeField, Tooltip("Store here any interesting object for this agent")]
         private List<GameObject> _objectives = new();
         [SerializeField]
         private List<GameObject> heardObjects = new();

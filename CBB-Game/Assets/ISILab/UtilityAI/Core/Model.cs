@@ -1,26 +1,9 @@
 using ArtificialIntelligence.Utility;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace CBB.Lib
 {
-    /// <summary>
-    /// Data used to identify this Agent Instance in the CBB tool
-    /// </summary>
-    [Serializable]
-    public class AgentBasicData
-    {
-        public Type agentType;
-        public string agentName;
-        public AgentBasicData(Type agentType, string agentName)
-        {
-            this.agentType = agentType;
-            this.agentName = agentName;
-        }
-    }
-
     [System.Serializable]
     public class SensorData
     {
@@ -49,7 +32,10 @@ namespace CBB.Lib
             brainName = name;
         }
     }
-
+    /// <summary>
+    /// Representation of the internal stats/variables of an agent on any
+    /// given time
+    /// </summary>
     [System.Serializable]
     public class AgentData
     {
@@ -91,16 +77,14 @@ namespace CBB.Lib
     [System.Serializable]
     public class DecisionPackage
     {
-        public Type agentType;
-        public string agentName;
+        public int agentID;
         public DecisionData bestOption;
         public List<DecisionData> otherOptions;
         public DecisionPackage() { }
-        public DecisionPackage(Type agentType, string agentName, DecisionData best, List<DecisionData> otherOptions)
+        public DecisionPackage(int agentID, DecisionData bestOption, List<DecisionData> otherOptions)
         {
-            this.agentType = agentType;
-            this.agentName = agentName;
-            this.bestOption = best;
+            this.agentID = agentID;
+            this.bestOption = bestOption;
             this.otherOptions = otherOptions;
         }
     }

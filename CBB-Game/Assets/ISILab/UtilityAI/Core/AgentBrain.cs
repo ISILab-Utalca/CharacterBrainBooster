@@ -29,7 +29,7 @@ namespace ArtificialIntelligence.Utility
         public System.Action<List<Option>> OnCompletedScoring { get; set; }
         public System.Action OnSetupDone { get; set; }
         public System.Action<Option, List<Option>> OnDecisionTaken { get; set; }
-        
+
         public List<ISensor> Sensors { get; private set; }
 
         // Get references to the action runner and all sensors and actions on the agent

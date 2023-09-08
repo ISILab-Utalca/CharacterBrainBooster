@@ -1,6 +1,5 @@
-using CBB.Api;
+using CBB.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -16,7 +15,7 @@ namespace CBB.ExternalTool
         // View
         private ListView list;
 
-        private List<(string,int)> targetAgentAndID;
+        private List<(string, int)> targetAgentAndID;
 
         public Action<IEnumerable<object>> ItemChosen;
         public Action<IEnumerable<object>> SelectionChange;
@@ -54,7 +53,7 @@ namespace CBB.ExternalTool
             nameLabel.text = targetAgentAndID[index].Item1;
 
             var idLabel = element.Q<Label>("id");
-            idLabel.text = targetAgentAndID[index].Item2.ToString(); // sacar el indice del agente y no de la propia lista (!!!)
+            idLabel.text = targetAgentAndID[index].Item2.ToString();
         }
 
         public void OnSelectionChange(IEnumerable<object> objs)
@@ -69,9 +68,9 @@ namespace CBB.ExternalTool
             ItemChosen?.Invoke(objs);
         }
 
-        internal void AddAgent(AgentWrapper wrapper)
+        internal void AddAgent(AgentData agent)
         {
-            targetAgentAndID.Add((wrapper.state.agentName,wrapper.state.ID));
+            targetAgentAndID.Add((agent.agentName, agent.ID));
         }
     }
 }

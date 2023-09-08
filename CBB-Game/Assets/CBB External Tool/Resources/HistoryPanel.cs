@@ -1,6 +1,5 @@
 using CBB.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -99,7 +98,7 @@ namespace CBB.ExternalTool
 
         public void SetInfo(List<DecisionPackage> history)
         {
-            this.target = history; 
+            this.target = history;
         }
 
         public void Actualize()

@@ -24,7 +24,7 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         private IEnumerator DecreaseCooldown()
         {
-            while(true)
+            while (true)
             {
                 if (ActionCooldown > 0)
                 {

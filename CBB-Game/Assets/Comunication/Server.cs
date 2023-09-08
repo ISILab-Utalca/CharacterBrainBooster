@@ -1,13 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
 using UnityEngine;
 
 namespace CBB.Comunication
@@ -26,8 +23,8 @@ namespace CBB.Comunication
 
         #endregion
         #region Events
-        public static Action<TcpClient> OnClientConnect { get; set; }
-        public static Action<TcpClient> OnClientDisconnect { get; set; }
+        public static Action<TcpClient> OnNewClientConnected { get; set; }
+        public static Action OnClientDisconnected { get; set; }
         public static bool ServerIsRunning { get; set; } = false;
         #endregion
         #region Methods
@@ -77,27 +74,17 @@ namespace CBB.Comunication
             {
                 try
                 {
-                    // Blocking call
                     TcpClient client = await server.AcceptTcpClientAsync();
 
                     if (client == null)
                         continue;
-
-                    // Identify type of client (is it a external monitor or the game client)
+                    // Save the client reference (by it's IP address) for future use
                     var newClientRemoteEndpoint = client.Client.RemoteEndPoint;
                     var clientIPAddress = ((IPEndPoint)newClientRemoteEndpoint).Address;
-
-                    //if (clientIPAddress.Equals(IPAddress.Parse("127.0.0.1")))
-                    //{
-                    //    localClient = client;
-                    //    Debug.Log("[SERVER] Local client added");
-                    //}
-                    //else
-                    //{
                     clients.Add(clientIPAddress, client);
                     Debug.Log("[SERVER] Remote client added");
-                    //}
                     ThreadPool.QueueUserWorkItem(HandleClientCommunication, client);
+                    OnNewClientConnected?.Invoke(client);
                 }
                 catch (SocketException SocketExcep)
                 {
@@ -178,6 +165,7 @@ namespace CBB.Comunication
             }
             Debug.Log("<color=yellow>[SERVER] Communication thread finished with: </color>" + clientIP.ToString());
         }
+
         private static void SendInformationToClients(object context = null)
         {
             while (ServerIsRunning)
@@ -196,7 +184,8 @@ namespace CBB.Comunication
                 }
             }
         }
-
+        // Beware of this blocking write operations. Testing is needed to measure if using
+        // the async versions improves the performance
         public static void SendMessageToAllClients(string message)
         {
             lock (clients)
@@ -233,10 +222,10 @@ namespace CBB.Comunication
             switch (message)
             {
                 case InternalMessage.CLIENT_CONNECTED:
-                    OnClientConnect?.Invoke(client);
+                    OnNewClientConnected?.Invoke(client);
                     break;
                 case InternalMessage.CLIENT_STOPPED:
-                    OnClientDisconnect?.Invoke(client);
+                    OnClientDisconnected?.Invoke();
                     break;
                 default:
                     Debug.LogWarning("El 'InternalMessage:" + message + "' no esta implementado para procesarce.");

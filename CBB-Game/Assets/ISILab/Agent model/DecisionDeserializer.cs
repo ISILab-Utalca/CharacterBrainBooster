@@ -2,8 +2,6 @@ using CBB.Api;
 using CBB.Lib;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DecisionDeserializer : MonoBehaviour
@@ -22,8 +20,6 @@ public class DecisionDeserializer : MonoBehaviour
         {
             var decisionPackage = JsonConvert.DeserializeObject<DecisionPackage>(serializedDecisionPackage);
             Debug.Log("Data serializer prints Decision package:");
-            Debug.Log(decisionPackage.agentType);
-            Debug.Log(decisionPackage.agentName);
             Debug.Log(decisionPackage.bestOption.actionName);
             Debug.Log(decisionPackage.bestOption.actionScore);
             Debug.Log(decisionPackage.bestOption.targetName);

@@ -1,7 +1,6 @@
 using CBB.Api;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,7 +13,7 @@ public abstract class Curve
 {
     [JsonRequired]
     public bool Inverted = false;
-    
+
     public abstract float Calc(params float[] parms);
     public abstract float Calc(float v);
 
@@ -32,7 +31,7 @@ public abstract class Curve
     public static List<Vector2> CalcPoints(Curve curve, int steps)
     {
         var points = new List<Vector2>();
-        for (int i = 0; i < steps +1; i++)
+        for (int i = 0; i < steps + 1; i++)
         {
             var x = (1f / (float)steps) * i;
             var y = curve.Calc(x);
@@ -42,17 +41,17 @@ public abstract class Curve
     }
 }
 
-[Curve(name:"Linear")]
+[Curve(name: "Linear")]
 [System.Serializable]
 public class Linear : Curve
 {
     [JsonRequired]
     public float value = 0f;
-    [JsonRequired, Param("Slope",0,10)]
+    [JsonRequired, Param("Slope", 0, 10)]
     public float m = 1f;
-    [JsonRequired, Param("Dx",-1,1)]
+    [JsonRequired, Param("Dx", -1, 1)]
     public float dx = 0f;
-    [JsonRequired, Param("Dy",-1,1)]
+    [JsonRequired, Param("Dy", -1, 1)]
     public float dy = 0f;
 
     public Linear() { }
@@ -79,7 +78,7 @@ public class Linear : Curve
     {
         value = v;
         var toR = Mathf.Clamp01((m * (value + dx)) - dy);
-        return Inverted? 1 - toR : toR;
+        return Inverted ? 1 - toR : toR;
     }
 
     public override int GetHashCode()
@@ -88,7 +87,7 @@ public class Linear : Curve
     }
 }
 
-[Curve(name:"Inverted exponential")]
+[Curve(name: "Inverted exponential")]
 [System.Serializable]
 public class ExponencialInvertida : Curve
 {
@@ -192,7 +191,7 @@ public class Exponencial : Curve
     }
 }
 
-[Curve(name:"Staggered")]
+[Curve(name: "Staggered")]
 [System.Serializable]
 public class Staggered : Curve
 {
@@ -238,7 +237,7 @@ public class Staggered : Curve
     }
 }
 
-[Curve(name:"Sigmoide")] // ,"Euler")]
+[Curve(name: "Sigmoide")] // ,"Euler")]
 [System.Serializable]
 public class Sigmoide : Curve
 {

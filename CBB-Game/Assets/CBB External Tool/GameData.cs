@@ -1,20 +1,13 @@
 using CBB.Api;
 using CBB.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
-using Unity.VisualScripting;
-using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public static class GameData
 {
     #region FIELDS
-    private static TcpClient client;
-
-    // Current agent
-    private static Dictionary<int, bool> agents = new();
+    private static Dictionary<int, AgentData> agentsStats = new();
 
     // Dictionary<Actor, List<Desicions>>
     private static Dictionary<int, List<DecisionPackage>> histories = new();
@@ -23,14 +16,13 @@ public static class GameData
     private static List<string> brains = new List<string>();
     #endregion
     #region PROPERTIES
-    public static TcpClient Client { get => client; set => client = value; }
-    public static Dictionary<int, bool> Agents { get => agents; set => agents = value; }
+    public static Dictionary<int, AgentData> Agents { get => agentsStats; set => agentsStats = value; }
     public static Dictionary<int, List<DecisionPackage>> Histories { get => histories; set => histories = value; }
     #endregion
     #region EVENTS
-    public static Action<AgentWrapper> OnAddAgent { get; set; }
-    public static Action<AgentWrapper> OnAgentSetAsDestroyed { get; set; }
-    public static Action<AgentWrapper, DecisionPackage> OnAddDecision { get; set; }
+    public static Action<AgentData> OnAddAgent { get; set; }
+    public static Action<AgentData> OnAgentSetAsDestroyed { get; set; }
+    public static Action<DecisionPackage> OnAddDecision { get; set; }
     public static Action<List<string>> OnAddBrains { get; set; }
     public static Action<DecisionPackage> OnDecisionPackageReceived { get; set; }
     #endregion
@@ -40,57 +32,70 @@ public static class GameData
     #endregion
 
     #region METHODS
-    public static List<DecisionPackage> GetHistory(AgentWrapper agent)
+    public static List<DecisionPackage> GetHistory(int agentID)
     {
         try
         {
-            var history = Histories[agent.state.ID];
-            return history;
+            return Histories[agentID];
         }
         catch
         {
-            Histories.Add(agent.state.ID, new List<DecisionPackage>());
-            var history = Histories[agent.state.ID];
+            Histories.Add(agentID, new List<DecisionPackage>());
+            var history = Histories[agentID];
             return history;
         }
     }
 
-    public static void UpdateHistory(AgentWrapper agent, DecisionPackage decision)
+    public static void UpdateHistory(DecisionPackage decision)
     {
-        var history = GetHistory(agent);
+        var history = GetHistory(decision.agentID);
         history.Add(decision);
-        OnAddDecision?.Invoke(agent, decision);
+        OnAddDecision?.Invoke(decision);
     }
-
-    public static void AddAgent(AgentWrapper agent)
+    public static void UpdateAgentData(AgentData agent)
     {
-        Agents.Add(agent.state.ID, true);
+        if (agentsStats.ContainsKey(agent.ID))
+        {
+            agentsStats[agent.ID] = agent;
+        }
+    }
+    public static void AddAgent(AgentData agent)
+    {
+        Agents.Add(agent.ID, agent);
         OnAddAgent?.Invoke(agent);
     }
 
-    public static void RemoveAgent(AgentWrapper agent)
+    public static void RemoveAgent(AgentData agent)
     {
-        Agents.Remove(agent.state.ID);
+        Agents.Remove(agent.ID);
     }
 
-    public static void SetAgentAsDestroyed(AgentWrapper agent)
+    public static void SetAgentAsDestroyed(AgentData agent)
     {
-        Agents[agent.state.ID] = false;
+        Agents[agent.ID] = null;
         OnAgentSetAsDestroyed?.Invoke(agent);
     }
     public static void HandleAgentWrapper(AgentWrapper agent)
     {
         switch (agent.type)
         {
-            case AgentWrapper.Type.DESTROYED:
-                RemoveAgent(agent);
+            case AgentWrapper.AgentStateType.DESTROYED:
+                RemoveAgent(agent.state);
                 break;
-            case AgentWrapper.Type.CURRENT:
-                //GameData.UpdateHistory(agent);
+            case AgentWrapper.AgentStateType.CURRENT:
+                UpdateHistory(agent.state);
+                break;
+            case AgentWrapper.AgentStateType.NEW:
+                AddAgent(agent.state);
                 break;
             default:
                 break;
         }
+    }
+
+    private static void UpdateHistory(AgentData agent)
+    {
+        throw new NotImplementedException();
     }
 
     internal static void HandleDecisionPackage(DecisionPackage decisionPackage)

@@ -12,7 +12,7 @@ namespace CBB.Lib
         [UtilityInput("Attack")]
         public int Attack = 10;
         [UtilityInput("Can attack")]
-        public bool CanAttack { get;set; }
+        public bool CanAttack { get; set; }
         public AgentData AgentData { get; set; }
 
         private void Awake()
@@ -31,14 +31,14 @@ namespace CBB.Lib
             {
                 AgentType = typeof(Goblin),
                 SensorsData = new(),
-                BrainData = new(typeof(Goblin),gameObject.name),
+                BrainData = new(typeof(Goblin), gameObject.name),
                 InternalVariables = null
             };
             // Find sensors on this agent
             var sensors = gameObject.GetComponentsOnHierarchy<Sensor>();
             Debug.Log($"Total sensors on {gameObject.name}: " + sensors.Count);
             Debug.Log($"Sensors on {gameObject.name}: " + sensors);
-            foreach ( var sensor in sensors )
+            foreach (var sensor in sensors)
             {
                 AgentData.SensorsData.Add(sensor.SensorData);
             }

@@ -1,10 +1,8 @@
 using CBB.Api;
 using CBB.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -67,7 +65,8 @@ public class UtilityPanel : VisualElement
         var choices = _others.Select(t => (t.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name);
         this.otherDropdown.choices = (choices.Concat(new List<string>() { "Nothing" })).ToList();
         this.otherDropdown.index = choices.ToList().Count;
-        this.otherDropdown.RegisterCallback<ChangeEvent<string>>(e => {
+        this.otherDropdown.RegisterCallback<ChangeEvent<string>>(e =>
+        {
             _sOther = (this.otherDropdown.index == _others.Length) ? null : _others[otherDropdown.index];
             UpdateEvaluatorParameter(_evaluators[_eIndex]);
         });
@@ -82,14 +81,16 @@ public class UtilityPanel : VisualElement
         //};
 
         // ConsiderationField (Left panel)
-        this.nameField = this.Q<TextField>("NameField"); 
+        this.nameField = this.Q<TextField>("NameField");
         this.nameField.value = consideration.name;
-        this.nameField.RegisterCallback<ChangeEvent<string>>(e => {
+        this.nameField.RegisterCallback<ChangeEvent<string>>(e =>
+        {
             consideration.name = e.newValue;
         });
         this.publicToggle = this.Q<Toggle>("PublicToggle");
         this.publicToggle.value = consideration.isPublic;
-        this.publicToggle.RegisterCallback<ChangeEvent<bool>>(b => {
+        this.publicToggle.RegisterCallback<ChangeEvent<bool>>(b =>
+        {
             consideration.isPublic = b.newValue;
         });
 
@@ -105,18 +106,20 @@ public class UtilityPanel : VisualElement
 
         // EvaluatorDropdown
         this.evaluatorDropdown = this.Q<DropdownField>("EvaluatorDropdown");
-         this.evaluatorDropdown.choices = _evaluators.Select((e) => {
+        this.evaluatorDropdown.choices = _evaluators.Select((e) =>
+        {
             var att = e.GetType().GetCustomAttributes(typeof(EvaluatorAttribute), false)[0] as EvaluatorAttribute;
             return att.Name;
         }).ToList();
         _eIndex = _evaluators.ToList().FindIndex(e => e.GetType().Equals(consideration.evaluator.GetType()));
         this.evaluatorDropdown.index = _eIndex;
-        this.evaluatorDropdown.RegisterCallback<ChangeEvent<string>>(e => {
+        this.evaluatorDropdown.RegisterCallback<ChangeEvent<string>>(e =>
+        {
             _eIndex = this.evaluatorDropdown.index;
             consideration.evaluator = _evaluators[_eIndex];
             UpdateEvaluatorParameter(_evaluators[_eIndex]);
         });
-        UpdateEvaluatorParameter(_evaluators[_eIndex]); 
+        UpdateEvaluatorParameter(_evaluators[_eIndex]);
 
         // Curve
         _cIndex = _curves.ToList().FindIndex(c => c.GetType().Equals(consideration.curve.GetType()));
@@ -141,12 +144,14 @@ public class UtilityPanel : VisualElement
 
         // CurveDropdown
         this.curveDropdown = this.Q<DropdownField>("CurveDropdown");
-        this.curveDropdown.choices = _curves.Select((c) => {
+        this.curveDropdown.choices = _curves.Select((c) =>
+        {
             var att = c.GetType().GetCustomAttributes(typeof(CurveAttribute), false)[0] as CurveAttribute;
             return att.Name;
         }).ToList();
         this.curveDropdown.index = _curves.ToList().FindIndex(c => c.GetType().Equals(consideration.curve.GetType()));
-        this.curveDropdown.RegisterCallback<ChangeEvent<string>>(e => {
+        this.curveDropdown.RegisterCallback<ChangeEvent<string>>(e =>
+        {
             _cIndex = this.curveDropdown.index;
             consideration.curve = _curves[_cIndex];
             UpdateCurveParamter(_curves[_cIndex]);
@@ -175,7 +180,8 @@ public class UtilityPanel : VisualElement
 
         // DeleteButton
         this.deleteButton = this.Q<Button>("DeleteButton");
-        this.deleteButton.clicked += () => {
+        this.deleteButton.clicked += () =>
+        {
             //agent.actions.Remove(action);
             OnChange?.Invoke();
         };
@@ -183,7 +189,8 @@ public class UtilityPanel : VisualElement
         // ConsiderationField (Left panel)
         this.nameField = this.Q<TextField>("NameField");
         this.nameField.value = action.name;
-        this.nameField.RegisterCallback<ChangeEvent<string>>(e => {
+        this.nameField.RegisterCallback<ChangeEvent<string>>(e =>
+        {
             action.name = e.newValue;
         });
         this.publicToggle = this.Q<Toggle>("PublicToggle");
@@ -193,7 +200,8 @@ public class UtilityPanel : VisualElement
         this.actionField = this.Q<DropdownField>("ActionField");
         this.actionField.choices = _actions.Select(a => a.name).ToList();
         this.actionField.index = _actions.ToList().FindIndex(a => a.name == action.actionInfo.name);
-        this.actionField.RegisterCallback<ChangeEvent<string>>(a => {
+        this.actionField.RegisterCallback<ChangeEvent<string>>(a =>
+        {
 
         });
         //UpdateActionParameter(); // (!!!) implementar
@@ -207,13 +215,15 @@ public class UtilityPanel : VisualElement
 
         // EvaluatorDropdown
         this.evaluatorDropdown = this.Q<DropdownField>("EvaluatorDropdown");
-        this.evaluatorDropdown.choices = _evaluators.Select((e) => {
+        this.evaluatorDropdown.choices = _evaluators.Select((e) =>
+        {
             var att = e.GetType().GetCustomAttributes(typeof(EvaluatorAttribute), false)[0] as EvaluatorAttribute;
             return att.Name;
         }).ToList();
         _eIndex = _evaluators.ToList().FindIndex(e => e.GetType().Equals(action.evaluator.GetType()));
         this.evaluatorDropdown.index = _eIndex;
-        this.evaluatorDropdown.RegisterCallback<ChangeEvent<string>>(e => {
+        this.evaluatorDropdown.RegisterCallback<ChangeEvent<string>>(e =>
+        {
             _eIndex = this.evaluatorDropdown.index;
             action.evaluator = _evaluators[_eIndex];
             UpdateEvaluatorParameter(_evaluators[_eIndex]);
@@ -243,12 +253,14 @@ public class UtilityPanel : VisualElement
 
         // CurveDropdown
         this.curveDropdown = this.Q<DropdownField>("CurveDropdown");
-        this.curveDropdown.choices = _curves.Select((c) => {
+        this.curveDropdown.choices = _curves.Select((c) =>
+        {
             var att = c.GetType().GetCustomAttributes(typeof(CurveAttribute), false)[0] as CurveAttribute;
             return att.Name;
         }).ToList();
         this.curveDropdown.index = _curves.ToList().FindIndex(c => c.GetType().Equals(action.curve.GetType()));
-        this.curveDropdown.RegisterCallback<ChangeEvent<string>>(e => {
+        this.curveDropdown.RegisterCallback<ChangeEvent<string>>(e =>
+        {
             _cIndex = this.curveDropdown.index;
             action.curve = _curves[_cIndex];
             UpdateCurveParamter(_curves[_cIndex]);
@@ -262,8 +274,8 @@ public class UtilityPanel : VisualElement
 
         var metaInfos = UtilitySystem.CollectActionMetaInfo(action.actionInfo.ownerType);
         var ai = metaInfos.First(mi => mi.actionInfo.name == action.actionInfo.name);   // (!!) el ACTION QUE RECIVE POR PARAMETROS NUNCA SERA EL MISMO QUE SE BUSCA EN EL METAINFO  
-        
-        if(ai.methodInfo != null)
+
+        if (ai.methodInfo != null)
         {
             var meth = ai.methodInfo;
             var att = ai.atribute;
@@ -276,7 +288,7 @@ public class UtilityPanel : VisualElement
                 actionParameters.Add(dropdown);
             }
         }
-        else if(ai.eventInfo != null)
+        else if (ai.eventInfo != null)
         {
             var evnt = ai.eventInfo;
             // (!!) falta implementar los inputs de los eventos 
@@ -323,15 +335,17 @@ public class UtilityPanel : VisualElement
     {
         this.curveParameters.Clear();
         var p = curve.GetType().GetFields();
-        var parms = p.Where( f => f.GetCustomAttributes(typeof(ParamAttribute), false).Count() > 0).ToList();
+        var parms = p.Where(f => f.GetCustomAttributes(typeof(ParamAttribute), false).Count() > 0).ToList();
         for (int i = 0; i < parms.Count; i++)
         {
             var att = (parms[i].GetCustomAttributes(typeof(ParamAttribute), false)[0] as ParamAttribute);
             var parm = parms[i];
-            var sliderField = new NumberSliderField(att.Name, (float)parm.GetValue(curve), att.Min, att.Max, (v) => {;
+            var sliderField = new NumberSliderField(att.Name, (float)parm.GetValue(curve), att.Min, att.Max, (v) =>
+            {
+                ;
                 parm.SetValue(curve, v);
                 UpdateChart(curve);
-            });;
+            }); ;
             curveParameters.Add(sliderField);
         }
     }

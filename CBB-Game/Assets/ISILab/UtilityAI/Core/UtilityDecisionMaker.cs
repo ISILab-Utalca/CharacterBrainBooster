@@ -31,7 +31,7 @@ namespace ArtificialIntelligence.Utility
                 var options = action.GetOptions();
                 scoredOptions.AddRange(options);
             }
-            
+
             return scoredOptions;
 
         }
@@ -85,7 +85,7 @@ namespace ArtificialIntelligence.Utility
             }
             return pickedOption;
         }
-        
+
         /// <summary>
         /// Picks an action randomly from the list of options.
         /// </summary>

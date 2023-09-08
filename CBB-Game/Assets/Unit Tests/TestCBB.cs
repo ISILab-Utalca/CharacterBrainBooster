@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using CBB.Lib;
 using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Test_Evaluator

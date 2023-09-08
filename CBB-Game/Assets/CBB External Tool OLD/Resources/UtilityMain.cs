@@ -1,9 +1,4 @@
-using CBB.Api;
 using CBB.Lib;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -35,7 +30,7 @@ public class UtilityMain : MonoBehaviour
         this.nameLabel = root.Q<Label>("NameLabel");
         //var type = _current.baseData.agentType;
         //this.nameLabel.text = (type.GetCustomAttributes(typeof(UtilityAgentAttribute), false)[0] as UtilityAgentAttribute).Name;
-        
+
         // Considerations Content
         this.considerationsContent = root.Q<VisualElement>("ConsiderationsContent");
 
@@ -47,7 +42,7 @@ public class UtilityMain : MonoBehaviour
 
         // SaveButton
         this.SaveButton = root.Q<Button>("TestButton");
-        SaveButton.clicked += () => { SaveTest("Test");  }; // (!)
+        SaveButton.clicked += () => { SaveTest("Test"); }; // (!)
 
         // AddConsideration
         //this.addConsideration = root.Q<Button>("AddConsideration");
@@ -59,7 +54,8 @@ public class UtilityMain : MonoBehaviour
 
         // Actions Tab
         this.actionsTab = root.Q<Button>("ActionsTab");
-        this.actionsTab.clicked += () => {
+        this.actionsTab.clicked += () =>
+        {
             ChangeTab(actionsContent);
             UpdateActions();
         };
@@ -73,7 +69,8 @@ public class UtilityMain : MonoBehaviour
 
         // Settings Tab
         this.settingsTab = root.Q<Button>("SettingsTab");
-        this.settingsTab.clicked += () => {
+        this.settingsTab.clicked += () =>
+        {
             ChangeTab(settingsPanel);
         };
 
@@ -168,8 +165,8 @@ public class UtilityMain : MonoBehaviour
     public void SaveTest(string fileName)
     {
         var path = Application.persistentDataPath;
-        Utility.JSONDataManager.SaveData<AgentBrainData>(path, fileName,".json", _current);
-        Debug.LogFormat("Saved on: <a href=\"{0}\">{0}</a>", "file://" + path + "/" + fileName +".json");
+        Utility.JSONDataManager.SaveData<AgentBrainData>(path, fileName, ".json", _current);
+        Debug.LogFormat("Saved on: <a href=\"{0}\">{0}</a>", "file://" + path + "/" + fileName + ".json");
         Application.OpenURL("file://" + path + "/" + fileName + ".json");
         //Debug.LogFormat("Haz clic aquí para abrir el archivo de código: <a href=\"{0}\">{0}</a>", "file:///C:/ruta/al/archivo.cs");
         //Debug.Log("Saved on: " + path);

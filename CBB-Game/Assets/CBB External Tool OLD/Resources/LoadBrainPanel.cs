@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UIElements;
+using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
-using System;
-using Newtonsoft.Json;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel general para cargar archivos.
 {
@@ -31,7 +28,8 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
 
         // BackButton
         this.backButton = root.Q<Button>("BackButton");
-        backButton.clicked += () => {
+        backButton.clicked += () =>
+        {
             this.gameObject.SetActive(false);
             mainPanel.SetActive(true);
         };
@@ -45,7 +43,8 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
 
         // OpenButton
         this.openButton = root.Q<Button>("OpenButton");
-        openButton.clicked += () => {
+        openButton.clicked += () =>
+        {
 
             var path = selected.text;
             var fileInfo = new FileInfo(path);
@@ -62,7 +61,7 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
             {
                 throw new JsonException();
             }
-            
+
         };
     }
 
@@ -77,7 +76,8 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
         rootBtn.style.borderTopLeftRadius = rootBtn.style.borderTopRightRadius = 4;
         rootBtn.style.backgroundColor = rootColor;
         rootBtn.style.unityTextAlign = TextAnchor.MiddleLeft;
-        rootBtn.clicked += () => {
+        rootBtn.clicked += () =>
+        {
             _path = RootPath(_path);
             UpdateContent();
         };
@@ -92,7 +92,8 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
             btn.style.unityTextAlign = TextAnchor.MiddleLeft;
             btn.style.backgroundColor = dirColor;
             btn.text = NamePath(dir);
-            btn.clicked += () => {
+            btn.clicked += () =>
+            {
                 _path = dir;
                 UpdateContent();
             };
@@ -115,7 +116,8 @@ public class LoadBrainPanel : MonoBehaviour // (!) esto deberia ser un panel gen
             }
             else
             {
-                btn.clicked += () => {
+                btn.clicked += () =>
+                {
                     selected.text = file;
                 };
             }

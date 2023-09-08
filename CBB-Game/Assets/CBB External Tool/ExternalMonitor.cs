@@ -1,18 +1,11 @@
 using CBB.Comunication;
-using CBB.Lib;
-using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEditor;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using Utility;
 
 /// <summary>
 /// Represents an external client that observes changes on the game.
@@ -26,16 +19,19 @@ public class ExternalMonitor : MonoBehaviour
     private GameDataManager gameDataManager;
     #endregion
 
+    #region Properties
+    public bool IsConnected { get; private set; }
+    #endregion
+
     #region Events
     public Action OnDisconnectedFromServer { get; set; }
-    public bool IsConnected { get; private set; }
     #endregion
 
     private void Awake()
     {
         IsConnected = false;
         receivedMessages = new Queue<string>();
-        if(TryGetComponent(out gameDataManager))
+        if (TryGetComponent(out gameDataManager))
         {
             gameDataManager.OnInternalMessageReceived += InternalCallback;
         }
@@ -121,7 +117,6 @@ public class ExternalMonitor : MonoBehaviour
             {
                 Debug.Log("<color=orange>[MONITOR] Communication thread error: </color>" + excep);
             }
-            Debug.Log("<color=cyan>[MONITOR] While Is Connected terminated</color>");
         }
         RemoveClient();
         Debug.Log("<color=yellow>[MONITOR] Communication thread finished</color>");

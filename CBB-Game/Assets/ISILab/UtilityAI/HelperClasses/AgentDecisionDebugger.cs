@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using System.Text;
 using ArtificialIntelligence.Utility;
-using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Text;
+using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class AgentDecisionDebugger : MonoBehaviour
 {
@@ -15,7 +14,7 @@ public class AgentDecisionDebugger : MonoBehaviour
     public NavMeshAgent navMeshAgent;
     private void OnEnable()
     {
-        
+
         Brain.OnCompletedScoring += DebugOptions;
         //Brain.gameObject.GetComponent<ActionMoveToRandomDirection>().OnStartedAction += UpdateNavmeshAgent;
         Debug.Log("Debugger set correctly");
@@ -27,7 +26,7 @@ public class AgentDecisionDebugger : MonoBehaviour
     }
     public void UpdateNavmeshAgent()
     {
-        if(NavigationTextBox!= null)
+        if (NavigationTextBox != null)
         {
             NavigationTextBox.text = "";
             NavigationTextBox.text = "Agent status:\nPath Pending: " + navMeshAgent.pathPending;

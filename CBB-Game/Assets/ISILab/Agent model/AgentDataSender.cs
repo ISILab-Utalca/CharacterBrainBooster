@@ -3,8 +3,7 @@ using CBB.Comunication;
 using CBB.Lib;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Sockets;
 using UnityEngine;
 using Utility;
 
@@ -14,17 +13,17 @@ namespace CBB.Api
     public class AgentWrapper // or AgentPackage 
     {
         [System.Serializable]
-        public enum Type
+        public enum AgentStateType
         {
             NEW,
             CURRENT,
             DESTROYED
         }
 
-        public Type type;
+        public AgentStateType type;
         public AgentData state;
 
-        public AgentWrapper(Type type, AgentData state)
+        public AgentWrapper(AgentStateType type, AgentData state)
         {
             this.type = type;
             this.state = state;
@@ -41,13 +40,13 @@ namespace CBB.Api
         private bool NeedAServer = false;
         [SerializeField]
         private bool showLogs = false;
-        
+
         private IAgent agentComp;
         private IAgentBrain agentBrain;
         private int agentID;
         private int decisionsSent = 0;
         private int dataSent = 0;
-        
+
         public System.Action<string> OnSerializedData { get; set; }
         public System.Action<string> OnSerializedDecision { get; set; }
 
@@ -59,27 +58,24 @@ namespace CBB.Api
             agentBrain.OnDecisionTaken += ReceiveDecisionHandler;
             agentBrain.OnSetupDone += SubscribeToSensors;
 
-            Client.OnConnectedToServer += SendAgentInitialData;
+            Server.OnNewClientConnected += SendAgentInitialDataToClient;
         }
         private void OnDestroy()
         {
             agentBrain.OnDecisionTaken -= ReceiveDecisionHandler;
             agentBrain.OnSetupDone -= SubscribeToSensors;
-            //SendData(AgentWrapper.Type.DESTROYED);
+            SendDataToAllClients(AgentWrapper.AgentStateType.DESTROYED);
         }
 
         private void ReceiveSensorUpdateHandler()
         {
-            SendData(AgentWrapper.Type.CURRENT);
+            SendDataToAllClients(AgentWrapper.AgentStateType.CURRENT);
         }
         private void ReceiveDecisionHandler(Option best, List<Option> otherOptions)
         {
-            var agentState = agentComp.GetInternalState();
-
             var decisionPackage = new DecisionPackage
             {
-                agentType = agentState.AgentType,
-                agentName = gameObject.name,
+                agentID = agentID,
                 bestOption = new DecisionData(best),
                 otherOptions = new List<DecisionData>()
             };
@@ -87,18 +83,16 @@ namespace CBB.Api
             {
                 decisionPackage.otherOptions.Add(new DecisionData(option));
             }
-            SendData(decisionPackage);
+            SendDataToAllClients(decisionPackage);
             // We also need to send the agent state when OnDecisionTaken is fired
-            SendData();
+            SendDataToAllClients();
         }
-        private string SerializeAgentWrapperData(AgentWrapper.Type type = AgentWrapper.Type.CURRENT)
+        private string SerializeAgentWrapperData(AgentWrapper.AgentStateType type = AgentWrapper.AgentStateType.CURRENT)
         {
             var state = agentComp.GetInternalState();
             state.agentName = gameObject.name;
             state.ID = agentID;
             var wrap = new AgentWrapper(type, state);
-
-            // Why Am I doing this here?
             List<JsonConverter> converters = new()
                 {
                     new GameObjectConverter(),
@@ -114,49 +108,41 @@ namespace CBB.Api
             }
         }
 
-        private void SendAgentInitialData()
+        private void SendAgentInitialDataToClient(TcpClient client)
         {
-            SendData(AgentWrapper.Type.NEW);
+            var data = SerializeAgentWrapperData(AgentWrapper.AgentStateType.NEW);
+            Server.SendMessageToClient(client, data);
             if (showLogs) Debug.Log("Initial data sent to the Server");
         }
-        private void SendData(DecisionPackage decisionPackage)
+        private void SendDataToAllClients(DecisionPackage decisionPackage)
         {
-            if (!NeedAServer)
-            {
-                string serializedDecisionPackage = JSONDataManager.SerializeData(decisionPackage);
-                OnSerializedDecision?.Invoke(serializedDecisionPackage);
-                return;
-            }
+            if (!NeedAServer) return;
             if (!Server.ServerIsRunning) return;
             try
             {
                 var data = JSONDataManager.SerializeData(decisionPackage);
                 Server.SendMessageToAllClients(data);
                 decisionsSent++;
-                if (showLogs) Debug.Log($"{name} has sent {decisionsSent} decisions");
+                if (showLogs)
+                {
+                    Debug.Log($"{name} has sent {decisionsSent} decisions");
+                    Debug.Log($"Data sent: {data}");
+                }
             }
             catch (System.Exception e)
             {
-                Debug.Log($"Error: {e}");
+                Debug.Log($"[AGENT DATA SENDER {gameObject.name}] Error sending data: {e}");
                 throw;
             }
         }
-        public void SendData(AgentWrapper.Type type = AgentWrapper.Type.CURRENT)
+        public void SendDataToAllClients(AgentWrapper.AgentStateType type = AgentWrapper.AgentStateType.CURRENT)
         {
-            if (!NeedAServer)
-            {
-                //string agentState = SerializeAgentWrapperData();
-                //OnSerializedData?.Invoke(agentState);
-                //Debug.Log("Printing agent state:\n" + agentState);
-                //byte[] messageBytes = Encoding.UTF8.GetBytes(agentState);
-                //Debug.Log($"Message length: {messageBytes.Length}");
-
-                return;
-            }
+            if (!NeedAServer) return;
             if (!Server.ServerIsRunning) return;
             try
             {
                 var data = SerializeAgentWrapperData(type);
+
                 Server.SendMessageToAllClients(data);
                 dataSent++;
                 if (showLogs)

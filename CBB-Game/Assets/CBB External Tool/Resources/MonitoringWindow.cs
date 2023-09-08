@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
+using CBB.Api;
+using CBB.Lib;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
-using System.Linq;
-using CBB.Comunication;
-using CBB.Lib;
-using CBB.Api;
 
 namespace CBB.ExternalTool
 {
@@ -33,7 +30,7 @@ namespace CBB.ExternalTool
 
         private void Awake()
         {
-            
+
             var root = GetComponent<UIDocument>().rootVisualElement;
 
             // InfoPanel
@@ -52,7 +49,7 @@ namespace CBB.ExternalTool
 
             // AgentsPanel
             this.agentsPanel = root.Q<AgentsPanel>();
-            
+
             agentsPanel.SelectionChange += OnSelectAgent;
 
             // SimpleBrainView
@@ -61,17 +58,16 @@ namespace CBB.ExternalTool
             // HistoryPanel
             this.historyPanel = root.Q<HistoryPanel>();
 
-            GameDataManager.OnClientConnected += InitGameData;
+            GameData.OnAddAgent += AddAgentToPanel;
             // Handle server desconection
             ExternalMonitor.OnDisconnectedFromServer += ReturnToMainView;
         }
 
         private void InitGameData()
         {
-            GameData.OnAddAgent += AddAgentToPanel;
         }
 
-        private void AddAgentToPanel(AgentWrapper wrapper)
+        private void AddAgentToPanel(AgentData wrapper)
         {
             agentsPanel.AddAgent(wrapper);
         }
@@ -82,13 +78,13 @@ namespace CBB.ExternalTool
 
             try
             {
-                var history = GameData.GetHistory(agent);
+                var history = GameData.GetHistory(agent.state.ID);
                 historyPanel.SetInfo(history);
                 historyPanel.Actualize();
             }
             catch
             {
-                Debug.Log("Agent "+ agent +" has no previous history.");
+                Debug.Log("Agent " + agent + " has no previous history.");
                 return;
             }
         }

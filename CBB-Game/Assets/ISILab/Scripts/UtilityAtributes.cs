@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace CBB.Api
 {
@@ -49,7 +47,7 @@ namespace CBB.Api
     [System.AttributeUsage(System.AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
     public class SensorConfigurationAttribute : Attribute
     {
-        
+
     }
     /// <summary>
     /// This attribute allows the CBB system to identify the fields
@@ -82,7 +80,7 @@ namespace CBB.Api
         public string Name => name;
         public List<string> Inputs => inputs.ToList();
 
-        public UtilityActionAttribute(string name ,params string[] inputs)
+        public UtilityActionAttribute(string name, params string[] inputs)
         {
             this.name = name;
             this.inputs = inputs;
@@ -135,12 +133,12 @@ namespace CBB.Api
     public class ParamAttribute : Attribute
     {
         private string name;
-        private float min,max;
+        private float min, max;
 
         public string Name => name;
         public float Min => min;
         public float Max => max;
-        public ParamAttribute(string name,float min = 0f, float max = 1f)
+        public ParamAttribute(string name, float min = 0f, float max = 1f)
         {
             this.name = name;
             this.min = min;

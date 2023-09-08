@@ -1,6 +1,5 @@
 using CBB.Lib;
 using Newtonsoft.Json;
-using System;
 using UnityEngine;
 
 public class SensorFieldOfViewConverter : JsonConverter

@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -86,9 +84,9 @@ public class PainterChart2D : VisualElement
         var points = new List<Vector2>();
         var h = Height - 2;
         var w = Width - 2;
-        for (int i = 0; i < steps ; i++)
+        for (int i = 0; i < steps; i++)
         {
-            var point = new Vector2(points01[i].x * w, Height - points01[i].y * h) + new Vector2(2,-2);
+            var point = new Vector2(points01[i].x * w, Height - points01[i].y * h) + new Vector2(2, -2);
             points.Add(point);
         }
         return points;

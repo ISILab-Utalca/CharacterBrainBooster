@@ -1,6 +1,4 @@
 using CBB.Api;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [UtilityAgent("Green man")]

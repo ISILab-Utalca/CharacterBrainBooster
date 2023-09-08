@@ -1,7 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
 
 namespace ArtificialIntelligence.Utility
 {
@@ -26,7 +26,7 @@ namespace ArtificialIntelligence.Utility
 
         #region Properties
         public NavMeshAgent LocalNavMeshAgent { get; protected set; }
-        [field:SerializeField]
+        [field: SerializeField]
         public float ActionCooldown { get; set; }
         public LocalAgentMemory LocalAgentMemory { get; protected set; }
         public bool IsRunning { get; set; }
@@ -93,7 +93,7 @@ namespace ArtificialIntelligence.Utility
         protected internal List<Option> ScoreMultipleOptions(List<GameObject> targets)
         {
             var options = new List<Option>();
-            if(targets.Count > 0)
+            if (targets.Count > 0)
             {
                 foreach (var target in targets)
                 {
@@ -103,9 +103,9 @@ namespace ArtificialIntelligence.Utility
             }
             else
             {
-                options.Add(new Option(this,0,null));
+                options.Add(new Option(this, 0, null));
             }
-            
+
             return options;
         }
         /// <summary>
@@ -134,8 +134,8 @@ namespace ArtificialIntelligence.Utility
             IsRunning = false;
             StopAllCoroutines();
         }
-        public virtual void FinishExecution() 
-        { 
+        public virtual void FinishExecution()
+        {
             IsRunning = false;
             if (viewLogs) Debug.Log($"Finish execution of {GetType().Name}");
             OnFinishedAction?.Invoke();

@@ -1,7 +1,4 @@
 using CBB.Lib;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 /// <summary>
 /// Interface for Sensors. A Sensor is a way to emulate a sense

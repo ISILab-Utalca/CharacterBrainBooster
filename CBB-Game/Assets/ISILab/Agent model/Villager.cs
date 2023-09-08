@@ -1,7 +1,5 @@
 ﻿using ArtificialIntelligence.Utility;
 using CBB.Api;
-using Newtonsoft.Json;
-using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace CBB.Lib

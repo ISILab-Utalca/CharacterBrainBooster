@@ -1,12 +1,9 @@
 using ArtificialIntelligence.Utility;
 using CBB.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
-using UnityEngine.Windows;
 
 namespace CBB.Api
 {
@@ -92,7 +89,7 @@ namespace CBB.Api
                     //}
                     //else
                     //{
-                       
+
                     //}
                     fieldValue = field.GetValue(sensorInstance);
                     sensorConfig.Add(fieldName, fieldValue);

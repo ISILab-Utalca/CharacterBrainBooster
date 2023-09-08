@@ -9,10 +9,10 @@ namespace ArtificialIntelligence.Utility.Actions
     public class Chase : ActionState
     {
         #region Fields
-        
+
         [SerializeField]
         private float chaseSpeed = 2f;
-        
+
         private float initialSpeed = 1;
         private const float CHASE_TICK = 0.1f;
         readonly WaitForSeconds chaseCheckTick = new(CHASE_TICK);
@@ -58,7 +58,7 @@ namespace ArtificialIntelligence.Utility.Actions
             if (viewLogs) Debug.Log($"{gameObject.name} finished chasing {target.name}");
             FinishExecution();
         }
-        
+
         #endregion
     }
 }

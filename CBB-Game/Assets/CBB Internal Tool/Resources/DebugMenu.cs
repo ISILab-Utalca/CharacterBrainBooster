@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,7 +5,7 @@ namespace CBB.InternalTool
 {
     public class DebugMenu : MonoBehaviour
     {
-        [RuntimeInitializeOnLoadMethod]
+        //[RuntimeInitializeOnLoadMethod]
         private static void CreateGlobalInstance()
         {
             var pref = Resources.Load<GameObject>("DebugMenu");

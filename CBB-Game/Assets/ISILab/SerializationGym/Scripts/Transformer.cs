@@ -1,4 +1,3 @@
-using ArtificialIntelligence.Utility;
 using UnityEngine;
 using Utility;
 
@@ -23,7 +22,7 @@ namespace CBB.Lib
             // by the engine. 
             //string s = JSONDataManager.SerializeData(this);
             //This line works because a custom converter is added to the underlying JsonSerializer settings
-            string s = JSONDataManager.SerializeData(this,new TransformClassConverter());
+            string s = JSONDataManager.SerializeData(this, new TransformClassConverter());
             Debug.Log(s);
         }
     }

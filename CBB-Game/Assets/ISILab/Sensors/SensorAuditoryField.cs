@@ -19,9 +19,9 @@ public class SensorAuditoryField : Sensor
     private float hearingRadius = 1f;
     [SensorConfiguration, SerializeField, TagSelector, Tooltip("Which gameObjects with certain tags will this sensor detect")]
     private List<string> hearingTags = new();
-    [SensorConfiguration,SerializeField]
+    [SensorConfiguration, SerializeField]
     private bool UpdateOnEnter = true;
-    [SensorConfiguration,SerializeField]
+    [SensorConfiguration, SerializeField]
     private bool UpdateOnExit = false;
     [SerializeField]
     private SphereCollider sphereColl;
@@ -43,16 +43,16 @@ public class SensorAuditoryField : Sensor
     {
         base.Awake();
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if (!hearingTags.Contains(other.tag)) return;
         if (viewLogs) Debug.Log($"Object detected: {other.name}");
         heardObjects.Add(other.gameObject);
         _agentMemory.HeardObjects.Add(other.gameObject);
-        if(UpdateOnEnter) OnSensorUpdate?.Invoke();
+        if (UpdateOnEnter) OnSensorUpdate?.Invoke();
     }
-    
+
     private void OnTriggerExit(Collider other)
     {
         if (!hearingTags.Contains(other.tag)) return;
@@ -61,7 +61,7 @@ public class SensorAuditoryField : Sensor
         _agentMemory.HeardObjects.Remove(other.gameObject);
         if (UpdateOnExit) OnSensorUpdate?.Invoke();
     }
-    
+
     [ContextMenu("Serialize sensor")]
     public void SerializeSensor()
     {

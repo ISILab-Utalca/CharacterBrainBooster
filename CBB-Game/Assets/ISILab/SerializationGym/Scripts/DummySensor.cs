@@ -2,7 +2,6 @@ using ArtificialIntelligence.Utility;
 using CBB.Api;
 using CBB.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,7 +17,7 @@ public class DummySensor : Sensor
     [SensorConfiguration]
     public bool isAwake = true;
     [SensorConfiguration]
-    public string StringProperty {  get; set; }
+    public string StringProperty { get; set; }
 
 
     public override SensorData GetSensorData()

@@ -1,10 +1,9 @@
-using UnityEngine;
-using Newtonsoft.Json;
-using UnityEditor;
-using Utility;
 using CBB.Lib;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using Newtonsoft.Json.Serialization;
+using UnityEditor;
+using UnityEngine;
+using Utility;
 
 namespace CBB.Tests
 {
@@ -70,7 +69,6 @@ namespace CBB.Tests
             List<System.Type> deserializableTypes = new()
             {
                 typeof(SensorData),
-                typeof(AgentBasicData),
                 typeof(DummySimpleData)
             };
 
@@ -78,17 +76,17 @@ namespace CBB.Tests
             var dummy = new DummySimpleData("darius");
             string dummySerialized = JSONDataManager.SerializeData(dummy);
             Debug.Log(dummySerialized);
-            
+
             // Set initial settings for detecting errors on deserialization
             JsonSerializerSettings settings = new()
             {
                 TypeNameHandling = TypeNameHandling.All,
                 MissingMemberHandling = MissingMemberHandling.Error
             };
-            
+
             // Loop through the list until a valid type is found
-            
-            foreach(System.Type t in deserializableTypes)
+
+            foreach (System.Type t in deserializableTypes)
             {
                 settings.SerializationBinder = new GeneralBinder(t);
                 try

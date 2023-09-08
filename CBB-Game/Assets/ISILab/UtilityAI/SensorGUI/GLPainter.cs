@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 namespace ArtificialIntelligence.Utility
 {
@@ -7,7 +5,7 @@ namespace ArtificialIntelligence.Utility
     {
         public GLPainter() { }
 
-        public void DrawCilinder(Vector3 position,float radius, float height, Vector3 normal,Color color)
+        public void DrawCilinder(Vector3 position, float radius, float height, Vector3 normal, Color color)
         {
             var displacement = (normal * height / 2f);
             DrawCircle(position + displacement, radius, normal, color);
@@ -37,7 +35,7 @@ namespace ArtificialIntelligence.Utility
                 GL.Vertex(vertex[i]);
                 GL.Vertex(vertex[i + 1]);
             }
-            GL.Vertex(vertex[vertex.Length -1]);
+            GL.Vertex(vertex[vertex.Length - 1]);
             GL.Vertex(vertex[0]);
             GL.End();
 

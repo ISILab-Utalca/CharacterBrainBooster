@@ -21,7 +21,7 @@ namespace CBB.Lib
                 .Cast<Sensor>()
                 .ToList();
         }
-        
+
         [ContextMenu("Serialize sensor data")]
         private void SerializeSensorData()
         {
@@ -37,18 +37,19 @@ namespace CBB.Lib
         {
             // Find sensors on this agent
             var agentMb = agent as MonoBehaviour;
-            if(agentMb == null)
+            if (agentMb == null)
             {
                 Debug.LogError($"This {agent} can't be used as MonoBehaviuor");
+                return;
             }
-            
+
             var sensors = agentMb.gameObject.GetComponentsOnHierarchy<Sensor>();
             Debug.Log($"Total sensors on {agentMb.gameObject.name}: " + sensors.Count);
             Debug.Log($"Sensors on {agentMb.gameObject.name}: " + sensors);
-            foreach (var sensor in sensors )
+            foreach (var sensor in sensors)
             {
                 agent.AgentData.SensorsData.Add(sensor.SensorData);
             }
-}
+        }
     }
 }

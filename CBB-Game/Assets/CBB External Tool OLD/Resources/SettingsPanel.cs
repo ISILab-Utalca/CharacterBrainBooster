@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -23,21 +21,24 @@ public class SettingsPanel : VisualElement
         // Min Toggle
         this.minToggle = this.Q<Toggle>("MinToggle");
         this.minToggle.value = settingsData.globals.showMinValue;
-        this.minToggle.RegisterCallback<ChangeEvent<bool>>(e => {
+        this.minToggle.RegisterCallback<ChangeEvent<bool>>(e =>
+        {
             settingsData.globals.showMinValue = this.minToggle.value;
         });
 
         // Max Toggle
         this.maxToggle = this.Q<Toggle>("MaxToggle");
         this.maxToggle.value = settingsData.globals.showMaxValue;
-        this.maxToggle.RegisterCallback<ChangeEvent<bool>>(e => {
+        this.maxToggle.RegisterCallback<ChangeEvent<bool>>(e =>
+        {
             settingsData.globals.showMaxValue = this.maxToggle.value;
         });
 
         // Average Toggle
         this.averageToggle = this.Q<Toggle>("AverageToggle");
         this.averageToggle.value = settingsData.globals.showAverageValue;
-        this.averageToggle.RegisterCallback<ChangeEvent<bool>>(e => {
+        this.averageToggle.RegisterCallback<ChangeEvent<bool>>(e =>
+        {
             settingsData.globals.showAverageValue = this.averageToggle.value;
         });
     }

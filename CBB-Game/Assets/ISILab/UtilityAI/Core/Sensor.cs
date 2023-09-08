@@ -17,11 +17,11 @@ namespace ArtificialIntelligence.Utility
         public SensorData SensorData = new();
         [SerializeField]
         protected bool viewLogs = false;
-        
+
         // GUI
         private static GLPainter painter = new GLPainter();
 
-        public Action OnSensorUpdate { get ; set; }
+        public Action OnSensorUpdate { get; set; }
 
         protected virtual void Awake()
         {
@@ -40,7 +40,7 @@ namespace ArtificialIntelligence.Utility
         }
         private void InternalGUI(object obj)
         {
-            if (Settings.ShowGUI) 
+            if (Settings.ShowGUI)
                 RenderGui(painter);
         }
 

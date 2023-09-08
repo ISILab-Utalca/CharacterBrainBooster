@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
 
 namespace Utility
 {
@@ -27,7 +27,7 @@ namespace Utility
                 Formatting = Formatting.Indented,
                 NullValueHandling = NullValueHandling.Ignore,
             };
-            if(jc != null) jsonSerializerSettings.Converters.Add(jc);
+            if (jc != null) jsonSerializerSettings.Converters.Add(jc);
             // generate json string
             return JsonConvert.SerializeObject(
                 data,
@@ -69,7 +69,7 @@ namespace Utility
                 Formatting = Formatting.Indented,
                 NullValueHandling = NullValueHandling.Ignore,
             };
-            
+
             // generate json string
             return JsonConvert.SerializeObject(
                 data,
@@ -95,17 +95,17 @@ namespace Utility
         public static void SaveData<T>(string directoryName, string fileName, string format, T data)
         {
             string directoryPath = directoryName;
-            if(!Directory.Exists(directoryPath)) 
+            if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
             }
-            string dataPath =  directoryPath + '/' + fileName + "." + format;
+            string dataPath = directoryPath + '/' + fileName + "." + format;
             if (File.Exists(dataPath))
             {
                 File.Delete(dataPath);
             }
 
-            SaveData(dataPath,data);
+            SaveData(dataPath, data);
         }
 
         private static T LoadData<T>(string path)
@@ -159,7 +159,7 @@ namespace Utility
             {
                 Directory.CreateDirectory(directoryPath);
             }
-            string dataPath = directoryPath + '/' + fileName +"."+ format;
+            string dataPath = directoryPath + '/' + fileName + "." + format;
 
             return LoadData<T>(dataPath);
         }
@@ -222,7 +222,7 @@ namespace Utility
         }
         public static List<string> GetJSONFiles(string path)
         {
-            if(!Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
                 return null;
                 //return new List<string>(); // (??) return empty list

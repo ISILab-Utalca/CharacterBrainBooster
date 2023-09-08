@@ -1,8 +1,6 @@
 using CBB.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class AgentDataGenerators
 {
@@ -12,15 +10,6 @@ public class AgentDataGenerators
     private static string[] firstNames = { "John", "Emma", "Michael", "Olivia", "William", "Ava", "James", "Isabella", "Benjamin", "Sophia" };
     private static string[] lastNames = { "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Wilson", "Taylor" };
     private static List<Type> sensorTypes = new() { typeof(SensorFieldOfView), typeof(SensorAuditoryField) };
-    /// <summary>
-    /// Creates a new instance of AgentBasicData with random information
-    /// </summary>
-    /// <returns></returns>
-    public static AgentBasicData New_Basic_Data()
-    {
-        int typeIndex = random.Next(AgentTypes.Count);
-        return new AgentBasicData(AgentTypes[typeIndex], RandomName());
-    }
 
     private static string RandomName()
     {
@@ -59,7 +48,7 @@ public class AgentDataGenerators
     {
         int numberOfSensors = agent.Sensors.Count;
         List<SensorData> sensorsData = new();
-        for(int i = 0; i < numberOfSensors; i++)
+        for (int i = 0; i < numberOfSensors; i++)
         {
             sensorsData.Add(New_Sensor_Data());
         }
