@@ -9,7 +9,7 @@ namespace CBB.ExternalTool
     public class AgentsPanel : VisualElement
     {
         #region FACTORY
-        public new class UxmlFactory : UxmlFactory<AgentsPanel, VisualElement.UxmlTraits> { }
+        public new class UxmlFactory : UxmlFactory<AgentsPanel, UxmlTraits> { }
         #endregion
 
         // View
@@ -26,6 +26,7 @@ namespace CBB.ExternalTool
             visualTree.CloneTree(this);
 
             this.list = this.Q<ListView>();
+            list.itemsSource = targetAgentAndID;
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
             list.itemsChosen += OnItemChosen; // cambiar a evento (!)
@@ -70,6 +71,7 @@ namespace CBB.ExternalTool
 
         internal void AddAgent(AgentData agent)
         {
+            if (targetAgentAndID.Contains((agent.agentName, agent.ID))) return;
             targetAgentAndID.Add((agent.agentName, agent.ID));
         }
     }

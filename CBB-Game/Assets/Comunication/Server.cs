@@ -17,7 +17,7 @@ namespace CBB.Comunication
 
         private static TcpListener server;
         private static Dictionary<IPAddress, TcpClient> clients = new();
-        private static Queue<IPAddress> clientsQueue = new();
+        private static Queue<TcpClient> clientsQueue = new();
         public static readonly object syncObject = new();
 
         #endregion
@@ -82,7 +82,7 @@ namespace CBB.Comunication
                     clients.Add(clientIPAddress, client);
                     ThreadPool.QueueUserWorkItem(HandleClientCommunication, client);
                     // Enqueue the new client to raise the corresponding event in the main thread
-                    clientsQueue.Enqueue(clientIPAddress);
+                    clientsQueue.Enqueue(client);
                     Debug.Log("[SERVER] Remote client added");
                 }
                 catch (SocketException SocketExcep)
@@ -139,7 +139,7 @@ namespace CBB.Comunication
                     {
                         InternalCallBack((InternalMessage)messageType, client);
                     }
-                    
+
                 }
                 catch (ObjectDisposedException disposedExcep)
                 {
@@ -214,9 +214,20 @@ namespace CBB.Comunication
         {
             serverPort = port;
         }
-        public static int ClientAmount()
+        public static bool GetNewClientConnected(out TcpClient lastConnectedclient)
         {
-            return clients.Count;
+            if (clientsQueue.Count > 0)
+            {
+                lastConnectedclient = clientsQueue.Dequeue();
+                return true;
+            }
+            lastConnectedclient = null;
+            return false;
+        }
+
+        public static void NotifyNewClienConnection(TcpClient client)
+        {
+            OnNewClientConnected?.Invoke(client);
         }
         #endregion
     }

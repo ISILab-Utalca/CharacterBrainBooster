@@ -95,7 +95,14 @@ public static class GameData
 
     private static void UpdateHistory(AgentData agent)
     {
-        throw new NotImplementedException();
+        if (Agents.ContainsKey(agent.ID))
+        {
+            Agents[agent.ID] = agent;
+        }
+        else
+        {
+            AddAgent(agent);
+        }
     }
 
     internal static void HandleDecisionPackage(DecisionPackage decisionPackage)

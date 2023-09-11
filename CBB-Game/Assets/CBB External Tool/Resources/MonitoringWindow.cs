@@ -66,8 +66,8 @@ namespace CBB.ExternalTool
 
         private void AddAgentToPanel(AgentData wrapper)
         {
-            Debug.Log("[MONITORING WINDOW] Agent added");
             agentsPanel.AddAgent(wrapper);
+            Debug.Log("[MONITORING WINDOW] Agent added");
         }
 
         private void OnSelectAgent(IEnumerable<object> objs)
