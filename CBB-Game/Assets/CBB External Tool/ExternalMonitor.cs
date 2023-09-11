@@ -60,7 +60,7 @@ public class ExternalMonitor : MonoBehaviour
         Debug.Log("<color=green>[MONITOR] Sync connection to server done.</color>");
         Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
         Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
-        ThreadPool.QueueUserWorkItem(HandleServerCommunication);
+        ThreadPool.QueueUserWorkItem(HandleServerCommunicationAsync);
     }
     public async Task ConnectToServerAsync(string serverAddress, int serverPort)
     {
@@ -71,9 +71,9 @@ public class ExternalMonitor : MonoBehaviour
         Debug.Log("<color=green>[MONITOR] Async connection to server done.</color>");
         Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
         Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
-        ThreadPool.QueueUserWorkItem(HandleServerCommunication);
+        ThreadPool.QueueUserWorkItem(HandleServerCommunicationAsync);
     }
-    private async void HandleServerCommunication(object state = null)
+    private async void HandleServerCommunicationAsync(object state = null)
     {
         using NetworkStream stream = client.GetStream();
         byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];

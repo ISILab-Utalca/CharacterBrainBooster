@@ -49,7 +49,6 @@ namespace CBB.ExternalTool
 
             // AgentsPanel
             this.agentsPanel = root.Q<AgentsPanel>();
-
             agentsPanel.SelectionChange += OnSelectAgent;
 
             // SimpleBrainView
@@ -58,27 +57,26 @@ namespace CBB.ExternalTool
             // HistoryPanel
             this.historyPanel = root.Q<HistoryPanel>();
 
+            // <Logic>
+            // Observe when a new agent is added
             GameData.OnAddAgent += AddAgentToPanel;
-            // Handle server desconection
+            // return to main view after ther server is disconnected
             ExternalMonitor.OnDisconnectedFromServer += ReturnToMainView;
-        }
-
-        private void InitGameData()
-        {
         }
 
         private void AddAgentToPanel(AgentData wrapper)
         {
+            Debug.Log("[MONITORING WINDOW] Agent added");
             agentsPanel.AddAgent(wrapper);
         }
 
         private void OnSelectAgent(IEnumerable<object> objs)
         {
-            var agent = objs.First() as AgentWrapper;
+            var agent = objs.First() as AgentData;
 
             try
             {
-                var history = GameData.GetHistory(agent.state.ID);
+                var history = GameData.GetHistory(agent.ID);
                 historyPanel.SetInfo(history);
                 historyPanel.Actualize();
             }

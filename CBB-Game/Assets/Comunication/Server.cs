@@ -17,8 +17,7 @@ namespace CBB.Comunication
 
         private static TcpListener server;
         private static Dictionary<IPAddress, TcpClient> clients = new();
-
-        private static readonly Queue<(string, TcpClient)> receivedMessages = new();
+        private static Queue<IPAddress> clientsQueue = new();
         public static readonly object syncObject = new();
 
         #endregion
@@ -36,7 +35,6 @@ namespace CBB.Comunication
             ServerIsRunning = true;
 
             ThreadPool.QueueUserWorkItem(ReceiveConnections);
-            //ThreadPool.QueueUserWorkItem(SendInformationToClients);
             Debug.Log("[SERVER] Started. Waiting for clients...");
             Debug.Log("[SERVER] Local Endpoint: " + server.LocalEndpoint.ToString());
         }
@@ -82,9 +80,10 @@ namespace CBB.Comunication
                     var newClientRemoteEndpoint = client.Client.RemoteEndPoint;
                     var clientIPAddress = ((IPEndPoint)newClientRemoteEndpoint).Address;
                     clients.Add(clientIPAddress, client);
-                    Debug.Log("[SERVER] Remote client added");
                     ThreadPool.QueueUserWorkItem(HandleClientCommunication, client);
-                    OnNewClientConnected?.Invoke(client);
+                    // Enqueue the new client to raise the corresponding event in the main thread
+                    clientsQueue.Enqueue(clientIPAddress);
+                    Debug.Log("[SERVER] Remote client added");
                 }
                 catch (SocketException SocketExcep)
                 {
@@ -140,10 +139,7 @@ namespace CBB.Comunication
                     {
                         InternalCallBack((InternalMessage)messageType, client);
                     }
-                    else
-                    {
-                        receivedMessages.Enqueue((receivedJsonMessage, client));
-                    }
+                    
                 }
                 catch (ObjectDisposedException disposedExcep)
                 {
@@ -166,24 +162,6 @@ namespace CBB.Comunication
             Debug.Log("<color=yellow>[SERVER] Communication thread finished with: </color>" + clientIP.ToString());
         }
 
-        private static void SendInformationToClients(object context = null)
-        {
-            while (ServerIsRunning)
-            {
-                try
-                {
-                    if (receivedMessages.Count > 0)
-                    {
-                        var msg = receivedMessages.Dequeue();
-                        SendMessageToAllClients(msg.Item1);
-                    }
-                }
-                catch (Exception excep)
-                {
-                    Debug.Log("<color=orange>[SERVER] Send thread error: </color>" + excep);
-                }
-            }
-        }
         // Beware of this blocking write operations. Testing is needed to measure if using
         // the async versions improves the performance
         public static void SendMessageToAllClients(string message)
@@ -236,17 +214,9 @@ namespace CBB.Comunication
         {
             serverPort = port;
         }
-        public static (string, TcpClient) GetRecived()
-        {
-            return receivedMessages.Dequeue();
-        }
         public static int ClientAmount()
         {
             return clients.Count;
-        }
-        public static int GetRecivedAmount()
-        {
-            return receivedMessages.Count;
         }
         #endregion
     }
