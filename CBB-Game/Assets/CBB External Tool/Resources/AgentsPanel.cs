@@ -15,7 +15,7 @@ namespace CBB.ExternalTool
         // View
         private ListView list;
 
-        private List<(string, int)> targetAgentAndID;
+        private List<(string, int)> targetAgentAndID = new();
 
         public Action<IEnumerable<object>> ItemChosen;
         public Action<IEnumerable<object>> SelectionChange;
@@ -27,6 +27,7 @@ namespace CBB.ExternalTool
 
             this.list = this.Q<ListView>();
             list.itemsSource = targetAgentAndID;
+            list.fixedItemHeight = 45;
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
             list.itemsChosen += OnItemChosen; // cambiar a evento (!)
@@ -73,6 +74,9 @@ namespace CBB.ExternalTool
         {
             if (targetAgentAndID.Contains((agent.agentName, agent.ID))) return;
             targetAgentAndID.Add((agent.agentName, agent.ID));
+            //list.itemsSource = targetAgentAndID;
+            list.Rebuild();
+            Debug.Log("[AGENTS PANEL] Added agent");
         }
     }
 }

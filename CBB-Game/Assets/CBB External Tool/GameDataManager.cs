@@ -42,9 +42,9 @@ public class GameDataManager : MonoBehaviour
             GameData.HandleAgentWrapper(agentWrapper);
             return;
         }
-        catch (Exception e)
+        catch
         {
-            Debug.Log("<color=red>[GAME DATA MANAGER] Error on AGENT WRAPPER deserialization: </color>" + e);
+            //Debug.Log("<color=red>[GAME DATA MANAGER] Error on AGENT WRAPPER deserialization: </color>");
         }
         try
         {
@@ -53,9 +53,9 @@ public class GameDataManager : MonoBehaviour
             GameData.HandleDecisionPackage(decisionPack);
             return;
         }
-        catch (Exception e)
+        catch
         {
-            Debug.Log("<color=red>[GAME DATA MANAGER] Error DECISION PACKAGE deserialization: </color>" + e);
+            //Debug.Log("<color=red>[GAME DATA MANAGER] Error DECISION PACKAGE deserialization: </color>" + e);
         }
     }
 }

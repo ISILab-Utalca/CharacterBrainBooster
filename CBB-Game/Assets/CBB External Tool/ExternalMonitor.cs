@@ -92,7 +92,7 @@ public class ExternalMonitor : MonoBehaviour
                 }
                 // header contains the length of the message we really care about
                 int messageLength = BitConverter.ToInt32(header, 0);
-                Debug.Log($"[MONITOR] Header's message length size: {messageLength}");
+                //Debug.Log($"[MONITOR] Header's message length size: {messageLength}");
 
                 byte[] messageBytes = new byte[messageLength];
                 //Read until received the expected amount of data
@@ -102,7 +102,7 @@ public class ExternalMonitor : MonoBehaviour
                 Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
 
                 // Check Internal message
-                lock (receivedMessages) receivedMessages.Enqueue(receivedJsonMessage);
+                receivedMessages.Enqueue(receivedJsonMessage);
 
             }
             catch (ObjectDisposedException disposedExcep)
