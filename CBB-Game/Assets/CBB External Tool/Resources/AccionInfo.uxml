@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(40, 40, 40, 0); flex-shrink: 1;">
+        <ui:VisualElement style="flex-grow: 0; background-color: rgb(49, 49, 49); height: 38px; flex-direction: row;">
+            <ui:VisualElement name="Punto" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 5px; flex-shrink: 0; justify-content: center; height: 38px; align-items: flex-start; flex-direction: column; flex-wrap: nowrap;">
+                <ui:VisualElement style="flex-grow: 0; background-color: rgb(44, 93, 135); width: 4px; flex-shrink: 0; border-top-right-radius: 93px; border-bottom-right-radius: 96px; height: 12px;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); justify-content: center;">
+                <ui:Label tabindex="-1" text="Accion name" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); margin-left: 8px; -unity-font-style: bold;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 0; background-color: rgb(59, 59, 59); height: 70px; border-bottom-width: 2px; border-bottom-color: rgb(75, 75, 75); -unity-slice-bottom: 0;">
+            <ui:Label tabindex="-1" text="Objetive name" display-tooltip-when-elided="true" style="color: rgb(219, 219, 219); margin-left: 8px;" />
+            <ui:Label tabindex="-1" text="Score:" display-tooltip-when-elided="true" style="color: rgb(219, 219, 219); margin-left: 8px; margin-bottom: 4px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
