@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(49, 49, 49, 0); flex-shrink: 1; height: 94px; width: 348px; flex-direction: row;">
+        <ui:VisualElement style="flex-grow: 0; background-color: rgb(44, 93, 135); flex-shrink: 0; width: 4px; height: 100px;" />
+        <ui:VisualElement name="ContenedorAgent" style="flex-grow: 1; background-color: rgb(49, 49, 49); flex-direction: row; flex-shrink: 0; height: 100px; visibility: visible; display: flex;">
+            <ui:VisualElement name="Icon" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 68px; justify-content: center; align-items: center;">
+                <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); align-items: center; justify-content: center; height: 32px; width: 32px; flex-shrink: 0; align-self: center; background-image: url(&apos;project://database/Assets/CBB%20External%20Tool/2DAssets/person.png?fileID=2800000&amp;guid=2a247dfc702919a4c817785b5fba6abe&amp;type=3#person&apos;); -unity-background-scale-mode: scale-to-fit;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); justify-content: center;">
+                <ui:Label tabindex="-1" text="Agent name" display-tooltip-when-elided="true" style="padding-bottom: 0; background-color: rgba(197, 197, 197, 0); color: rgb(197, 197, 197); font-size: 22px;" />
+                <ui:Label tabindex="-1" text="Id: 5688423" display-tooltip-when-elided="true" style="padding-top: 0; margin-top: 2px; color: rgb(255, 255, 255);" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
