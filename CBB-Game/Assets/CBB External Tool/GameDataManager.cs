@@ -18,7 +18,6 @@ public class GameDataManager : MonoBehaviour
     #region Events
     public static Action OnClientConnected { get; set; }
     #endregion
-
     public void HandleMessage(string msg)
     {
         if (Enum.TryParse(typeof(InternalMessage), msg, out object messageType))
@@ -26,7 +25,7 @@ public class GameDataManager : MonoBehaviour
             switch (messageType)
             {
                 case InternalMessage internalMessage:
-                    Debug.Log("[MONITOR] Received message is of type Internal Message");
+                    //Debug.Log("[MONITOR] Received message is of type Internal Message");
                     // Raised since the External Monitor needs to observe this event
                     OnInternalMessageReceived?.Invoke(internalMessage);
                     return;
@@ -38,7 +37,7 @@ public class GameDataManager : MonoBehaviour
         try
         {
             var agentWrapper = JsonConvert.DeserializeObject<AgentWrapper>(msg, settings);
-            Debug.Log("<color=lime>[MONITOR] YAY, WE HAVE AGENT WRAPPER</color>");
+            //Debug.Log("<color=lime>[MONITOR] YAY, WE HAVE AGENT WRAPPER</color>");
             GameData.HandleAgentWrapper(agentWrapper);
             return;
         }
@@ -49,7 +48,7 @@ public class GameDataManager : MonoBehaviour
         try
         {
             var decisionPack = JsonConvert.DeserializeObject<DecisionPackage>(msg, settings);
-            Debug.Log("<color=lime>[MONITOR] YAY, WE HAVE DECISION PACKAGE</color>");
+            //Debug.Log("<color=lime>[MONITOR] YAY, WE HAVE DECISION PACKAGE</color>");
             GameData.HandleDecisionPackage(decisionPack);
             return;
         }

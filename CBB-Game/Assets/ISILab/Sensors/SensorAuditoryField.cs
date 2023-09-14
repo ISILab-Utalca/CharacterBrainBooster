@@ -12,7 +12,7 @@ public class SensorAuditoryField : Sensor
     [Header("Memory")]
     [SensorMemory]
     public List<GameObject> heardObjects = new();
-    private SensorData sensorData;
+    private SensorStatus sensorData;
 
     [Header("Configurations")]
     [SensorConfiguration, SerializeField, SerializeProperty("HearingRadius")]
@@ -97,9 +97,9 @@ public class SensorAuditoryField : Sensor
         painter.DrawCircle(this.transform.position, hearingRadius, Vector3.up, Color.green);
     }
 
-    public override SensorData GetSensorData()
+    public override SensorStatus GetSensorData()
     {
-        sensorData = new SensorData
+        sensorData = new SensorStatus
         {
             sensorType = typeof(SensorAuditoryField),
             configurations = UtilitySystem.CollectSensorConfiguration(this),

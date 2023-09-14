@@ -68,7 +68,7 @@ namespace CBB.Tests
             // Create a list of valid types for de/serialization
             List<System.Type> deserializableTypes = new()
             {
-                typeof(SensorData),
+                typeof(SensorStatus),
                 typeof(DummySimpleData)
             };
 

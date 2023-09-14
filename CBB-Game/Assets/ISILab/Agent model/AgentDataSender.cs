@@ -112,7 +112,7 @@ namespace CBB.Api
         {
             var data = SerializeAgentWrapperData(AgentWrapper.AgentStateType.NEW);
             Server.SendMessageToClient(client, data);
-            if (showLogs) Debug.Log("Initial data sent to the Server");
+            Debug.Log("[AGENT DATA SENDER] Initial data sent to the Server");
         }
         private void SendDataToAllClients(DecisionPackage decisionPackage)
         {

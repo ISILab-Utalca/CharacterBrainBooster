@@ -36,18 +36,18 @@ public class AgentDataGenerators
         return new AgentBrainData(RandomAgentType(), RandomName());
     }
 
-    public static SensorData New_Sensor_Data()
+    public static SensorStatus New_Sensor_Data()
     {
         Dictionary<string, object> configurationDictionary = new() {
             { "param_a", 1 }, {"param_b", 4 }
         };
-        return new SensorData(RandomSensorType(), configurationDictionary, null);
+        return new SensorStatus(RandomSensorType(), configurationDictionary, null);
     }
 
     public static AgentData New_Agent_Data(Agent agent)
     {
         int numberOfSensors = agent.Sensors.Count;
-        List<SensorData> sensorsData = new();
+        List<SensorStatus> sensorsData = new();
         for (int i = 0; i < numberOfSensors; i++)
         {
             sensorsData.Add(New_Sensor_Data());

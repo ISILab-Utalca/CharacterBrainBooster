@@ -18,7 +18,7 @@ namespace CBB.Lib
         public List<GameObject> viewedObjects = new();
         // Implementation
         public BoxCollider boxCollider;
-        public SensorData sensorData;
+        public SensorStatus sensorData;
 
         public float HorizontalFOV
         {
@@ -95,7 +95,7 @@ namespace CBB.Lib
         {
             painter.DrawCilinder(this.transform.position, 5, 3, Vector3.up, Color.red);
         }
-        public override SensorData GetSensorData()
+        public override SensorStatus GetSensorData()
         {
             throw new System.NotImplementedException();
         }

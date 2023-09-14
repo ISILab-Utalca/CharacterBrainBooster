@@ -8,5 +8,5 @@ using CBB.Lib;
 public interface ISensor
 {
     System.Action OnSensorUpdate { get; set; }
-    public SensorData GetSensorData();
+    public SensorStatus GetSensorData();
 }

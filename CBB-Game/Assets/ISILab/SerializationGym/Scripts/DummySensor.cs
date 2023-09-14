@@ -20,10 +20,10 @@ public class DummySensor : Sensor
     public string StringProperty { get; set; }
 
 
-    public override SensorData GetSensorData()
+    public override SensorStatus GetSensorData()
     {
         StringProperty = "Hola";
-        return new SensorData
+        return new SensorStatus
         {
             sensorType = typeof(DummySensor),
             configurations = UtilitySystem.CollectSensorConfiguration(this),

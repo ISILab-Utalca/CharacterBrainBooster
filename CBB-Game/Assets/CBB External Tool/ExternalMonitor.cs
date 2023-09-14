@@ -99,7 +99,7 @@ public class ExternalMonitor : MonoBehaviour
                 await stream.ReadAsync(messageBytes, 0, messageLength);
 
                 string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
-                Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
+                //Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
 
                 // Check Internal message
                 receivedMessages.Enqueue(receivedJsonMessage);

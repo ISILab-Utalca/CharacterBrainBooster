@@ -14,7 +14,7 @@ namespace ArtificialIntelligence.Utility
     {
         // Event for when the sensor detects something
         protected LocalAgentMemory _agentMemory;
-        public SensorData SensorData = new();
+        public SensorStatus SensorData = new();
         [SerializeField]
         protected bool viewLogs = false;
 
@@ -46,7 +46,7 @@ namespace ArtificialIntelligence.Utility
 
         protected abstract void RenderGui(GLPainter painter);
 
-        public abstract SensorData GetSensorData();
+        public abstract SensorStatus GetSensorData();
     }
 }
 

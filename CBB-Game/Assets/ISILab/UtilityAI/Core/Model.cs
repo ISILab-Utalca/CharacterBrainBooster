@@ -1,24 +1,54 @@
 using ArtificialIntelligence.Utility;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CBB.Lib
 {
     [System.Serializable]
-    public class SensorData
+    public class SensorStatus
     {
         public Type sensorType;
         public Dictionary<string, object> configurations = new();
         public Dictionary<string, object> memory = new();
-        public SensorData() { }
-        public SensorData(Type sensorType, Dictionary<string, object> config, Dictionary<string, object> memory)
+        public SensorStatus() { }
+        public SensorStatus(Type sensorType, Dictionary<string, object> config, Dictionary<string, object> memory)
         {
             this.sensorType = sensorType;
             this.configurations = config;
             this.memory = memory;
         }
     }
-
+    /// <summary>
+    /// Holds the data of a sensor activation event.
+    /// </summary>
+    public class SensorActivation
+    {
+        public string sensorName;
+        /// <summary>
+        /// Who fired this activation
+        /// </summary>
+        public string activator;
+        public string activationTime;
+        /// <summary>
+        /// The ID of the owner of this sensor
+        /// </summary>
+        public int agentID;
+        /// <summary>
+        /// Just set the activation time to DateTime.Now
+        /// </summary>
+        public SensorActivation()
+        {
+            activationTime = DateTime.Now.ToString();
+        }
+        public SensorActivation(string sensorName, string activator, string activationTime, int agentID)
+        {
+            this.sensorName = sensorName;
+            this.activator = activator;
+            this.activationTime = activationTime;
+            this.agentID = agentID;
+        }
+    }
     [System.Serializable]
     public class AgentBrainData
     {
@@ -43,11 +73,11 @@ namespace CBB.Lib
         public string agentName;
         public int ID;
         public AgentBrainData BrainData;
-        public List<SensorData> SensorsData;
+        public List<SensorStatus> SensorsData;
         public List<AgentStateVariable> InternalVariables;
         public AgentData() { }
 
-        public AgentData(Type agentType, AgentBrainData brainData, List<SensorData> sensorsData)
+        public AgentData(Type agentType, AgentBrainData brainData, List<SensorStatus> sensorsData)
         {
             this.AgentType = agentType;
             this.BrainData = brainData;
@@ -102,4 +132,52 @@ namespace CBB.Lib
             this.variableName = variableName;
         }
     }
+
+
+    //[Serializable]
+    //public class SerializableKeyframe
+    //{
+    //    public float time;
+    //    public float value;
+    //    public float inTangent;
+    //    public float outTangent;
+
+    //    public SerializableKeyframe(Keyframe keyframe)
+    //    {
+    //        time = keyframe.time;
+    //        value = keyframe.value;
+    //        inTangent = keyframe.inTangent;
+    //        outTangent = keyframe.outTangent;
+    //    }
+
+    //    public Keyframe ToKeyframe()
+    //    {
+    //        return new Keyframe(time, value, inTangent, outTangent);
+    //    }
+    //}
+
+    //[Serializable]
+    //public class SerializableAnimationCurve
+    //{
+    //    public SerializableKeyframe[] keyframes;
+
+    //    public SerializableAnimationCurve(AnimationCurve curve)
+    //    {
+    //        keyframes = new SerializableKeyframe[curve.length];
+    //        for (int i = 0; i < curve.length; i++)
+    //        {
+    //            keyframes[i] = new SerializableKeyframe(curve[i]);
+    //        }
+    //    }
+
+    //    public AnimationCurve ToAnimationCurve()
+    //    {
+    //        AnimationCurve curve = new AnimationCurve();
+    //        foreach (var keyframe in keyframes)
+    //        {
+    //            curve.AddKey(keyframe.ToKeyframe());
+    //        }
+    //        return curve;
+    //    }
+    //}
 }

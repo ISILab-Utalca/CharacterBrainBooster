@@ -224,10 +224,10 @@ namespace CBB.Comunication
             lastConnectedclient = null;
             return false;
         }
-
         public static void NotifyNewClienConnection(TcpClient client)
         {
             OnNewClientConnected?.Invoke(client);
+            Debug.Log("[SERVER] OnNewClientConnected invoked");
         }
         #endregion
     }
