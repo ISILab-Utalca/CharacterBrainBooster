@@ -10,13 +10,10 @@
         <ui:VisualElement name="Line" style="flex-grow: 0; background-color: rgba(255, 255, 255, 0); margin-bottom: 0; border-left-color: rgb(19, 19, 19); border-right-color: rgb(19, 19, 19); border-top-color: rgb(43, 43, 43); border-bottom-color: rgb(31, 31, 31); border-bottom-width: 1px; border-top-width: 1px; -unity-text-outline-color: rgba(255, 255, 255, 0);" />
         <ui:VisualElement name="InfoPanel" style="flex-grow: 1; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 6px; margin-right: 6px; margin-top: 6px; margin-bottom: 6px; display: flex; background-color: rgb(53, 53, 53);">
             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row;">
-                <CBB.ExternalTool.AgentsPanel name="AgentsPanel" style="flex-grow: 0; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; background-color: rgb(56, 56, 56); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: -103px;" />
-                <CBB.ExternalTool.SimpleBrainView name="SimpleBrainView" style="flex-grow: 1; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; background-color: rgb(96, 94, 94);" />
+                <CBB.ExternalTool.AgentsPanel name="AgentsPanel" style="flex-grow: 0; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; background-color: rgb(56, 56, 56); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: auto; justify-content: space-between; align-items: flex-start;" />
+                <CBB.ExternalTool.SimpleBrainView name="SimpleBrainView" style="flex-grow: 1; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; background-color: rgb(96, 94, 94); display: none; visibility: hidden;" />
             </ui:VisualElement>
             <CBB.ExternalTool.HistoryPanel style="flex-grow: 1; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; background-color: rgb(53, 53, 53); padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;" />
-        </ui:VisualElement>
-        <ui:VisualElement name="WaitingPanel" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none; visibility: visible;">
-            <ui:Label tabindex="-1" text="Waiting for a game to connect." display-tooltip-when-elided="true" name="Label" style="align-self: center; align-items: center; justify-content: space-around; flex-grow: 1; -unity-text-align: middle-left; font-size: 24px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -13,7 +13,6 @@ namespace CBB.ExternalTool
         private ExternalMonitor externalMonitor;
         // View
         private VisualElement infoPanel;
-        private VisualElement waitingPanel;
         private DropdownField modeDropdown;
         private Button disconnectButton;
         private AgentsPanel agentsPanel;
@@ -36,9 +35,6 @@ namespace CBB.ExternalTool
             // InfoPanel
             this.infoPanel = root.Q<VisualElement>("InfoPanel");
 
-            // WaitingPanel
-            this.waitingPanel = root.Q<VisualElement>("WaitingPanel");
-
             // ModeDropdown
             this.modeDropdown = root.Q<DropdownField>("ModeDropdown");
             modeDropdown.RegisterCallback<ChangeEvent<string>>(OnModeChange);
@@ -49,42 +45,16 @@ namespace CBB.ExternalTool
 
             // AgentsPanel
             this.agentsPanel = root.Q<AgentsPanel>();
-            agentsPanel.SelectionChange += OnSelectAgent;
 
             // SimpleBrainView
             this.simpleBrainView = root.Q<SimpleBrainView>();
 
             // HistoryPanel
             this.historyPanel = root.Q<HistoryPanel>();
-
             // <Logic>
-            // Observe when a new agent is added
-            GameData.OnAddAgent += AddAgentToPanel;
-            // return to main view after ther server is disconnected
             ExternalMonitor.OnDisconnectedFromServer += ReturnToMainView;
-        }
-
-        private void AddAgentToPanel(AgentData wrapper)
-        {
-            agentsPanel.AddAgent(wrapper);
-            Debug.Log("[MONITORING WINDOW] Agent added");
-        }
-
-        private void OnSelectAgent(IEnumerable<object> objs)
-        {
-            var agent = objs.First() as AgentData;
-
-            try
-            {
-                var history = GameData.GetHistory(agent.ID);
-                historyPanel.SetInfo(history);
-                historyPanel.Actualize();
-            }
-            catch
-            {
-                Debug.Log("Agent " + agent + " has no previous history.");
-                return;
-            }
+            // Show the selected agent history
+            agentsPanel.OnAgentChosen += historyPanel.LoadAndDisplayAgentHistory;
         }
 
         private void OnModeChange(ChangeEvent<string> evt)

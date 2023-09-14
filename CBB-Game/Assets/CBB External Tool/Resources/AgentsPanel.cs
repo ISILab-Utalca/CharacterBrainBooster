@@ -1,6 +1,8 @@
 using CBB.Lib;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,15 +13,14 @@ namespace CBB.ExternalTool
         #region FACTORY
         public new class UxmlFactory : UxmlFactory<AgentsPanel, UxmlTraits> { }
         #endregion
-
-        // View
+        #region FIELDS
         private ListView list;
-
         private List<(string, int)> targetAgentAndID = new();
-
-        public Action<IEnumerable<object>> ItemChosen;
-        public Action<IEnumerable<object>> SelectionChange;
-
+        #endregion
+        #region EVENTS
+        public Action<int> OnAgentChosen { get; set; }
+        #endregion
+        #region CONSTRUCTOR
         public AgentsPanel()
         {
             var visualTree = Resources.Load<VisualTreeAsset>("AgentsPanel");
@@ -27,56 +28,58 @@ namespace CBB.ExternalTool
 
             this.list = this.Q<ListView>();
             list.itemsSource = targetAgentAndID;
-            list.fixedItemHeight = 45;
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
-            list.itemsChosen += OnItemChosen; // cambiar a evento (!)
-            list.selectionChanged += OnSelectionChange; // cambiar a evento (!)
+            list.selectionType = SelectionType.Single;
+            list.selectionChanged += NewAgentSelected;
+            GameData.OnAddAgent += AddAgent;
         }
+        #endregion
 
         private VisualElement MakeItem() // hacer que esto sea un solo viewElement (!!!)
         {
-            var nameLabel = new Label();
-            nameLabel.name = "name";
-
-            var idLabel = new Label();
-            idLabel.name = "id";
-
-            var content = new VisualElement();
-            content.Add(idLabel);
-            content.Add(nameLabel);
-
-            return content;
+            return new AgentInfo();
         }
-
         private void BindItem(VisualElement element, int index)
         {
-            var nameLabel = element.Q<Label>("name");
-            nameLabel.text = targetAgentAndID[index].Item1;
+            var agentInfo = element as AgentInfo;
+            if (agentInfo != null)
+            {
+                agentInfo.AgentName.text = targetAgentAndID[index].Item1;
+                agentInfo.AgentID.text = targetAgentAndID[index].Item2.ToString();
+            }
+            else
+            {
+                Debug.Log("[AGENT PANEL] Error on binding element");
+            }
 
-            var idLabel = element.Q<Label>("id");
-            idLabel.text = targetAgentAndID[index].Item2.ToString();
         }
-
-        public void OnSelectionChange(IEnumerable<object> objs)
-        {
-            Debug.Log("OnSelectionChange");
-            SelectionChange?.Invoke(objs);
-        }
-
-        public void OnItemChosen(IEnumerable<object> objs)
-        {
-            Debug.Log("OnItemChosen");
-            ItemChosen?.Invoke(objs);
-        }
-
         internal void AddAgent(AgentData agent)
         {
             if (targetAgentAndID.Contains((agent.agentName, agent.ID))) return;
             targetAgentAndID.Add((agent.agentName, agent.ID));
-            //list.itemsSource = targetAgentAndID;
+
+            // Call this method to update the view on runtime, better performance than rebuild
+            //list.RefreshItems();
             list.Rebuild();
-            Debug.Log("[AGENTS PANEL] Added agent");
+            Debug.Log("[AGENT PANEL] Added agent");
+        }
+        /// <summary>
+        /// Notifies the currently selected agent's ID 
+        /// </summary>
+        /// <param name="agents"></param>
+        private void NewAgentSelected(IEnumerable<object> agents)
+        {
+            // Positionate the iterator on the selected item
+            if (agents.First() is VisualElement agentsItem)
+            {
+                var idLabel = agentsItem.Q<Label>("id");
+                if (idLabel != null)
+                {
+                    OnAgentChosen?.Invoke(int.Parse(idLabel.text));
+                    Debug.Log("[AGENT PANEL] On Agent Chosen invoked");
+                }
+            }
         }
     }
 }

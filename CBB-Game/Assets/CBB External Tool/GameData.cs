@@ -7,7 +7,6 @@ using System.Collections.Generic;
 public static class GameData
 {
     #region FIELDS
-    private static Dictionary<int, AgentData> agentsStats = new();
 
     // Dictionary<Actor, List<Desicions>>
     private static Dictionary<int, List<DecisionPackage>> histories = new();
@@ -16,7 +15,7 @@ public static class GameData
     private static List<string> brains = new List<string>();
     #endregion
     #region PROPERTIES
-    public static Dictionary<int, AgentData> Agents { get => agentsStats; set => agentsStats = value; }
+    public static Dictionary<int, AgentData> AgentStats { get; set; } = new Dictionary<int, AgentData>();
     public static Dictionary<int, List<DecisionPackage>> Histories { get => histories; set => histories = value; }
     #endregion
     #region EVENTS
@@ -24,11 +23,6 @@ public static class GameData
     public static Action<AgentData> OnAgentSetAsDestroyed { get; set; }
     public static Action<DecisionPackage> OnAddDecision { get; set; }
     public static Action<List<string>> OnAddBrains { get; set; }
-    public static Action<DecisionPackage> OnDecisionPackageReceived { get; set; }
-    #endregion
-
-    #region CONSTRUCTORS
-
     #endregion
 
     #region METHODS
@@ -46,68 +40,70 @@ public static class GameData
         }
     }
 
-    public static void UpdateHistory(DecisionPackage decision)
-    {
-        var history = GetHistory(decision.agentID);
-        history.Add(decision);
-        OnAddDecision?.Invoke(decision);
-    }
-    public static void UpdateAgentData(AgentData agent)
-    {
-        if (agentsStats.ContainsKey(agent.ID))
-        {
-            agentsStats[agent.ID] = agent;
-        }
-    }
-    public static void AddAgent(AgentData agent)
-    {
-        Agents.Add(agent.ID, agent);
-        OnAddAgent?.Invoke(agent);
-    }
-
-    public static void RemoveAgent(AgentData agent)
-    {
-        Agents.Remove(agent.ID);
-    }
-
-    public static void SetAgentAsDestroyed(AgentData agent)
-    {
-        Agents[agent.ID] = null;
-        OnAgentSetAsDestroyed?.Invoke(agent);
-    }
     public static void HandleAgentWrapper(AgentWrapper agent)
     {
         switch (agent.type)
         {
             case AgentWrapper.AgentStateType.DESTROYED:
-                RemoveAgent(agent.state);
+                RemoveAgentState(agent.state);
                 break;
             case AgentWrapper.AgentStateType.CURRENT:
-                UpdateHistory(agent.state);
+                UpdateAgentState(agent.state);
                 break;
             case AgentWrapper.AgentStateType.NEW:
-                AddAgent(agent.state);
+                AddAgentState(agent.state);
                 break;
             default:
                 break;
         }
     }
-
-    private static void UpdateHistory(AgentData agent)
+    private static void AddAgentState(AgentData agent)
     {
-        if (Agents.ContainsKey(agent.ID))
+        if (!AgentStats.ContainsKey(agent.ID))
         {
-            Agents[agent.ID] = agent;
+            AgentStats.Add(agent.ID, agent);
+        }
+        OnAddAgent?.Invoke(agent);
+    }
+    private static void UpdateAgentState(AgentData agent)
+    {
+        if (AgentStats.ContainsKey(agent.ID))
+        {
+            AgentStats[agent.ID] = agent;
         }
         else
         {
-            AddAgent(agent);
+            AddAgentState(agent);
         }
+    }
+    private static void RemoveAgentState(AgentData agent)
+    {
+        AgentStats.Remove(agent.ID);
+    }
+    private static void SetAgentAsDestroyed(AgentData agent)
+    {
+        AgentStats[agent.ID] = null;
+        OnAgentSetAsDestroyed?.Invoke(agent);
     }
 
     internal static void HandleDecisionPackage(DecisionPackage decisionPackage)
     {
-        OnDecisionPackageReceived?.Invoke(decisionPackage);
+        if (histories.ContainsKey(decisionPackage.agentID))
+        {
+            histories[decisionPackage.agentID].Add(decisionPackage);
+        }
+        else
+        {
+            histories.Add(decisionPackage.agentID, new List<DecisionPackage>() { decisionPackage });
+        }
+        OnAddDecision?.Invoke(decisionPackage);
     }
+    public static void UpdateAgentHistory(DecisionPackage decision)
+    {
+        var history = GetHistory(decision.agentID);
+        history.Add(decision);
+        OnAddDecision?.Invoke(decision);
+    }
+
     #endregion
 }

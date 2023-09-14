@@ -1,4 +1,5 @@
 using CBB.ExternalTool;
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,7 +18,7 @@ public class MainWindow : MonoBehaviour
     [SerializeField] private ExternalMonitor monitorClient;
     [SerializeField] private bool doAsyncConnection = false;
 
-    private void Awake()
+    private void OnEnable()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
 
@@ -39,6 +40,10 @@ public class MainWindow : MonoBehaviour
         // InformationLabel
         this.connectionInformation = root.Q<Label>("ConnectionInformation");
     }
+    private void OnDisable()
+    {
+        startButton.clicked -= OnStartConnection;
+    }
     private async void OnStartConnection()
     {
         try
@@ -59,7 +64,7 @@ public class MainWindow : MonoBehaviour
             OpenWindow(value);
             Debug.Log("[MONITOR] Client connection done");
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             OpenWindow(-1);
             FailedConnection(e);
@@ -89,7 +94,7 @@ public class MainWindow : MonoBehaviour
                 return;
         }
     }
-    private void FailedConnection(System.Exception error)
+    private void FailedConnection(Exception error)
     {
         string errorLog = $"Failed to start the connection: {error}";
         Debug.LogError(errorLog);
@@ -103,4 +108,16 @@ public class MainWindow : MonoBehaviour
     {
         //Debug.Log(evt.newValue);
     }
+    //private void OnEnable()
+    //{
+    //    startButton.clicked += LogMethod;
+    //}
+    //private void OnDisable()
+    //{
+    //    startButton.clicked -= LogMethod;
+    //}
+    //private void LogMethod()
+    //{
+    //    Debug.Log("[MAIN WINDOW] Start Button clicked!");
+    //}
 }

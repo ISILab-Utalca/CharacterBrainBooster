@@ -1,6 +1,8 @@
 using CBB.Lib;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -16,19 +18,17 @@ namespace CBB.ExternalTool
         {
             Decisions,
             SensorEvents,
-            Both
         }
 
         // View
         private ListView list;
         private EnumField showField;
         private Tabs tabs;
-        private ScrollView scroll;
 
         // Info
-        private List<DecisionPackage> target;
-        private ShowType showType = ShowType.Both;
-
+        private ShowType showType = ShowType.Decisions;
+        private List<DecisionPackage> decisions;
+        // TODO: List for the sensor events
         public HistoryPanel()
         {
             var visualTree = Resources.Load<VisualTreeAsset>("HistoryPanel");
@@ -38,6 +38,7 @@ namespace CBB.ExternalTool
             this.list = this.Q<ListView>();
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
+            list.itemsSource = decisions;
             list.itemsChosen += OnItemChosen;
             list.selectionChanged += OnSelectionChange;
 
@@ -49,6 +50,13 @@ namespace CBB.ExternalTool
             // Tabs
             this.tabs = this.Q<Tabs>();
             tabs.OnSelectOption += OnSelectionOption;
+
+            GameData.OnAddDecision += AddDecisionInHistory;
+        }
+
+        private void AddDecisionInHistory(DecisionPackage package)
+        {
+
         }
 
         private void OnSelectionOption()
@@ -56,54 +64,62 @@ namespace CBB.ExternalTool
 
         }
 
+
         private VisualElement MakeItem() // hacer que esto sea un solo viewElement (!!!)
         {
-            var content = new VisualElement();
-            var nameLabel = new Label();
-            nameLabel.name = "name";
-            if (showType == ShowType.Both || showType == ShowType.Decisions) // Decision
-            {
-                /*
-                var idLabel = new Label();
-                idLabel.name = "id";
-                content.Add(idLabel);
-                content.Add(nameLabel);
-                */
-            }
-            if (showType == ShowType.Both || showType == ShowType.SensorEvents) // Sensor events
-            {
-                // Impleentar (!!!)
-            }
+            //var content = new VisualElement();
+            //var nameLabel = new Label();
+            //nameLabel.name = "name";
+            //if (showType == ShowType.Both || showType == ShowType.Decisions) // Decision
+            //{
+            //    /*
+            //    var idLabel = new Label();
+            //    idLabel.name = "id";
+            //    content.Add(idLabel);
+            //    content.Add(nameLabel);
+            //    */
+            //}
+            //if (showType == ShowType.Both || showType == ShowType.SensorEvents) // Sensor events
+            //{
+            //    // Impleentar (!!!)
+            //}
 
-            return content;
+            //return content;
+            return showType switch
+            {
+                ShowType.Decisions => new ActionInfo(),
+                ShowType.SensorEvents => throw new NotImplementedException(),//TODO
+                _ => null,
+            };
         }
 
         private void BindItem(VisualElement element, int index)
         {
-            var nameLabel = element.Q<Label>("name");
-            nameLabel.text = target[index].GetType().ToString();
-
-            if (showType == ShowType.Both || showType == ShowType.Decisions) // Decision
+            if(showType == ShowType.Decisions)
             {
-                /*
-                var idLabel = element.Q<Label>("id");
-                idLabel.text = index.ToString(); // sacar el indice del agente y no de la propia lista (!!!)
-                */
+                if (element is ActionInfo actionInfo)
+                {
+                    actionInfo.ActionName.text = decisions[index].bestOption.actionName;
+                    actionInfo.ActionScore.text = decisions[index].bestOption.actionScore.ToString();
+                    actionInfo.TargetName.text = decisions[index].bestOption.targetName;
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
             }
-            if (showType == ShowType.Both || showType == ShowType.SensorEvents) // Sensor events
+            else
             {
-                // Impleentar (!!!)
+                throw new NotImplementedException();
             }
         }
-
+        /// <summary>
+        /// Set the internal list of decisions and refresh the view
+        /// </summary>
+        /// <param name="history">The new history of decisions to show on the view</param>
         public void SetInfo(List<DecisionPackage> history)
         {
-            this.target = history;
-        }
-
-        public void Actualize()
-        {
-            list.Clear();
+            decisions = history;
             list.RefreshItems();
         }
 
@@ -121,6 +137,19 @@ namespace CBB.ExternalTool
         {
             var value = evt.newValue;
             Debug.Log(value.ToString());
+        }
+        public void LoadAndDisplayAgentHistory(int agentID)
+        {
+            try
+            {
+                var history = GameData.GetHistory(agentID);
+                SetInfo(history);
+            }
+            catch
+            {
+                Debug.Log("[HISTORY PANEL] Agent " + agentID + " has no previous history.");
+                return;
+            }
         }
     }
 }

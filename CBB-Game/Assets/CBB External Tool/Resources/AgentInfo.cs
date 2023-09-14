@@ -9,13 +9,19 @@ namespace CBB.ExternalTool
     public class AgentInfo : VisualElement
     {
         #region FACTORY
-        public new class UxmlFactory : UxmlFactory<AccionInfo, UxmlTraits> { }
+        public new class UxmlFactory : UxmlFactory<AgentInfo, UxmlTraits> { }
         #endregion
-
+        #region PROPERTIES
+        public Label AgentName { get; set; }
+        public Label AgentID { get; set; }
+        #endregion
         public AgentInfo()
         {
             var visualTree = Resources.Load<VisualTreeAsset>("AgentInfo");
             visualTree.CloneTree(this);
+
+            AgentName = this.Q<Label>("AgentName");
+            AgentID = this.Q<Label>("AgentID");
         }
     }
 }
