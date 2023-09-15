@@ -185,14 +185,27 @@ namespace CBB.Comunication
         }
         public static void SendMessageToClient(TcpClient client, string message)
         {
+            // Convert the string message into an array of bytes
+            // This is the data that is going to be sent accross the network
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+            byte[] bytesSent = WrapMessage(messageBytes);
             NetworkStream stream = client.GetStream();
 
             // Blocking operations, length prefix protocol
-            stream.Write(BitConverter.GetBytes(messageBytes.Length), 0, InternalNetworkManager.HEADER_SIZE);
-            stream.Write(messageBytes, 0, messageBytes.Length);
+            stream.Write(bytesSent, 0, bytesSent.Length);
         }
+        public static byte[] WrapMessage(byte[] message)
+        {
+            // Get the length prefix for the message
+            byte[] lengthPrefix = BitConverter.GetBytes(message.Length);
+            Debug.Log("[SERVER] Wrap Message call, Length prefix array length: " +  lengthPrefix.Length);
+            // Concatenate the length prefix and the message
+            byte[] ret = new byte[lengthPrefix.Length + message.Length];
+            lengthPrefix.CopyTo(ret, 0);
+            message.CopyTo(ret, lengthPrefix.Length);
 
+            return ret;
+        }
         private static void InternalCallBack(InternalMessage message, TcpClient client)
         {
             switch (message)
