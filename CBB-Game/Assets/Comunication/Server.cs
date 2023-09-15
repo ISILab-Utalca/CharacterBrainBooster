@@ -17,7 +17,7 @@ namespace CBB.Comunication
 
         private static TcpListener server;
         private static Dictionary<IPAddress, TcpClient> clients = new();
-        private static Queue<TcpClient> clientsQueue = new();
+        public static Queue<TcpClient> clientsQueue = new();
         public static readonly object syncObject = new();
 
         #endregion
