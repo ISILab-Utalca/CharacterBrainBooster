@@ -19,6 +19,7 @@ namespace CBB.Comunication
 
         private static string serverAddress = "127.0.0.1";
         private static int serverPort = 8888;
+        private static int receiveBufferSize = 8096;
 
         private static TcpClient client;
 
@@ -80,7 +81,7 @@ namespace CBB.Comunication
             try
             {
                 NetworkStream stream = client.GetStream();
-                byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
+                byte[] header = new byte[receiveBufferSize];
 
                 while (IsConnected)
                 {
@@ -98,19 +99,19 @@ namespace CBB.Comunication
                         string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
                         Debug.Log("Received from server: " + receivedJsonMessage);
 
-                        Enum.TryParse(typeof(InternalMessage), receivedJsonMessage, out object messageType);
-                        if (messageType != null)
-                        {
-                            InternalCallBack((InternalMessage)messageType, client);
-                        }
-                        else
-                        {
-                            // Guardar el mensaje recibido en la cola de mensajes
-                            lock (queueLock)
-                            {
-                                receivedMessagesQueue.Enqueue(receivedJsonMessage);
-                            }
-                        }
+                        //Enum.TryParse(typeof(InternalMessage), receivedJsonMessage, out object messageType);
+                        //if (messageType != null)
+                        //{
+                        //    InternalCallBack((InternalMessage)messageType, client);
+                        //}
+                        //else
+                        //{
+                        //    // Guardar el mensaje recibido en la cola de mensajes
+                        //    lock (queueLock)
+                        //    {
+                        //        receivedMessagesQueue.Enqueue(receivedJsonMessage);
+                        //    }
+                        //}
                     }
                 }
             }
