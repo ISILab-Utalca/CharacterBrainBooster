@@ -14,6 +14,7 @@ namespace CBB.ExternalTool
         public new class UxmlFactory : UxmlFactory<AgentsPanel, UxmlTraits> { }
         #endregion
         #region FIELDS
+        private int bindItemCalls = 0;
         private ListView list;
         private List<(string, int)> targetAgentAndID = new();
         #endregion
@@ -52,7 +53,8 @@ namespace CBB.ExternalTool
             {
                 Debug.Log("[AGENT PANEL] Error on binding element");
             }
-
+            bindItemCalls++;
+            Debug.Log($"[AGENTS PANEL] Called bind item {bindItemCalls}");
         }
         internal void AddAgent(AgentData agent)
         {

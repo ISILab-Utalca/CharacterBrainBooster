@@ -44,13 +44,13 @@ namespace CBB.ExternalTool
             disconnectButton.clicked += ExternalMonitor.RemoveClient;
 
             // AgentsPanel
-            this.agentsPanel = root.Q<AgentsPanel>();
+            //this.agentsPanel = root.Q<AgentsPanel>();
 
             // SimpleBrainView
-            this.simpleBrainView = root.Q<SimpleBrainView>();
+            //this.simpleBrainView = root.Q<SimpleBrainView>();
 
             // HistoryPanel
-            this.historyPanel = root.Q<HistoryPanel>();
+            //this.historyPanel = root.Q<HistoryPanel>();
             // <Logic>
             ExternalMonitor.OnDisconnectedFromServer += ReturnToMainView;
             // Show the selected agent history
