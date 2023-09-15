@@ -13,13 +13,14 @@ using UnityEngine;
 [RequireComponent(typeof(GameDataManager))]
 public class ExternalMonitor : MonoBehaviour
 {
-    #region Fields
+    #region FIELDS
     private Queue<string> receivedMessages = new();
     private TcpClient client;
     private GameDataManager gameDataManager;
+    private int receiveBufferSize = 8096;
     #endregion
 
-    #region Properties
+    #region PROPERTIES
     public bool IsConnected { get; private set; }
     #endregion
 
@@ -55,8 +56,6 @@ public class ExternalMonitor : MonoBehaviour
         // Blocking call
         client = new TcpClient(serverAddress, serverPort);
         IsConnected = true;
-        // Ensure Exit if user quits app
-        Application.quitting += RemoveClient;
         Debug.Log("<color=green>[MONITOR] Sync connection to server done.</color>");
         Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
         Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
@@ -76,8 +75,8 @@ public class ExternalMonitor : MonoBehaviour
     private async void HandleServerCommunicationAsync(object state = null)
     {
         using NetworkStream stream = client.GetStream();
-        byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
         Debug.Log("[MONITOR] Handle Server Communication started");
+        byte[] header = new byte[receiveBufferSize];
         int bytesRead;
         while (IsConnected)
         {
@@ -92,18 +91,18 @@ public class ExternalMonitor : MonoBehaviour
                 }
                 // header contains the length of the message we really care about
                 int messageLength = BitConverter.ToInt32(header, 0);
-                //Debug.Log($"[MONITOR] Header's message length size: {messageLength}");
+                Debug.Log($"[MONITOR] Header's message length size: {messageLength}");
 
-                byte[] messageBytes = new byte[messageLength];
-                //Read until received the expected amount of data
-                await stream.ReadAsync(messageBytes, 0, messageLength);
+                //byte[] messageBytes = new byte[messageLength];
+                ////Read until received the expected amount of data
+                //await stream.ReadAsync(messageBytes, 0, messageLength);
 
-                string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
+                //string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
                 //Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
 
                 // Check Internal message
-                receivedMessages.Enqueue(receivedJsonMessage);
-
+                //receivedMessages.Enqueue(receivedJsonMessage);
+                //Debug.Log("[MONITOR] Queue size: " + receivedMessages.Count);
             }
             catch (ObjectDisposedException disposedExcep)
             {
