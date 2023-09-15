@@ -54,7 +54,7 @@ namespace CBB.ExternalTool
             // <Logic>
             ExternalMonitor.OnDisconnectedFromServer += ReturnToMainView;
             // Show the selected agent history
-            agentsPanel.OnAgentChosen += historyPanel.LoadAndDisplayAgentHistory;
+            //agentsPanel.OnAgentChosen += historyPanel.LoadAndDisplayAgentHistory;
         }
 
         private void OnModeChange(ChangeEvent<string> evt)
