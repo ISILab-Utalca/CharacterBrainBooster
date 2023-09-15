@@ -141,6 +141,8 @@ public class ExternalMonitor : MonoBehaviour
         {
             try
             {
+                client.GetStream().Flush();
+                client.GetStream().Close();
                 client.Close();
             }
             catch (Exception e)
