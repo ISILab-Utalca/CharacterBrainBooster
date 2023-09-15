@@ -189,10 +189,10 @@ namespace CBB.Comunication
             // This is the data that is going to be sent accross the network
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
             byte[] bytesSent = WrapMessage(messageBytes);
-            NetworkStream stream = client.GetStream();
+            //NetworkStream stream = client.GetStream();
 
-            // Blocking operations, length prefix protocol
-            stream.Write(bytesSent, 0, bytesSent.Length);
+            //// Blocking operations, length prefix protocol
+            //stream.Write(bytesSent, 0, bytesSent.Length);
         }
         public static byte[] WrapMessage(byte[] message)
         {
