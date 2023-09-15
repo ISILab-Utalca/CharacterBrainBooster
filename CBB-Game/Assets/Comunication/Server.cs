@@ -21,10 +21,10 @@ namespace CBB.Comunication
         public static readonly object syncObject = new();
 
         #endregion
+        public static bool IsRunning { get; set; } = false;
         #region Events
         public static Action<TcpClient> OnNewClientConnected { get; set; }
         public static Action OnClientDisconnected { get; set; }
-        public static bool ServerIsRunning { get; set; } = false;
         #endregion
         #region Methods
 
@@ -32,7 +32,7 @@ namespace CBB.Comunication
         {
             server = new TcpListener(IPAddress.Any, serverPort);
             server.Start();
-            ServerIsRunning = true;
+            IsRunning = true;
 
             ThreadPool.QueueUserWorkItem(ReceiveConnections);
             Debug.Log("[SERVER] Started. Waiting for clients...");
@@ -42,7 +42,7 @@ namespace CBB.Comunication
         {
             if (server != null && server.Server.IsBound)
             {
-                ServerIsRunning = false;
+                IsRunning = false;
                 try
                 {
                     Thread.Sleep(0);
@@ -68,7 +68,7 @@ namespace CBB.Comunication
 
         private async static void ReceiveConnections(object context = null)
         {
-            while (ServerIsRunning)
+            while (IsRunning)
             {
                 try
                 {
@@ -82,7 +82,8 @@ namespace CBB.Comunication
                     clients.Add(clientIPAddress, client);
                     ThreadPool.QueueUserWorkItem(HandleClientCommunication, client);
                     // Enqueue the new client to raise the corresponding event in the main thread
-                    clientsQueue.Enqueue(client);
+                    //clientsQueue.Enqueue(client);
+                    OnNewClientConnected?.Invoke(client);
                     Debug.Log("[SERVER] Remote client added");
                 }
                 catch (SocketException SocketExcep)
@@ -111,7 +112,7 @@ namespace CBB.Comunication
             byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
             int bytesRead;
             bool threadIsRunningCorrectly = true;
-            while (ServerIsRunning && threadIsRunningCorrectly)
+            while (IsRunning && threadIsRunningCorrectly)
             {
                 try
                 // receive the header
@@ -166,18 +167,15 @@ namespace CBB.Comunication
         // the async versions improves the performance
         public static void SendMessageToAllClients(string message)
         {
-            lock (clients)
+            foreach (IPAddress clientIP in clients.Keys)
             {
-                foreach (IPAddress clientIP in clients.Keys)
+                try
                 {
-                    try
-                    {
-                        SendMessageToClient(clientIP, message);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogError($"Error sending message to client {clientIP}: {e}");
-                    }
+                    SendMessageToClient(clientIP, message);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Error sending message to client {clientIP}: {e}");
                 }
             }
         }
