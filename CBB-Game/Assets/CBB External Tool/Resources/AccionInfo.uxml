@@ -1,16 +1,7 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement style="flex-grow: 1; background-color: rgba(40, 40, 40, 0); flex-shrink: 1;">
-        <ui:VisualElement style="flex-grow: 0; background-color: rgb(49, 49, 49); height: 38px; flex-direction: row;">
-            <ui:VisualElement name="Punto" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 38px; flex-shrink: 0; justify-content: center; height: 38px; align-items: center; flex-direction: column; flex-wrap: nowrap;">
-                <ui:VisualElement style="flex-grow: 0; width: 22px; flex-shrink: 0; border-top-right-radius: 93px; border-bottom-right-radius: 96px; height: 22px; border-bottom-left-radius: 107px; border-top-left-radius: 115px; -unity-background-image-tint-color: rgb(111, 149, 105); background-color: rgb(185, 0, 0);" />
-            </ui:VisualElement>
-            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); justify-content: center;">
-                <ui:Label tabindex="-1" text="Accion name" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); margin-left: 8px; -unity-font-style: bold;" />
-            </ui:VisualElement>
-        </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 0; background-color: rgb(59, 59, 59); height: 70px; border-bottom-width: 2px; border-bottom-color: rgb(75, 75, 75); -unity-slice-bottom: 0;">
-            <ui:Label tabindex="-1" text="Objetive name" display-tooltip-when-elided="true" style="color: rgb(219, 219, 219); margin-left: 8px;" />
-            <ui:Label tabindex="-1" text="Score:" display-tooltip-when-elided="true" style="color: rgb(219, 219, 219); margin-left: 8px; margin-bottom: 4px;" />
-        </ui:VisualElement>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/Git-Ignore/test.uss?fileID=7433441132597879392&amp;guid=fd9af6f5bcc64df418c36dafca509f5b&amp;type=3#test" />
+    <ui:VisualElement name="VisualElement" style="flex-grow: 0; background-color: rgba(40, 40, 40, 0); flex-shrink: 1;">
+        <ui:VisualElement class="accion-back" />
+        <ui:VisualElement class="accion-back" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0);" />
     </ui:VisualElement>
 </ui:UXML>
