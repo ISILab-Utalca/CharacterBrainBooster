@@ -193,7 +193,7 @@ namespace CBB.Comunication
             // Blocking operations, length prefix protocol
             NetworkStream stream = client.GetStream();
             Debug.Log("[SERVER] Bytes sent length: " +  bytesSent.Length);
-            stream.Write(bytesSent, 0, bytesSent.Length);
+            //stream.Write(bytesSent, 0, bytesSent.Length);
         }
         public static byte[] WrapMessage(byte[] message)
         {
