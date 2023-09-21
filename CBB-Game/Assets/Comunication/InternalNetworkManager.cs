@@ -10,9 +10,11 @@ namespace CBB.Comunication
     }
     public class InternalNetworkManager : MonoBehaviour
     {
-        private static readonly int header_size = 4;
-
-        public static int HEADER_SIZE { get => header_size; }
+        /// <summary>
+        /// The size used by the Length-Prefix message framing
+        /// protocol implemented in this solution
+        /// </summary>
+        public static int HEADER_SIZE { get; } = 4;
 
         private void Awake()
         {

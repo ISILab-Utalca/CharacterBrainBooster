@@ -17,11 +17,12 @@ public class ExternalMonitor : MonoBehaviour
     private Queue<string> receivedMessages = new();
     private TcpClient client;
     private GameDataManager gameDataManager;
-    private int receiveBufferSize = 8096;
+    CancellationToken cancellationToken;
     #endregion
 
     #region PROPERTIES
     public bool IsConnected { get; private set; }
+    public CancellationTokenSource CancellationTokenSource { get; private set; }
     #endregion
 
     #region Events
@@ -31,6 +32,8 @@ public class ExternalMonitor : MonoBehaviour
     private void Awake()
     {
         IsConnected = false;
+        CancellationTokenSource = new CancellationTokenSource();
+        cancellationToken = CancellationTokenSource.Token;
         receivedMessages = new Queue<string>();
         if (TryGetComponent(out gameDataManager))
         {
@@ -76,48 +79,68 @@ public class ExternalMonitor : MonoBehaviour
     {
         using NetworkStream stream = client.GetStream();
         Debug.Log("[MONITOR] Handle Server Communication started");
-        byte[] header = new byte[receiveBufferSize];
+        byte[] headerBuffer = new byte[InternalNetworkManager.HEADER_SIZE];
         int bytesRead;
         while (IsConnected)
         {
+            int missingHeaderBytes = 0;
+            int missingMessageBytes = 0;
             try
             {
-                bytesRead = await stream.ReadAsync(header, 0, header.Length);
                 // Convention: 0 bytes read mean that the other endpoint closed the connection
-                if (bytesRead <= 0)
+                while ((bytesRead = await stream.ReadAsync(headerBuffer, 0, headerBuffer.Length,cancellationToken)) != 0)
                 {
-                    Debug.Log("<color=cyan>[MONITOR] Client </color>" + client.Client.RemoteEndPoint + "<color=cyan> quit.</color>");
-                    break;
+                    // This handles the case where the stream does not have yet the header
+                    // Maybe is unnecesary since the packets normally are larger than HEADER_SIZE
+                    if (bytesRead < InternalNetworkManager.HEADER_SIZE)
+                    {
+                        missingHeaderBytes = InternalNetworkManager.HEADER_SIZE - bytesRead;
+                        while (missingHeaderBytes > 0)
+                        {
+                            bytesRead = await stream.ReadAsync(headerBuffer, bytesRead, missingHeaderBytes);
+                            missingHeaderBytes -= bytesRead;
+                        }
+
+                    }
+                    //Debug.Log("[MONITOR] Bytes read (header): " + bytesRead);
+                    // We have the length of the message
+                    var messageLengthInBytes = headerBuffer[0..InternalNetworkManager.HEADER_SIZE];
+                    int messageLength = BitConverter.ToInt32(messageLengthInBytes, 0);
+                    //Debug.Log($"[MONITOR] Message length size indicated by header: {messageLength}");
+
+                    int offset = 0;
+                    byte[] messageBytes = new byte[messageLength];
+                    bytesRead = await stream.ReadAsync(messageBytes, offset, messageLength);
+                    //Debug.Log("[MONITOR] Message bytes read (first time): " + bytesRead);
+
+                    // Read until receiving the expected amount of data
+                    missingMessageBytes = messageLength - bytesRead;
+                    while (missingMessageBytes > 0)
+                    {
+                        offset += bytesRead;
+                        bytesRead = await stream.ReadAsync(messageBytes, offset, missingMessageBytes);
+                        //Debug.Log("[MONITOR] Bytes read (inner while): " + bytesRead);
+                        missingMessageBytes -= bytesRead;
+                    }
+                    if (missingMessageBytes < 0)
+                    {
+                        throw new Exception("[MONITOR] Communication thread read more data than it should/can");
+                    }
+                    // Let's asume that messageBytes is correctly filled
+                    string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
+                    //Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
+                    // Check Internal message
+                    receivedMessages.Enqueue(receivedJsonMessage);
                 }
-                Debug.Log("[SERVER] Bytes read: " + bytesRead);
-                // Get the length of the message
-                var length = header[0..4];
-                int messageLength = BitConverter.ToInt32(length, 0);
-                Debug.Log($"[MONITOR] Header's message length size: {messageLength}");
-
-                //byte[] messageBytes = new byte[messageLength];
-                ////Read until received the expected amount of data
-                //await stream.ReadAsync(messageBytes, 0, messageLength);
-
-                //string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
-                //Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
-
-                // Check Internal message
-                //receivedMessages.Enqueue(receivedJsonMessage);
+                Debug.Log("<color=cyan>[MONITOR] Client </color>" + client.Client.RemoteEndPoint + "<color=cyan> quit.</color>");
                 //Debug.Log("[MONITOR] Queue size: " + receivedMessages.Count);
-            }
-            catch (ObjectDisposedException disposedExcep)
-            {
-                Debug.Log("<color=orange>[MONITOR] Communication thread error: </color>" + disposedExcep);
-            }
-            catch (SocketException socketExcep)
-            {
-                Debug.Log("<color=orange>[MONITOR] Communication thread error: </color>" + socketExcep);
             }
             catch (Exception excep)
             {
                 Debug.Log("<color=orange>[MONITOR] Communication thread error: </color>" + excep);
             }
+            finally { RemoveClient(); }
+
         }
         RemoveClient();
         Debug.Log("<color=yellow>[MONITOR] Communication thread finished</color>");
@@ -161,8 +184,9 @@ public class ExternalMonitor : MonoBehaviour
         {
             Debug.Log("<color=yellow>[MONITOR] Client is null already</color>");
         }
-
+        CancellationTokenSource.Cancel();
     }
+    
     public void SendMessageToServer(string message)
     {
         byte[] messageBytes = Encoding.UTF8.GetBytes(message);
@@ -171,5 +195,12 @@ public class ExternalMonitor : MonoBehaviour
         Debug.Log($"Client sent a {messageBytes.Length} bytes size message");
         stream.Write(BitConverter.GetBytes(messageBytes.Length), 0, InternalNetworkManager.HEADER_SIZE);
         stream.Write(messageBytes, 0, messageBytes.Length);
+    }
+
+    private void OnDestroy()
+    {
+        CancellationTokenSource.Cancel();
+        CancellationTokenSource.Dispose();
+        CancellationTokenSource = null;
     }
 }
