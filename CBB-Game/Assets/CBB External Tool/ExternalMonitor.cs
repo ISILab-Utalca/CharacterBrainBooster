@@ -89,8 +89,10 @@ public class ExternalMonitor : MonoBehaviour
                     Debug.Log("<color=cyan>[MONITOR] Client </color>" + client.Client.RemoteEndPoint + "<color=cyan> quit.</color>");
                     break;
                 }
-                // header contains the length of the message we really care about
-                int messageLength = BitConverter.ToInt32(header, 0);
+                Debug.Log("[SERVER] Bytes read: " + bytesRead);
+                // Get the length of the message
+                var length = header[0..4];
+                int messageLength = BitConverter.ToInt32(length, 0);
                 Debug.Log($"[MONITOR] Header's message length size: {messageLength}");
 
                 //byte[] messageBytes = new byte[messageLength];
