@@ -192,13 +192,13 @@ namespace CBB.Comunication
 
             // Blocking operations, length prefix protocol
             NetworkStream stream = client.GetStream();
+            Debug.Log("[SERVER] Bytes sent length: " +  bytesSent.Length);
             stream.Write(bytesSent, 0, bytesSent.Length);
         }
         public static byte[] WrapMessage(byte[] message)
         {
             // Get the length prefix for the message
             byte[] lengthPrefix = BitConverter.GetBytes(message.Length);
-            Debug.Log("[SERVER] Wrap Message call, Length prefix array length: " +  lengthPrefix.Length);
             // Concatenate the length prefix and the message
             byte[] ret = new byte[lengthPrefix.Length + message.Length];
             lengthPrefix.CopyTo(ret, 0);
