@@ -1,16 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/CBB%20External%20Tool/MonitorTextField.uss?fileID=7433441132597879392&amp;guid=b1ae81bb3415fba48bb3762b3b09de33&amp;type=3#MonitorTextField" />
-    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgb(40, 40, 40); flex-direction: row;">
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(40, 40, 40, 0); flex-direction: row;">
         <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); min-height: 0; min-width: 0;">
             <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px;">
-                <ui:Label tabindex="-1" text="History" display-tooltip-when-elided="true" name="Tilte" style="flex-grow: 1; flex-shrink: 1; color: rgb(255, 255, 255); padding-right: 24px; padding-left: 4px; -unity-font-style: bold;" />
+                <ui:Label tabindex="-1" text="DECISIONS HISTORY" display-tooltip-when-elided="true" name="Tilte" class="title-letter" style="flex-grow: 1; flex-shrink: 1; color: rgb(255, 255, 255); padding-right: 24px; padding-left: 4px; -unity-font-style: bold;" />
                 <ui:EnumField type="CBB.ExternalTool.HistoryPanel+ShowType, Assembly-CSharp" name="ShowField" class="MyVisualElement" style="flex-grow: 1; flex-shrink: 0; height: 33px;" />
             </ui:VisualElement>
             <ui:ListView focusable="true" style="flex-grow: 1; color: rgb(255, 255, 255);" />
-        </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1; background-color: rgb(55, 55, 55);">
-            <CBB.ExternalTool.Tabs style="flex-grow: 0;" />
-            <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" style="flex-grow: 1;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

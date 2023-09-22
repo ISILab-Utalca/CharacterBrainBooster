@@ -48,8 +48,8 @@ namespace CBB.ExternalTool
             // cuando este cambie actualiza la lista. y se deseleciona lo selecionado
 
             // Tabs
-            this.tabs = this.Q<Tabs>();
-            tabs.OnSelectOption += OnSelectionOption;
+            //this.tabs = this.Q<Tabs>();
+            //tabs.OnSelectOption += OnSelectionOption;
 
             GameData.OnAddDecision += AddDecisionInHistory;
         }

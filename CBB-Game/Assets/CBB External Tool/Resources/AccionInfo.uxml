@@ -1,7 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <Style src="project://database/Assets/Git-Ignore/test.uss?fileID=7433441132597879392&amp;guid=fd9af6f5bcc64df418c36dafca509f5b&amp;type=3#test" />
-    <ui:VisualElement name="VisualElement" style="flex-grow: 0; background-color: rgba(40, 40, 40, 0); flex-shrink: 1;">
-        <ui:VisualElement class="accion-back" />
-        <ui:VisualElement class="accion-back" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0);" />
-    </ui:VisualElement>
-</ui:UXML>
