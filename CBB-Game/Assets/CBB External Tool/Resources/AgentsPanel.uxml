@@ -1,4 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Label tabindex="-1" text="AGENTS" display-tooltip-when-elided="true" name="Title" style="color: rgb(255, 255, 255); padding-left: 4px; -unity-text-align: upper-center; -unity-font-style: bold; font-size: 24px; margin-bottom: 16px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; margin-left: 4px; margin-top: 16px;" />
-    <ui:ListView focusable="true" virtualization-method="DynamicHeight" style="align-items: center; -unity-text-align: upper-center; justify-content: center;" />
+    <ui:Label tabindex="-1" text="AGENTS" display-tooltip-when-elided="true" name="Title" style="color: rgb(255, 255, 255); padding-left: 4px; -unity-text-align: upper-center; -unity-font-style: bold; font-size: 22px; margin-bottom: 16px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; margin-left: 4px; margin-top: 16px;" />
+    <ui:ListView focusable="true" virtualization-method="DynamicHeight" style="align-items: center; -unity-text-align: upper-center; justify-content: center; flex-grow: 1;" />
 </ui:UXML>

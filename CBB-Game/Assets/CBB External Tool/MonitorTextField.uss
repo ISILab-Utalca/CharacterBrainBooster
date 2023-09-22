@@ -14,3 +14,13 @@
     border-bottom-width: 1px;
     color: rgb(255, 255, 255);
 }
+
+.title-letter {
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+    font-size: 22px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 8px;
+    padding-right: 8px;
+}

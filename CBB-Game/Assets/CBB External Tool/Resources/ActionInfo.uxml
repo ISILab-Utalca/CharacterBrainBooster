@@ -1,16 +1,17 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement style="flex-grow: 1; background-color: rgba(40, 40, 40, 0); flex-shrink: 1;">
-        <ui:VisualElement style="flex-grow: 0; background-color: rgb(49, 49, 49); height: 38px; flex-direction: row;">
-            <ui:VisualElement name="Punto" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 5px; flex-shrink: 0; justify-content: center; height: 38px; align-items: flex-start; flex-direction: column; flex-wrap: nowrap;">
-                <ui:VisualElement style="flex-grow: 0; background-color: rgb(44, 93, 135); width: 4px; flex-shrink: 0; border-top-right-radius: 93px; border-bottom-right-radius: 96px; height: 12px;" />
+    <Style src="project://database/Assets/CBB%20External%20Tool/AccionStyle.uss?fileID=7433441132597879392&amp;guid=21d0c9d84c018114cabe6ad793112d41&amp;type=3#AccionStyle" />
+    <ui:Button display-tooltip-when-elided="true" class="button-accion">
+        <ui:Label tabindex="-1" text="Name Accion" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; -unity-font-style: bold; font-size: 18px; margin-top: 4px; padding-left: 4px; margin-left: 4px; padding-right: 4px; margin-bottom: 2px; white-space: normal; padding-bottom: 2px;" />
+        <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; padding-bottom: 4px; margin-bottom: 4px; padding-left: 2px; margin-left: 2px;">
+            <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); align-items: center; justify-content: center; width: 15%; margin-bottom: 4px; margin-top: 2px; margin-left: 2px; padding-left: 0; flex-shrink: 0;">
+                <ui:VisualElement style="flex-grow: 0; background-color: rgb(35, 35, 35); width: 32px; border-top-left-radius: 32px; border-bottom-left-radius: 32px; border-top-right-radius: 32px; border-bottom-right-radius: 32px; height: 32px; margin-bottom: 2px; justify-content: center; align-items: center;">
+                    <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/CBB%20External%20Tool/2DAssets/starazul.png?fileID=2800000&amp;guid=47725e370ecaff54cbb9e8fe99b1aa20&amp;type=3#starazul&apos;); flex-shrink: 0; width: 18px; height: 18px; -unity-background-scale-mode: stretch-to-fill;" />
+                </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); justify-content: center;">
-                <ui:Label tabindex="-1" text="Action name" display-tooltip-when-elided="true" name="ActionName" style="color: rgb(255, 255, 255); margin-left: 8px; -unity-font-style: bold;" />
+            <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 80%;">
+                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="accion-data" />
+                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="accion-data" style="-unity-text-align: lower-left; color: rgb(203, 203, 203);" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 0; background-color: rgb(59, 59, 59); height: 70px; border-bottom-width: 2px; border-bottom-color: rgb(75, 75, 75); -unity-slice-bottom: 0;">
-            <ui:Label tabindex="-1" text="Target name" display-tooltip-when-elided="true" name="TargetName" style="color: rgb(219, 219, 219); margin-left: 8px;" />
-            <ui:Label tabindex="-1" text="Action score" display-tooltip-when-elided="true" name="ActionScore" style="color: rgb(219, 219, 219); margin-left: 8px; margin-bottom: 4px;" />
-        </ui:VisualElement>
-    </ui:VisualElement>
+    </ui:Button>
 </ui:UXML>
