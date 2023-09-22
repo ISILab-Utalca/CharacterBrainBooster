@@ -17,14 +17,14 @@ namespace CBB.Comunication
 
         private static TcpListener server;
         private static Dictionary<IPAddress, TcpClient> clients = new();
-        private static Queue<TcpClient> clientsQueue = new();
+        public static Queue<TcpClient> clientsQueue = new();
         public static readonly object syncObject = new();
 
         #endregion
+        public static bool IsRunning { get; set; } = false;
         #region Events
         public static Action<TcpClient> OnNewClientConnected { get; set; }
         public static Action OnClientDisconnected { get; set; }
-        public static bool ServerIsRunning { get; set; } = false;
         #endregion
         #region Methods
 
@@ -32,7 +32,7 @@ namespace CBB.Comunication
         {
             server = new TcpListener(IPAddress.Any, serverPort);
             server.Start();
-            ServerIsRunning = true;
+            IsRunning = true;
 
             ThreadPool.QueueUserWorkItem(ReceiveConnections);
             Debug.Log("[SERVER] Started. Waiting for clients...");
@@ -42,7 +42,7 @@ namespace CBB.Comunication
         {
             if (server != null && server.Server.IsBound)
             {
-                ServerIsRunning = false;
+                IsRunning = false;
                 try
                 {
                     Thread.Sleep(0);
@@ -68,7 +68,7 @@ namespace CBB.Comunication
 
         private async static void ReceiveConnections(object context = null)
         {
-            while (ServerIsRunning)
+            while (IsRunning)
             {
                 try
                 {
@@ -82,7 +82,8 @@ namespace CBB.Comunication
                     clients.Add(clientIPAddress, client);
                     ThreadPool.QueueUserWorkItem(HandleClientCommunication, client);
                     // Enqueue the new client to raise the corresponding event in the main thread
-                    clientsQueue.Enqueue(client);
+                    //clientsQueue.Enqueue(client);
+                    OnNewClientConnected?.Invoke(client);
                     Debug.Log("[SERVER] Remote client added");
                 }
                 catch (SocketException SocketExcep)
@@ -111,7 +112,7 @@ namespace CBB.Comunication
             byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
             int bytesRead;
             bool threadIsRunningCorrectly = true;
-            while (ServerIsRunning && threadIsRunningCorrectly)
+            while (IsRunning && threadIsRunningCorrectly)
             {
                 try
                 // receive the header
@@ -166,18 +167,15 @@ namespace CBB.Comunication
         // the async versions improves the performance
         public static void SendMessageToAllClients(string message)
         {
-            lock (clients)
+            foreach (IPAddress clientIP in clients.Keys)
             {
-                foreach (IPAddress clientIP in clients.Keys)
+                try
                 {
-                    try
-                    {
-                        SendMessageToClient(clientIP, message);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogError($"Error sending message to client {clientIP}: {e}");
-                    }
+                    SendMessageToClient(clientIP, message);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Error sending message to client {clientIP}: {e}");
                 }
             }
         }
@@ -187,14 +185,27 @@ namespace CBB.Comunication
         }
         public static void SendMessageToClient(TcpClient client, string message)
         {
+            // Convert the string message into an array of bytes
+            // This is the data that is going to be sent accross the network
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
-            NetworkStream stream = client.GetStream();
+            byte[] bytesSent = WrapMessage(messageBytes);
 
             // Blocking operations, length prefix protocol
-            stream.Write(BitConverter.GetBytes(messageBytes.Length), 0, InternalNetworkManager.HEADER_SIZE);
-            stream.Write(messageBytes, 0, messageBytes.Length);
+            NetworkStream stream = client.GetStream();
+            Debug.Log("[SERVER] Bytes sent length: " +  bytesSent.Length);
+            stream.Write(bytesSent, 0, bytesSent.Length);
         }
+        public static byte[] WrapMessage(byte[] message)
+        {
+            // Get the length prefix for the message
+            byte[] lengthPrefix = BitConverter.GetBytes(message.Length);
+            // Concatenate the length prefix and the message
+            byte[] ret = new byte[lengthPrefix.Length + message.Length];
+            lengthPrefix.CopyTo(ret, 0);
+            message.CopyTo(ret, lengthPrefix.Length);
 
+            return ret;
+        }
         private static void InternalCallBack(InternalMessage message, TcpClient client)
         {
             switch (message)

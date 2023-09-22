@@ -58,7 +58,7 @@ namespace CBB.Api
             agentBrain.OnDecisionTaken += ReceiveDecisionHandler;
             agentBrain.OnSetupDone += SubscribeToSensors;
 
-            Server.OnNewClientConnected += SendAgentInitialDataToClient;
+            //Server.OnNewClientConnected += SendAgentInitialDataToClient;
         }
         private void OnDestroy()
         {
@@ -108,16 +108,16 @@ namespace CBB.Api
             }
         }
 
-        private void SendAgentInitialDataToClient(TcpClient client)
-        {
-            var data = SerializeAgentWrapperData(AgentWrapper.AgentStateType.NEW);
-            Server.SendMessageToClient(client, data);
-            Debug.Log("[AGENT DATA SENDER] Initial data sent to the Server");
-        }
+        //private void SendAgentInitialDataToClient(TcpClient client)
+        //{
+        //    var data = SerializeAgentWrapperData(AgentWrapper.AgentStateType.NEW);
+        //    Server.SendMessageToClient(client, data);
+        //    Debug.Log("[AGENT DATA SENDER] Initial data sent to the Server");
+        //}
         private void SendDataToAllClients(DecisionPackage decisionPackage)
         {
             if (!NeedAServer) return;
-            if (!Server.ServerIsRunning) return;
+            if (!Server.IsRunning) return;
             try
             {
                 var data = JSONDataManager.SerializeData(decisionPackage);
@@ -138,7 +138,7 @@ namespace CBB.Api
         public void SendDataToAllClients(AgentWrapper.AgentStateType type = AgentWrapper.AgentStateType.CURRENT)
         {
             if (!NeedAServer) return;
-            if (!Server.ServerIsRunning) return;
+            if (!Server.IsRunning) return;
             try
             {
                 var data = SerializeAgentWrapperData(type);

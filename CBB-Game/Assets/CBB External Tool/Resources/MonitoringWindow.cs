@@ -27,7 +27,7 @@ namespace CBB.ExternalTool
 
         public ExternalMonitor ExternalMonitor { get => externalMonitor; set => externalMonitor = value; }
 
-        private void Awake()
+        private void OnEnable()
         {
 
             var root = GetComponent<UIDocument>().rootVisualElement;
@@ -44,19 +44,24 @@ namespace CBB.ExternalTool
             disconnectButton.clicked += ExternalMonitor.RemoveClient;
 
             // AgentsPanel
-            this.agentsPanel = root.Q<AgentsPanel>();
+            //this.agentsPanel = root.Q<AgentsPanel>();
 
             // SimpleBrainView
-            this.simpleBrainView = root.Q<SimpleBrainView>();
+            //this.simpleBrainView = root.Q<SimpleBrainView>();
 
             // HistoryPanel
-            this.historyPanel = root.Q<HistoryPanel>();
+            //this.historyPanel = root.Q<HistoryPanel>();
             // <Logic>
             ExternalMonitor.OnDisconnectedFromServer += ReturnToMainView;
             // Show the selected agent history
-            agentsPanel.OnAgentChosen += historyPanel.LoadAndDisplayAgentHistory;
+            //agentsPanel.OnAgentChosen += historyPanel.LoadAndDisplayAgentHistory;
         }
-
+        private void OnDisable()
+        {
+            modeDropdown.UnregisterCallback<ChangeEvent<string>>(OnModeChange);
+            disconnectButton.clicked -= ExternalMonitor.RemoveClient;
+            ExternalMonitor.OnDisconnectedFromServer -= ReturnToMainView;
+        }
         private void OnModeChange(ChangeEvent<string> evt)
         {
             Debug.Log("OnModeChange");
@@ -64,7 +69,6 @@ namespace CBB.ExternalTool
 
         private void ReturnToMainView()
         {
-
             this.gameObject.SetActive(false);
             this.mainWindow.SetActive(true);
         }

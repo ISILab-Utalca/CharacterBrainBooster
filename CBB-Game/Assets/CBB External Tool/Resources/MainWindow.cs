@@ -42,6 +42,8 @@ public class MainWindow : MonoBehaviour
     }
     private void OnDisable()
     {
+        addresField.UnregisterCallback<ChangeEvent<string>>(OnAddressChange);
+        portField.UnregisterCallback<ChangeEvent<string>>(OnPortChange);
         startButton.clicked -= OnStartConnection;
     }
     private async void OnStartConnection()
