@@ -61,7 +61,7 @@ namespace CBB.ExternalTool
             if (targetAgentAndID.Contains((agent.agentName, agent.ID))) return;
             targetAgentAndID.Add((agent.agentName, agent.ID));
 
-            // Call this method to update the view on runtime, better performance than rebuild
+            // Call this method to update the view on runtime
             //list.RefreshItems();
             list.Rebuild();
             Debug.Log("[AGENT PANEL] Added agent");

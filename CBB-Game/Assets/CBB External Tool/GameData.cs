@@ -6,17 +6,9 @@ using System.Collections.Generic;
 [Serializable]
 public static class GameData
 {
-    #region FIELDS
-
-    // Dictionary<Actor, List<Desicions>>
-    private static Dictionary<int, List<DecisionPackage>> histories = new();
-
-    // List<Brain>
-    private static List<string> brains = new List<string>();
-    #endregion
     #region PROPERTIES
-    public static Dictionary<int, AgentData> AgentStats { get; set; } = new Dictionary<int, AgentData>();
-    public static Dictionary<int, List<DecisionPackage>> Histories { get => histories; set => histories = value; }
+    public static Dictionary<int, AgentData> AgentStats { get; set; } = new();
+    public static Dictionary<int, List<DecisionPackage>> Histories { get; set; } = new();
     #endregion
     #region EVENTS
     public static Action<AgentData> OnAddAgent { get; set; }
@@ -88,21 +80,21 @@ public static class GameData
 
     internal static void HandleDecisionPackage(DecisionPackage decisionPackage)
     {
-        if (histories.ContainsKey(decisionPackage.agentID))
+        if (Histories.ContainsKey(decisionPackage.agentID))
         {
-            histories[decisionPackage.agentID].Add(decisionPackage);
+            Histories[decisionPackage.agentID].Add(decisionPackage);
         }
         else
         {
-            histories.Add(decisionPackage.agentID, new List<DecisionPackage>() { decisionPackage });
+            Histories.Add(decisionPackage.agentID, new List<DecisionPackage>() { decisionPackage });
         }
         OnAddDecision?.Invoke(decisionPackage);
     }
-    public static void UpdateAgentHistory(DecisionPackage decision)
+
+    internal static void ClearData()
     {
-        var history = GetHistory(decision.agentID);
-        history.Add(decision);
-        OnAddDecision?.Invoke(decision);
+        Histories.Clear();
+        AgentStats.Clear();
     }
 
     #endregion

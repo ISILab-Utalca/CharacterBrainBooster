@@ -1,5 +1,6 @@
 using CBB.Api;
 using CBB.Lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,31 +10,23 @@ namespace CBB.ExternalTool
 {
     public class MonitoringWindow : MonoBehaviour
     {
-        // Data
-        private ExternalMonitor externalMonitor;
         // View
-        private VisualElement infoPanel;
         private DropdownField modeDropdown;
         private Button disconnectButton;
-        private AgentsPanel agentsPanel;
-        private HistoryPanel historyPanel;
         private SimpleBrainView simpleBrainView;
+        #region PROPERTIES
+        public AgentsPanel AgentsPanel { get; private set; }
+        public HistoryPanel HistoryPanel { get; private set; }
 
-        // Logic
-        [SerializeField]
-        private GameObject editorWindow;
-        [SerializeField]
-        private GameObject mainWindow;
-
-        public ExternalMonitor ExternalMonitor { get => externalMonitor; set => externalMonitor = value; }
-
+        #endregion
+        #region EVENTS
+        public System.Action OnSetupComplete { get; set; }
+        public System.Action OnDisconnectedFromServer { get; set; }
+        #endregion
         private void OnEnable()
         {
 
             var root = GetComponent<UIDocument>().rootVisualElement;
-
-            // InfoPanel
-            this.infoPanel = root.Q<VisualElement>("InfoPanel");
 
             // ModeDropdown
             this.modeDropdown = root.Q<DropdownField>("ModeDropdown");
@@ -41,36 +34,35 @@ namespace CBB.ExternalTool
 
             // DisconnectButton
             this.disconnectButton = root.Q<Button>("DisconnectButton");
-            disconnectButton.clicked += ExternalMonitor.RemoveClient;
+            disconnectButton.clicked += CloseMonitoringWindow;
 
             // AgentsPanel
-            //this.agentsPanel = root.Q<AgentsPanel>();
+            this.AgentsPanel = root.Q<AgentsPanel>();
 
             // SimpleBrainView
             //this.simpleBrainView = root.Q<SimpleBrainView>();
 
-            // HistoryPanel
-            //this.historyPanel = root.Q<HistoryPanel>();
-            // <Logic>
-            ExternalMonitor.OnDisconnectedFromServer += ReturnToMainView;
+            //HistoryPanel
+            this.HistoryPanel = root.Q<HistoryPanel>();
             // Show the selected agent history
             //agentsPanel.OnAgentChosen += historyPanel.LoadAndDisplayAgentHistory;
+            OnSetupComplete?.Invoke();
         }
+
+        private void CloseMonitoringWindow()
+        {
+            OnDisconnectedFromServer?.Invoke();
+        }
+
         private void OnDisable()
         {
             modeDropdown.UnregisterCallback<ChangeEvent<string>>(OnModeChange);
-            disconnectButton.clicked -= ExternalMonitor.RemoveClient;
-            ExternalMonitor.OnDisconnectedFromServer -= ReturnToMainView;
+            disconnectButton.clicked -= CloseMonitoringWindow;
         }
         private void OnModeChange(ChangeEvent<string> evt)
         {
             Debug.Log("OnModeChange");
         }
 
-        private void ReturnToMainView()
-        {
-            this.gameObject.SetActive(false);
-            this.mainWindow.SetActive(true);
-        }
     }
 }

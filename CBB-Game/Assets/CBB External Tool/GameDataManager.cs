@@ -57,4 +57,9 @@ public class GameDataManager : MonoBehaviour
             //Debug.Log("<color=red>[GAME DATA MANAGER] Error DECISION PACKAGE deserialization: </color>" + e);
         }
     }
+
+    internal void ClearData()
+    {
+        GameData.ClearData();
+    }
 }
