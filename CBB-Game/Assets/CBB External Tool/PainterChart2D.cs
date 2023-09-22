@@ -15,8 +15,8 @@ public class PainterChart2D : VisualElement
     private Color colorValuePoint = Color.red;
     private Color colorValueLine = new Color(1f, 0f, 0f, .2f);
 
-    public float Height => this.style.height.value.value;
-    public float Width => this.style.width.value.value;
+    public float Height => 160;//this.style.height.value.value;
+    public float Width => 200;//this.style.width.value.value;
 
     public PainterChart2D()
     {
@@ -24,8 +24,8 @@ public class PainterChart2D : VisualElement
         this.style.borderBottomWidth = this.style.borderLeftWidth = 2;
         this.style.borderBottomColor = this.style.borderLeftColor = this.style.borderRightColor = this.style.borderTopColor = colorLine;
 
-        this.style.width = 300; // (!) deshardcodear
-        this.style.height = 160;
+        //this.style.width = 300; // (!) deshardcodear
+        //this.style.height = 160;
 
         this.generateVisualContent += OnGenerateVisualContent;
     }
