@@ -8,6 +8,7 @@ public static class GameData
 {
     #region PROPERTIES
     public static Dictionary<int, AgentData> AgentStats { get; set; } = new();
+    public static List<AgentData> AllAgents { get; set; } = new();
     public static Dictionary<int, List<DecisionPackage>> Histories { get; set; } = new();
     #endregion
     #region EVENTS
@@ -54,6 +55,7 @@ public static class GameData
         if (!AgentStats.ContainsKey(agent.ID))
         {
             AgentStats.Add(agent.ID, agent);
+            if (!AllAgents.Contains(agent)) AllAgents.Add(agent);
         }
         OnAddAgent?.Invoke(agent);
     }
