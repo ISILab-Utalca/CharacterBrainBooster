@@ -14,9 +14,7 @@ namespace CBB.ExternalTool
         public new class UxmlFactory : UxmlFactory<AgentsPanel, UxmlTraits> { }
         #endregion
         #region FIELDS
-        private int bindItemCalls = 0;
-        private ListView list;
-        private List<(string, int)> targetAgentAndID = new();
+        internal ListView list;
         #endregion
         #region EVENTS
         public Action<int> OnAgentChosen { get; set; }
@@ -28,12 +26,15 @@ namespace CBB.ExternalTool
             visualTree.CloneTree(this);
 
             this.list = this.Q<ListView>();
-            list.itemsSource = targetAgentAndID;
+            list.itemsSource = GameData.AllAgents;
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
-            list.selectionType = SelectionType.Single;
-            list.selectionChanged += NewAgentSelected;
-            GameData.OnAddAgent += AddAgent;
+            // Single click triggers "selectionChanged" with the selected items. (f.k.a. "onSelectionChange")
+            // Use "selectedIndicesChanged" to get the indices of the selected items instead. (f.k.a. "onSelectedIndicesChange")
+            list.selectionChanged += objects => Debug.Log($"Selected: {string.Join(", ", objects)}");
+
+            // Double-click triggers "itemsChosen" with the selected items. (f.k.a. "onItemsChosen")
+            list.itemsChosen += objects => Debug.Log($"Double-clicked: {string.Join(", ", objects)}");
         }
         #endregion
 
@@ -46,25 +47,18 @@ namespace CBB.ExternalTool
             var agentInfo = element as AgentInfo;
             if (agentInfo != null)
             {
-                agentInfo.AgentName.text = targetAgentAndID[index].Item1;
-                agentInfo.AgentID.text = targetAgentAndID[index].Item2.ToString();
+                agentInfo.AgentName.text = GameData.AllAgents[index].agentName;
+                agentInfo.AgentID.text = GameData.AllAgents[index].ID.ToString();
             }
             else
             {
                 Debug.Log("[AGENT PANEL] Error on binding element");
             }
-            bindItemCalls++;
-            Debug.Log($"[AGENTS PANEL] Called bind item {bindItemCalls}");
         }
-        internal void AddAgent(AgentData agent)
+        internal void Refresh()
         {
-            if (targetAgentAndID.Contains((agent.agentName, agent.ID))) return;
-            targetAgentAndID.Add((agent.agentName, agent.ID));
-
-            // Call this method to update the view on runtime
-            //list.RefreshItems();
             list.Rebuild();
-            Debug.Log("[AGENT PANEL] Added agent");
+            Debug.Log("[AGENT PANEL] Agents list updated");
         }
         /// <summary>
         /// Notifies the currently selected agent's ID 
@@ -73,15 +67,15 @@ namespace CBB.ExternalTool
         private void NewAgentSelected(IEnumerable<object> agents)
         {
             // Positionate the iterator on the selected item
-            if (agents.First() is VisualElement agentsItem)
-            {
-                var idLabel = agentsItem.Q<Label>("id");
-                if (idLabel != null)
-                {
-                    OnAgentChosen?.Invoke(int.Parse(idLabel.text));
-                    Debug.Log("[AGENT PANEL] On Agent Chosen invoked");
-                }
-            }
+            //    if (agents.First() is VisualElement agentsItem)
+            //    {
+            //        var idLabel = agentsItem.Q<Label>("id");
+            //        if (idLabel != null)
+            //        {
+            //            OnAgentChosen?.Invoke(int.Parse(idLabel.text));
+            //        }
+            //    }
+            Debug.Log("[AGENT PANEL] On Agent Chosen invoked");
         }
     }
 }
