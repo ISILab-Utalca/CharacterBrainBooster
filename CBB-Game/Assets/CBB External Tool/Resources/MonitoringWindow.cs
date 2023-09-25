@@ -1,8 +1,4 @@
-using CBB.Api;
-using CBB.Lib;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -20,45 +16,36 @@ namespace CBB.ExternalTool
 
         #endregion
         #region EVENTS
-        public System.Action OnSetupComplete { get; set; }
-        public System.Action OnDisconnectedFromServer { get; set; }
+        public Action OnSetupComplete { get; set; }
+        public static Action OnDisconnectionButtonPressed { get; set; }
         #endregion
-        private void OnEnable()
+        private void Awake()
         {
-
             var root = GetComponent<UIDocument>().rootVisualElement;
-
-            // ModeDropdown
             this.modeDropdown = root.Q<DropdownField>("ModeDropdown");
-            modeDropdown.RegisterCallback<ChangeEvent<string>>(OnModeChange);
-
-            // DisconnectButton
             this.disconnectButton = root.Q<Button>("DisconnectButton");
-            disconnectButton.clicked += CloseMonitoringWindow;
-
-            // AgentsPanel
             this.AgentsPanel = root.Q<AgentsPanel>();
-
-            // SimpleBrainView
-            //this.simpleBrainView = root.Q<SimpleBrainView>();
-
-            //HistoryPanel
             this.HistoryPanel = root.Q<HistoryPanel>();
-            // Show the selected agent history
-            //agentsPanel.OnAgentChosen += historyPanel.LoadAndDisplayAgentHistory;
+            // Notify that this component has set all its references
             OnSetupComplete?.Invoke();
         }
-
-        private void CloseMonitoringWindow()
+        private void OnEnable()
         {
-            OnDisconnectedFromServer?.Invoke();
+            modeDropdown.RegisterCallback<ChangeEvent<string>>(OnModeChange);
+            disconnectButton.clicked += Close;
         }
 
         private void OnDisable()
         {
             modeDropdown.UnregisterCallback<ChangeEvent<string>>(OnModeChange);
-            disconnectButton.clicked -= CloseMonitoringWindow;
+            disconnectButton.clicked -= Close;
         }
+        public void Close()
+        {
+            OnDisconnectionButtonPressed?.Invoke();
+            gameObject.SetActive(false);
+        }
+
         private void OnModeChange(ChangeEvent<string> evt)
         {
             Debug.Log("OnModeChange");
