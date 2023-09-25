@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 0; background-color: rgb(43, 43, 43); width: 100%; height: 100%;">
+        <ui:VisualElement name="Name-Consideration" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center;">
+            <ui:VisualElement name="Icon-Consideration" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); align-items: center; justify-content: center; margin-left: 4px; padding-left: 4px; margin-right: 2px; padding-right: 2px; margin-top: 2px; margin-bottom: 2px; padding-top: 2px; padding-bottom: 2px; flex-shrink: 0;">
+                <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/CBB%20External%20Tool/2DAssets/consideration.png?fileID=2800000&amp;guid=8d173e49f74d7a14aabb694f64b8619b&amp;type=3#consideration&apos;); width: 9px; height: 12px; flex-shrink: 0;" />
+            </ui:VisualElement>
+            <ui:Label tabindex="-1" text="Consideration name" display-tooltip-when-elided="true" style="color: rgb(197, 197, 197); margin-top: 2px; padding-top: 2px; padding-bottom: 2px; padding-left: 2px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Graph-Consideration" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); height: 216px; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px;" />
+        <ui:VisualElement name="Utility" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0);">
+            <ui:Label tabindex="-1" text="Utility: " display-tooltip-when-elided="true" style="color: rgb(197, 197, 197); -unity-text-align: upper-right; font-size: 18px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

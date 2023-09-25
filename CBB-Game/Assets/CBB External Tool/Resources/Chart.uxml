@@ -1,22 +1,24 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement style="flex-direction: row; height: auto; flex-grow: 0;">
-        <ui:VisualElement name="NumbersY" style="width: 10%; flex-grow: 0; justify-content: space-between; height: auto; -unity-text-align: upper-right; flex-shrink: 0;">
-            <ui:Label tabindex="-1" text="1.00" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-            <ui:Label tabindex="-1" text="0.75" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-            <ui:Label tabindex="-1" text="0.50" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-            <ui:Label tabindex="-1" text="0.25" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-            <ui:Label tabindex="-1" text="0.00" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); padding-right: -5px; padding-left: 8px; width: 256px;">
+        <ui:VisualElement style="flex-direction: row; height: 184px; flex-grow: 0; width: 260px;">
+            <ui:VisualElement name="NumbersY" style="width: 10%; flex-grow: 0; justify-content: space-between; height: auto; -unity-text-align: upper-right; flex-shrink: 0;">
+                <ui:Label tabindex="-1" text="1.00" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Label tabindex="-1" text="0.75" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Label tabindex="-1" text="0.50" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Label tabindex="-1" text="0.25" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Label tabindex="-1" text="0.00" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+            </ui:VisualElement>
+            <PainterChart2D name="PainterChart2D" style="flex-grow: 1; width: auto; height: 160px; margin-left: 12px; margin-right: 12px; margin-top: 6px; margin-bottom: 6px; flex-shrink: 1;" />
         </ui:VisualElement>
-        <PainterChart2D style="flex-grow: 1; width: auto; height: auto; margin-left: 12px; margin-right: 12px; margin-top: 6px; margin-bottom: 6px; flex-shrink: 1;" />
-    </ui:VisualElement>
-    <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
-        <ui:VisualElement style="width: 10%; flex-grow: 0;" />
-        <ui:VisualElement name="NumbersX" style="width: auto; flex-grow: 1; justify-content: space-between; height: auto; flex-direction: row-reverse;">
-            <ui:Label tabindex="-1" text="1.00" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-            <ui:Label tabindex="-1" text="0.75" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-            <ui:Label tabindex="-1" text="0.50" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-            <ui:Label tabindex="-1" text="0.25" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-            <ui:Label tabindex="-1" text="0.00" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+        <ui:VisualElement style="flex-grow: 0; flex-direction: row-reverse; justify-content: flex-end; padding-left: 27px;">
+            <ui:VisualElement style="width: 10%; flex-grow: 0;" />
+            <ui:VisualElement name="NumbersX" style="width: auto; flex-grow: 1; justify-content: space-between; height: auto; flex-direction: row-reverse;">
+                <ui:Label tabindex="-1" text="1.00" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Label tabindex="-1" text="0.75" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Label tabindex="-1" text="0.50" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Label tabindex="-1" text="0.25" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Label tabindex="-1" text="0.00" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
