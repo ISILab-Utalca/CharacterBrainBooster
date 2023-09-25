@@ -8,27 +8,21 @@ public class MainWindow : MonoBehaviour
     // View
     private TextField addresField;
     private TextField portField;
+    internal RadioButtonGroup startMode;
     private Button startButton;
     private Label connectionInformation;
 
     public System.Action<string, int> OnConnectionToServerStarted { get; set; }
-    // Logic
-    [SerializeField] private MonitoringWindow monitorWindow;
-    [SerializeField] private GameObject editorWindow;
-    [SerializeField] private ExternalMonitor monitorClient;
-
+    
     private void OnEnable()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
-
-        // AddresField
         this.addresField = root.Q<TextField>("AddressField");
-
-        // PortField
         this.portField = root.Q<TextField>("PortField");
-        // StartButton
         this.startButton = root.Q<Button>();
+        this.startMode = root.Q<RadioButtonGroup>();
         startButton.clicked += StartConnection;
+
 
         // InformationLabel
         this.connectionInformation = root.Q<Label>("ConnectionInformation");
