@@ -81,9 +81,6 @@ namespace CBB.Comunication
                     var clientIPAddress = ((IPEndPoint)newClientRemoteEndpoint).Address;
                     clients.Add(clientIPAddress, client);
                     ThreadPool.QueueUserWorkItem(HandleClientCommunication, client);
-                    // Enqueue the new client to raise the corresponding event in the main thread
-                    //clientsQueue.Enqueue(client);
-                    OnNewClientConnected?.Invoke(client);
                     Debug.Log("[SERVER] Remote client added");
                 }
                 catch (SocketException SocketExcep)
