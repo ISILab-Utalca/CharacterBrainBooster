@@ -2,24 +2,25 @@ using CBB.Api;
 using CBB.Lib;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 [Serializable]
 public static class GameData
 {
     #region PROPERTIES
     public static Dictionary<int, AgentData> AgentStats { get; set; } = new();
-    public static List<AgentData> AllAgents { get; set; } = new();
-    public static Dictionary<int, List<DecisionPackage>> Histories { get; set; } = new();
+    public static ObservableCollection<AgentData> AllAgents { get; set; } = new();
+    public static Dictionary<int, ObservableCollection<DecisionPackage>> Histories { get; set; } = new();
     #endregion
     #region EVENTS
     public static Action<AgentData> OnAddAgent { get; set; }
     public static Action<AgentData> OnAgentSetAsDestroyed { get; set; }
     public static Action<DecisionPackage> OnAddDecision { get; set; }
-    public static Action<List<string>> OnAddBrains { get; set; }
+    public static Action<ObservableCollection<string>> OnAddBrains { get; set; }
     #endregion
 
     #region METHODS
-    public static List<DecisionPackage> GetHistory(int agentID)
+    public static ObservableCollection<DecisionPackage> GetHistory(int agentID)
     {
         try
         {
@@ -27,7 +28,7 @@ public static class GameData
         }
         catch
         {
-            Histories.Add(agentID, new List<DecisionPackage>());
+            Histories.Add(agentID, new ObservableCollection<DecisionPackage>());
             var history = Histories[agentID];
             return history;
         }
@@ -88,7 +89,7 @@ public static class GameData
         }
         else
         {
-            Histories.Add(decisionPackage.agentID, new List<DecisionPackage>() { decisionPackage });
+            Histories.Add(decisionPackage.agentID, new ObservableCollection<DecisionPackage>() { decisionPackage });
         }
         OnAddDecision?.Invoke(decisionPackage);
     }
