@@ -76,7 +76,11 @@ namespace CBB.Lib
         public List<SensorStatus> SensorsData;
         public List<AgentStateVariable> InternalVariables;
         public AgentData() { }
-
+        public AgentData(int id, string name)
+        {
+            agentName = name;
+            ID = id;
+        }
         public AgentData(Type agentType, AgentBrainData brainData, List<SensorStatus> sensorsData)
         {
             this.AgentType = agentType;
