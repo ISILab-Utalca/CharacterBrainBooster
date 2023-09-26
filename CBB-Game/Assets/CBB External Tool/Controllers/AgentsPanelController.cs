@@ -1,17 +1,21 @@
 using CBB.Api;
+using CBB.Lib;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
+
 namespace CBB.ExternalTool
 {
 
     public class AgentsPanelController : MonoBehaviour, IMessageHandler
     {
-        [SerializeField]
         private MonitoringWindow monitoringWindow;
-
+        private HistoryPanelController historyPanel;
         private AgentsPanel agentsPanel;
-        private HistoryPanel historyPanel;
-        
+        internal ListView list;
+
         readonly JsonSerializerSettings settings = new()
         {
             NullValueHandling = NullValueHandling.Ignore,
@@ -20,7 +24,21 @@ namespace CBB.ExternalTool
 
         private void Awake()
         {
-            monitoringWindow.OnSetupComplete += Initialize;
+            monitoringWindow = GetComponent<MonitoringWindow>();
+            historyPanel = GetComponent<HistoryPanelController>();
+
+            var uiDocRoot = GetComponent<UIDocument>().rootVisualElement;
+            
+            this.agentsPanel = uiDocRoot.Q<AgentsPanel>();
+            this.list = agentsPanel.Q<ListView>();
+            list.itemsSource = GameData.AllAgents;
+            list.bindItem += BindItem;
+            list.makeItem += MakeItem;
+            list.selectionChanged += NewAgentSelected;
+
+            //list.itemsChosen += objects => Debug.Log($"Double-clicked: {string.Join(", ", objects)}");
+
+            GameData.OnAddAgent += Refresh;
         }
         private void OnEnable()
         {
@@ -31,15 +49,29 @@ namespace CBB.ExternalTool
         {
             ExternalMonitor.OnMessageReceived -= HandleMessage;
         }
-        private void OnDestroy()
+        
+        private VisualElement MakeItem() // hacer que esto sea un solo viewElement (!!!)
         {
-            monitoringWindow.OnSetupComplete -= Initialize;
+            return new AgentInfo();
         }
-        private void Initialize()
+        private void BindItem(VisualElement element, int index)
         {
-            agentsPanel = monitoringWindow.AgentsPanel;
-            historyPanel = monitoringWindow.HistoryPanel;
-
+            if (element is AgentInfo agentInfo)
+            {
+                agentInfo.AgentName.text = GameData.AllAgents[index].agentName;
+                agentInfo.AgentID.text = GameData.AllAgents[index].ID.ToString();
+            }
+            
+        }
+        internal void Refresh(AgentData agent)
+        {
+            list.RefreshItems();
+            Debug.Log("[AGENT PANEL] Agents list updated");
+        }
+        private void NewAgentSelected(IEnumerable<object> agents)
+        {
+            // Go to the History panel and update its list, based on the selected agent ID
+            historyPanel.UpdateHistory(((AgentData)agents.First()).ID);
         }
         public void HandleMessage(string message)
         {
@@ -49,7 +81,8 @@ namespace CBB.ExternalTool
                 // Pass to the model side of the app
                 GameData.HandleAgentWrapper(agentWrapper);
                 // Update the UI
-                agentsPanel.Refresh();
+                //if (agentWrapper.type == AgentWrapper.AgentStateType.NEW)
+                list.RefreshItems();
                 return;
             }
             catch (System.Exception ex)
@@ -57,7 +90,7 @@ namespace CBB.ExternalTool
                 Debug.Log("<color=red>[AGENTS PANEL CONTROLLER] Message is not an AgentWrapper: </color>" + ex);
             }
         }
-        
+
     }
 
 }
