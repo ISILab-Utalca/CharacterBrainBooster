@@ -4,6 +4,9 @@ using UnityEngine.UIElements;
 
 namespace CBB.ExternalTool
 {
+    /// <summary>
+    /// Manages UI references and subscription/firing events
+    /// </summary>
     public class MonitoringWindow : MonoBehaviour
     {
         // View
@@ -11,12 +14,9 @@ namespace CBB.ExternalTool
         private Button disconnectButton;
         private SimpleBrainView simpleBrainView;
         #region PROPERTIES
-        public AgentsPanel AgentsPanel { get; private set; }
-        public HistoryPanel HistoryPanel { get; private set; }
 
         #endregion
         #region EVENTS
-        public Action OnSetupComplete { get; set; }
         public static Action OnDisconnectionButtonPressed { get; set; }
         #endregion
         private void Awake()
@@ -24,10 +24,7 @@ namespace CBB.ExternalTool
             var root = GetComponent<UIDocument>().rootVisualElement;
             this.modeDropdown = root.Q<DropdownField>("ModeDropdown");
             this.disconnectButton = root.Q<Button>("DisconnectButton");
-            this.AgentsPanel = root.Q<AgentsPanel>();
-            this.HistoryPanel = root.Q<HistoryPanel>();
             // Notify that this component has set all its references
-            OnSetupComplete?.Invoke();
         }
         private void OnEnable()
         {
