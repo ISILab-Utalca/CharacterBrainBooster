@@ -9,7 +9,7 @@ public static class GameData
 {
     #region PROPERTIES
     public static Dictionary<int, AgentData> AgentStats { get; set; } = new();
-    public static ObservableCollection<AgentData> AllAgents { get; set; } = new();
+    public static ObservableCollection<(int, string)> Agent_ID_Name { get; set; } = new();
     public static Dictionary<int, ObservableCollection<DecisionPackage>> Histories { get; set; } = new();
     #endregion
     #region EVENTS
@@ -53,11 +53,12 @@ public static class GameData
     }
     private static void AddAgentState(AgentData agent)
     {
-        if (!AgentStats.ContainsKey(agent.ID))
-        {
-            AgentStats.Add(agent.ID, agent);
-            if (!AllAgents.Contains(agent)) AllAgents.Add(agent);
-        }
+        if (AgentStats.ContainsKey(agent.ID)) return;
+        AgentStats.Add(agent.ID, agent);
+
+        if (Agent_ID_Name.Contains((agent.ID, agent.agentName))) return;
+        Agent_ID_Name.Add((agent.ID, agent.agentName));
+
         OnAddAgent?.Invoke(agent);
     }
     private static void UpdateAgentState(AgentData agent)

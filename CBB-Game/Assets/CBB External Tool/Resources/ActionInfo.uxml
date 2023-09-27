@@ -9,8 +9,8 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 80%;">
-                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="accion-data" />
-                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="accion-data" style="-unity-text-align: lower-left; color: rgb(203, 203, 203);" />
+                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="action-name" class="accion-data" />
+                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="target-name" class="accion-data" style="-unity-text-align: lower-left; color: rgb(203, 203, 203);" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:Label>

@@ -1,6 +1,7 @@
 using CBB.Api;
 using CBB.Lib;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -31,12 +32,12 @@ namespace CBB.ExternalTool
             
             this.agentsPanel = uiDocRoot.Q<AgentsPanel>();
             this.list = agentsPanel.Q<ListView>();
-            list.itemsSource = GameData.AllAgents;
+            list.itemsSource = GameData.Agent_ID_Name;
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
             list.selectionChanged += NewAgentSelected;
 
-            //list.itemsChosen += objects => Debug.Log($"Double-clicked: {string.Join(", ", objects)}");
+            //list.itemsChosen += NewAgentSelected;
 
             GameData.OnAddAgent += Refresh;
         }
@@ -58,8 +59,8 @@ namespace CBB.ExternalTool
         {
             if (element is AgentInfo agentInfo)
             {
-                agentInfo.AgentName.text = GameData.AllAgents[index].agentName;
-                agentInfo.AgentID.text = GameData.AllAgents[index].ID.ToString();
+                agentInfo.AgentID.text = GameData.Agent_ID_Name[index].Item1.ToString();
+                agentInfo.AgentName.text = GameData.Agent_ID_Name[index].Item2;
             }
             
         }
@@ -71,7 +72,7 @@ namespace CBB.ExternalTool
         private void NewAgentSelected(IEnumerable<object> agents)
         {
             // Go to the History panel and update its list, based on the selected agent ID
-            historyPanel.UpdateHistoryPanelDecisionsView(((AgentData)agents.First()).ID);
+            historyPanel.UpdateHistoryPanelDecisionsView( (((int,string))agents.First()).Item1 );
         }
         public void HandleMessage(string message)
         {

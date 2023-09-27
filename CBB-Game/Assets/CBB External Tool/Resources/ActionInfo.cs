@@ -22,9 +22,9 @@ namespace CBB.ExternalTool
             var visualTree = Resources.Load<VisualTreeAsset>("ActionInfo");
             visualTree.CloneTree(this);
 
-            ActionName = this.Q<Label>("ActionName");
-            TargetName = this.Q<Label>("TargetName");
-            ActionScore = this.Q<Label>("ActionScore");
+            ActionName = this.Q<Label>("action-name");
+            TargetName = this.Q<Label>("target-name");
+            ActionScore = this.Q<Label>("action-score");
         }
     }
 }
