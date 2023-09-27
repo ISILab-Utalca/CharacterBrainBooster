@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System;
 using System.Collections.ObjectModel;
 using UnityEngine;
-using static CBB.ExternalTool.HistoryPanel;
 using UnityEngine.UIElements;
+using UnityEditor;
 
 namespace CBB.ExternalTool
 {
@@ -15,11 +15,7 @@ namespace CBB.ExternalTool
         // Deserialize a Decision Package
         // Update the view after receiving a Decision package
         // Handle OnChange event when selecting a history
-        public enum ShowType
-        {
-            Decisions,
-            SensorEvents,
-        }
+        
         readonly JsonSerializerSettings settings = new()
         {
             NullValueHandling = NullValueHandling.Ignore,
@@ -30,7 +26,7 @@ namespace CBB.ExternalTool
         private HistoryPanel historyPanel;
         private ListView list;
         private EnumField showField;
-        private ShowType showType;
+        private HistoryPanel.ShowType showType;
         private void Awake()
         {
             var monitoringWindow = GetComponent<MonitoringWindow>();
@@ -46,7 +42,8 @@ namespace CBB.ExternalTool
 
             // Show dropdown
             this.showField = historyPanel.Q<EnumField>();
-            showField.RegisterCallback<ChangeEvent<Enum>>((evt) => OnChangeShowType(evt));
+            showField.value = HistoryPanel.ShowType.Decisions;
+            showField.RegisterValueChangedCallback(OnChangeShowType);
             // cuando este cambie actualiza la lista. y se deseleciona lo selecionado
 
             ExternalMonitor.OnMessageReceived += HandleMessage;
@@ -79,38 +76,34 @@ namespace CBB.ExternalTool
         {
 
         }
-        public void UpdateHistory(int agentID)
+        public void UpdateHistoryPanelDecisionsView(int agentID)
         {
             decisions = GameData.GetHistory(agentID);
+            list.itemsSource = decisions;
             list.RefreshItems();
         }
 
-        private VisualElement MakeItem() // hacer que esto sea un solo viewElement (!!!)
+        private VisualElement MakeItem()
         {
-            //var content = new VisualElement();
-            //var nameLabel = new Label();
-            //nameLabel.name = "name";
-            //if (showType == ShowType.Both || showType == ShowType.Decisions) // Decision
-            //{
-            //    /*
-            //    var idLabel = new Label();
-            //    idLabel.name = "id";
-            //    content.Add(idLabel);
-            //    content.Add(nameLabel);
-            //    */
-            //}
-            //if (showType == ShowType.Both || showType == ShowType.SensorEvents) // Sensor events
-            //{
-            //    // Impleentar (!!!)
-            //}
+            var content = new VisualElement();
+            
+            switch (showType)
+            {
+                case HistoryPanel.ShowType.Decisions:
+                    return new ActionInfo();
+                case HistoryPanel.ShowType.SensorEvents:
+                    // TODO: return the corresponding type
+                    break;
+                default:
+                    break;
+            }
 
-            //return content;
-            return new Label();
+            return content;
         }
 
         private void BindItem(VisualElement element, int index)
         {
-            if (showType == ShowType.Decisions)
+            if (showType == HistoryPanel.ShowType.Decisions)
             {
                 if (element is ActionInfo actionInfo)
                 {
@@ -150,8 +143,8 @@ namespace CBB.ExternalTool
 
         private void OnChangeShowType(ChangeEvent<Enum> evt)
         {
-            var value = evt.newValue;
-            Debug.Log(value.ToString());
+            showType = (HistoryPanel.ShowType)evt.newValue;
+
         }
         public void LoadAndDisplayAgentHistory(int agentID)
         {

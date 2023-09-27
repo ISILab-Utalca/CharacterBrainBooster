@@ -66,12 +66,12 @@ namespace CBB.ExternalTool
         internal void Refresh(AgentData agent)
         {
             list.RefreshItems();
-            Debug.Log("[AGENT PANEL] Agents list updated");
+            //Debug.Log("[AGENT PANEL] Agents list updated");
         }
         private void NewAgentSelected(IEnumerable<object> agents)
         {
             // Go to the History panel and update its list, based on the selected agent ID
-            historyPanel.UpdateHistory(((AgentData)agents.First()).ID);
+            historyPanel.UpdateHistoryPanelDecisionsView(((AgentData)agents.First()).ID);
         }
         public void HandleMessage(string message)
         {
@@ -85,9 +85,9 @@ namespace CBB.ExternalTool
                 list.RefreshItems();
                 return;
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
-                Debug.Log("<color=red>[AGENTS PANEL CONTROLLER] Message is not an AgentWrapper: </color>" + ex);
+                //Debug.Log("<color=red>[AGENTS PANEL CONTROLLER] Message is not an AgentWrapper: </color>" + ex);
             }
         }
 
