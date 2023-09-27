@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/CBB%20External%20Tool/AccionStyle.uss?fileID=7433441132597879392&amp;guid=21d0c9d84c018114cabe6ad793112d41&amp;type=3#AccionStyle" />
-    <ui:Button display-tooltip-when-elided="true" class="button-accion">
+    <ui:Label tabindex="0" display-tooltip-when-elided="true" focusable="true" class="button-accion" style="height: auto;">
         <ui:Label tabindex="-1" text="Name Accion" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; -unity-font-style: bold; font-size: 18px; margin-top: 4px; padding-left: 4px; margin-left: 4px; padding-right: 4px; margin-bottom: 2px; white-space: normal; padding-bottom: 2px;" />
         <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; padding-bottom: 4px; margin-bottom: 4px; padding-left: 2px; margin-left: 2px;">
             <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); align-items: center; justify-content: center; width: 15%; margin-bottom: 4px; margin-top: 2px; margin-left: 2px; padding-left: 0; flex-shrink: 0;">
@@ -13,5 +13,5 @@
                 <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="accion-data" style="-unity-text-align: lower-left; color: rgb(203, 203, 203);" />
             </ui:VisualElement>
         </ui:VisualElement>
-    </ui:Button>
+    </ui:Label>
 </ui:UXML>
