@@ -12,10 +12,10 @@ namespace CBB.ExternalTool
     public class HistoryPanelController : MonoBehaviour, IMessageHandler
     {
         // TODO:
-        // Deserialize a Decision Package
+        // Deserialize a Decision Package (done)
         // Update the view after receiving a Decision package
-        // Handle OnChange event when selecting a history
-        
+        // Handle OnChange event when selecting a history (done, in AgentPanel)
+
         readonly JsonSerializerSettings settings = new()
         {
             NullValueHandling = NullValueHandling.Ignore,
@@ -27,6 +27,7 @@ namespace CBB.ExternalTool
         private ListView list;
         private EnumField showField;
         private HistoryPanel.ShowType showType;
+        private int currentlySelectedAgentID = -1;
         private void Awake()
         {
             var monitoringWindow = GetComponent<MonitoringWindow>();
@@ -44,12 +45,9 @@ namespace CBB.ExternalTool
             this.showField = historyPanel.Q<EnumField>();
             showField.value = HistoryPanel.ShowType.Decisions;
             showField.RegisterValueChangedCallback(OnChangeShowType);
-            // cuando este cambie actualiza la lista. y se deseleciona lo selecionado
 
+            // 
             ExternalMonitor.OnMessageReceived += HandleMessage;
-            // Tabs
-            //this.tabs = this.Q<Tabs>();
-            //tabs.OnSelectOption += OnSelectionOption;
 
             GameData.OnAddDecision += AddDecisionInHistory;
         }
@@ -59,11 +57,12 @@ namespace CBB.ExternalTool
             {
                 var decisionPack = JsonConvert.DeserializeObject<DecisionPackage>(message, settings);
                 GameData.HandleDecisionPackage(decisionPack);
-                return;
+                if (decisionPack.agentID != currentlySelectedAgentID) return;
+                list.RefreshItems();
             }
             catch (Exception)
             {
-                Debug.Log("<color=red>[HISTORY PANEL] Message is not Decision Pack: </color>" + message);
+                //Debug.Log("<color=red>[HISTORY PANEL] Message is not Decision Pack: </color>" + message);
             }
         }
 
@@ -78,6 +77,7 @@ namespace CBB.ExternalTool
         }
         public void UpdateHistoryPanelDecisionsView(int agentID)
         {
+            currentlySelectedAgentID = agentID;
             decisions = GameData.GetHistory(agentID);
             list.itemsSource = decisions;
             list.RefreshItems();
@@ -86,7 +86,7 @@ namespace CBB.ExternalTool
         private VisualElement MakeItem()
         {
             var content = new VisualElement();
-            
+
             switch (showType)
             {
                 case HistoryPanel.ShowType.Decisions:
