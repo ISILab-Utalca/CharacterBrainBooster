@@ -38,6 +38,6 @@
     height: 8px;
 }
 
-#MyListView .unity-scroller--vertical {
-    background-color: rgb(19, 19, 19);
+#MyListView .unity-scroller {
+    background-color: rgb(173, 10, 10);
 }
