@@ -11,7 +11,6 @@ namespace CBB.ExternalTool
     /// <summary>
     /// Manages client (des)connection and communication logic to and from the server.
     /// </summary>
-    [RequireComponent(typeof(DataParser))]
     public class ExternalMonitor : MonoBehaviour
     {
         #region ENUMS

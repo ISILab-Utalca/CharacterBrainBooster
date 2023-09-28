@@ -61,9 +61,9 @@ namespace CBB.ExternalTool
                 GameData.HandleDecisionPackage(decisionPack);
                 return;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.Log("<color=red>[HISTORY PANEL] Error: </color>" + ex);
+                Debug.Log("<color=red>[HISTORY PANEL] Message is not Decision Pack: </color>" + message);
             }
         }
 

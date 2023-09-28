@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/CBB%20External%20Tool/AccionStyle.uss?fileID=7433441132597879392&amp;guid=21d0c9d84c018114cabe6ad793112d41&amp;type=3#AccionStyle" />
     <ui:Label tabindex="0" display-tooltip-when-elided="true" focusable="true" class="button-accion" style="height: auto;">
-        <ui:Label tabindex="-1" text="Name Accion" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; -unity-font-style: bold; font-size: 18px; margin-top: 4px; padding-left: 4px; margin-left: 4px; padding-right: 4px; margin-bottom: 2px; white-space: normal; padding-bottom: 2px;" />
+        <ui:Label tabindex="-1" text="Action name" display-tooltip-when-elided="true" name="action-name" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; -unity-font-style: bold; font-size: 18px; margin-top: 4px; padding-left: 4px; margin-left: 4px; padding-right: 4px; margin-bottom: 2px; white-space: normal; padding-bottom: 2px;" />
         <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; padding-bottom: 4px; margin-bottom: 4px; padding-left: 2px; margin-left: 2px;">
             <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); align-items: center; justify-content: center; width: 15%; margin-bottom: 4px; margin-top: 2px; margin-left: 2px; padding-left: 0; flex-shrink: 0;">
                 <ui:VisualElement style="flex-grow: 0; background-color: rgb(35, 35, 35); width: 32px; border-top-left-radius: 32px; border-bottom-left-radius: 32px; border-top-right-radius: 32px; border-bottom-right-radius: 32px; height: 32px; margin-bottom: 2px; justify-content: center; align-items: center;">
@@ -9,8 +9,8 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 80%;">
-                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="action-name" class="accion-data" />
-                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="target-name" class="accion-data" style="-unity-text-align: lower-left; color: rgb(203, 203, 203);" />
+                <ui:Label tabindex="-1" text="Target name" display-tooltip-when-elided="true" name="target-name" enable-rich-text="true" class="accion-data" />
+                <ui:Label tabindex="-1" text="&lt;action-score&gt;" display-tooltip-when-elided="true" name="action-score" class="accion-data" style="-unity-text-align: lower-left; color: rgb(203, 203, 203);" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:Label>
