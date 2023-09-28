@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-basis: 20%; width: 20%; height: 20%; max-width: 30%;">
+        <ui:Button text="Button" display-tooltip-when-elided="true" />
+        <ui:ListView virtualization-method="DynamicHeight" />
+    </ui:VisualElement>
+</ui:UXML>

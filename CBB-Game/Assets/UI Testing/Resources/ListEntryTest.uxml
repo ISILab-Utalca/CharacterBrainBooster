@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-shrink: 1; max-width: none; width: auto; height: auto; max-height: none; min-width: auto; align-items: stretch; justify-content: space-around;">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-shrink: 1; max-width: none; width: 505px; height: 140px; max-height: none; min-width: auto;">
+            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="AgentName" />
+            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="AgentID" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
