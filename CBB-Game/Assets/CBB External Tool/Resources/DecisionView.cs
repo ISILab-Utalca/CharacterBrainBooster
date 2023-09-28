@@ -7,7 +7,7 @@ namespace CBB.ExternalTool
     public class DecisionView : VisualElement
     {
         #region FACTORY
-        public new class UxmlFactory : UxmlFactory<DecisionView, VisualElement.UxmlTraits> { }
+        public new class UxmlFactory : UxmlFactory<DecisionView, UxmlTraits> { }
         #endregion
 
         // View

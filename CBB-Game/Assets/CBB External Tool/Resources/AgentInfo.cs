@@ -20,8 +20,8 @@ namespace CBB.ExternalTool
             var visualTree = Resources.Load<VisualTreeAsset>("AgentInfo");
             visualTree.CloneTree(this);
 
-            AgentName = this.Q<Label>("AgentName");
-            AgentID = this.Q<Label>("AgentID");
+            AgentName = this.Q<Label>("agent-name");
+            AgentID = this.Q<Label>("agent-id");
         }
     }
 }

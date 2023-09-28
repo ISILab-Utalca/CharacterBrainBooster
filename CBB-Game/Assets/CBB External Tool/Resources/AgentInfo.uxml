@@ -1,12 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/CBB%20External%20Tool/AgentStyle.uss?fileID=7433441132597879392&amp;guid=bc35575c7c0669f4091f3317a1e0a041&amp;type=3#AgentStyle" />
-    <ui:VisualElement name="VisualElement" style="flex-grow: 0; background-color: rgba(49, 49, 49, 0); flex-shrink: 1; height: auto; width: auto; flex-direction: row;">
-        <ui:VisualElement name="Icon" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 77px; justify-content: center; align-items: center; padding-right: 9px;">
+    <ui:Label tabindex="0" display-tooltip-when-elided="true" focusable="true" class="agent-button" style="align-items: stretch; flex-shrink: 1; justify-content: flex-start;">
+        <ui:VisualElement name="Icon" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 72px; justify-content: center; align-items: center; padding-right: 9px;">
             <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); align-items: center; justify-content: center; height: 38px; width: 29px; flex-shrink: 0; align-self: center; background-image: url(&apos;project://database/Assets/CBB%20External%20Tool/2DAssets/person.png?fileID=2800000&amp;guid=2a247dfc702919a4c817785b5fba6abe&amp;type=3#person&apos;); -unity-background-scale-mode: scale-to-fit;" />
         </ui:VisualElement>
-        <ui:VisualElement class="agent-text">
-            <ui:Label tabindex="-1" text="Agent name" display-tooltip-when-elided="true" name="AgentName" style="padding-bottom: 0; background-color: rgba(197, 197, 197, 0); color: rgb(197, 197, 197); font-size: 21px; width: 50%; flex-shrink: 1; -unity-text-align: middle-left;" />
-            <ui:Label tabindex="-1" text="Id: 5688423" display-tooltip-when-elided="true" name="AgentID" style="padding-top: 0; margin-top: 0; color: rgb(255, 255, 255); flex-shrink: 1; width: 50%; font-size: 13px; padding-bottom: 10px;" />
+        <ui:VisualElement class="agent-text" style="padding-left: 0; margin-right: 4px;">
+            <ui:Label tabindex="-1" text="Agent name" display-tooltip-when-elided="true" name="agent-name" style="padding-bottom: 0; background-color: rgba(197, 197, 197, 0); color: rgb(197, 197, 197); font-size: 21px; width: 50%; flex-shrink: 1; -unity-text-align: middle-left;" />
+            <ui:Label tabindex="-1" text="Id: 5688423" display-tooltip-when-elided="true" name="agent-id" style="padding-top: 0; margin-top: 0; color: rgb(255, 255, 255); flex-shrink: 1; width: 50%; font-size: 13px; padding-bottom: 10px;" />
         </ui:VisualElement>
-    </ui:VisualElement>
+    </ui:Label>
 </ui:UXML>
