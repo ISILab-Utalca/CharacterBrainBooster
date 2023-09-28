@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MainWindowController : MonoBehaviour
 {
@@ -19,6 +20,13 @@ public class MainWindowController : MonoBehaviour
         MonitoringWindow.OnDisconnectionButtonPressed += OpenWindow;
         ExternalMonitor.OnConnectionClosedByServer += OpenWindow;
         ExternalMonitor.OnServerConnected += CloseWindow;
+        ExternalMonitor.OnConnectionError += HandleConnectionError;
+    }
+
+    private void HandleConnectionError(Exception exception)
+    {
+        var uiDocRoot = GetComponent<UIDocument>().rootVisualElement.Q<Label>("connection-information");
+        uiDocRoot.text = exception.Message;
     }
 
     private void OnDestroy()
