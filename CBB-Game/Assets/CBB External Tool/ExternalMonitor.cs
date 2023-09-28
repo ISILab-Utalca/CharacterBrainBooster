@@ -31,6 +31,7 @@ namespace CBB.ExternalTool
         public static Action<string> OnMessageReceived { get; set; }
         public static Action OnServerConnected { get; set; }
         public static Action OnConnectionClosedByServer { get; set; }
+        public static Action<Exception> OnConnectionError { get; set; }
         #endregion
 
         #region MONOBEHAVIOUR_METHODS
@@ -63,13 +64,20 @@ namespace CBB.ExternalTool
         public void ConnectToServer(string serverAddress, int serverPort)
         {
             // Blocking call
-            client = new TcpClient(serverAddress, serverPort);
-            Debug.Log("<color=green>[MONITOR] Sync connection to server done.</color>");
-            Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
-            Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
-            OnServerConnected?.Invoke();
-            tokenSource = new CancellationTokenSource();
-            new Thread(HandleServerCommunicationAsync).Start();
+            try
+            {
+                client = new TcpClient(serverAddress, serverPort);
+                Debug.Log("<color=green>[MONITOR] Sync connection to server done.</color>");
+                Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
+                Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
+                OnServerConnected?.Invoke();
+                tokenSource = new CancellationTokenSource();
+                new Thread(HandleServerCommunicationAsync).Start();
+            }
+            catch (Exception ex)
+            {
+                OnConnectionError?.Invoke(ex);
+            }
 
         }
         private async void HandleServerCommunicationAsync()
@@ -86,7 +94,8 @@ namespace CBB.ExternalTool
                 try
                 {
                     // Convention: 0 bytes read mean that the other endpoint closed the connection
-                    while ((bytesRead = await stream.ReadAsync(headerBuffer, 0, headerBuffer.Length, tokenSource.Token)) != 0)
+                    while (!tokenSource.IsCancellationRequested
+                        && (bytesRead = await stream.ReadAsync(headerBuffer, 0, headerBuffer.Length, tokenSource.Token)) != 0)
                     {
 
                         // This handles the case where the stream does not have yet the header
@@ -101,16 +110,16 @@ namespace CBB.ExternalTool
                             }
 
                         }
-                        Debug.Log("[MONITOR] Bytes read (header): " + bytesRead);
+                        //Debug.Log("[MONITOR] Bytes read (header): " + bytesRead);
                         // We have the length of the message
                         var messageLengthInBytes = headerBuffer[0..InternalNetworkManager.HEADER_SIZE];
                         int messageLength = BitConverter.ToInt32(messageLengthInBytes, 0);
-                        Debug.Log($"[MONITOR] Message length size indicated by header: {messageLength}");
+                        //Debug.Log($"[MONITOR] Message length size indicated by header: {messageLength}");
 
                         int offset = 0;
                         byte[] messageBytes = new byte[messageLength];
                         bytesRead = await stream.ReadAsync(messageBytes, offset, messageLength, tokenSource.Token);
-                        Debug.Log("[MONITOR] Message bytes read (first time): " + bytesRead);
+                        //Debug.Log("[MONITOR] Message bytes read (first time): " + bytesRead);
 
                         // Read until receiving the expected amount of data
                         missingMessageBytes = messageLength - bytesRead;
@@ -118,7 +127,7 @@ namespace CBB.ExternalTool
                         {
                             offset += bytesRead;
                             bytesRead = await stream.ReadAsync(messageBytes, offset, missingMessageBytes, tokenSource.Token);
-                            Debug.Log("[MONITOR] Message bytes read (inner while): " + bytesRead);
+                            //Debug.Log("[MONITOR] Message bytes read (inner while): " + bytesRead);
                             missingMessageBytes -= bytesRead;
                         }
                         if (missingMessageBytes < 0)
@@ -151,7 +160,6 @@ namespace CBB.ExternalTool
                 try
                 {
                     tokenSource.Cancel();
-                    tokenSource.Dispose();
                     Thread.Sleep(0);
                 }
                 catch (Exception excep)
@@ -160,13 +168,14 @@ namespace CBB.ExternalTool
                 }
                 finally
                 {
+                    tokenSource?.Dispose();
                     tokenSource = null;
                 }
             }
         }
         public void RemoveClient()
         {
-            
+
             if (client != null)
             {
                 try
