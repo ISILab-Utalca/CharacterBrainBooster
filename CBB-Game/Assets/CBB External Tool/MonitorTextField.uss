@@ -37,3 +37,7 @@
     -unity-background-image-tint-color: rgb(164, 164, 164);
     height: 8px;
 }
+
+#MyListView .unity-scroller--vertical {
+    background-color: rgb(19, 19, 19);
+}
