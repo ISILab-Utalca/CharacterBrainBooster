@@ -24,20 +24,3 @@
     padding-left: 8px;
     padding-right: 8px;
 }
-
-#MyShowField .unity-enum-field__input {
-    padding-left: 6px;
-    padding-right: 6px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    font-size: 13px;
-}
-
-#MyShowField .unity-enum-field__arrow {
-    -unity-background-image-tint-color: rgb(164, 164, 164);
-    height: 8px;
-}
-
-#MyListView .unity-scroller {
-    background-color: rgb(173, 10, 10);
-}

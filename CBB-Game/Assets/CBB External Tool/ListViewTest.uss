@@ -1,0 +1,46 @@
+#ListPrueba #unity-low-button {
+    background-color: rgb(48, 48, 48);
+    -unity-background-image-tint-color: rgba(196, 196, 196, 0.81);
+    border-left-color: rgba(36, 36, 36, 0);
+    border-right-color: rgba(36, 36, 36, 0);
+    border-top-color: rgba(36, 36, 36, 0);
+    border-bottom-color: rgba(36, 36, 36, 0);
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+#ListPrueba #unity-high-button {
+    background-color: rgb(48, 48, 48);
+    -unity-background-image-tint-color: rgba(196, 196, 196, 0.81);
+    border-left-color: rgba(36, 36, 36, 0);
+    border-right-color: rgba(36, 36, 36, 0);
+    border-top-color: rgba(36, 36, 36, 0);
+    border-bottom-color: rgba(36, 36, 36, 0);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+#ListPrueba #unity-tracker {
+    background-color: rgb(48, 48, 48);
+    -unity-background-image-tint-color: rgba(196, 196, 196, 0.81);
+}
+
+#ListPrueba #unity-dragger {
+    background-color: rgb(95, 95, 95);
+    -unity-background-image-tint-color: rgba(196, 196, 196, 0.81);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+#ListPrueba VisualElement {
+    background-color: rgba(255, 255, 255, 0);
+    -unity-background-image-tint-color: rgba(196, 196, 196, 0.81);
+    border-left-color: rgba(36, 36, 36, 0);
+    border-right-color: rgba(36, 36, 36, 0);
+    border-top-color: rgba(36, 36, 36, 0);
+    border-bottom-color: rgba(36, 36, 36, 0);
+}
