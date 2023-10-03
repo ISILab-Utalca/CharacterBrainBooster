@@ -65,7 +65,7 @@ namespace CBB.Api
             agentBrain.OnDecisionTaken -= ReceiveDecisionHandler;
             agentBrain.OnSetupDone -= SubscribeToSensors;
             SendDataToAllClients(AgentWrapper.AgentStateType.DESTROYED);
-            Server.OnNewClientConnected += SendAgentInitialDataToClient;
+            Server.OnNewClientConnected -= SendAgentInitialDataToClient;
 
         }
 

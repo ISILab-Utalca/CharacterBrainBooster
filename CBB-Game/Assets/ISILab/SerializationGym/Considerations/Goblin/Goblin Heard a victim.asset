@@ -44,5 +44,7 @@ MonoBehaviour:
   - DistanceToTarget
   - ThreatHeard
   - Idle
+  - AttackOnCooldown
   flags: 26
   _selectedMethodIndex: 1
+  _selectedCurveIndex: 0
