@@ -35,6 +35,6 @@ namespace ArtificialIntelligence.Utility
         /// The list of available <b>options</b> to execute.
         /// </returns>
         public List<Option> GetOptions();
-
+        List<UtilityConsideration> GetConsiderations();
     }
 }

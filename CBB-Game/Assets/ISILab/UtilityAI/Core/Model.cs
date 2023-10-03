@@ -88,12 +88,17 @@ namespace CBB.Lib
             this.SensorsData = sensorsData;
         }
     }
+    /// <summary>
+    /// Store the relevant information of an <see cref="Option"/> 
+    /// </summary>
     [System.Serializable]
+
     public class DecisionData
     {
         public string actionName;
         public float actionScore;
         public string targetName;
+        public List<ConsiderationData> evaluatedConsiderations;
         public DecisionData() { }
         public DecisionData(string actionName, float actionScore, string targetName)
         {
@@ -106,6 +111,18 @@ namespace CBB.Lib
             actionName = option.Action.GetType().Name;
             targetName = option.Target ? option.Target.name : "No target";
             actionScore = option.Score;
+            evaluatedConsiderations = new List<ConsiderationData>();
+            if (option.Evaluations != null)
+            {
+                foreach (var evaluation in option.Evaluations)
+                {
+                    evaluatedConsiderations.Add(new ConsiderationData(evaluation.ConsiderationName,
+                                                                                evaluation.UtilityValue,
+                                                                                evaluation.InputValue,
+                                                                                evaluation.InputName,
+                                                                                evaluation.Curve));
+                }
+            }
         }
     }
     [System.Serializable]
@@ -137,51 +154,22 @@ namespace CBB.Lib
         }
     }
 
-
-    //[Serializable]
-    //public class SerializableKeyframe
-    //{
-    //    public float time;
-    //    public float value;
-    //    public float inTangent;
-    //    public float outTangent;
-
-    //    public SerializableKeyframe(Keyframe keyframe)
-    //    {
-    //        time = keyframe.time;
-    //        value = keyframe.value;
-    //        inTangent = keyframe.inTangent;
-    //        outTangent = keyframe.outTangent;
-    //    }
-
-    //    public Keyframe ToKeyframe()
-    //    {
-    //        return new Keyframe(time, value, inTangent, outTangent);
-    //    }
-    //}
-
-    //[Serializable]
-    //public class SerializableAnimationCurve
-    //{
-    //    public SerializableKeyframe[] keyframes;
-
-    //    public SerializableAnimationCurve(AnimationCurve curve)
-    //    {
-    //        keyframes = new SerializableKeyframe[curve.length];
-    //        for (int i = 0; i < curve.length; i++)
-    //        {
-    //            keyframes[i] = new SerializableKeyframe(curve[i]);
-    //        }
-    //    }
-
-    //    public AnimationCurve ToAnimationCurve()
-    //    {
-    //        AnimationCurve curve = new AnimationCurve();
-    //        foreach (var keyframe in keyframes)
-    //        {
-    //            curve.AddKey(keyframe.ToKeyframe());
-    //        }
-    //        return curve;
-    //    }
-    //}
+    [System.Serializable]
+    public class ConsiderationData
+    {
+        public string ConsiderationName;
+        public float UtilityValue;
+        public float InputValue;
+        public string EvaluatedVariableName;
+        public Curve Curve;
+        public ConsiderationData() { }
+        public ConsiderationData(string name, float utilValue, float inputValue, string varName, Curve curve)
+        {
+            ConsiderationName = name;
+            UtilityValue = utilValue;
+            InputValue = inputValue;
+            EvaluatedVariableName = varName;
+            Curve = curve;
+        }
+    }
 }

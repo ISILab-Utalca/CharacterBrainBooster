@@ -1,3 +1,5 @@
+using dnorambu.AI.Utility;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -14,15 +16,15 @@ namespace ArtificialIntelligence.Utility
         [SerializeField, Tooltip("Set this to true if input for response curve needs to be normalized")]
         private bool _bookends;
         [Tooltip("Min value for clamping input")]
-        [SerializeField] private float _minValue;
+        [SerializeField]
+        private float _minValue;
         [Tooltip("Max value for clamping input")]
-        [SerializeField] private float _maxValue;
-        [Space]
-        [SerializeField] private AnimationCurve _responseCurve;
-        [Space]
+        [SerializeField]
+        private float _maxValue;
+
         [Header("Method selection")]
         [Tooltip("The class instance that implements desired methods")]
-        public Object ImplementationReference;
+        public UnityEngine.Object ImplementationReference;
         [Tooltip("Methods declared on Implementation Reference")]
         public List<string> _methods = new();
         // Cache for selected method
@@ -31,9 +33,33 @@ namespace ArtificialIntelligence.Utility
         public BindingFlags flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly;
         [HideInInspector]
         public int _selectedMethodIndex;
-        public float GetValue(LocalAgentMemory agent, GameObject target = null)
+
+        [Space]
+        [Header("New curve configurations")]
+        [HideInInspector]
+        public List<Curve> _curveTypes;
+        public Curve _curve;
+        public int _selectedCurveIndex;
+        public struct Evaluation
         {
-            var value = (float)_methodInfo.Invoke(null, new object[] { agent, target });
+            public string ConsiderationName;
+            public float InputValue;
+            public float UtilityValue;
+            public string InputName; // Variable being evaluated on the consideration
+            public Curve Curve;
+            public Evaluation(string consName, float inputValue, float utilityValue, string inputName, Curve curve)
+            {
+                ConsiderationName = consName;
+                InputValue = inputValue;
+                UtilityValue = utilityValue;
+                InputName = inputName;
+                Curve = curve;
+            }
+        }
+        public Evaluation GetValue(LocalAgentMemory agent, GameObject target = null)
+        {
+            var methodEvaluation = (ConsiderationMethods.MethodEvaluation)_methodInfo.Invoke(null, new object[] { agent, target });
+            var value = methodEvaluation.OutputValue;
             if (_bookends)
             {
                 // Clamp input between min and max values defined in bookends
@@ -42,11 +68,40 @@ namespace ArtificialIntelligence.Utility
                 value = (value - _minValue) / (_maxValue - _minValue);
             }
             // Return the evaluation
-            return _responseCurve.Evaluate(value);
+            if (name == null) Debug.LogWarning("[CONSIDERATION] name is null");
+            if (_curve == null) Debug.LogWarning("[CONSIDERATION] _curve is null");
+            return new Evaluation(name,value, _curve.Calc(value), methodEvaluation.EvaluatedVariableName, _curve);
         }
+        // Display the dropdown and detect changes
+        // TODO: Duplicated code (see ConsiderationDrawer -> OnInspectorGUI)
         private void OnValidate()
         {
             ResetMethods();
+            UpdateMethodInfo();
+
+            // Curves logic
+            ResetCurves();
+            
+        }
+
+
+        public void ResetCurves()
+        {
+            // Get all the curves classes names and add them to the list
+            _curveTypes = Curve.GetCurves();
+            var curveType = _curveTypes[_selectedCurveIndex].GetType();
+            var curveInstance = Activator.CreateInstance(curveType);
+            _curve = curveInstance switch
+            {
+                Linear l => l,
+                ExponencialInvertida ei => ei,
+                Exponencial exp => exp,
+                Staggered stg => stg,
+                Sigmoide sigmoide => sigmoide,
+                Constant constant => constant,
+                Bell bell => bell,
+                _ => null,
+            };
         }
 
         private void ResetMethods()
@@ -65,6 +120,7 @@ namespace ArtificialIntelligence.Utility
 #endif
 
             UpdateMethodInfo();
+            ResetCurves();
         }
 
         public void UpdateMethodInfo()

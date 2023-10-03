@@ -47,22 +47,31 @@ namespace ArtificialIntelligence.Utility
             if (TryGetComponent(out NavMeshAgent nma)) LocalNavMeshAgent = nma;
         }
         public abstract List<Option> GetOptions();
-        protected float EvaluateConsiderations(GameObject target = null)
+        protected Option EvaluateConsiderations(GameObject target = null)
         {
+            Option option = new();
             if (_considerations.Count == 0)
             {
-                if (viewLogs) Debug.LogWarning($"_considerations is empty in {name}. Returning 0");
-                return 0f;
+                throw new System.Exception($"_considerations is empty in {name}. Returning 0");
             }
-            float score = 1, considerationScore;
+            float score = 1;
+            UtilityConsideration.Evaluation evaluation;
             foreach (var consideration in _considerations)
             {
-                considerationScore = consideration.GetValue(LocalAgentMemory, target);
-                // break if the score is 0, no need to compute further considerations
-                if (considerationScore == 0) return 0;
-                score *= considerationScore;
+                //Note: is possible to optimize this, breaking after a consideration return 0
+                // but if we do that, the debugging tool won't have information about the next
+                // considerations(that may have scores different than 0), so we compute all
+                // the considerations, regardless of their evaluated value
+                evaluation = consideration.GetValue(LocalAgentMemory, target);
+                option.Evaluations.Add(evaluation);
+
+                //This simple multiplication is where we combine the scores of the different
+                //considerations being evaluated.This line of code is very important since it
+                //is responsible for combining the different evaluation curves into a single uniform value.
+                score *= evaluation.UtilityValue;
             }
-            return score;
+            option.Score = score;
+            return option;
         }
         /// <summary>
         /// Evaluate the action against the agent itself, a fixed target or no target at all.
@@ -73,10 +82,9 @@ namespace ArtificialIntelligence.Utility
         /// </returns>
         protected internal Option ScoreSingleOption(out Option option, GameObject target = null)
         {
-            float score = EvaluateConsiderations(target);
-
-            option = new Option(this, score, target);
-
+            option = EvaluateConsiderations(target);
+            option.Action = this;
+            option.Target = target;
             RescaleOptionScore(option);
 
             // Apply the relative importance (weight) of this action
@@ -98,12 +106,13 @@ namespace ArtificialIntelligence.Utility
                 foreach (var target in targets)
                 {
                     ScoreSingleOption(out Option opt, target);
-                    if (opt != null) options.Add(opt);
+                    options.Add(opt);
                 }
-            }
-            else
+            }else if(targets.Count == 0)
             {
-                options.Add(new Option(this, 0, null));
+                // Create an option to debug, although this action had no target
+                var opt = new Option(this);
+                options.Add(opt);
             }
 
             return options;
@@ -147,11 +156,15 @@ namespace ArtificialIntelligence.Utility
         protected void ClearCoroutine(Coroutine c)
         {
             if (c != null) { StopCoroutine(c); }
-            c = null;
         }
         protected virtual IEnumerator Act(GameObject target = null)
         {
             yield return null;
+        }
+
+        public List<UtilityConsideration> GetConsiderations()
+        {
+            return _considerations;
         }
         #endregion
     }

@@ -71,7 +71,7 @@ namespace ArtificialIntelligence.Utility
                 // it needs to be a self-targeted action (like a bark, simple idle animation, etc)
                 // TODO: add a Custom Editor that shows this warning
                 if (viewLogs) Debug.LogWarning("Executing default action on:" + gameObject.name);
-                newOption = new Option(_defaultAction, 1, null);
+                newOption = new Option();
                 _actionRunner.ExecuteOption(newOption);
             }
         }

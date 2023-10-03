@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ArtificialIntelligence.Utility
 {
@@ -14,10 +15,24 @@ namespace ArtificialIntelligence.Utility
         public ActionState Action { get; set; }
         public float Score { get; set; }
         public GameObject Target { get; set; }
-        public Option(ActionState action, float score, GameObject target = null)
+        public List<UtilityConsideration.Evaluation> Evaluations { get; set; }
+        public Option()
+        {
+            Action = null;
+            Score = 0;
+            Target = null;
+            Evaluations = new List<UtilityConsideration.Evaluation>();
+        }
+        public Option(ActionState action)
         {
             Action = action;
-            Score = score;
+            Score = 0;
+            Target = null;
+            Evaluations = null;
+        }
+        public Option(ActionState action, GameObject target = null)
+        {
+            Action = action;
             Target = target;
         }
     }

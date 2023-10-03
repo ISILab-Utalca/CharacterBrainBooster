@@ -15,7 +15,7 @@ namespace ArtificialIntelligence.Utility
             WeightedAllRandom,
             TopN
         }
-
+        
         /// <summary>
         /// Evaluate every action in the list, and creates a List of the
         /// possible options the agent can execute.
@@ -31,7 +31,7 @@ namespace ArtificialIntelligence.Utility
                 var options = action.GetOptions();
                 scoredOptions.AddRange(options);
             }
-
+            
             return scoredOptions;
 
         }
