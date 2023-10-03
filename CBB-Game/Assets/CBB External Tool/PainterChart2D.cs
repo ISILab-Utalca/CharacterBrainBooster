@@ -9,14 +9,14 @@ public class PainterChart2D : VisualElement
     private Painter2D paint2D;
     private (Curve, float)[] curves = { (new ExponencialInvertida(), 0.5f) };
 
-    private Color colorLine = new Color(1f, 1f, 1f, .7f);
-    private Color colorGrid = new Color(0f, 0f, 0f, .05f);
+    private Color colorLine = new(1f, 1f, 1f, .7f);
+    private Color colorGrid = new(0f, 0f, 0f, .05f);
     private Color colorCurve = Color.green;
     private Color colorValuePoint = Color.red;
-    private Color colorValueLine = new Color(1f, 0f, 0f, .2f);
+    private Color colorValueLine = new(1f, 0f, 0f, .2f);
 
-    public float Height => 160;//this.style.height.value.value;
-    public float Width => 200;//this.style.width.value.value;
+    public float Height => 160;
+    public float Width => 200;
 
     public PainterChart2D()
     {
