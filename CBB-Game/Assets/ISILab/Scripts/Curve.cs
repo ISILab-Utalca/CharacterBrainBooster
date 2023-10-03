@@ -33,7 +33,7 @@ public abstract class Curve
         var points = new List<Vector2>();
         for (int i = 0; i < steps + 1; i++)
         {
-            var x = (1f / (float)steps) * i;
+            var x = (1f / steps) * i;
             var y = curve.Calc(x);
             points.Add(new Vector2(x, y));
         }
