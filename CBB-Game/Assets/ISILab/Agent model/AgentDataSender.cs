@@ -118,11 +118,18 @@ namespace CBB.Api
         }
         private void SendDataToAllClients(DecisionPackage decisionPackage)
         {
-            if (!NeedAServer) return;
+            var data = JSONDataManager.SerializeData(decisionPackage);
+            if (!NeedAServer)
+            {
+                if (showLogs)
+                {
+                    Debug.Log($"{name} has sent {decisionsSent} decisions");
+                    Debug.Log($"Data sent: {data}");
+                }
+            }
             if (!Server.IsRunning) return;
             try
             {
-                var data = JSONDataManager.SerializeData(decisionPackage);
                 Server.SendMessageToAllClients(data);
                 decisionsSent++;
                 if (showLogs)
