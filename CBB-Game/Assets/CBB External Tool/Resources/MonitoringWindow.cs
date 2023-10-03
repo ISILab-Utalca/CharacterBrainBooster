@@ -12,7 +12,6 @@ namespace CBB.ExternalTool
         // View
         private DropdownField modeDropdown;
         private Button disconnectButton;
-        private SimpleBrainView simpleBrainView;
         #region PROPERTIES
 
         #endregion
