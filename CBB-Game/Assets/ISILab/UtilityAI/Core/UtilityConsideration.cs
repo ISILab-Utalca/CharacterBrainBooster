@@ -46,6 +46,7 @@ namespace ArtificialIntelligence.Utility
             public float InputValue;
             public float UtilityValue;
             public string InputName; // Variable being evaluated on the consideration
+            [SerializeReference]
             public Curve Curve;
             public Evaluation(string consName, float inputValue, float utilityValue, string inputName, Curve curve)
             {

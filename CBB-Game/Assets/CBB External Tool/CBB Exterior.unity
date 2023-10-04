@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 291235149}
   - component: {fileID: 291235150}
   - component: {fileID: 291235151}
+  - component: {fileID: 291235152}
   m_Layer: 0
   m_Name: Monitoring Window
   m_TagString: Untagged
@@ -222,6 +223,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2c83fcf4c3868445a999c0973ee98f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &291235152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291235145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8993b86cf2046348a55533b0e1c7669, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1167354335
