@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.UI;
 using Utility;
 
 namespace CBB.Api
@@ -40,6 +41,8 @@ namespace CBB.Api
         private bool NeedAServer = false;
         [SerializeField]
         private bool showLogs = false;
+        [SerializeField]
+        private Text agentIDText;
 
         private IAgent agentComp;
         private IAgentBrain agentBrain;
@@ -58,6 +61,7 @@ namespace CBB.Api
             agentBrain.OnDecisionTaken += ReceiveDecisionHandler;
             agentBrain.OnSetupDone += SubscribeToSensors;
 
+            agentIDText.text = gameObject.GetInstanceID().ToString();
             Server.OnNewClientConnected += SendAgentInitialDataToClient;
         }
         private void OnDestroy()
