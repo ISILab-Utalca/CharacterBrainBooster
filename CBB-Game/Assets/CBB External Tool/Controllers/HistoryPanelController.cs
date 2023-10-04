@@ -11,23 +11,20 @@ namespace CBB.ExternalTool
 {
     public class HistoryPanelController : MonoBehaviour, IMessageHandler
     {
-        // TODO:
-        // Deserialize a Decision Package (done)
-        // Update the view after receiving a Decision package
-        // Handle OnChange event when selecting a history (done, in AgentPanel)
-
         readonly JsonSerializerSettings settings = new()
         {
-            NullValueHandling = NullValueHandling.Ignore,
-            MissingMemberHandling = MissingMemberHandling.Error
+            NullValueHandling = NullValueHandling.Include,
+            MissingMemberHandling = MissingMemberHandling.Error,
+            TypeNameHandling = TypeNameHandling.Auto,
         };
-
+        private DecisionDetailPanelController decisionDetailPanelController;
         private ObservableCollection<DecisionPackage> decisions;
         private HistoryPanel historyPanel;
         private ListView list;
         private EnumField showField;
         private HistoryPanel.ShowType showType;
         private int currentlySelectedAgentID = -1;
+
         private void Awake()
         {
             var monitoringWindow = GetComponent<MonitoringWindow>();
@@ -38,25 +35,32 @@ namespace CBB.ExternalTool
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
             list.itemsSource = decisions;
-            list.itemsChosen += OnItemChosen;
-            list.selectionChanged += OnSelectionChange;
+            list.selectionChanged += ShowSelectedDecision;
 
             // Show dropdown
             this.showField = historyPanel.Q<EnumField>();
             showField.value = HistoryPanel.ShowType.Decisions;
             showField.RegisterValueChangedCallback(OnChangeShowType);
 
-            // 
+            decisionDetailPanelController = GetComponent<DecisionDetailPanelController>();
             ExternalMonitor.OnMessageReceived += HandleMessage;
-
-            GameData.OnAddDecision += AddDecisionInHistory;
         }
+
+        private void ShowSelectedDecision(IEnumerable<object> enumerable)
+        {
+            var selectedDecision = decisions[list.selectedIndex];
+            decisionDetailPanelController.DisplayDecisionDetails(selectedDecision);
+        }
+
         public void HandleMessage(string message)
         {
             try
             {
                 var decisionPack = JsonConvert.DeserializeObject<DecisionPackage>(message, settings);
+                //Debug.Log("<color=green>[HISTORY PANEL] Message is Decision Pack: </color>" + message);
                 GameData.HandleDecisionPackage(decisionPack);
+
+                // Update the view only if necessary
                 if (decisionPack.agentID != currentlySelectedAgentID) return;
                 list.RefreshItems();
             }
@@ -65,20 +69,10 @@ namespace CBB.ExternalTool
                 //Debug.Log("<color=red>[HISTORY PANEL] Message is not Decision Pack: </color>" + message);
             }
         }
-
-        private void AddDecisionInHistory(DecisionPackage package)
-        {
-
-        }
-
-        private void OnSelectionOption()
-        {
-
-        }
         public void UpdateHistoryPanelDecisionsView(int agentID)
         {
             currentlySelectedAgentID = agentID;
-            decisions = GameData.GetHistory(agentID);
+            decisions = GameData.GetHistory(currentlySelectedAgentID);
             list.itemsSource = decisions;
             list.RefreshItems();
         }
@@ -121,44 +115,12 @@ namespace CBB.ExternalTool
                 throw new NotImplementedException();
             }
         }
-        /// <summary>
-        /// Set the internal list of decisions and refresh the view
-        /// </summary>
-        /// <param name="history">The new history of decisions to show on the view</param>
-        public void SetInfo(ObservableCollection<DecisionPackage> history)
-        {
-            decisions = history;
-            list.RefreshItems();
-        }
-
-        private void OnSelectionChange(IEnumerable<object> objs)
-        {
-            Debug.Log("OnSelectionChange");
-        }
-
-        private void OnItemChosen(IEnumerable<object> objs)
-        {
-            Debug.Log("OnItemChosen");
-        }
-
+        
         private void OnChangeShowType(ChangeEvent<Enum> evt)
         {
             showType = (HistoryPanel.ShowType)evt.newValue;
-
         }
-        public void LoadAndDisplayAgentHistory(int agentID)
-        {
-            try
-            {
-                var history = GameData.GetHistory(agentID);
-                SetInfo(history);
-            }
-            catch
-            {
-                Debug.Log("[HISTORY PANEL] Agent " + agentID + " has no previous history.");
-                return;
-            }
-        }
+        
     }
 }
 
