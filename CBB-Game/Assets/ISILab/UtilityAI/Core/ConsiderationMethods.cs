@@ -26,7 +26,7 @@ namespace dnorambu.AI.Utility
         {
             MethodEvaluation methodEvaluation = new()
             {
-                EvaluatedVariableName = "Distance to thread",
+                EvaluatedVariableName = "Distance to threat",
                 OutputValue = agentMemory.HeardObjects.Count > 0 ? 1f : 0f,
             };
             return methodEvaluation;

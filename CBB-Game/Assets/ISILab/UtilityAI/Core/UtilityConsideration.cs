@@ -14,19 +14,19 @@ namespace ArtificialIntelligence.Utility
     {
         [Header("Bookends")]
         [SerializeField, Tooltip("Set this to true if input for response curve needs to be normalized")]
-        private bool _bookends;
+        private bool m_bookends;
         [Tooltip("Min value for clamping input")]
         [SerializeField]
-        private float _minValue;
+        private float m_minValue;
         [Tooltip("Max value for clamping input")]
         [SerializeField]
-        private float _maxValue;
+        private float m_maxValue;
 
         [Header("Method selection")]
         [Tooltip("The class instance that implements desired methods")]
         public UnityEngine.Object ImplementationReference;
         [Tooltip("Methods declared on Implementation Reference")]
-        public List<string> _methods = new();
+        public List<string> m_methods = new();
         // Cache for selected method
         public MethodInfo _methodInfo;
         [Tooltip("Set this flags in the inspector to show different methods")]
@@ -61,12 +61,12 @@ namespace ArtificialIntelligence.Utility
         {
             var methodEvaluation = (ConsiderationMethods.MethodEvaluation)_methodInfo.Invoke(null, new object[] { agent, target });
             var value = methodEvaluation.OutputValue;
-            if (_bookends)
+            if (m_bookends)
             {
                 // Clamp input between min and max values defined in bookends
-                value = Mathf.Clamp(value, _minValue, _maxValue);
+                value = Mathf.Clamp(value, m_minValue, m_maxValue);
                 // Normalize it
-                value = (value - _minValue) / (_maxValue - _minValue);
+                value = (value - m_minValue) / (m_maxValue - m_minValue);
             }
             // Return the evaluation
             if (name == null) Debug.LogWarning("[CONSIDERATION] name is null");
@@ -85,7 +85,11 @@ namespace ArtificialIntelligence.Utility
             
         }
 
-
+        public void ResetCurves(int curveIndex)
+        {
+            _selectedCurveIndex = curveIndex;
+            ResetCurves();
+        }
         public void ResetCurves()
         {
             // Get all the curves classes names and add them to the list
@@ -101,17 +105,22 @@ namespace ArtificialIntelligence.Utility
                 Sigmoide sigmoide => sigmoide,
                 Constant constant => constant,
                 Bell bell => bell,
+                Power power => power,
                 _ => null,
             };
         }
-
+        public void UpdateMethodInfo(int methodIndex)
+        {
+            _selectedMethodIndex = methodIndex;
+            UpdateMethodInfo();
+        }
         private void ResetMethods()
         {
-            _methods = new();
+            m_methods = new();
             var methodInfos = ImplementationReference.GetType().GetMethods(flags);
             foreach (var method in methodInfos)
             {
-                _methods.Add(method.Name);
+                m_methods.Add(method.Name);
             }
         }
         private void OnEnable()
@@ -126,7 +135,7 @@ namespace ArtificialIntelligence.Utility
 
         public void UpdateMethodInfo()
         {
-            _methodInfo = ImplementationReference.GetType().GetMethod(_methods[_selectedMethodIndex]);
+            _methodInfo = ImplementationReference.GetType().GetMethod(m_methods[_selectedMethodIndex]);
         }
     }
 }

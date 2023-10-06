@@ -472,6 +472,7 @@ MonoBehaviour:
   viewLogs: 0
   _considerations:
   - {fileID: 11400000, guid: ab3013bbb11cfd64fa4cde34b0aea1f9, type: 2}
+  - {fileID: 11400000, guid: 2f06f9b2aaf3bc44285c05574d5ab64d, type: 2}
   <ActionCooldown>k__BackingField: 0
   safeDistance: 6
   runSpeed: 7
