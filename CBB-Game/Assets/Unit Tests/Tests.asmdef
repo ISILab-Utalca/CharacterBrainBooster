@@ -3,9 +3,7 @@
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner",
-        "CBB_External_Tool",
-        "CBB"
+        "UnityEditor.TestRunner"
     ],
     "includePlatforms": [
         "Editor"
