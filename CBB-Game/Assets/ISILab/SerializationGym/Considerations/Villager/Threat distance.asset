@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_bookends: 1
   m_minValue: 0
-  m_maxValue: 1.21
+  m_maxValue: 10
   ImplementationReference: {fileID: 11400000, guid: f97504b6c53f7e54ca83b6a4cf1c7382, type: 2}
   m_methods:
   - DistanceToTarget
