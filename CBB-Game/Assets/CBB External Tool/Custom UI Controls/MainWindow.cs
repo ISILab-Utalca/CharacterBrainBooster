@@ -1,5 +1,6 @@
 using CBB.ExternalTool;
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -23,9 +24,13 @@ public class MainWindow : MonoBehaviour
         this.startMode = root.Q<RadioButtonGroup>();
         startButton.clicked += StartConnection;
 
-
         // InformationLabel
         this.connectionInformation = root.Q<Label>("ConnectionInformation");
+
+        // Patch for making fields and modes not selectable (!!!)
+        addresField.SetEnabled(false);
+        portField.SetEnabled(false);
+        startMode.SetEnabled(false);
     }
     private void OnDisable()
     {
