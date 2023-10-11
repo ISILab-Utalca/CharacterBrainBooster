@@ -17,7 +17,7 @@
             </ui:VisualElement>
             <ui:VisualElement name="container-decision-details" style="flex-grow: 0; background-color: rgba(48, 48, 48, 0.59); width: 70%; border-left-color: rgb(34, 34, 34); border-right-color: rgba(34, 34, 34, 0); border-top-color: rgba(34, 34, 34, 0); border-bottom-color: rgba(34, 34, 34, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 2px;">
                 <ui:Label tabindex="-1" text="DECISION DETAILS" display-tooltip-when-elided="true" class="title-letter" />
-                <ui:ListView focusable="true" name="decision-detail-list" virtualization-method="DynamicHeight" />
+                <ui:ListView focusable="true" name="decision-detail-list" virtualization-method="DynamicHeight" style="color: rgb(233, 233, 233);" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

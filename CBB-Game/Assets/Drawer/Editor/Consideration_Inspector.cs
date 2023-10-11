@@ -84,27 +84,9 @@ public class Consideration_Inspector : Editor
         serializedObject.Update();
         var curveIndex = curveDropdown.choices.IndexOf(newValue);
         consideration.ResetCurves(curveIndex);
-        considerationGraph.SetCurve(consideration._curve, upperBound.value);
+        considerationGraph.SetCurve(consideration._curve, 0);
         if (consideration._curve != null)
         {
-            //Type curveType = consideration._curve.GetType();
-            //FieldInfo[] fields = curveType.GetFields(BindingFlags.Public | BindingFlags.Instance);
-            //foreach (FieldInfo field in fields)
-            //{
-            //    if (field.FieldType == typeof(bool))
-            //    {
-            //        bool boolValue = (bool)field.GetValue(consideration._curve);
-            //        bool newBoolValue = EditorGUILayout.Toggle(field.Name, boolValue);
-            //        field.SetValue(consideration._curve, newBoolValue);
-            //    }
-            //else
-            //{
-
-            //    float currentValue = (float)field.GetValue(consideration._curve);
-            //    float newVal = new FloatField();
-            //    field.SetValue(consideration._curve, newVal);
-            //}
-            //}
             UpdateCurvePropertiesUI(curvePropertiesContainer);
         }
         serializedObject.ApplyModifiedProperties();
@@ -115,60 +97,111 @@ public class Consideration_Inspector : Editor
         upperBound.SetDisplay(value);
     }
 
-    private void UpdateCurvePropertiesUI( VisualElement container)
+    private void UpdateCurvePropertiesUI(VisualElement container)
     {
         container.Clear();
-        Type curveType = consideration._curve.GetType();
+        //var curveSerializedObject = new SerializedObject(consideration._curve);
+        //var property = curveSerializedObject.GetIterator();
+        //while (property.NextVisible(true))
+        //{
+        //    var propertyName = property.displayName;
+        //    if (property.propertyType == SerializedPropertyType.Float)
+        //    {
+        //        var field = new FloatField(propertyName)
+        //        {
+        //            value = property.floatValue,
+        //        };
+        //        field.RegisterValueChangedCallback(evt =>
+        //        {
+        //            property.floatValue = evt.newValue;
+        //            curveSerializedObject.ApplyModifiedProperties();
+        //            EditorUtility.SetDirty(target);
+        //        });
+        //        container.Add(field);
+        //    }
+        //    else if (property.propertyType == SerializedPropertyType.Integer)
+        //    {
+        //        var field = new IntegerField(propertyName)
+        //        {
+        //            value = property.intValue
+        //        };
+        //        field.RegisterValueChangedCallback(evt =>
+        //        {
+        //            property.intValue = evt.newValue;
+        //            EditorUtility.SetDirty(target);
+        //            serializedObject.ApplyModifiedProperties();
+        //        });
+        //        container.Add(field);
+        //    }
+        //    else if (property.propertyType == SerializedPropertyType.Boolean)
+        //    {
+        //        var field = new Toggle(propertyName)
+        //        {
+        //            value = property.boolValue
+        //        };
+        //        field.RegisterValueChangedCallback(evt =>
+        //        {
+        //            property.boolValue = evt.newValue;
+        //            EditorUtility.SetDirty(target);
+        //            serializedObject.ApplyModifiedProperties();
+        //        });
+        //        container.Add(field);
+        //    }
+        //}
 
         var curve = consideration._curve;
-        // Iterate through the properties of the derived Curve type using reflection
+        Type curveType = curve.GetType();
+
+        //Iterate through the properties of the derived Curve type using reflection
         var properties = curveType.GetFields(BindingFlags.Public | BindingFlags.Instance);
 
         foreach (var property in properties)
         {
             var propertyName = ObjectNames.NicifyVariableName(property.Name);
             var propertyValue = property.GetValue(curve);
-
             if (property.FieldType == typeof(float))
             {
-                var field = new FloatField(propertyName);
-                field.value = (float)propertyValue;
+                var field = new FloatField(propertyName)
+                {
+                    value = (float)propertyValue
+                };
                 field.RegisterValueChangedCallback(evt =>
                 {
                     property.SetValue(curve, evt.newValue);
                     EditorUtility.SetDirty(target);
+                    serializedObject.ApplyModifiedProperties();
                 });
                 container.Add(field);
             }
             else if (property.FieldType == typeof(int))
             {
-                var field = new IntegerField(propertyName);
-                field.value = (int)propertyValue;
+                var field = new IntegerField(propertyName)
+                {
+                    value = (int)propertyValue
+                };
                 field.RegisterValueChangedCallback(evt =>
                 {
                     property.SetValue(curve, evt.newValue);
                     EditorUtility.SetDirty(target);
+                    serializedObject.ApplyModifiedProperties();
+                });
+                container.Add(field);
+            }
+            else if (property.FieldType == typeof(bool))
+            {
+                var field = new Toggle(propertyName)
+                {
+                    value = (bool)propertyValue
+                };
+                field.RegisterValueChangedCallback(evt =>
+                {
+                    property.SetValue(curve, evt.newValue);
+                    EditorUtility.SetDirty(target);
+                    serializedObject.ApplyModifiedProperties();
                 });
                 container.Add(field);
             }
             // Add more field types as needed
         }
-        //if (curveProperty.objectReferenceValue != null)
-        //{
-        //    var curve = (Curve)curveProperty.objectReferenceValue;
-        //    var curveSerializedObject = new SerializedObject(curve);
-
-        //    // Iterate through all serialized properties of the derived Curve type
-        //    var iterator = curveSerializedObject.GetIterator();
-        //    while (iterator.NextVisible(true))
-        //    {
-        //        // Skip the "m_Script" property
-        //        if (iterator.propertyPath == "m_Script") continue;
-
-        //        // Create and add a PropertyField for the derived Curve property
-        //        var propertyField = new PropertyField(iterator.Copy());
-        //        container.Add(propertyField);
-        //    }
-        //}
     }
 }
