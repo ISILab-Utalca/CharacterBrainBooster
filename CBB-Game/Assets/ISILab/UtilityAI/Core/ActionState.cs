@@ -50,10 +50,8 @@ namespace ArtificialIntelligence.Utility
         protected Option EvaluateConsiderations(GameObject target = null)
         {
             Option option = new();
-            if (_considerations.Count == 0)
-            {
-                throw new System.Exception($"_considerations is empty in {name}. Returning 0");
-            }
+            if (_considerations.Count == 0) return option;
+            
             float score = 1;
             UtilityConsideration.Evaluation evaluation;
             foreach (var consideration in _considerations)
@@ -108,7 +106,8 @@ namespace ArtificialIntelligence.Utility
                     ScoreSingleOption(out Option opt, target);
                     options.Add(opt);
                 }
-            }else if(targets.Count == 0)
+            }
+            else if (targets.Count == 0)
             {
                 // Create an option to debug, although this action had no target
                 var opt = new Option(this);
@@ -130,7 +129,7 @@ namespace ArtificialIntelligence.Utility
             float originalScore = option.Score;
             float modification = 1f - 1f / _considerations.Count;
             float value = (1f - originalScore) * modification;
-            option.Score = originalScore + value * originalScore;
+            option.Score = originalScore * (1 + value);
         }
         public virtual void StartExecution(GameObject target = null)
         {

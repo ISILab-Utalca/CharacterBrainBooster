@@ -23,7 +23,7 @@ namespace ArtificialIntelligence.Utility
         /// <param name="actions"></param>
         /// <returns></returns>
         /// <param name="pickMethod"></param><param name="topOptionsToConsider"></param>
-        public static List<Option> ScorePossibleOptions(List<IAction> actions)
+        public static List<Option> GetPossibleOptions(List<IAction> actions)
         {
             List<Option> scoredOptions = new();
             foreach (IAction action in actions)
@@ -42,7 +42,7 @@ namespace ArtificialIntelligence.Utility
         /// <param name="pickMethod">How to choose from the scored list of options</param>
         /// <param name="topOptionsToConsider"></param>
         /// <returns>The best option according to the pick method</returns>
-        public static Option PickFromScoredOptions(List<Option> options, PickMethod pickMethod = PickMethod.MaxScore, int topOptionsToConsider = 1)
+        public static Option PickFromPossibleOptions(List<Option> options, PickMethod pickMethod = PickMethod.MaxScore, int topOptionsToConsider = 1)
         {
             Option pickedAction = null;
             switch (pickMethod)

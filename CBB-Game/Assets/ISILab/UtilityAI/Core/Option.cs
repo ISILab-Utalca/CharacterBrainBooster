@@ -28,12 +28,14 @@ namespace ArtificialIntelligence.Utility
             Action = action;
             Score = 0;
             Target = null;
-            Evaluations = null;
+            Evaluations = new List<UtilityConsideration.Evaluation>();
         }
         public Option(ActionState action, GameObject target = null)
         {
             Action = action;
+            Score = 0;
             Target = target;
+            Evaluations = new List<UtilityConsideration.Evaluation>();
         }
     }
 }

@@ -1,3 +1,4 @@
+using ArtificialIntelligence.Utility.Actions;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -61,25 +62,31 @@ namespace ArtificialIntelligence.Utility
         public void TryStartNewAction()
         {
             Option newOption = GetNewOption();
-            if (newOption != null)
+            if (newOption != null && newOption.Score != 0)
             {
                 _actionRunner.ExecuteOption(newOption);
             }
             else
             {
-                // Since we shouldn't (in most cases) fix a target for the default action in Editor mode,
-                // it needs to be a self-targeted action (like a bark, simple idle animation, etc)
-                // TODO: add a Custom Editor that shows this warning
+                // Execute an Idle action just to keep alive the Sense - Think - Act cycle
                 if (viewLogs) Debug.LogWarning("Executing default action on:" + gameObject.name);
                 newOption = new Option();
+                if(TryGetComponent(out Idle idleAction))
+                {
+                    newOption.Action = idleAction;
+                }
+                else
+                {
+                    newOption.Action  = gameObject.AddComponent<Idle>();
+                }
                 _actionRunner.ExecuteOption(newOption);
             }
         }
         private Option GetNewOption()
         {
-            List<Option> scoredOptions = UtilityDecisionMaker.ScorePossibleOptions(_actions);
+            List<Option> scoredOptions = UtilityDecisionMaker.GetPossibleOptions(_actions);
             OnCompletedScoring?.Invoke(scoredOptions);
-            var bestOption = UtilityDecisionMaker.PickFromScoredOptions(scoredOptions, _pickMethod, topN);
+            var bestOption = UtilityDecisionMaker.PickFromPossibleOptions(scoredOptions, _pickMethod, topN);
             scoredOptions.Remove(bestOption);
             OnDecisionTaken?.Invoke(bestOption, scoredOptions);
             return bestOption;
