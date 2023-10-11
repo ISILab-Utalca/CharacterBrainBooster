@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 1717290323259136390}
   - component: {fileID: 4165182297888452997}
   m_Layer: 0
-  m_Name: Villager
+  m_Name: Villager Fail Type 1
   m_TagString: Friendly NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -448,8 +448,7 @@ MonoBehaviour:
   _actionPriority: 0.3
   defaultActionCooldown: 0
   viewLogs: 0
-  _considerations:
-  - {fileID: 11400000, guid: c0673ff4b07d6724094b26c534af2a32, type: 2}
+  _considerations: []
   <ActionCooldown>k__BackingField: 0
   _minWaitTimer: 1
   _maxWaitTimer: 5
@@ -470,9 +469,7 @@ MonoBehaviour:
   _actionPriority: 1
   defaultActionCooldown: 0
   viewLogs: 0
-  _considerations:
-  - {fileID: 11400000, guid: ab3013bbb11cfd64fa4cde34b0aea1f9, type: 2}
-  - {fileID: 11400000, guid: 2f06f9b2aaf3bc44285c05574d5ab64d, type: 2}
+  _considerations: []
   <ActionCooldown>k__BackingField: 0
   safeDistance: 6
   runSpeed: 7

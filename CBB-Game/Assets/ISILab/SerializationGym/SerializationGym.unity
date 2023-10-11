@@ -1313,6 +1313,71 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6066975602769968695, guid: 32189d3ceb26e434cb41333768e155e9, type: 3}
   m_PrefabInstance: {fileID: 488739864}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &507009091
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1773057720227866707, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773057720227866707, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773057720227866707, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773057720227866707, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773057720227866707, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773057720227866707, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773057720227866707, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773057720227866707, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773057720227866707, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773057720227866707, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773057720227866707, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4853649445717935730, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: m_Name
+      value: Villager Fail Type 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130257367612415918, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
+      propertyPath: _defaultAction
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4b3a3bc789fa2fd4b88db6ff20db4e28, type: 3}
 --- !u!1 &511570153
 GameObject:
   m_ObjectHideFlags: 0
@@ -1971,7 +2036,7 @@ GameObject:
   - component: {fileID: 711172010}
   - component: {fileID: 711172009}
   m_Layer: 5
-  m_Name: Networking UI
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
