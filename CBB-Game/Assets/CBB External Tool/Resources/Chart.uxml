@@ -13,11 +13,11 @@
         <ui:VisualElement style="flex-grow: 0; flex-direction: row-reverse; justify-content: flex-end; padding-left: 27px;">
             <ui:VisualElement style="width: 10%; flex-grow: 0;" />
             <ui:VisualElement name="NumbersX" style="width: auto; flex-grow: 1; justify-content: space-between; height: auto; flex-direction: row-reverse;">
-                <ui:Label tabindex="-1" text="1.00" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Label tabindex="-1" text="1.00" display-tooltip-when-elided="true" name="input-max-value" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
                 <ui:Label tabindex="-1" text="0.75" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
                 <ui:Label tabindex="-1" text="0.50" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
                 <ui:Label tabindex="-1" text="0.25" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-                <ui:Label tabindex="-1" text="0.00" display-tooltip-when-elided="true" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Label tabindex="-1" text="0.00" display-tooltip-when-elided="true" name="input-min-value" style="color: rgb(153, 153, 153); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

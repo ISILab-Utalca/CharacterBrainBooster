@@ -313,7 +313,41 @@ public class Constant : Curve
         return Inverted ? 1 - toR : toR;
     }
 }
+[Curve(name: "Power")]
+[System.Serializable]
+public class Power : Curve
+{
+    // Function = k*X^(exp)
+    [JsonRequired, Param("K", -10, 10)]
+    public float k = 0.5f;   // Coefficient
+    [JsonRequired, Param("EXP", -10, 10)]
+    public float exp = 1;   // Exponent
 
+    public Power() { }
+
+    public Power(float coef, float exp)
+    {
+        k = coef;
+        this.exp = exp;
+    }
+
+    public override float Calc(params float[] parms)
+    {
+        if (parms.Length != 3) return 0;
+        var x = parms[0];
+        var coef = parms[1];
+        var exp = parms[2];
+
+        var value = coef * (float)(Mathf.Pow(x, exp));
+        return Calc(value);
+    }
+
+    public override float Calc(float v)
+    {
+        var toR = k * (float)(Mathf.Pow(v, exp));
+        return Inverted ? 1 - toR : toR;
+    }
+}
 [Curve(name: "Bell")]
 [System.Serializable]
 public class Bell : Curve

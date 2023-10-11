@@ -3,7 +3,6 @@ using ArtificialIntelligence.Utility;
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 [CustomEditor(typeof(UtilityConsideration)), CanEditMultipleObjects]
@@ -42,7 +41,7 @@ public class ConsiderationDrawer : Editor
             text = "Evaluation method",
             tooltip = "What piece of information from the game is this consideration evaluating"
         };
-        consideration._selectedMethodIndex = EditorGUILayout.Popup(arrayList, consideration._selectedMethodIndex, consideration._methods.ToArray());
+        consideration._selectedMethodIndex = EditorGUILayout.Popup(arrayList, consideration._selectedMethodIndex, consideration.m_methods.ToArray());
 
         string[] availableCurvesNames = Curve.GetCurves().Select(x => x.GetType().Name).ToArray();
         EditorGUI.BeginChangeCheck();

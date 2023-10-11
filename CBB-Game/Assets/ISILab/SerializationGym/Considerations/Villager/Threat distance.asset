@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cdaf40e39ad9bac40accb29411ca06fd, type: 3}
-  m_Name: Villager heard a threat
+  m_Name: Threat distance
   m_EditorClassIdentifier: 
-  m_bookends: 0
+  m_bookends: 1
   m_minValue: 0
-  m_maxValue: 0
+  m_maxValue: 10
   ImplementationReference: {fileID: 11400000, guid: f97504b6c53f7e54ca83b6a4cf1c7382, type: 2}
   m_methods:
   - DistanceToTarget
@@ -22,5 +22,5 @@ MonoBehaviour:
   - Idle
   - AttackOnCooldown
   flags: 26
-  _selectedMethodIndex: 1
-  _selectedCurveIndex: 0
+  _selectedMethodIndex: 0
+  _selectedCurveIndex: 6
