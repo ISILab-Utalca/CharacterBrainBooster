@@ -823,6 +823,7 @@ MonoBehaviour:
   - Player
   - Enemy
   - Friendly NPC
+  - Fail NPC
   UpdateOnEnter: 1
   UpdateOnExit: 0
   sphereColl: {fileID: 3885886686699409817}
