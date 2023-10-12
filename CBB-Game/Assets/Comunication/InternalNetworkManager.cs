@@ -19,10 +19,9 @@ namespace CBB.Comunication
         private void Awake()
         {
             Application.quitting += StopInternalServer;
-            Application.quitting += StopInternalClient;
+            StartServer();
         }
-        [ContextMenu("Start internal server")]
-        public void StartServer()
+        private void StartServer()
         {
             try
             {
@@ -36,21 +35,6 @@ namespace CBB.Comunication
             Debug.Log("<color=yellow>Internal connection set</color>");
         }
 
-        [ContextMenu("Start internal client")]
-        public void StartClient()
-        {
-            try
-            {
-                Client.Start();
-                Debug.Log("<color=yellow>Internal client started correctly</color>");
-
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError("Internal client error: " + e);
-            }
-        }
-
         [ContextMenu("End internal server")]
         public void StopInternalServer()
         {
@@ -62,20 +46,6 @@ namespace CBB.Comunication
             catch (System.Exception e)
             {
                 Debug.LogError("Server error: " + e);
-            }
-        }
-
-        [ContextMenu("Stop internal client")]
-        public void StopInternalClient()
-        {
-            try
-            {
-                Client.Stop();
-                Debug.Log("<color=yellow>Client stopped correctly</color>");
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError("Internal client error: " + e);
             }
         }
     }
