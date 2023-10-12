@@ -16,9 +16,9 @@ public class ConsiderationDrawer : Editor
 
     void OnEnable()
     {
-        showBookends = serializedObject.FindProperty("_bookends");
-        minBookend = serializedObject.FindProperty("_minValue");
-        maxBookend = serializedObject.FindProperty("_maxValue");
+        showBookends = serializedObject.FindProperty("m_bookends");
+        minBookend = serializedObject.FindProperty("m_minValue");
+        maxBookend = serializedObject.FindProperty("m_maxValue");
         Implementation = serializedObject.FindProperty("ImplementationReference");
 
     }
