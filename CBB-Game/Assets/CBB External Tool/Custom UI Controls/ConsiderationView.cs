@@ -30,8 +30,8 @@ namespace CBB.ExternalTool
         {
             chart.SetCurve(consideration.Curve, consideration.InputValue);
             foldout.text = consideration.ConsiderationName;
-            input.text = consideration.EvaluatedVariableName + consideration.InputValue.ToString();
-            utility.text = "Utility: " + consideration.UtilityValue.ToString();
+            input.text = $"{consideration.EvaluatedVariableName}: {consideration.InputValue}";
+            utility.text = $"Utility: {consideration.UtilityValue}";
         }
     }
 }

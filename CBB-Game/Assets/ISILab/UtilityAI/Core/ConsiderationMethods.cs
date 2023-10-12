@@ -1,6 +1,5 @@
 ﻿using ArtificialIntelligence.Utility;
 using ArtificialIntelligence.Utility.Actions;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 namespace dnorambu.AI.Utility
@@ -26,7 +25,7 @@ namespace dnorambu.AI.Utility
         {
             MethodEvaluation methodEvaluation = new()
             {
-                EvaluatedVariableName = "Distance to threat",
+                EvaluatedVariableName = "Threat is near",
                 OutputValue = agentMemory.HeardObjects.Count > 0 ? 1f : 0f,
             };
             return methodEvaluation;
@@ -35,8 +34,17 @@ namespace dnorambu.AI.Utility
         {
             MethodEvaluation methodEvaluation = new()
             {
-                EvaluatedVariableName = "None (constant value)",
+                EvaluatedVariableName = "Constant",
                 OutputValue = 0,
+            };
+            return methodEvaluation;
+        }
+        public static MethodEvaluation RoomTemperature(LocalAgentMemory agentMemory, GameObject target)
+        {
+            MethodEvaluation methodEvaluation = new()
+            {
+                EvaluatedVariableName = "Temperature",
+                OutputValue = UnityEngine.Random.Range(0,0.3f),
             };
             return methodEvaluation;
         }
