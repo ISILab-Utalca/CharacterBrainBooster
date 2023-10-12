@@ -1285,22 +1285,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2017618481}
     m_Modifications:
-    - target: {fileID: -4388848212443983699, guid: 9167cf3d45bf72c43ae918d29bcadd15, type: 3}
-      propertyPath: chaseSpeed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: -4388848212443983699, guid: 9167cf3d45bf72c43ae918d29bcadd15, type: 3}
-      propertyPath: _considerations.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: -4388848212443983699, guid: 9167cf3d45bf72c43ae918d29bcadd15, type: 3}
-      propertyPath: _considerations.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: b1e99f2185e50f646a66f3b0d35005e0, type: 2}
-    - target: {fileID: -4388848212443983699, guid: 9167cf3d45bf72c43ae918d29bcadd15, type: 3}
-      propertyPath: _considerations.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 82ee77892e3eead48815bbc6727900eb, type: 2}
     - target: {fileID: 1773057720227866707, guid: 9167cf3d45bf72c43ae918d29bcadd15, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -1357,10 +1341,6 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Fail NPC
       objectReference: {fileID: 0}
-    - target: {fileID: 7920206726018689438, guid: 9167cf3d45bf72c43ae918d29bcadd15, type: 3}
-      propertyPath: _considerations.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: c0673ff4b07d6724094b26c534af2a32, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
