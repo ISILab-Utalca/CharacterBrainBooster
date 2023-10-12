@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Friendly NPC
+  - Fail NPC
   layers:
   - Default
   - TransparentFX
