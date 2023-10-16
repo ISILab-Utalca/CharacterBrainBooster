@@ -1,3 +1,5 @@
+using System.Drawing;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,14 +19,21 @@ namespace CBB.ExternalTool
             this.chartPainter = this.Q<PainterChart2D>();
         }
 
+        public void SetCurve(Curve curve)
+        {
+            this.chartPainter.SetCurve(curve);
+        }
+
         public void SetCurve(Curve curve, float value)
         {
-            this.chartPainter.SetCurve(curve, value);
+            this.chartPainter.SetCurve(curve, value, UnityEngine.Color.green, false);
         }
 
         public void SetCurves((Curve, float)[] curves)
         {
-            this.chartPainter.SetCurves(curves);
+            var x = curves.ToList().Select(c => new CurveFormat() { curve = c.Item1, value = c.Item2, color = UnityEngine.Color.green, showValue = false }).ToArray();
+
+            this.chartPainter.SetCurves(x);
         }
     }
 }

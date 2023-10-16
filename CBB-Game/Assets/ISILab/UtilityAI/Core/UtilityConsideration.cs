@@ -57,6 +57,19 @@ namespace ArtificialIntelligence.Utility
                 Curve = curve;
             }
         }
+
+        public Curve Curve
+        {
+            get => _curve;
+            set
+            {
+                _curve = value;
+                OnChangeCurve?.Invoke(_curve);
+            }
+        }
+
+        public event Action<Curve> OnChangeCurve;
+
         public Evaluation GetValue(LocalAgentMemory agent, GameObject target = null)
         {
             var methodEvaluation = (ConsiderationMethods.MethodEvaluation)_methodInfo.Invoke(null, new object[] { agent, target });
