@@ -101,9 +101,10 @@ namespace CBB.ExternalTool
             {
                 if (element is ActionInfo actionInfo)
                 {
-                    actionInfo.ActionName.text = decisions[index].bestOption.actionName;
-                    actionInfo.ActionScore.text = decisions[index].bestOption.actionScore.ToString();
-                    actionInfo.TargetName.text = decisions[index].bestOption.targetName;
+                    
+                    actionInfo.ActionName.text = decisions[decisions.Count - 1 - index].bestOption.actionName;
+                    actionInfo.ActionScore.text = decisions[decisions.Count - 1 - index].bestOption.actionScore.ToString();
+                    actionInfo.TargetName.text = decisions[decisions.Count - 1 - index].bestOption.targetName;
                 }
                 else
                 {

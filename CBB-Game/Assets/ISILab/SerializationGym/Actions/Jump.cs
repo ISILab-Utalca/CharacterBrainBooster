@@ -7,10 +7,11 @@ using Random = UnityEngine.Random;
 
 namespace CBB.InternalTool
 {
-    public class #SCRIPTNAME# : ActionState
+    public class Jump : ActionState
     {
         #region Fields
-
+        public float jumpHeight = 2f;
+        public float jumpDuration = 1f;
         #endregion
 
         #region Methods
@@ -37,7 +38,28 @@ namespace CBB.InternalTool
         }
         protected override IEnumerator Act(GameObject target = null)
         {
-            // Keep this call on any exit point for this action
+            LocalNavMeshAgent.enabled = false;
+            var startPosition = transform.position;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < jumpDuration)
+            {
+                float newY = Mathf.Lerp(startPosition.y, startPosition.y + jumpHeight, elapsedTime / (jumpDuration / 2f));
+                if (elapsedTime > jumpDuration / 2f)
+                {
+                    newY = Mathf.Lerp(startPosition.y + jumpHeight, startPosition.y, (elapsedTime - (jumpDuration / 2f)) / (jumpDuration / 2f));
+                }
+
+                transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            // Ensure the object returns to its original position after the jump
+            transform.position = startPosition;
+
+            LocalNavMeshAgent.enabled = true;
+
             FinishExecution();
         }
         #endregion

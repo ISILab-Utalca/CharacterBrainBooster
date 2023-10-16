@@ -261,10 +261,10 @@ GameObject:
   - component: {fileID: 1796074598853799715}
   - component: {fileID: 2924268747235082367}
   - component: {fileID: 1800467391348942283}
-  - component: {fileID: -4388848212443983699}
   - component: {fileID: 7920206726018689438}
   - component: {fileID: 1717290323259136390}
   - component: {fileID: 4165182297888452997}
+  - component: {fileID: 7996288816936244448}
   m_Layer: 0
   m_Name: Villager Fail Type 2
   m_TagString: Friendly NPC
@@ -483,25 +483,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectives: []
   heardObjects: []
---- !u!114 &-4388848212443983699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4853649445717935730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 907e3f4e00652d44c8ce08739b4e8462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _actionPriority: 1
-  defaultActionCooldown: 0
-  viewLogs: 0
-  _considerations:
-  - {fileID: 0}
-  <ActionCooldown>k__BackingField: 0
-  chaseSpeed: 2
 --- !u!114 &7920206726018689438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,7 +499,7 @@ MonoBehaviour:
   defaultActionCooldown: 0
   viewLogs: 0
   _considerations:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: c0673ff4b07d6724094b26c534af2a32, type: 2}
   <ActionCooldown>k__BackingField: 0
   _minWaitTimer: 1
   _maxWaitTimer: 5
@@ -550,6 +531,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agentDataSender: {fileID: 0}
+--- !u!114 &7996288816936244448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853649445717935730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b652e0181e097240a6025cd7adf01b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _actionPriority: 1
+  defaultActionCooldown: 0
+  viewLogs: 0
+  _considerations:
+  - {fileID: 11400000, guid: ab3013bbb11cfd64fa4cde34b0aea1f9, type: 2}
+  <ActionCooldown>k__BackingField: 0
+  jumpHeight: 2
+  jumpDuration: 1
 --- !u!1 &5431392461690221971
 GameObject:
   m_ObjectHideFlags: 0
