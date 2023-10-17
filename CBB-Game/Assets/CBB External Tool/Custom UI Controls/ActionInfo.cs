@@ -16,6 +16,7 @@ namespace CBB.ExternalTool
         public Label ActionName { get; set; }
         public Label TargetName { get; set; }
         public Label ActionScore { get; set; }
+        public Label TimeStamp { get; set; }
         #endregion
         public ActionInfo()
         {
@@ -25,6 +26,8 @@ namespace CBB.ExternalTool
             ActionName = this.Q<Label>("action-name");
             TargetName = this.Q<Label>("target-name");
             ActionScore = this.Q<Label>("action-score");
+            TimeStamp = this.Q<Label>("timestamp");
+
         }
     }
 }

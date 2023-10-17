@@ -1,22 +1,33 @@
 using System.Collections.Generic;
+using System.Drawing;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Color = UnityEngine.Color;
+
+public struct CurveFormat
+{
+    public Curve curve;
+    public float value;
+    public Color color;
+    public bool showValue; 
+}
 
 public class PainterChart2D : VisualElement
 {
     public new class UxmlFactory : UxmlFactory<PainterChart2D, UxmlTraits> { }
 
     private Painter2D paint2D;
-    private (Curve, float)[] curves = { (new ExponencialInvertida(), 0.5f) };
+    private CurveFormat[] curvesFormats = new CurveFormat[] { new CurveFormat() { curve = new ExponencialInvertida(), value = 0.5f, color = Color.green, showValue = true } };
 
     private Color colorLine = new(1f, 1f, 1f, .7f);
     private Color colorGrid = new(0f, 0f, 0f, .05f);
-    private Color colorCurve = Color.green;
+    //private Color colorCurve = Color.green;
     private Color colorValuePoint = Color.red;
     private Color colorValueLine = new(1f, 0f, 0f, .2f);
 
-    public float Height => 160;
-    public float Width => 200;
+    public float Height => this.resolvedStyle.height;
+    public float Width => this.resolvedStyle.width;
 
     public PainterChart2D()
     {
@@ -38,16 +49,20 @@ public class PainterChart2D : VisualElement
         // Draw backgorund
         DrawBackground(colorLine, colorGrid);
 
-        foreach (var curve in curves)
+        foreach (var curve in curvesFormats)
         {
             // Draw curve
-            var points01 = Curve.CalcPoints(curve.Item1, 50);
+            var points01 = Curve.CalcPoints(curve.curve, 50);
             var points = AdjustPoints(points01);
-            DrawLine(points, colorCurve);
+            DrawLine(points, curve.color);
+
+            // Check if show value point
+            if (!curve.showValue)
+                continue;
 
             // Draw value point
-            var x = curve.Item2;
-            var y = curve.Item1.Calc(x);
+            var x = curve.value;
+            var y = curve.curve.Calc(x);
             var point = AdjustPoint(new Vector2(x, y));
             DrawPoint(point, 2.0f, colorValuePoint);
 
@@ -58,15 +73,24 @@ public class PainterChart2D : VisualElement
         }
     }
 
-    public void SetCurve(Curve curve, float value)
+    public void SetCurve(Curve curve)
     {
-        this.curves = new (Curve, float)[] { (curve, value) };
+        this.curvesFormats = new CurveFormat[] { new CurveFormat() { curve = curve, value = 0.5f, color = Color.green, showValue = false } };
         this.MarkDirtyRepaint();
     }
 
-    public void SetCurves((Curve, float)[] curves)
+    public void SetCurve(Curve curve, float value,Color color, bool showValue)
     {
-        this.curves = curves;
+        this.curvesFormats = new CurveFormat[] { new CurveFormat() { curve = curve, value = value, color = color, showValue = showValue } };
+        this.MarkDirtyRepaint();
+    }
+
+    public void SetCurves(CurveFormat[] curves)
+    {
+        for (int i = 0; i < curves.Length; i++)
+        {
+            this.curvesFormats[i] = new CurveFormat() { curve = curves[i].curve, value = curves[i].value, color = curves[i].color, showValue = curves[i].showValue }; 
+        }
         this.MarkDirtyRepaint();
     }
 

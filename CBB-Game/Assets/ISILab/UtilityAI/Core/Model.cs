@@ -129,14 +129,16 @@ namespace CBB.Lib
     public class DecisionPackage
     {
         public int agentID;
+        public string timestamp;
         public DecisionData bestOption;
         public List<DecisionData> otherOptions;
         public DecisionPackage() { }
-        public DecisionPackage(int agentID, DecisionData bestOption, List<DecisionData> otherOptions)
+        public DecisionPackage(int agentID, string time, DecisionData bestOption, List<DecisionData> otherOptions)
         {
             this.agentID = agentID;
             this.bestOption = bestOption;
             this.otherOptions = otherOptions;
+            this.timestamp = time;
         }
     }
     [System.Serializable]

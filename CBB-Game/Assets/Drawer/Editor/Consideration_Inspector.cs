@@ -1,3 +1,50 @@
+
+using ArtificialIntelligence.Utility;
+using System;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+/*
+[CustomPropertyDrawer(typeof(AbcdefAttribute))]
+public class Consideration_Inspector : PropertyDrawer
+{
+    private VisualElement content;
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        // First get the attribute since it contains the range for the slider
+        RangeAttribute range = attribute as RangeAttribute;
+
+        // Now draw the property as a Slider or an IntSlider based on whether it's a float or integer.
+        if (property.propertyType == SerializedPropertyType.Float)
+            EditorGUI.Slider(position, property, range.min, range.max, label);
+        else if (property.propertyType == SerializedPropertyType.Integer)
+            EditorGUI.IntSlider(position, property, Convert.ToInt32(range.min), Convert.ToInt32(range.max), label);
+        else
+            EditorGUI.LabelField(position, label.text, "Use Range with float or int.");
+    }
+
+    public override VisualElement CreatePropertyGUI(SerializedProperty property)
+    {
+        var inspector = new VisualElement();
+
+        var x = property.objectReferenceValue;
+
+        return CreateUI(inspector, property);
+    }
+
+    public VisualElement CreateUI(VisualElement root, SerializedProperty property)
+    {
+
+
+
+        return root;
+    }
+}
+*/
+
+
 //using ArtificialIntelligence.Utility;
 //using CBB.ExternalTool;
 //using System;

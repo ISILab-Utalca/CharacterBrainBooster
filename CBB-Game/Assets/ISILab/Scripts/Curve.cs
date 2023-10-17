@@ -9,7 +9,7 @@ using UnityEngine;
 /// Curvas CBB blabla
 /// </summary>
 [System.Serializable]
-public abstract class Curve 
+public abstract class Curve
 {
     [JsonRequired]
     public bool Inverted = false;

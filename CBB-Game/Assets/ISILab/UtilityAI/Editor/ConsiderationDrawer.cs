@@ -1,10 +1,13 @@
 #if UNITY_EDITOR
 using ArtificialIntelligence.Utility;
+using CBB.ExternalTool;
 using System;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
+
 [CustomEditor(typeof(UtilityConsideration)), CanEditMultipleObjects]
 public class ConsiderationDrawer : Editor
 {
@@ -14,6 +17,9 @@ public class ConsiderationDrawer : Editor
 
     SerializedProperty Implementation;
 
+    Curve curve;
+    private Chart chart;
+
     void OnEnable()
     {
         showBookends = serializedObject.FindProperty("m_bookends");
@@ -21,7 +27,42 @@ public class ConsiderationDrawer : Editor
         maxBookend = serializedObject.FindProperty("m_maxValue");
         Implementation = serializedObject.FindProperty("ImplementationReference");
 
+
+        this.curve = (target as UtilityConsideration).Curve;
+        (target as UtilityConsideration).OnChangeCurve += (Curve curve) => { 
+            this.curve = curve;
+            chart.SetCurve(curve, 0.5f);
+        };
     }
+
+    public override VisualElement CreateInspectorGUI()
+    {
+        var content = new VisualElement();
+        content.style.flexGrow = 1;
+        content.style.flexShrink = 1;
+        var x = content.contentRect;
+
+        content.Add(new IMGUIContainer(OnInspectorGUI));
+
+        this.chart = new Chart();
+        chart.SetCurve(curve);
+        chart.style.flexShrink = 1;
+        chart.style.flexGrow = 1;
+        content.Add(chart);
+
+        return content;
+    }
+
+    public override void DrawPreview(Rect previewArea)
+    {
+        base.DrawPreview(previewArea);
+    }
+
+    public override void OnInteractivePreviewGUI(Rect r, GUIStyle background)
+    {
+        base.OnInteractivePreviewGUI(r, background);
+    }
+
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -53,7 +94,7 @@ public class ConsiderationDrawer : Editor
         {
             consideration._curveTypes = Curve.GetCurves();
             var curveInstance = consideration._curveTypes[consideration._selectedCurveIndex];
-            consideration._curve = curveInstance switch
+            consideration.Curve = curveInstance switch
             {
                 Linear l => l,
                 ExponencialInvertida ei => ei,
@@ -64,6 +105,8 @@ public class ConsiderationDrawer : Editor
                 Bell bell => bell,
                 _ => null,
             };
+
+
         }
 
         // Display the properties of the selected class in the Inspector
@@ -86,6 +129,7 @@ public class ConsiderationDrawer : Editor
                     float newValue = EditorGUILayout.FloatField(field.Name, currentValue);
                     field.SetValue(consideration._curve, newValue);
                 }
+                consideration.Curve = consideration._curve;
             }
         }
         serializedObject.ApplyModifiedProperties();
