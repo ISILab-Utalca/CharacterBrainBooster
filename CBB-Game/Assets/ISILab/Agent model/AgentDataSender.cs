@@ -82,6 +82,7 @@ namespace CBB.Api
             var decisionPackage = new DecisionPackage
             {
                 agentID = agentID,
+                timestamp = System.DateTime.Now.ToString(),
                 bestOption = new DecisionData(best),
                 otherOptions = new List<DecisionData>()
             };
