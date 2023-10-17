@@ -1,7 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/CBB%20External%20Tool/AccionStyle.uss?fileID=7433441132597879392&amp;guid=21d0c9d84c018114cabe6ad793112d41&amp;type=3#AccionStyle" />
     <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0);">
-        <ui:Label tabindex="-1" text="Action name" display-tooltip-when-elided="true" name="action-name" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; -unity-font-style: bold; font-size: 18px; margin-top: 4px; padding-left: 4px; margin-left: 4px; padding-right: 4px; margin-bottom: 2px; white-space: normal; padding-bottom: 2px;" />
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: space-between; align-self: stretch; align-items: flex-end;">
+            <ui:Label tabindex="-1" text="Action name" display-tooltip-when-elided="true" name="action-name" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; -unity-font-style: bold; font-size: 18px; margin-top: 4px; padding-left: 4px; margin-left: 4px; padding-right: 4px; margin-bottom: 2px; white-space: normal; padding-bottom: 2px;" />
+            <ui:Label tabindex="-1" text="time" display-tooltip-when-elided="true" name="timestamp" style="color: rgb(227, 227, 227);" />
+        </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; padding-bottom: 4px; margin-bottom: 4px; padding-left: 2px; margin-left: 2px;">
             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-items: center; justify-content: center; width: 60px; margin-bottom: 4px; margin-top: 2px; margin-left: 2px; padding-left: 0; flex-shrink: 0;">
                 <ui:VisualElement style="flex-grow: 0; background-color: rgb(35, 35, 35); width: 32px; border-top-left-radius: 32px; border-bottom-left-radius: 32px; border-top-right-radius: 32px; border-bottom-right-radius: 32px; height: 32px; margin-bottom: 2px; justify-content: center; align-items: center;">
