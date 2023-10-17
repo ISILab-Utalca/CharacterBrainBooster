@@ -1,10 +1,3 @@
-
-using ArtificialIntelligence.Utility;
-using System;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.UIElements;
-
 /*
 [CustomPropertyDrawer(typeof(AbcdefAttribute))]
 public class Consideration_Inspector : PropertyDrawer

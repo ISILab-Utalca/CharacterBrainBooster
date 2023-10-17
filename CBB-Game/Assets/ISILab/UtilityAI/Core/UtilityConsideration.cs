@@ -7,7 +7,7 @@ using UnityEngine;
 namespace ArtificialIntelligence.Utility
 {
     /// <summary>
-    /// Type of consideration that evaluates accross a range of values 
+    /// A consideration represents a trait of an agent's personality.
     /// </summary>
     [CreateAssetMenu(fileName = "New consideration", menuName = "Utility AI/Float consideration")]
     public class UtilityConsideration : ScriptableObject
