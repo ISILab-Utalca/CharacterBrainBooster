@@ -1,0 +1,7 @@
+.unity-two-pane-split-view__dragline--horizontal {
+    cursor: url('/Assets/_Project/_UI/Resources/Cursors/size3_r-4.png') 15 15;
+}
+ 
+.unity-two-pane-split-view__dragline--vertical {
+    cursor: url('/Assets/_Project/_UI/Resources/Cursors/size4_r-4.png') 15 15;
+}
