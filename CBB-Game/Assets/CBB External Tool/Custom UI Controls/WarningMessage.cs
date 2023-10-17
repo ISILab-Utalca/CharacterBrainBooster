@@ -5,10 +5,14 @@ using UnityEngine.UIElements;
 
 public class WarningMessage : VisualElement
 {
+    #region FACTORY
+    public new class UxmlFactory : UxmlFactory<WarningMessage, UxmlTraits> { }
+    #endregion
+
     private Label title;
     private Label message;
 
-    WarningMessage()
+    public WarningMessage()
     {
         var visualTree = Resources.Load<VisualTreeAsset>("WarningMessage");
         visualTree.CloneTree(this);
