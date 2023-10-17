@@ -59,7 +59,7 @@ namespace CBB.ExternalTool
         {
             if (element is AgentInfo agentInfo)
             {
-                agentInfo.AgentID.text = GameData.Agent_ID_Name[index].Item1.ToString();
+                agentInfo.AgentID.text = "ID: " + GameData.Agent_ID_Name[index].Item1.ToString();
                 agentInfo.AgentName.text = GameData.Agent_ID_Name[index].Item2;
             }
             
