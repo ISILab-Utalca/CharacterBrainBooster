@@ -61,7 +61,7 @@ namespace CBB.Api
             agentBrain.OnDecisionTaken += ReceiveDecisionHandler;
             agentBrain.OnSetupDone += SubscribeToSensors;
 
-            agentIDText.text = gameObject.GetInstanceID().ToString();
+            agentIDText.text = gameObject.name + "\n" + gameObject.GetInstanceID().ToString();
             Server.OnNewClientConnected += SendAgentInitialDataToClient;
         }
         private void OnDestroy()
