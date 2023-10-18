@@ -109,8 +109,14 @@ namespace ArtificialIntelligence.Utility
             }
             else if (targets.Count == 0)
             {
-                // Create an option to debug, although this action had no target
+                //Create an option to debug, although this action had no target.
                 var opt = new Option(this);
+                foreach(var consideration in this._considerations)
+                {
+                    var eval = consideration.GetValue(LocalAgentMemory, null);
+                    eval.UtilityValue = 0;
+                    opt.Evaluations.Add(eval);
+                }
                 options.Add(opt);
             }
 
