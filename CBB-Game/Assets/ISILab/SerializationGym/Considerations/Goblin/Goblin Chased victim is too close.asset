@@ -12,56 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaf40e39ad9bac40accb29411ca06fd, type: 3}
   m_Name: Goblin Chased victim is too close
   m_EditorClassIdentifier: 
-  _bookends: 1
-  _minValue: 0
-  _maxValue: 6
-  _responseCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: -Infinity
-      outSlope: -Infinity
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.500211
-      value: -0.000375713
-      inSlope: -0.011314931
-      outSlope: -0.011314931
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.4283302
-    - serializedVersion: 3
-      time: 0.83963585
-      value: 0.33745238
-      inSlope: 2.5892575
-      outSlope: 2.5892575
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 4.1315193
-      outSlope: 4.1315193
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_bookends: 0
+  m_minValue: 0
+  m_maxValue: 0
   ImplementationReference: {fileID: 11400000, guid: f97504b6c53f7e54ca83b6a4cf1c7382, type: 2}
-  _methods:
+  m_methods:
   - DistanceToTarget
   - ThreatHeard
   - Idle
+  - RoomTemperature
   - AttackOnCooldown
   flags: 26
   _selectedMethodIndex: 0
+  _curve:
+    rid: -2
+  _selectedCurveIndex: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

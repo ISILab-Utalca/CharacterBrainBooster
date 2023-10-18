@@ -25,18 +25,16 @@ MonoBehaviour:
   flags: 26
   _selectedMethodIndex: 1
   _curve:
-    rid: 3832781405953196061
-  _selectedCurveIndex: 1
+    rid: 4116052987048624141
+  _selectedCurveIndex: 0
   references:
     version: 2
     RefIds:
-    - rid: 3832781405953196061
-      type: {class: ExponencialInvertida, ns: , asm: Assembly-CSharp}
+    - rid: 4116052987048624141
+      type: {class: Linear, ns: , asm: Assembly-CSharp}
       data:
         Inverted: 0
         value: 1
-        e: 2
-        dx: 1
-        dy: 0.67
-        sx: 1
-        sy: 1
+        m: 1
+        dx: 0
+        dy: 0

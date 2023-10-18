@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaf40e39ad9bac40accb29411ca06fd, type: 3}
   m_Name: Threat distance
   m_EditorClassIdentifier: 
-  m_bookends: 0
+  m_bookends: 1
   m_minValue: 0
   m_maxValue: 10
   ImplementationReference: {fileID: 11400000, guid: f97504b6c53f7e54ca83b6a4cf1c7382, type: 2}
@@ -25,16 +25,18 @@ MonoBehaviour:
   flags: 26
   _selectedMethodIndex: 0
   _curve:
-    rid: 3832781405953196089
-  _selectedCurveIndex: 3
+    rid: 4116052987048624143
+  _selectedCurveIndex: 2
   references:
     version: 2
     RefIds:
-    - rid: 3832781405953196089
-      type: {class: Staggered, ns: , asm: Assembly-CSharp}
+    - rid: 4116052987048624143
+      type: {class: Exponencial, ns: , asm: Assembly-CSharp}
       data:
-        Inverted: 0
+        Inverted: 1
         value: 1
-        e: 0.5
-        max: 0.95
-        min: 0.05
+        e: 3.36
+        dx: 0
+        dy: 0
+        sx: 1
+        sy: 1

@@ -34,4 +34,4 @@ MonoBehaviour:
       type: {class: Constant, ns: , asm: Assembly-CSharp}
       data:
         Inverted: 0
-        value: 0.2
+        value: 0.01
