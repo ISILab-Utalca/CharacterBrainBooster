@@ -14,11 +14,24 @@ namespace dnorambu.AI.Utility
         }
         public static MethodEvaluation DistanceToTarget(LocalAgentMemory agentMemory, GameObject target)
         {
-            MethodEvaluation methodEvaluation = new()
+            MethodEvaluation methodEvaluation;
+            if (target == null)
             {
-                EvaluatedVariableName = "Distance to target",
-                OutputValue = Vector3.Distance(agentMemory.transform.position, target.transform.position)
-            };
+                methodEvaluation = new MethodEvaluation
+                {
+                    OutputValue = 0f,
+                    EvaluatedVariableName = "There is no target"
+                };
+            }
+            else
+            {
+                methodEvaluation = new()
+                {
+                    EvaluatedVariableName = "Distance to target",
+                    OutputValue = Vector3.Distance(agentMemory.transform.position, target.transform.position)
+                };
+            }
+            
             return methodEvaluation;
         }
         public static MethodEvaluation ThreatHeard(LocalAgentMemory agentMemory, GameObject target)
