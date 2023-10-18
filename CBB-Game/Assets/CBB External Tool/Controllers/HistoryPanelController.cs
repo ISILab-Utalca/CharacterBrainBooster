@@ -17,39 +17,42 @@ namespace CBB.ExternalTool
             MissingMemberHandling = MissingMemberHandling.Error,
             TypeNameHandling = TypeNameHandling.Auto,
         };
-        private DecisionDetailPanelController decisionDetailPanelController;
+        private DetailPanelController detailPanelController;
         private ObservableCollection<DecisionPackage> decisions;
         private HistoryPanel historyPanel;
         private ListView list;
         private EnumField showField;
         private HistoryPanel.ShowType showType;
         private int currentlySelectedAgentID = -1;
-
+        private Label historyPanelTitle;
+        private Label detailsPanelTitle;
         private void Awake()
         {
             var monitoringWindow = GetComponent<MonitoringWindow>();
             var uiDocRoot = GetComponent<UIDocument>().rootVisualElement;
 
             this.historyPanel = uiDocRoot.Q<HistoryPanel>();
+            this.historyPanelTitle = historyPanel.Q<Label>("title");
+            this.detailsPanelTitle = uiDocRoot.Q<Label>("details-panel-title");
             this.list = historyPanel.Q<ListView>();
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
             list.itemsSource = decisions;
-            list.selectionChanged += ShowSelectedDecision;
+            list.selectionChanged += ShowSelectedDetail;
 
             // Show dropdown
             this.showField = historyPanel.Q<EnumField>();
             showField.value = HistoryPanel.ShowType.Decisions;
             showField.RegisterValueChangedCallback(OnChangeShowType);
 
-            decisionDetailPanelController = GetComponent<DecisionDetailPanelController>();
+            detailPanelController = GetComponent<DetailPanelController>();
             ExternalMonitor.OnMessageReceived += HandleMessage;
         }
 
-        private void ShowSelectedDecision(IEnumerable<object> enumerable)
+        private void ShowSelectedDetail(IEnumerable<object> enumerable)
         {
-            var selectedDecision = decisions[list.selectedIndex];
-            decisionDetailPanelController.DisplayDecisionDetails(selectedDecision);
+            var selectedDecision = decisions[decisions.Count - 1 - list.selectedIndex];
+            detailPanelController.DisplayDecisionDetails(selectedDecision);
         }
 
         public void HandleMessage(string message)
@@ -107,7 +110,7 @@ namespace CBB.ExternalTool
                     actionInfo.TargetName.text = decisions[decisions.Count - 1 - index].bestOption.targetName;
 
                     var t = decisions[decisions.Count - 1 - index].timestamp;
-                    var tt = System.DateTime.Parse(t);
+                    var tt = DateTime.Parse(t);
                     actionInfo.TimeStamp.text = tt.ToString("HH:mm:ss");
                 }
                 else
@@ -120,12 +123,23 @@ namespace CBB.ExternalTool
                 throw new NotImplementedException();
             }
         }
-        
+
         private void OnChangeShowType(ChangeEvent<Enum> evt)
         {
             showType = (HistoryPanel.ShowType)evt.newValue;
+            // Update titles
+            if (showType == HistoryPanel.ShowType.Decisions)
+            {
+                historyPanelTitle.text = "DECISIONS HISTORY";
+                detailsPanelTitle.text = "DECISION DETAILS";
+            }
+            else if (showType == HistoryPanel.ShowType.SensorEvents)
+            {
+                historyPanelTitle.text = "SENSOR EVENTS HISTORY";
+                detailsPanelTitle.text = "SENSOR EVENT DETAILS";
+            }
         }
-        
+
     }
 }
 
