@@ -20,7 +20,23 @@ MonoBehaviour:
   - DistanceToTarget
   - ThreatHeard
   - Idle
+  - RoomTemperature
   - AttackOnCooldown
   flags: 26
   _selectedMethodIndex: 1
-  _selectedCurveIndex: 0
+  _curve:
+    rid: 3832781405953196061
+  _selectedCurveIndex: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 3832781405953196061
+      type: {class: ExponencialInvertida, ns: , asm: Assembly-CSharp}
+      data:
+        Inverted: 0
+        value: 1
+        e: 2
+        dx: 1
+        dy: 0.67
+        sx: 1
+        sy: 1
