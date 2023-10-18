@@ -11,7 +11,7 @@ public class BubbleText : MonoBehaviour
     private Text actionText;
     private void Awake()
     {
-        agentInfoText.text = gameObject.name + "\nID: " + gameObject.GetInstanceID().ToString();
+        agentInfoText.text = transform.parent.name + "\nID: " + transform.parent.GetInstanceID().ToString();
         // Canvas -> Agent gameObject
         var agentBrain = transform.parent.GetComponent<AgentBrain>();
         agentBrain.OnDecisionTaken += ShowDecision;
