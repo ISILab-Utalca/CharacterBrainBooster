@@ -41,8 +41,6 @@ namespace CBB.Api
         private bool NeedAServer = false;
         [SerializeField]
         private bool showLogs = false;
-        [SerializeField]
-        private Text agentIDText;
 
         private IAgent agentComp;
         private IAgentBrain agentBrain;
@@ -61,7 +59,6 @@ namespace CBB.Api
             agentBrain.OnDecisionTaken += ReceiveDecisionHandler;
             agentBrain.OnSetupDone += SubscribeToSensors;
 
-            agentIDText.text = gameObject.name + "\n" + gameObject.GetInstanceID().ToString();
             Server.OnNewClientConnected += SendAgentInitialDataToClient;
         }
         private void OnDestroy()
@@ -70,7 +67,6 @@ namespace CBB.Api
             agentBrain.OnSetupDone -= SubscribeToSensors;
             SendDataToAllClients(AgentWrapper.AgentStateType.DESTROYED);
             Server.OnNewClientConnected -= SendAgentInitialDataToClient;
-
         }
 
         private void ReceiveSensorUpdateHandler()

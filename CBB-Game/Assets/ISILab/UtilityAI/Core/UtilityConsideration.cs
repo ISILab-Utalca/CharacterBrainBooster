@@ -119,7 +119,6 @@ namespace ArtificialIntelligence.Utility
                 Sigmoide sigmoide => sigmoide,
                 Constant constant => constant,
                 Bell bell => bell,
-                Power power => power,
                 _ => null,
             };
         }
