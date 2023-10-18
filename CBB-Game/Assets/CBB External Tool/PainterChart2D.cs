@@ -87,10 +87,7 @@ public class PainterChart2D : VisualElement
 
     public void SetCurves(CurveFormat[] curves)
     {
-        for (int i = 0; i < curves.Length; i++)
-        {
-            this.curvesFormats[i] = new CurveFormat() { curve = curves[i].curve, value = curves[i].value, color = curves[i].color, showValue = curves[i].showValue }; 
-        }
+        curvesFormats = curves;
         this.MarkDirtyRepaint();
     }
 
