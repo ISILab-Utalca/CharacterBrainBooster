@@ -39,6 +39,7 @@ namespace CBB.InternalTool
         protected override IEnumerator Act(GameObject target = null)
         {
             LocalNavMeshAgent.enabled = false;
+            IsBlocked = true;
             var startPosition = transform.position;
             float elapsedTime = 0f;
 
@@ -59,6 +60,7 @@ namespace CBB.InternalTool
             transform.position = startPosition;
 
             LocalNavMeshAgent.enabled = true;
+            IsBlocked = false;
 
             FinishExecution();
         }

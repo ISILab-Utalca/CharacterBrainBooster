@@ -14,7 +14,7 @@ namespace ArtificialIntelligence.Utility.Actions
         [SerializeField]
         private int runSpeed = 2;
 
-        [SerializeField]
+        [SerializeField, Range(0,10)]
         private float pauseAfterRunning = 1f;
 
         private float initialSpeed = 1;
