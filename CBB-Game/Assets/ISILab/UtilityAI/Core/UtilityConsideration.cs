@@ -7,7 +7,7 @@ using UnityEngine;
 namespace ArtificialIntelligence.Utility
 {
     /// <summary>
-    /// A consideration represents a trait of an agent's personality.
+    /// Type of consideration that evaluates accross a range of values 
     /// </summary>
     [CreateAssetMenu(fileName = "New consideration", menuName = "Utility AI/Float consideration")]
     public class UtilityConsideration : ScriptableObject
@@ -38,6 +38,7 @@ namespace ArtificialIntelligence.Utility
         [Header("New curve configurations")]
         [HideInInspector]
         public List<Curve> _curveTypes;
+        [SerializeReference,SerializeField]
         public Curve _curve;
         public int _selectedCurveIndex;
         public struct Evaluation
@@ -94,7 +95,7 @@ namespace ArtificialIntelligence.Utility
             UpdateMethodInfo();
 
             // Curves logic
-            ResetCurves();
+            //ResetCurves();
             
         }
 
@@ -142,7 +143,7 @@ namespace ArtificialIntelligence.Utility
 #endif
 
             UpdateMethodInfo();
-            ResetCurves();
+            //ResetCurves();
         }
 
         public void UpdateMethodInfo()
@@ -151,4 +152,3 @@ namespace ArtificialIntelligence.Utility
         }
     }
 }
-
