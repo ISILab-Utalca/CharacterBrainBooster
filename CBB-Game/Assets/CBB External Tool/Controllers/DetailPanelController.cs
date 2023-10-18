@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DecisionDetailPanelController : MonoBehaviour
+public class DetailPanelController : MonoBehaviour
 {
     readonly JsonSerializerSettings settings = new()
     {
