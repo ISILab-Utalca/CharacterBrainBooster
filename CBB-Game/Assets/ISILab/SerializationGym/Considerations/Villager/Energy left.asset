@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaf40e39ad9bac40accb29411ca06fd, type: 3}
   m_Name: Energy left
   m_EditorClassIdentifier: 
-  m_bookends: 1
+  m_bookends: 0
   m_minValue: 0
   m_maxValue: 10
   ImplementationReference: {fileID: 11400000, guid: f97504b6c53f7e54ca83b6a4cf1c7382, type: 2}
@@ -20,7 +20,21 @@ MonoBehaviour:
   - DistanceToTarget
   - ThreatHeard
   - Idle
+  - RoomTemperature
   - AttackOnCooldown
   flags: 26
   _selectedMethodIndex: 0
+  _curve:
+    rid: 3832781405953196085
   _selectedCurveIndex: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 3832781405953196085
+      type: {class: Linear, ns: , asm: Assembly-CSharp}
+      data:
+        Inverted: 0
+        value: 1
+        m: 1
+        dx: 0
+        dy: 0

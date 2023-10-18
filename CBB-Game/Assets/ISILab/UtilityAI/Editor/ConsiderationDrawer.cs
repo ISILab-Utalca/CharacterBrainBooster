@@ -31,7 +31,7 @@ public class ConsiderationDrawer : Editor
         this.curve = (target as UtilityConsideration).Curve;
         (target as UtilityConsideration).OnChangeCurve += (Curve curve) => { 
             this.curve = curve;
-            chart.SetCurve(curve, 0.5f);
+            chart?.SetCurve(curve, 0.5f);
         };
     }
 
@@ -131,6 +131,7 @@ public class ConsiderationDrawer : Editor
                 }
                 consideration.Curve = consideration._curve;
             }
+            //EditorUtility.SetDirty(consideration);
         }
         serializedObject.ApplyModifiedProperties();
     }
