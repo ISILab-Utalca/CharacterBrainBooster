@@ -2,6 +2,7 @@ using CBB.ExternalTool;
 using CBB.Lib;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,6 +14,10 @@ public class GraphicsPanel : VisualElement
     #endregion
     #region PROPERTIES
     public Label ActionName { get; set; }
+
+    public Label baseFormula { get; set; }
+    public Label formulaUtility { get; set; }
+    public Label priorityAction { get; set; }
     public Label TotalUtility { get;set; }
     public Chart Chart { get; set; }
     
@@ -27,6 +32,9 @@ public class GraphicsPanel : VisualElement
         this.ActionName = this.Q<Label>("action-name");
         this.Chart = this.Q<Chart>();
         this.evaluationsList = this.Q<ListView>("evaluations-list");
+        this.baseFormula = this.Q<Label>("base-formula-utility");
+        this.formulaUtility = this.Q<Label>("formula-utility-score"); 
+        this.priorityAction = this.Q<Label>("priority-action");
         this.TotalUtility = this.Q<Label>("total-utility-score");
 
         evaluationsList.makeItem = MakeItem;
