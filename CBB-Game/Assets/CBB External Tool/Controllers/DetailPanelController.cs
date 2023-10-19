@@ -32,13 +32,25 @@ public class DetailPanelController : MonoBehaviour
             var evaluatedConsiderations = decisionData.evaluatedConsiderations;
             var considerationCount = evaluatedConsiderations.Count;
             var curvesAndValues = new (Curve, float)[considerationCount];
+
+            var names = "";
+            var values = "";
             for(int i = 0; i < considerationCount; i++)
             {
                 var consideration = evaluatedConsiderations[i];
                 curvesAndValues[i] = (consideration.Curve, consideration.InputValue);
+
+                var x = (i != considerationCount - 1) ? " * " : "";
+                names += "(" + consideration.EvaluatedVariableName + ")" + x;
+                var y = (i != considerationCount - 1) ? " * " : "";
+                values += consideration.UtilityValue.ToString("N3") + y;
             }
             var totalUtility = decisionData.actionScore.ToString();
             content.Chart.SetCurves(curvesAndValues);
+
+            content.baseFormula.text = "Base formula: " + names;
+            content.formulaUtility.text = "Formula utility: (" + values +") * " + decisionData.factor.ToString("N3");
+            content.priorityAction.text = "Priority action: " + decisionData.priority.ToString("N3");
             content.TotalUtility.text = "Total utility: " + totalUtility;
             content.DisplayEvaluatedConsiderations(evaluatedConsiderations);
         }
