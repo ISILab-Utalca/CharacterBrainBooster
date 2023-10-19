@@ -14,6 +14,7 @@ namespace ArtificialIntelligence.Utility
     {
         public ActionState Action { get; set; }
         public float Score { get; set; }
+        public float ScaleFactor { get; set; }
         public GameObject Target { get; set; }
         public List<UtilityConsideration.Evaluation> Evaluations { get; set; }
         public Option()
