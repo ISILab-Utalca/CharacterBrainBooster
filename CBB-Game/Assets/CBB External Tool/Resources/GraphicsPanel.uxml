@@ -14,9 +14,10 @@
             <ui:VisualElement name="Action-Graph" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); height: 200px; width: 100%; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 12px; margin-bottom: 12px;">
                 <CBB.ExternalTool.Chart style="width: auto; flex-grow: 1;" />
             </ui:VisualElement>
-            <ui:VisualElement name="Utility-Points" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 100%; flex-direction: row; justify-content: space-between; align-items: center; padding-left: 12px; padding-right: 12px;">
-                <ui:Label tabindex="-1" text="Total Utility:" display-tooltip-when-elided="true" name="total-utility-score" style="color: rgb(255, 255, 255); -unity-text-align: middle-left;" />
-            </ui:VisualElement>
+            <ui:Label tabindex="-1" text="Convine: V1 +v2+ v3" display-tooltip-when-elided="true" name="base-formula-utility" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; flex-shrink: 1; align-self: stretch; flex-wrap: wrap;" />
+            <ui:Label tabindex="-1" text="Convine: V1 +v2+ v3" display-tooltip-when-elided="true" name="formula-utility-score" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; align-self: stretch; flex-shrink: 1; flex-wrap: wrap;" />
+            <ui:Label tabindex="-1" text="Total Utility:" display-tooltip-when-elided="true" name="priority-action" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; align-self: stretch; flex-shrink: 1; flex-wrap: wrap;" />
+            <ui:Label tabindex="-1" text="Total Utility:" display-tooltip-when-elided="true" name="total-utility-score" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; align-self: stretch; flex-shrink: 1; flex-wrap: wrap;" />
         </ui:VisualElement>
         <ui:VisualElement name="consideration-container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column; align-items: center; justify-content: center; width: 50%; height: 100%; padding-top: 8px;">
             <WarningMessage name="Warning" style="flex-grow: 0; justify-content: space-between; align-items: stretch; align-self: stretch; flex-direction: column; -unity-text-align: upper-left; white-space: normal; flex-wrap: nowrap; overflow: visible; opacity: 1; max-height: none; display: none;" />
