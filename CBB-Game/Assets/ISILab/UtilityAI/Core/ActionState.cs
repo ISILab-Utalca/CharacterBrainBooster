@@ -13,7 +13,7 @@ namespace ArtificialIntelligence.Utility
         #region Fields
         [Header("Action general settings")]
         [SerializeField, Tooltip("Relative importance of this action with regards to other actions")]
-        private protected float _actionPriority = 1f;
+        public float _actionPriority = 1f;
         [SerializeField]
         internal protected float defaultActionCooldown;
         [SerializeField, Tooltip("Do you want to see the logs of this Action?")]
@@ -136,7 +136,9 @@ namespace ArtificialIntelligence.Utility
             float modification = 1f - 1f / _considerations.Count;
             float value = (1f - originalScore) * modification;
             option.Score = originalScore * (1 + value);
+            option.ScaleFactor = (1 + value);
         }
+
         public virtual void StartExecution(GameObject target = null)
         {
             IsRunning = true;
