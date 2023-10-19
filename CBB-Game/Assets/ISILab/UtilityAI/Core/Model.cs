@@ -98,6 +98,9 @@ namespace CBB.Lib
         public string actionName;
         public float actionScore;
         public string targetName;
+        public float factor;
+        public float priority;
+
         public List<ConsiderationData> evaluatedConsiderations;
         public DecisionData() { }
         public DecisionData(string actionName, float actionScore, string targetName)
@@ -111,6 +114,8 @@ namespace CBB.Lib
             actionName = option.Action.GetType().Name;
             targetName = option.Target ? option.Target.name : "No target";
             actionScore = option.Score;
+            factor = option.ScaleFactor;
+            priority = option.Action._actionPriority;
             evaluatedConsiderations = new List<ConsiderationData>();
             if (option.Evaluations != null)
             {
