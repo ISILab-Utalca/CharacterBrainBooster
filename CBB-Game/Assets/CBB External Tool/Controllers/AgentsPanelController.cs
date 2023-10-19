@@ -12,7 +12,6 @@ namespace CBB.ExternalTool
 
     public class AgentsPanelController : MonoBehaviour, IMessageHandler
     {
-        private MonitoringWindow monitoringWindow;
         private HistoryPanelController historyPanel;
         private AgentsPanel agentsPanel;
         internal ListView list;
@@ -25,11 +24,10 @@ namespace CBB.ExternalTool
 
         private void Awake()
         {
-            monitoringWindow = GetComponent<MonitoringWindow>();
             historyPanel = GetComponent<HistoryPanelController>();
 
             var uiDocRoot = GetComponent<UIDocument>().rootVisualElement;
-            
+
             this.agentsPanel = uiDocRoot.Q<AgentsPanel>();
             this.list = agentsPanel.Q<ListView>();
             list.itemsSource = GameData.Agent_ID_Name;
@@ -50,7 +48,7 @@ namespace CBB.ExternalTool
         {
             ExternalMonitor.OnMessageReceived -= HandleMessage;
         }
-        
+
         private VisualElement MakeItem() // hacer que esto sea un solo viewElement (!!!)
         {
             return new AgentInfo();
@@ -60,9 +58,8 @@ namespace CBB.ExternalTool
             if (element is AgentInfo agentInfo)
             {
                 agentInfo.AgentName.text = GameData.Agent_ID_Name[index].Item2;
-                agentInfo.AgentID.text = "ID: " + GameData.Agent_ID_Name[index].Item1.ToString();
+                agentInfo.AgentID.text = $"ID: {GameData.Agent_ID_Name[index].Item1}";
             }
-            
         }
         internal void Refresh(AgentData agent)
         {
@@ -72,7 +69,7 @@ namespace CBB.ExternalTool
         private void NewAgentSelected(IEnumerable<object> agents)
         {
             // Go to the History panel and update its list, based on the selected agent ID
-            historyPanel.UpdateHistoryPanelDecisionsView( (((int,string))agents.First()).Item1 );
+            historyPanel.UpdateHistoryPanelDecisionsView((((int, string))agents.First()).Item1);
         }
         public void HandleMessage(string message)
         {
