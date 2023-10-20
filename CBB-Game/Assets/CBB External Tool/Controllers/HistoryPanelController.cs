@@ -5,7 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor;
+using System.Text.RegularExpressions;
 
 namespace CBB.ExternalTool
 {
@@ -104,8 +104,9 @@ namespace CBB.ExternalTool
             {
                 if (element is ActionInfo actionInfo)
                 {
-
-                    actionInfo.ActionName.text = decisions[decisions.Count - 1 - index].bestOption.actionName;
+                    var actionTypeName = decisions[decisions.Count - 1 - index].bestOption.actionName;
+                    string[] words = Regex.Split(actionTypeName, @"(?<!^)(?=[A-Z][a-z])");
+                    actionInfo.ActionName.text = string.Join(" ", words); ;
                     actionInfo.ActionScore.text = decisions[decisions.Count - 1 - index].bestOption.actionScore.ToString();
                     actionInfo.TargetName.text = decisions[decisions.Count - 1 - index].bestOption.targetName;
 
