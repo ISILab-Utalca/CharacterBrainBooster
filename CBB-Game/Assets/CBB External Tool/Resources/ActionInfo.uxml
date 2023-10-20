@@ -13,7 +13,10 @@
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 80%;">
                 <ui:Label tabindex="-1" text="Target name" display-tooltip-when-elided="true" name="target-name" enable-rich-text="true" class="accion-data" />
-                <ui:Label tabindex="-1" text="&lt;action-score&gt;" display-tooltip-when-elided="true" name="action-score" class="accion-data" style="-unity-text-align: lower-left; color: rgb(203, 203, 203);" />
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); justify-content: space-between; flex-direction: row; align-items: stretch;">
+                    <ui:Label tabindex="-1" text="&lt;action-score&gt;" display-tooltip-when-elided="true" name="action-score" class="accion-data" style="-unity-text-align: lower-left; color: rgb(203, 203, 203);" />
+                    <ui:Label tabindex="-1" text="action id" display-tooltip-when-elided="true" name="action-id" class="accion-data" style="-unity-text-align: lower-left; color: rgb(203, 203, 203); flex-direction: column;" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
