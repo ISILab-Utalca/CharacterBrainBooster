@@ -61,7 +61,7 @@ namespace CBB.ExternalTool
         #endregion
 
         #region METHODS
-        public void ConnectToServer(string serverAddress, int serverPort)
+        public void ConnectToServer(string serverAddress, int serverPort, int mode)
         {
             // Blocking call
             try

@@ -34,7 +34,7 @@ MonoBehaviour:
       type: {class: Linear, ns: , asm: Assembly-CSharp}
       data:
         Inverted: 0
-        value: 1
+        value: 0
         m: 1
         dx: 0
         dy: 0

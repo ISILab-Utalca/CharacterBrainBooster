@@ -13,7 +13,7 @@ public class MainWindow : MonoBehaviour
     private Button startButton;
     private Label connectionInformation;
 
-    public System.Action<string, int> OnConnectionToServerStarted { get; set; }
+    public System.Action<string, int, int> OnConnectionToServerStarted { get; set; }
     
     private void OnEnable()
     {
@@ -30,7 +30,7 @@ public class MainWindow : MonoBehaviour
         // Patch for making fields and modes not selectable (!!!)
         addresField.SetEnabled(false);
         portField.SetEnabled(false);
-        startMode.SetEnabled(false);
+        //startMode.SetEnabled(false);
     }
     private void OnDisable()
     {
@@ -40,7 +40,7 @@ public class MainWindow : MonoBehaviour
     {
         var serverAddress = addresField.value;
         var serverPort = int.Parse(portField.value);
-        OnConnectionToServerStarted?.Invoke(serverAddress, serverPort);
+        OnConnectionToServerStarted?.Invoke(serverAddress, serverPort, startMode.value);
         Debug.Log("[MONITOR] Client connection event fired");
     }
     public void SetConnectionStatus(string connectionStatus)
