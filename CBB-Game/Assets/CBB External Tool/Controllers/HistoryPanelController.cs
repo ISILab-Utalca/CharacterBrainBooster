@@ -104,15 +104,18 @@ namespace CBB.ExternalTool
             {
                 if (element is ActionInfo actionInfo)
                 {
-                    var actionTypeName = decisions[decisions.Count - 1 - index].bestOption.actionName;
+                    var reverseIndex = decisions.Count - 1 - index;
+                    var actionTypeName = decisions[reverseIndex].bestOption.actionName;
+                    // Split the action name by capital letters. E.g. "MoveTo" -> "Move To"
                     string[] words = Regex.Split(actionTypeName, @"(?<!^)(?=[A-Z][a-z])");
                     actionInfo.ActionName.text = string.Join(" ", words); ;
-                    actionInfo.ActionScore.text = decisions[decisions.Count - 1 - index].bestOption.actionScore.ToString();
-                    actionInfo.TargetName.text = decisions[decisions.Count - 1 - index].bestOption.targetName;
+                    actionInfo.ActionScore.text = decisions[reverseIndex].bestOption.actionScore.ToString();
+                    actionInfo.TargetName.text = decisions[reverseIndex].bestOption.targetName;
 
-                    var t = decisions[decisions.Count - 1 - index].timestamp;
+                    var t = decisions[reverseIndex].timestamp;
                     var tt = DateTime.Parse(t);
                     actionInfo.TimeStamp.text = tt.ToString("HH:mm:ss");
+                    actionInfo.ActionID.text = $"ID: {reverseIndex}";
                 }
                 else
                 {
