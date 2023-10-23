@@ -69,7 +69,7 @@ namespace CBB.ExternalTool
         private void NewAgentSelected(IEnumerable<object> agents)
         {
             // Go to the History panel and update its list, based on the selected agent ID
-            historyPanel.UpdateHistoryPanelDecisionsView((((int, string))agents.First()).Item1);
+            historyPanel.UpdateHistoryPanelView( (((int,string))agents.First()).Item1 );
         }
         public void HandleMessage(string message)
         {
