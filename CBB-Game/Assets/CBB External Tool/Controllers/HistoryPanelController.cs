@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using System.Linq;
+using System.Reflection;
 
 namespace CBB.ExternalTool
 {
@@ -29,7 +30,7 @@ namespace CBB.ExternalTool
         private Label historyPanelTitle;
         private Label detailsPanelTitle;
 
-
+        /*
         private ObservableCollection<AgentPackage> Packages
         {
             get
@@ -48,6 +49,7 @@ namespace CBB.ExternalTool
                 }
             }
         }
+        */
 
         private void Awake()
         {
@@ -60,7 +62,7 @@ namespace CBB.ExternalTool
             this.list = historyPanel.Q<ListView>();
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
-            list.itemsSource = Packages;
+            list.itemsSource = packages;
             list.selectionChanged += ShowSelectedDetail;
 
             // Show dropdown
@@ -74,15 +76,21 @@ namespace CBB.ExternalTool
 
         private void ShowSelectedDetail(IEnumerable<object> enumerable)
         {
-            var selected = Packages[Packages.Count - 1 - list.selectedIndex];
+            if(enumerable.Count() <= 0)
+            {
+                detailPanelController.ClearDetails();
+                return;
+            }
+
+            var selected = enumerable.ToArray()[0];
 
             if(selected is DecisionPackage decision)
             {
-                detailPanelController.DisplayDecisionDetails(selected as DecisionPackage);
+                detailPanelController.DisplayDecisionDetails(decision);
             }
-            else if(selected is SensorPackage)
+            else if(selected is SensorPackage sensor)
             {
-                // do something cool
+               detailPanelController.DisplaySensorDetails(sensor);
             }
         }
 
@@ -105,18 +113,29 @@ namespace CBB.ExternalTool
                 //Debug.Log("<color=red>[HISTORY PANEL] Message is not Decision Pack: </color>" + message);
             }
         }
+
         public void UpdateHistoryPanelView(int agentID)
         {
+            list.ClearClassList();
+
             currentlySelectedAgentID = agentID;
             packages = GameData.GetHistory(currentlySelectedAgentID);
-            list.itemsSource = Packages;
+            list.itemsSource = packages;
             list.RefreshItems();
         }
 
         private VisualElement MakeItem()
         {
             var content = new VisualElement();
+            var a = new ActionInfo();
+            a.name = "Action";
+            content.Add(a);
+            var s = new SensorInfo();
+            s.name = "Sensor";
+            content.Add(s);
 
+
+            /*
             switch (showType)
             {
                 case HistoryPanel.ShowType.Decisions:
@@ -126,60 +145,82 @@ namespace CBB.ExternalTool
                 default:
                     break;
             }
+            */
 
             return content;
         }
 
         private void BindItem(VisualElement element, int index)
         {
+            for (int i = 0; i < element.childCount; i++)
+            {
+                element.Children().ToList()[i].style.display = DisplayStyle.None;
+            }
+
+            var rIndex = packages.Count - 1 - index;
+
             if (showType == HistoryPanel.ShowType.Decisions)
             {
-                if (element is ActionInfo actionInfo)
+                if (packages[rIndex] is DecisionPackage desition)
                 {
-
-                    var reverseIndex = Packages.Count - 1 - index;
-                    var decision = Packages[reverseIndex] as DecisionPackage;
-                    var actionTypeName = decision.bestOption.actionName;
-                    string[] words = Regex.Split(actionTypeName, @"(?<!^)(?=[A-Z][a-z])");
-
-                    actionInfo.ActionName.text = string.Join(" ", words); ;
-
-                    actionInfo.ActionScore.text = decision.bestOption.actionScore.ToString();
-                    actionInfo.TargetName.text = decision.bestOption.targetName;
-
-                    var t = decision.timestamp;
-                    var tt = DateTime.Parse(t);
-                    actionInfo.TimeStamp.text = tt.ToString("HH:mm:ss");
-                    actionInfo.ActionID.text = $"ID: {reverseIndex}";
-                }
-                else
-                {
-                    throw new NotImplementedException();
+                    var view = element.Q<ActionInfo>();
+                    BindActionItem(desition, rIndex, view);
                 }
             }
             else if(showType == HistoryPanel.ShowType.SensorEvents)
             {
-                if(element is SensorInfo sensorInfo)
+                if (packages[rIndex] is SensorPackage sensor)
                 {
-                    var sensor = Packages[Packages.Count - 1 - index] as SensorPackage;
-
-                    sensorInfo.TimeStamp.text = sensor.timestamp;
-                    sensorInfo.SensorName.text = sensor.test;
-                    sensorInfo.ExtraInfo.text = sensor.test;
-                }
-                else
-                {
-                    throw new NotImplementedException();
+                    var view = element.Q<SensorInfo>();
+                    BindSensorInfo(sensor, view);
                 }
             }
             else
             {
-                throw new NotImplementedException();
+                if (packages[rIndex] is DecisionPackage desition)
+                {
+                    var view = element.Q<ActionInfo>();
+                    BindActionItem(desition, rIndex, view);
+                }
+                else if (packages[rIndex] is SensorPackage sensor)
+                {
+                    var view = element.Q<SensorInfo>();
+                    BindSensorInfo(sensor, view);
+                }
             }
+        }
+
+        private void BindSensorInfo(SensorPackage sensor, SensorInfo sensorInfo)
+        {
+            sensorInfo.style.display = DisplayStyle.Flex;
+
+            sensorInfo.TimeStamp.text = sensor.timestamp;
+            sensorInfo.SensorName.text = sensor.test;
+            sensorInfo.ExtraInfo.text = sensor.test;
+        }
+
+        private void BindActionItem(DecisionPackage decision,int index, ActionInfo actionPanel)
+        {
+            actionPanel.style.display = DisplayStyle.Flex;
+
+            var actionTypeName = decision.bestOption.actionName;
+            string[] words = Regex.Split(actionTypeName, @"(?<!^)(?=[A-Z][a-z])");
+
+            actionPanel.ActionName.text = string.Join(" ", words); ;
+
+            actionPanel.ActionScore.text = decision.bestOption.actionScore.ToString();
+            actionPanel.TargetName.text = decision.bestOption.targetName;
+
+            var t = decision.timestamp;
+            var tt = DateTime.Parse(t);
+            actionPanel.TimeStamp.text = tt.ToString("HH:mm:ss");
+            actionPanel.ActionID.text = $"ID: {index}";
         }
 
         private void OnChangeShowType(ChangeEvent<Enum> evt)
         {
+            list.ClearClassList();
+
             showType = (HistoryPanel.ShowType)evt.newValue;
             // Update titles
             if (showType == HistoryPanel.ShowType.Decisions)
@@ -192,6 +233,13 @@ namespace CBB.ExternalTool
                 historyPanelTitle.text = "SENSOR EVENTS HISTORY";
                 detailsPanelTitle.text = "SENSOR EVENT DETAILS";
             }
+            else
+            {
+                historyPanelTitle.text = "ALL HISTORY";
+                detailsPanelTitle.text = "DETAILS";
+            }
+
+            UpdateHistoryPanelView(currentlySelectedAgentID);
         }
 
     }
