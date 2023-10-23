@@ -25,10 +25,16 @@ MonoBehaviour:
   flags: 26
   _selectedMethodIndex: 1
   _curve:
-    rid: -2
-  _selectedCurveIndex: 0
+    rid: 4116053102944059393
+  _selectedCurveIndex: 3
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 4116053102944059393
+      type: {class: Staggered, ns: , asm: Assembly-CSharp}
+      data:
+        Inverted: 1
+        value: 0
+        e: 0.5
+        max: 1
+        min: 0
