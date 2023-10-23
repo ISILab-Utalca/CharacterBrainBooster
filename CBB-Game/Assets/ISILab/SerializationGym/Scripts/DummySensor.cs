@@ -31,6 +31,11 @@ public class DummySensor : Sensor
         };
     }
 
+    public override string SerializeSensor()
+    {
+        throw new NotImplementedException();
+    }
+
     protected override void RenderGui(GLPainter painter)
     {
         throw new NotImplementedException();

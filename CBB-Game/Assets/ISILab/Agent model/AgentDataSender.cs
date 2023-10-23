@@ -50,6 +50,7 @@ namespace CBB.Api
 
         public System.Action<string> OnSerializedData { get; set; }
         public System.Action<string> OnSerializedDecision { get; set; }
+        public System.Action<string> OnSerializedSensor { get; set; }
 
         private void Awake()
         {
@@ -71,8 +72,18 @@ namespace CBB.Api
 
         private void ReceiveSensorUpdateHandler()
         {
+            var sensorPackage = new SensorPackage
+            {
+                agentID = agentID,
+                timestamp = System.DateTime.Now.ToString(),
+                test = "paquete de sensor",
+                //sensorData = new List<SensorData>()
+            };
+            SendDataToAllClients(sensorPackage);
+
             SendDataToAllClients(AgentWrapper.AgentStateType.CURRENT);
         }
+
         private void ReceiveDecisionHandler(Option best, List<Option> otherOptions)
         {
             var decisionPackage = new DecisionPackage
@@ -107,7 +118,7 @@ namespace CBB.Api
         {
             foreach (ISensor sensor in agentBrain.Sensors)
             {
-                sensor.OnSensorUpdate += ReceiveSensorUpdateHandler;
+                sensor.OnSensorUpdate += (s) => { ReceiveSensorUpdateHandler(); };
             }
         }
 
@@ -117,14 +128,14 @@ namespace CBB.Api
             Server.SendMessageToClient(client, data);
             Debug.Log("[AGENT DATA SENDER] Initial data sent to the Server");
         }
-        private void SendDataToAllClients(DecisionPackage decisionPackage)
+        private void SendDataToAllClients(AgentPackage decisionPackage)
         {
             var data = JSONDataManager.SerializeData(decisionPackage);
             if (!NeedAServer)
             {
                 if (showLogs)
                 {
-                    Debug.Log($"{name} has sent {decisionsSent} decisions");
+                    Debug.Log($"{name} has sent {decisionsSent} Packages");
                     Debug.Log($"Data sent: {data}");
                 }
             }
@@ -135,7 +146,7 @@ namespace CBB.Api
                 decisionsSent++;
                 if (showLogs)
                 {
-                    Debug.Log($"{name} has sent {decisionsSent} decisions");
+                    Debug.Log($"{name} has sent {decisionsSent} Packages");
                     Debug.Log($"Data sent: {data}");
                 }
             }
@@ -157,7 +168,7 @@ namespace CBB.Api
                 dataSent++;
                 if (showLogs)
                 {
-                    Debug.Log($"{name} has sent {dataSent} data packages");
+                    Debug.Log($"{name} has sent {dataSent} data Packages");
                     Debug.Log($"Data sent: {data}");
                 }
             }

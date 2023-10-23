@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Text.RegularExpressions;
+using UnityEditor;
+using System.Linq;
 
 namespace CBB.ExternalTool
 {
@@ -18,7 +20,7 @@ namespace CBB.ExternalTool
             TypeNameHandling = TypeNameHandling.Auto,
         };
         private DetailPanelController detailPanelController;
-        private ObservableCollection<DecisionPackage> decisions;
+        private ObservableCollection<AgentPackage> packages;
         private HistoryPanel historyPanel;
         private ListView list;
         private EnumField showField;
@@ -26,6 +28,27 @@ namespace CBB.ExternalTool
         private int currentlySelectedAgentID = -1;
         private Label historyPanelTitle;
         private Label detailsPanelTitle;
+
+
+        private ObservableCollection<AgentPackage> Packages
+        {
+            get
+            {
+                if(showType == HistoryPanel.ShowType.Decisions)
+                {
+                    return new ObservableCollection<AgentPackage>(packages.Where(x => x is DecisionPackage));
+                }
+                else if(showType == HistoryPanel.ShowType.SensorEvents)
+                {
+                    return new ObservableCollection<AgentPackage>(packages.Where(x => x is SensorPackage));
+                }
+                else
+                {
+                    return packages;
+                }
+            }
+        }
+
         private void Awake()
         {
             var monitoringWindow = GetComponent<MonitoringWindow>();
@@ -37,7 +60,7 @@ namespace CBB.ExternalTool
             this.list = historyPanel.Q<ListView>();
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
-            list.itemsSource = decisions;
+            list.itemsSource = Packages;
             list.selectionChanged += ShowSelectedDetail;
 
             // Show dropdown
@@ -51,8 +74,16 @@ namespace CBB.ExternalTool
 
         private void ShowSelectedDetail(IEnumerable<object> enumerable)
         {
-            var selectedDecision = decisions[decisions.Count - 1 - list.selectedIndex];
-            detailPanelController.DisplayDecisionDetails(selectedDecision);
+            var selected = Packages[Packages.Count - 1 - list.selectedIndex];
+
+            if(selected is DecisionPackage decision)
+            {
+                detailPanelController.DisplayDecisionDetails(selected as DecisionPackage);
+            }
+            else if(selected is SensorPackage)
+            {
+                // do something cool
+            }
         }
 
         public void HandleMessage(string message)
@@ -64,7 +95,9 @@ namespace CBB.ExternalTool
                 GameData.HandleDecisionPackage(decisionPack);
 
                 // Update the view only if necessary
-                if (decisionPack.agentID != currentlySelectedAgentID) return;
+                if (decisionPack.agentID != currentlySelectedAgentID) 
+                    return;
+
                 list.RefreshItems();
             }
             catch (Exception)
@@ -72,11 +105,11 @@ namespace CBB.ExternalTool
                 //Debug.Log("<color=red>[HISTORY PANEL] Message is not Decision Pack: </color>" + message);
             }
         }
-        public void UpdateHistoryPanelDecisionsView(int agentID)
+        public void UpdateHistoryPanelView(int agentID)
         {
             currentlySelectedAgentID = agentID;
-            decisions = GameData.GetHistory(currentlySelectedAgentID);
-            list.itemsSource = decisions;
+            packages = GameData.GetHistory(currentlySelectedAgentID);
+            list.itemsSource = Packages;
             list.RefreshItems();
         }
 
@@ -89,8 +122,7 @@ namespace CBB.ExternalTool
                 case HistoryPanel.ShowType.Decisions:
                     return new ActionInfo();
                 case HistoryPanel.ShowType.SensorEvents:
-                    // TODO: return the corresponding type
-                    break;
+                    return new SensorInfo();
                 default:
                     break;
             }
@@ -104,18 +136,36 @@ namespace CBB.ExternalTool
             {
                 if (element is ActionInfo actionInfo)
                 {
-                    var reverseIndex = decisions.Count - 1 - index;
-                    var actionTypeName = decisions[reverseIndex].bestOption.actionName;
-                    // Split the action name by capital letters. E.g. "MoveTo" -> "Move To"
-                    string[] words = Regex.Split(actionTypeName, @"(?<!^)(?=[A-Z][a-z])");
-                    actionInfo.ActionName.text = string.Join(" ", words); ;
-                    actionInfo.ActionScore.text = decisions[reverseIndex].bestOption.actionScore.ToString();
-                    actionInfo.TargetName.text = decisions[reverseIndex].bestOption.targetName;
 
-                    var t = decisions[reverseIndex].timestamp;
+                    var reverseIndex = Packages.Count - 1 - index;
+                    var decision = Packages[reverseIndex] as DecisionPackage;
+                    var actionTypeName = decision.bestOption.actionName;
+                    string[] words = Regex.Split(actionTypeName, @"(?<!^)(?=[A-Z][a-z])");
+
+                    actionInfo.ActionName.text = string.Join(" ", words); ;
+
+                    actionInfo.ActionScore.text = decision.bestOption.actionScore.ToString();
+                    actionInfo.TargetName.text = decision.bestOption.targetName;
+
+                    var t = decision.timestamp;
                     var tt = DateTime.Parse(t);
                     actionInfo.TimeStamp.text = tt.ToString("HH:mm:ss");
                     actionInfo.ActionID.text = $"ID: {reverseIndex}";
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            else if(showType == HistoryPanel.ShowType.SensorEvents)
+            {
+                if(element is SensorInfo sensorInfo)
+                {
+                    var sensor = Packages[Packages.Count - 1 - index] as SensorPackage;
+
+                    sensorInfo.TimeStamp.text = sensor.timestamp;
+                    sensorInfo.SensorName.text = sensor.test;
+                    sensorInfo.ExtraInfo.text = sensor.test;
                 }
                 else
                 {

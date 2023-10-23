@@ -74,21 +74,22 @@ namespace CBB.Lib
             if (viewLogs) Debug.Log($"Object detected: {other.name}");
 
             viewedObjects.Add(other.gameObject);
-            OnSensorUpdate?.Invoke();
+            OnSensorUpdate?.Invoke(this);
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (viewLogs) Debug.Log($"Object lost: {other.name}");
             viewedObjects.Remove(other.gameObject);
-            OnSensorUpdate?.Invoke();
+            OnSensorUpdate?.Invoke(this);
         }
 
         [ContextMenu("Serialize sensor")]
-        public void SerializeSensor()
+        public override string SerializeSensor()
         {
             string ss = JSONDataManager.SerializeData(this);
             Debug.Log(ss);
+            return ss;
         }
 
         protected override void RenderGui(GLPainter painter)

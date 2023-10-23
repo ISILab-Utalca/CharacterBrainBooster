@@ -21,7 +21,7 @@ namespace ArtificialIntelligence.Utility
         // GUI
         private static GLPainter painter = new GLPainter();
 
-        public Action OnSensorUpdate { get; set; }
+        public Action<ISensor> OnSensorUpdate { get; set; }
 
         protected virtual void Awake()
         {
@@ -47,6 +47,8 @@ namespace ArtificialIntelligence.Utility
         protected abstract void RenderGui(GLPainter painter);
 
         public abstract SensorStatus GetSensorData();
+
+        public abstract string SerializeSensor();
     }
 }
 

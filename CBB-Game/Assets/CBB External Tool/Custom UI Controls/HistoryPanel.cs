@@ -14,6 +14,7 @@ namespace CBB.ExternalTool
         {
             Decisions,
             SensorEvents,
+            Both,
         }
         public new class UxmlTraits : VisualElement.UxmlTraits
         {

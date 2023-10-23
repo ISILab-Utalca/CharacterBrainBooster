@@ -130,22 +130,27 @@ namespace CBB.Lib
             }
         }
     }
+
     [System.Serializable]
-    public class DecisionPackage
+    public class AgentPackage
     {
         public int agentID;
         public string timestamp;
+    }
+
+    [System.Serializable]
+    public class DecisionPackage : AgentPackage
+    {
         public DecisionData bestOption;
         public List<DecisionData> otherOptions;
         public DecisionPackage() { }
-        public DecisionPackage(int agentID, string time, DecisionData bestOption, List<DecisionData> otherOptions)
-        {
-            this.agentID = agentID;
-            this.bestOption = bestOption;
-            this.otherOptions = otherOptions;
-            this.timestamp = time;
-        }
     }
+
+    public class SensorPackage : AgentPackage
+    {
+        public string test = "NO SE que data debe ir aqui UwU"; 
+    }
+
     [System.Serializable]
     public class AgentStateVariable
     {

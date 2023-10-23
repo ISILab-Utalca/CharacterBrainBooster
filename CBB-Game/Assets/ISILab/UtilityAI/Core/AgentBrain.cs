@@ -45,21 +45,27 @@ namespace ArtificialIntelligence.Utility
         private void OnEnable()
         {
             SubscribeToSensors(Sensors);
-            _actionRunner.OnFinishedExecution += TryStartNewAction;
+            _actionRunner.OnFinishedExecution += TryStarNewActionOnFinish;
             OnSetupDone?.Invoke();
         }
         // Unsubscribe from sensor updates and finished action events
         private void OnDisable()
         {
             UnsubscribeFromSensors(Sensors);
-            _actionRunner.OnFinishedExecution -= TryStartNewAction;
+            _actionRunner.OnFinishedExecution -= TryStarNewActionOnFinish;
         }
+
+        public void TryStarNewActionOnFinish()
+        {
+            TryStartNewAction(null);
+        }
+
         private void Start()
         {
             // Begin the life of this agent
-            TryStartNewAction();
+            TryStartNewAction(null);
         }
-        public void TryStartNewAction()
+        public void TryStartNewAction(ISensor sensor)
         {
             Option newOption = GetNewOption();
             if (newOption != null && newOption.Score != 0)

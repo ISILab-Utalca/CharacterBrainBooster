@@ -10,7 +10,7 @@ public static class GameData
     #region PROPERTIES
     public static Dictionary<int, AgentData> AgentStats { get; set; } = new();
     public static ObservableCollection<(int, string)> Agent_ID_Name { get; set; } = new();
-    public static Dictionary<int, ObservableCollection<DecisionPackage>> Histories { get; set; } = new();
+    public static Dictionary<int, ObservableCollection<AgentPackage>> Histories { get; set; } = new();
     #endregion
     #region EVENTS
     public static Action<AgentData> OnAddAgent { get; set; }
@@ -20,7 +20,7 @@ public static class GameData
     #endregion
 
     #region METHODS
-    public static ObservableCollection<DecisionPackage> GetHistory(int agentID)
+    public static ObservableCollection<AgentPackage> GetHistory(int agentID)
     {
         try
         {
@@ -28,7 +28,7 @@ public static class GameData
         }
         catch
         {
-            Histories.Add(agentID, new ObservableCollection<DecisionPackage>());
+            Histories.Add(agentID, new ObservableCollection<AgentPackage>());
             var history = Histories[agentID];
             return history;
         }
@@ -90,7 +90,7 @@ public static class GameData
         }
         else
         {
-            Histories.Add(decisionPackage.agentID, new ObservableCollection<DecisionPackage>() { decisionPackage });
+            Histories.Add(decisionPackage.agentID, new ObservableCollection<AgentPackage>() { decisionPackage });
         }
         OnAddDecision?.Invoke(decisionPackage);
     }

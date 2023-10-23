@@ -7,6 +7,8 @@ using CBB.Lib;
 /// </summary>
 public interface ISensor
 {
-    System.Action OnSensorUpdate { get; set; }
+    System.Action<ISensor> OnSensorUpdate { get; set; }
     public SensorStatus GetSensorData();
+
+    public string SerializeSensor();
 }

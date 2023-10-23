@@ -50,7 +50,7 @@ public class SensorAuditoryField : Sensor
         if (viewLogs) Debug.Log($"Object detected: {other.name}");
         heardObjects.Add(other.gameObject);
         _agentMemory.HeardObjects.Add(other.gameObject);
-        if (UpdateOnEnter) OnSensorUpdate?.Invoke();
+        if (UpdateOnEnter) OnSensorUpdate?.Invoke(this);
     }
 
     private void OnTriggerExit(Collider other)
@@ -59,11 +59,11 @@ public class SensorAuditoryField : Sensor
         if (viewLogs) Debug.Log($"Object lost: {other.name}");
         heardObjects.Remove(other.gameObject);
         _agentMemory.HeardObjects.Remove(other.gameObject);
-        if (UpdateOnExit) OnSensorUpdate?.Invoke();
+        if (UpdateOnExit) OnSensorUpdate?.Invoke(this);
     }
 
     [ContextMenu("Serialize sensor")]
-    public void SerializeSensor()
+    public override string SerializeSensor()
     {
         // Create sensor specific data
         var sd = GetSensorData();
@@ -85,6 +85,7 @@ public class SensorAuditoryField : Sensor
                 };
         string ss = JSONDataManager.SerializeData(this, converters);
         Debug.Log(ss);
+        return ss;
     }
     [ContextMenu("Serialize sensor heard objects")]
     public void SerializeSensorHeardObjects()
