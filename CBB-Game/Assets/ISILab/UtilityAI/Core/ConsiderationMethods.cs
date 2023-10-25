@@ -75,6 +75,15 @@ namespace dnorambu.AI.Utility
             return methodEvaluation;
 
         }
+        public static MethodEvaluation EnergyLeft(LocalAgentMemory agentMemory, GameObject target)
+        {
+            MethodEvaluation methodEvaluation = new()
+            {
+                EvaluatedVariableName = "Energy",
+                OutputValue = UnityEngine.Random.Range(0, 1f),
+            };
+            return methodEvaluation;
+        }
     }
 }
 
