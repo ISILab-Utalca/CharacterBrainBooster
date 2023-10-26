@@ -11,6 +11,7 @@ namespace CBB.ExternalTool
         {
             var visualTree = Resources.Load<VisualTreeAsset>("AgentsPanel");
             visualTree.CloneTree(this);
+            this.style.flexGrow = 1;
         }
     }
 }
