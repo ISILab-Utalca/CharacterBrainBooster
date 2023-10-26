@@ -146,9 +146,11 @@ namespace CBB.Lib
         public DecisionPackage() { }
     }
 
+    [System.Serializable]
     public class SensorPackage : AgentPackage
     {
-        public string test = "NO SE que data debe ir aqui UwU"; 
+        public string sensorType;
+        public string extraData;
     }
 
     [System.Serializable]

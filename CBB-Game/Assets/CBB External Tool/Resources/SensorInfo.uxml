@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0);">
         <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: space-between; align-self: stretch; align-items: flex-end;">
-            <ui:Label tabindex="-1" text="Action name" display-tooltip-when-elided="true" name="snesor-name" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; -unity-font-style: bold; font-size: 18px; margin-top: 4px; padding-left: 4px; margin-left: 4px; padding-right: 4px; margin-bottom: 2px; white-space: normal; padding-bottom: 2px;" />
+            <ui:Label tabindex="-1" text="Action name" display-tooltip-when-elided="true" name="sensor-name" focusable="false" style="color: rgb(255, 255, 255); -unity-text-align: middle-left; -unity-font-style: bold; font-size: 18px; margin-top: 4px; padding-left: 4px; margin-left: 4px; padding-right: 4px; margin-bottom: 2px; white-space: normal; padding-bottom: 2px; display: flex; visibility: visible;" />
             <ui:Label tabindex="-1" text="time" display-tooltip-when-elided="true" name="timestamp" style="color: rgb(227, 227, 227);" />
         </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; padding-bottom: 4px; margin-bottom: 4px; padding-left: 2px; margin-left: 2px;">

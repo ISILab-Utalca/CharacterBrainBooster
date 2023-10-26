@@ -96,21 +96,31 @@ namespace CBB.ExternalTool
 
         public void HandleMessage(string message)
         {
+            AgentPackage pack = null;
             try
             {
-                var decisionPack = JsonConvert.DeserializeObject<DecisionPackage>(message, settings);
-                //Debug.Log("<color=green>[HISTORY PANEL] Message is Decision Pack: </color>" + message);
-                GameData.HandleDecisionPackage(decisionPack);
-
-                // Update the view only if necessary
-                if (decisionPack.agentID != currentlySelectedAgentID) 
-                    return;
-
-                list.RefreshItems();
+                pack = JsonConvert.DeserializeObject<DecisionPackage>(message, settings);
+                if (pack is DecisionPackage)
+                {
+                    GameData.HandleDecisionPackage(pack);
+                }
             }
-            catch (Exception)
+            catch (Exception) { }
+
+            try
             {
-                //Debug.Log("<color=red>[HISTORY PANEL] Message is not Decision Pack: </color>" + message);
+                pack = JsonConvert.DeserializeObject<SensorPackage>(message, settings);
+                if (pack is SensorPackage)
+                {
+                    GameData.HandleDecisionPackage(pack);
+                }
+            }
+            catch (Exception) { }
+
+            // Update the view only if necessary
+            if (pack?.agentID == currentlySelectedAgentID)
+            {
+                UpdateHistoryPanelView(pack.agentID);
             }
         }
 
@@ -127,24 +137,14 @@ namespace CBB.ExternalTool
         private VisualElement MakeItem()
         {
             var content = new VisualElement();
+            content.style.flexGrow = 0;
+            /*
             var a = new ActionInfo();
             a.name = "Action";
             content.Add(a);
             var s = new SensorInfo();
             s.name = "Sensor";
             content.Add(s);
-
-
-            /*
-            switch (showType)
-            {
-                case HistoryPanel.ShowType.Decisions:
-                    return new ActionInfo();
-                case HistoryPanel.ShowType.SensorEvents:
-                    return new SensorInfo();
-                default:
-                    break;
-            }
             */
 
             return content;
@@ -152,41 +152,40 @@ namespace CBB.ExternalTool
 
         private void BindItem(VisualElement element, int index)
         {
-            for (int i = 0; i < element.childCount; i++)
-            {
-                element.Children().ToList()[i].style.display = DisplayStyle.None;
-            }
-
             var rIndex = packages.Count - 1 - index;
 
-            if (showType == HistoryPanel.ShowType.Decisions)
+            switch(showType)
             {
-                if (packages[rIndex] is DecisionPackage desition)
-                {
-                    var view = element.Q<ActionInfo>();
-                    BindActionItem(desition, rIndex, view);
-                }
-            }
-            else if(showType == HistoryPanel.ShowType.SensorEvents)
-            {
-                if (packages[rIndex] is SensorPackage sensor)
-                {
-                    var view = element.Q<SensorInfo>();
-                    BindSensorInfo(sensor, view);
-                }
-            }
-            else
-            {
-                if (packages[rIndex] is DecisionPackage desition)
-                {
-                    var view = element.Q<ActionInfo>();
-                    BindActionItem(desition, rIndex, view);
-                }
-                else if (packages[rIndex] is SensorPackage sensor)
-                {
-                    var view = element.Q<SensorInfo>();
-                    BindSensorInfo(sensor, view);
-                }
+                case HistoryPanel.ShowType.Decisions:
+                    if (packages[rIndex] is DecisionPackage desition)
+                    {
+                        var view = new ActionInfo();
+                        element.Add(view);
+                        BindActionItem(desition, rIndex, view);
+                    }
+                    break;
+                case HistoryPanel.ShowType.SensorEvents:
+                    if (packages[rIndex] is SensorPackage sensor)
+                    {
+                        var view = new SensorInfo();
+                        element.Add(view);
+                        BindSensorInfo(sensor, view);
+                    }
+                    break;
+                case HistoryPanel.ShowType.Both:
+                    if (packages[rIndex] is DecisionPackage desition2)
+                    {
+                        var view = new ActionInfo();
+                        element.Add(view);
+                        BindActionItem(desition2, rIndex, view);
+                    }
+                    else if (packages[rIndex] is SensorPackage sensor2)
+                    {
+                        var view = new SensorInfo();
+                        element.Add(view);
+                        BindSensorInfo(sensor2, view);
+                    }
+                    break;
             }
         }
 
@@ -194,9 +193,11 @@ namespace CBB.ExternalTool
         {
             sensorInfo.style.display = DisplayStyle.Flex;
 
-            sensorInfo.TimeStamp.text = sensor.timestamp;
-            sensorInfo.SensorName.text = sensor.test;
-            sensorInfo.ExtraInfo.text = sensor.test;
+            var t = sensor.timestamp;
+            var tt = DateTime.Parse(t);
+            sensorInfo.TimeStamp.text = tt.ToString("HH:mm:ss");
+            sensorInfo.SensorName.text = sensor.sensorType;
+            sensorInfo.ExtraInfo.text = sensor.extraData;
         }
 
         private void BindActionItem(DecisionPackage decision,int index, ActionInfo actionPanel)

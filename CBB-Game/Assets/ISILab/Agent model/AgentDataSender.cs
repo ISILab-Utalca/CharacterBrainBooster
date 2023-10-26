@@ -57,6 +57,8 @@ namespace CBB.Api
             agentComp = GetComponent<IAgent>();
             agentID = gameObject.GetInstanceID();
             agentBrain = GetComponent<IAgentBrain>();
+
+
             agentBrain.OnDecisionTaken += ReceiveDecisionHandler;
             agentBrain.OnSetupDone += SubscribeToSensors;
 
@@ -70,18 +72,20 @@ namespace CBB.Api
             Server.OnNewClientConnected -= SendAgentInitialDataToClient;
         }
 
-        private void ReceiveSensorUpdateHandler()
+        private void ReceiveSensorUpdateHandler(ISensor sensor)
         {
+            var status = sensor.GetSensorData();
+
             var sensorPackage = new SensorPackage
             {
                 agentID = agentID,
                 timestamp = System.DateTime.Now.ToString(),
-                test = "paquete de sensor",
-                //sensorData = new List<SensorData>()
+                sensorType = status.sensorType.ToString(),
+                extraData = status.configurations.ToString() + "\n" + status.memory.ToString(),
             };
             SendDataToAllClients(sensorPackage);
 
-            SendDataToAllClients(AgentWrapper.AgentStateType.CURRENT);
+            SendDataToAllClients();
         }
 
         private void ReceiveDecisionHandler(Option best, List<Option> otherOptions)
@@ -118,7 +122,10 @@ namespace CBB.Api
         {
             foreach (ISensor sensor in agentBrain.Sensors)
             {
-                sensor.OnSensorUpdate += (s) => { ReceiveSensorUpdateHandler(); };
+                sensor.OnSensorUpdate += (s) => {
+                    var x = 1;
+                    ReceiveSensorUpdateHandler(s); 
+                };
             }
         }
 
@@ -130,6 +137,11 @@ namespace CBB.Api
         }
         private void SendDataToAllClients(AgentPackage decisionPackage)
         {
+            if(decisionPackage is SensorPackage)
+            {
+                Debug.Log("sensor");
+            }
+
             var data = JSONDataManager.SerializeData(decisionPackage);
             if (!NeedAServer)
             {

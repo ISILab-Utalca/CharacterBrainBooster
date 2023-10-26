@@ -9,11 +9,11 @@ public class SensorInfo : VisualElement
     public new class UxmlFactory : UxmlFactory<SensorInfo, UxmlTraits> { }
     #endregion
 
-    public Label SensorName { get; set; }
+    public Label SensorName;
 
-    public Label ExtraInfo { get; set; }
+    public Label ExtraInfo;
 
-    public Label TimeStamp { get; set; }
+    public Label TimeStamp;
 
     public SensorInfo()
     {

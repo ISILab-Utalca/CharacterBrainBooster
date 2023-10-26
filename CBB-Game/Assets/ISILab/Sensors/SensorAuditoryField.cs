@@ -46,11 +46,17 @@ public class SensorAuditoryField : Sensor
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!hearingTags.Contains(other.tag)) return;
-        if (viewLogs) Debug.Log($"Object detected: {other.name}");
+        if (!hearingTags.Contains(other.tag)) 
+            return;
+
+        if (viewLogs) 
+            Debug.Log($"Object detected: {other.name}");
+
         heardObjects.Add(other.gameObject);
         _agentMemory.HeardObjects.Add(other.gameObject);
-        if (UpdateOnEnter) OnSensorUpdate?.Invoke(this);
+
+        if (UpdateOnEnter) 
+            OnSensorUpdate?.Invoke(this);
     }
 
     private void OnTriggerExit(Collider other)

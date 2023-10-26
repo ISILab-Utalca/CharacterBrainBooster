@@ -15,7 +15,7 @@ public static class GameData
     #region EVENTS
     public static Action<AgentData> OnAddAgent { get; set; }
     public static Action<AgentData> OnAgentSetAsDestroyed { get; set; }
-    public static Action<DecisionPackage> OnAddDecision { get; set; }
+    public static Action<AgentPackage> OnAddDecision { get; set; }
     public static Action<ObservableCollection<string>> OnAddBrains { get; set; }
     #endregion
 
@@ -53,12 +53,15 @@ public static class GameData
     }
     private static void AddAgentState(AgentData agent)
     {
-        if (AgentStats.ContainsKey(agent.ID)) return;
+        if (AgentStats.ContainsKey(agent.ID)) 
+            return;
+
         AgentStats.Add(agent.ID, agent);
 
-        if (Agent_ID_Name.Contains((agent.ID, agent.agentName))) return;
-        Agent_ID_Name.Add((agent.ID, agent.agentName));
+        if (Agent_ID_Name.Contains((agent.ID, agent.agentName))) 
+            return;
 
+        Agent_ID_Name.Add((agent.ID, agent.agentName));
         OnAddAgent?.Invoke(agent);
     }
     private static void UpdateAgentState(AgentData agent)
@@ -82,17 +85,17 @@ public static class GameData
         OnAgentSetAsDestroyed?.Invoke(agent);
     }
 
-    internal static void HandleDecisionPackage(DecisionPackage decisionPackage)
+    internal static void HandleDecisionPackage(AgentPackage package)
     {
-        if (Histories.ContainsKey(decisionPackage.agentID))
+        if (Histories.ContainsKey(package.agentID))
         {
-            Histories[decisionPackage.agentID].Add(decisionPackage);
+            Histories[package.agentID].Add(package);
         }
         else
         {
-            Histories.Add(decisionPackage.agentID, new ObservableCollection<AgentPackage>() { decisionPackage });
+            Histories.Add(package.agentID, new ObservableCollection<AgentPackage>() { package });
         }
-        OnAddDecision?.Invoke(decisionPackage);
+        OnAddDecision?.Invoke(package);
     }
 
     internal static void ClearData()
