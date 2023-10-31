@@ -27,9 +27,12 @@ namespace ArtificialIntelligence.Utility
         private bool viewLogs = false;
         private ActionRunner _actionRunner;
 
+        public BubbleText panelText;
+
         public System.Action<List<Option>> OnCompletedScoring { get; set; }
         public System.Action OnSetupDone { get; set; }
         public System.Action<Option, List<Option>> OnDecisionTaken { get; set; }
+        public System.Action<ISensor> OnSensorUpdate { get; set; }
 
         public List<ISensor> Sensors { get; private set; }
 
@@ -39,6 +42,9 @@ namespace ArtificialIntelligence.Utility
             _actionRunner = GetComponent<ActionRunner>();
             Sensors = gameObject.GetComponentsInChildren<ISensor>().ToList();
             _actions.AddRange(gameObject.GetComponents<IAction>());
+
+            var panel = Instantiate(panelText, panelText.Canvas.GetComponent<RectTransform>());
+            panel.Init(this.gameObject.transform);
 
         }
         // Subscribe to sensor updates and finished action events
@@ -102,6 +108,7 @@ namespace ArtificialIntelligence.Utility
             foreach (ISensor sensor in sensors)
             {
                 sensor.OnSensorUpdate += TryStartNewAction;
+                sensor.OnSensorUpdate += OnSensorUpdate;
             }
         }
         private void UnsubscribeFromSensors(List<ISensor> sensors)
@@ -109,6 +116,7 @@ namespace ArtificialIntelligence.Utility
             foreach (ISensor sensor in sensors)
             {
                 sensor.OnSensorUpdate -= TryStartNewAction;
+                sensor.OnSensorUpdate -= OnSensorUpdate;
             }
         }
     }
