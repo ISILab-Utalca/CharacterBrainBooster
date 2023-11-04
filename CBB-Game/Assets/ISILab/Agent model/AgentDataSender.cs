@@ -137,11 +137,6 @@ namespace CBB.Api
         }
         private void SendDataToAllClients(AgentPackage decisionPackage)
         {
-            if(decisionPackage is SensorPackage)
-            {
-                Debug.Log("sensor");
-            }
-
             var data = JSONDataManager.SerializeData(decisionPackage);
             if (!NeedAServer)
             {

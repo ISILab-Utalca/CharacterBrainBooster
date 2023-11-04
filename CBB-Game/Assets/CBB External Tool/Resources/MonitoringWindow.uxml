@@ -25,4 +25,5 @@
             </SplitView>
         </ui:VisualElement>
     </ui:VisualElement>
+    <CameraDataReceiver name="CameraDataReceiver" style="flex-grow: 1; position: absolute; top: auto; left: auto; background-color: rgba(0, 0, 0, 0.33); border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; bottom: 10px; right: 12px; width: 256px; height: 256px;" />
 </ui:UXML>

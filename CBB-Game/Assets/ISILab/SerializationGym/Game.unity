@@ -2684,6 +2684,7 @@ MonoBehaviour:
   topN: 1
   _defaultAction: {fileID: 874170269}
   viewLogs: 0
+  panelText: {fileID: 0}
 --- !u!114 &874170266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4335,6 +4336,7 @@ GameObject:
   - component: {fileID: 1639881255}
   - component: {fileID: 1639881254}
   - component: {fileID: 1639881258}
+  - component: {fileID: 1639881259}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4442,6 +4444,20 @@ MonoBehaviour:
   _enableSpeedAcceleration: 1
   _speedAccelerationFactor: 1.5
   _initPositonButton: 114
+--- !u!114 &1639881259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639881253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92316b55f2ce14646944e9dc512135c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  render: {fileID: 8400000, guid: 9e5e618cbb641af4e9ba1bbea28d3920, type: 2}
+  deltatime: 0.5
 --- !u!1 &1780484352
 GameObject:
   m_ObjectHideFlags: 0
