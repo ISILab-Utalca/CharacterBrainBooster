@@ -63,7 +63,7 @@ namespace ArtificialIntelligence.Utility
                 evaluation = consideration.GetValue(LocalAgentMemory, target);
                 option.Evaluations.Add(evaluation);
 
-                //This simple multiplication is where we combine the scores of the different
+                //This multiplication is where we combine the scores of the different
                 //considerations being evaluated.This line of code is very important since it
                 //is responsible for combining the different evaluation curves into a single uniform value.
                 score *= evaluation.UtilityValue;
