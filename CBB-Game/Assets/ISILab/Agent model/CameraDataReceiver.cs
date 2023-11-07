@@ -9,6 +9,8 @@ using static CameraDataSender;
 
 public class CameraDataReceiver : VisualElement
 {
+
+
     readonly JsonSerializerSettings settings = new()
     {
         NullValueHandling = NullValueHandling.Include,
@@ -20,12 +22,37 @@ public class CameraDataReceiver : VisualElement
     public new class UxmlFactory : UxmlFactory<CameraDataReceiver, UxmlTraits> { }
     #endregion
 
-    public Image image;
+    private VisualElement content;
+    private Foldout foldout;
+
+    private Image image;
+
+    private Texture2D texture = new Texture2D(256, 256);
 
     public CameraDataReceiver()
     {
+        var visualTree = Resources.Load<VisualTreeAsset>("CameraDataReciver");
+        visualTree.CloneTree(this);
+
+        content = this.Q<VisualElement>("Content");
+        foldout = this.Q<Foldout>();
+        foldout.RegisterCallback<ChangeEvent<bool>>(e =>
+        {
+            if(e.newValue)
+            {
+                this.style.height = 256 + 32;
+                content.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                this.style.height = 32;
+                content.style.display = DisplayStyle.None;
+            }
+        });
+        this.style.height = 256 + 32;
+
         image = new Image();
-        this.Add(image);
+        content.Add(image);
 
         ExternalMonitor.OnMessageReceived += HandleMessage;
     }
@@ -39,9 +66,7 @@ public class CameraDataReceiver : VisualElement
             pack = JsonConvert.DeserializeObject<CameraWraper>(message, settings);
             var image = pack.image;
 
-            var texture = new Texture2D(1024, 1024);
             texture.LoadImage(image);
-
             this.image.image = texture;
         }
         catch (Exception) { }
