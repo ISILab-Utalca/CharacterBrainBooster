@@ -3,6 +3,7 @@ using CBB.Lib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 [Serializable]
 public static class GameData
@@ -20,6 +21,11 @@ public static class GameData
     #endregion
 
     #region METHODS
+    public static void Add()
+    {
+
+    }
+
     public static ObservableCollection<AgentPackage> GetHistory(int agentID)
     {
         try
@@ -89,7 +95,16 @@ public static class GameData
     {
         if (Histories.ContainsKey(package.agentID))
         {
-            Histories[package.agentID].Add(package);
+            var h = Histories[package.agentID];
+            if(h.Count <= 200)
+            {
+                h.Add(package);
+            }
+            else
+            {
+                h.RemoveAt(h.Count - 1);
+                h.Add(package);
+            }
         }
         else
         {
