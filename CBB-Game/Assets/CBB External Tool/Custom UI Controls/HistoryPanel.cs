@@ -8,7 +8,7 @@ namespace CBB.ExternalTool
         #region FACTORY
         public new class UxmlFactory : UxmlFactory<HistoryPanel, UxmlTraits> { }
         #endregion
-
+        
         public ShowType myShowField { get; set; }
         private ListView list;
         public enum ShowType

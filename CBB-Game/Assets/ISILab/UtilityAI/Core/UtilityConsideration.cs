@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using CBB.Lib;
+using Newtonsoft.Json;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -41,7 +43,7 @@ namespace ArtificialIntelligence.Utility
         [Header("New curve configurations")]
         [HideInInspector]
         public List<Curve> _curveTypes;
-        [SerializeReference,SerializeField]
+        [SerializeReference, SerializeField]
         public Curve _curve;
         public int _selectedCurveIndex;
         public struct Evaluation
@@ -88,7 +90,7 @@ namespace ArtificialIntelligence.Utility
             // Return the evaluation
             if (name == null) Debug.LogWarning("[CONSIDERATION] name is null");
             if (_curve == null) Debug.LogWarning("[CONSIDERATION] _curve is null");
-            return new Evaluation(name,value, _curve.Calc(value), methodEvaluation.EvaluatedVariableName, _curve);
+            return new Evaluation(name, value, _curve.Calc(value), methodEvaluation.EvaluatedVariableName, _curve);
         }
         // Display the dropdown and detect changes
         // TODO: Duplicated code (see ConsiderationDrawer -> OnInspectorGUI)
@@ -96,10 +98,6 @@ namespace ArtificialIntelligence.Utility
         {
             ResetMethods();
             UpdateMethodInfo();
-
-            // Curves logic
-            //ResetCurves();
-            
         }
 
         public void ResetCurves(int curveIndex)
@@ -169,5 +167,33 @@ namespace ArtificialIntelligence.Utility
         {
             _methodInfo = ImplementationReference.GetType().GetMethod(m_methods[_selectedMethodIndex]);
         }
+#if UNITY_EDITOR
+        /// <summary>
+        /// Retreive configurations from a json file and update parameters
+        /// </summary>
+        public void LoadConfiguration()
+        {
+            // Get the path to the json file
+            var path = EditorUtility.OpenFilePanel("Load configuration", Application.dataPath, "json");
+            if (path.Length != 0)
+            {
+                // Read the json file
+                var json = System.IO.File.ReadAllText(path);
+                // Deserialize the json
+                var settings = new JsonSerializerSettings
+                {
+                    MissingMemberHandling = MissingMemberHandling.Error,
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                    TypeNameHandling = TypeNameHandling.Auto
+                };
+                var data = JsonConvert.DeserializeObject<ConsiderationConfiguration>(json, settings);
+                // Update the parameters
+                _curve = data.curve;
+                m_bookends = data.normalizeInput;
+                m_minValue = data.minValue;
+                m_maxValue = data.maxValue;
+            }
+        }
     }
 }
+#endif

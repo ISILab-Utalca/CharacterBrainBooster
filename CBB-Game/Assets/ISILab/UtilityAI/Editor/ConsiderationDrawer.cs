@@ -29,7 +29,8 @@ public class ConsiderationDrawer : Editor
 
 
         this.curve = (target as UtilityConsideration).Curve;
-        (target as UtilityConsideration).OnChangeCurve += (Curve curve) => { 
+        (target as UtilityConsideration).OnChangeCurve += (Curve curve) =>
+        {
             this.curve = curve;
             chart?.SetCurve(curve, 0.5f);
         };
@@ -50,6 +51,17 @@ public class ConsiderationDrawer : Editor
         chart.style.flexGrow = 1;
         content.Add(chart);
 
+        Button loadButton = new(() =>
+        {
+
+            (target as UtilityConsideration).LoadConfiguration();
+
+        });
+        loadButton.text = "Load configuration"; 
+        // Set the width and height
+        loadButton.style.width = 150;
+        loadButton.style.height = 20;
+        content.Add(loadButton);
         return content;
     }
 
@@ -87,7 +99,7 @@ public class ConsiderationDrawer : Editor
         string[] availableCurvesNames = Curve.GetCurves().Select(x => x.GetType().Name).ToArray();
         EditorGUI.BeginChangeCheck();
         consideration._selectedCurveIndex = EditorGUILayout.Popup("Curve type", consideration._selectedCurveIndex, availableCurvesNames);
-        
+
         // Display the dropdown and detect changes
         // TODO: Duplicated code (see UtilityConsideration -> OnValidate)
         if (EditorGUI.EndChangeCheck())

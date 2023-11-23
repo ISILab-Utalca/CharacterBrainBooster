@@ -1,0 +1,18 @@
+{
+  "$id": "1",
+  "name": "first_test",
+  "curve": {
+    "$id": "2",
+    "$type": "ExponencialInvertida, Assembly-CSharp",
+    "value": 1.0,
+    "e": 2.3,
+    "dx": 1.15,
+    "dy": -0.42,
+    "sx": 0.67,
+    "sy": 1.48,
+    "Inverted": true
+  },
+  "normalizeInput": true,
+  "minValue": 0.0,
+  "maxValue": 1.19
+}

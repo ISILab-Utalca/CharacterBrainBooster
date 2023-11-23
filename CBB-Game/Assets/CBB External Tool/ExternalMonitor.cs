@@ -230,6 +230,11 @@ namespace CBB.ExternalTool
             }
             GameData.ClearData();
         }
+
+        internal void SendConfiguration(string jsonObject)
+        {
+            
+        }
         #endregion
     }
 }

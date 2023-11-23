@@ -186,4 +186,18 @@ namespace CBB.Lib
             Curve = curve;
         }
     }
+    /// <summary>
+    /// Plain Old C# Object to store the configuration set
+    /// on the editor <see cref="ConsiderationEditorController"/>
+    /// </summary>
+    [System.Serializable]
+    public class ConsiderationConfiguration
+    {
+        public string name;
+        [SerializeReference]
+        public Curve curve;
+        public bool normalizeInput;
+        public float minValue;
+        public float maxValue;
+    }
 }
