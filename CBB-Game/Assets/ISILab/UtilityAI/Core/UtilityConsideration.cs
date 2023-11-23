@@ -167,6 +167,7 @@ namespace ArtificialIntelligence.Utility
         {
             _methodInfo = ImplementationReference.GetType().GetMethod(m_methods[_selectedMethodIndex]);
         }
+
 #if UNITY_EDITOR
         /// <summary>
         /// Retreive configurations from a json file and update parameters
@@ -194,6 +195,6 @@ namespace ArtificialIntelligence.Utility
                 m_maxValue = data.maxValue;
             }
         }
+#endif
     }
 }
-#endif
