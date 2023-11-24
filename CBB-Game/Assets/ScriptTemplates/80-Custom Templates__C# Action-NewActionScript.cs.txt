@@ -37,7 +37,7 @@ namespace CBB.InternalTool
         }
         protected override IEnumerator Act(GameObject target = null)
         {
-            // Keep this call on any exit point for this action
+            yield return new WaitForSeconds(1);
             FinishExecution();
         }
         #endregion
