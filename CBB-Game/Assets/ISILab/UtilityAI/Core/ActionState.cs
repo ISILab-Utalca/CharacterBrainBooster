@@ -8,6 +8,7 @@ namespace ArtificialIntelligence.Utility
     /// <summary>
     /// Base class for any action that the AI agent can perform.
     /// </summary>
+    [RequireComponent(typeof(NavMeshAgent),typeof(LocalAgentMemory))]
     public abstract class ActionState : MonoBehaviour, IAction
     {
         #region Fields
@@ -43,8 +44,8 @@ namespace ArtificialIntelligence.Utility
             // and a LocalAgentMemory component at the same level in the hierarchy
             // TODO: make this more robust
             //Debug.Log("Cache basic components");
-            if (TryGetComponent(out LocalAgentMemory lam)) LocalAgentMemory = lam;
-            if (TryGetComponent(out NavMeshAgent nma)) LocalNavMeshAgent = nma;
+            LocalAgentMemory = GetComponent<LocalAgentMemory>();
+            LocalNavMeshAgent = GetComponent<NavMeshAgent>();
         }
         public abstract List<Option> GetOptions();
         protected Option EvaluateConsiderations(GameObject target = null)
@@ -150,6 +151,10 @@ namespace ArtificialIntelligence.Utility
             IsRunning = false;
             StopAllCoroutines();
         }
+        /// <summary>
+        /// Call this method whenever the action reaches a state where it can't be executed,
+        /// has to be interrupted (by other action) or finished normally.
+        /// </summary>
         public virtual void FinishExecution()
         {
             IsRunning = false;
