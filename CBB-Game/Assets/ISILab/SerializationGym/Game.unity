@@ -1650,6 +1650,8 @@ MonoBehaviour:
   testNum: 0
   brain:
     brainName: 
+    pickMethod: 0
+    topN: 0
 --- !u!4 &563929505
 Transform:
   m_ObjectHideFlags: 0
@@ -4319,7 +4321,8 @@ PrefabInstance:
       propertyPath: viewLogs
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2177107222128649367, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

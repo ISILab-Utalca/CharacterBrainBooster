@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/External%20Tool.uss?fileID=7433441132597879392&amp;guid=24e10b314967b554f903b40e9356bf0d&amp;type=3#External Tool" />
+    <ui:VisualElement name="main-container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); opacity: 1;">
+        <CBB.ExternalTool.TopTitleBar name="TopTitleBar" window-title="BRAIN EDITOR" style="align-self: auto;" />
+        <ui:VisualElement name="panels-container" class="visual-element-background" style="flex-grow: 1; flex-direction: row; align-items: flex-start; align-self: stretch; width: auto; max-width: 100%; flex-shrink: 1;">
+            <ui:VisualElement class="visual-element-container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-self: stretch;" />
+            <ui:VisualElement class="visual-element-container" style="flex-grow: 2; background-color: rgba(0, 0, 0, 0); align-self: stretch;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
