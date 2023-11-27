@@ -6,9 +6,7 @@ using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Text.RegularExpressions;
-using UnityEditor;
 using System.Linq;
-using System.Reflection;
 
 namespace CBB.ExternalTool
 {
