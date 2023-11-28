@@ -1,0 +1,9 @@
+{
+  "$id": "1",
+  "$type": "PairBrainData, Assembly-CSharp",
+  "pairs": {
+    "$id": "2",
+    "$type": "System.Collections.Generic.List`1[[PairBrainData+PairBrain, Assembly-CSharp]], mscorlib",
+    "$values": []
+  }
+}

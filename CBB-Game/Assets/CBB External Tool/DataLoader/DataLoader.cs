@@ -25,15 +25,13 @@ public static class DataLoader
             // load considerations from the editor folder
             return Application.dataPath + "/Resources";
 #else
-        // load considerations from the build folder
-        var dataPath = Application.dataPath;
-        var path = dataPath.Replace("/" + Application.productName +"_Data", "");
-        return path;
+            // load considerations from the build folder
+            var dataPath = Application.dataPath;
+            var path = dataPath.Replace("/" + Application.productName +"_Data", "");
+            return path;
 #endif
         }
     }
-
-
 
     /// <summary>
     /// Get loaded brain by index
@@ -55,6 +53,11 @@ public static class DataLoader
         return brains.First(m => name.Equals(m.brain_ID));
     }
 
+    /// <summary>
+    /// Get loaded brain by agent ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public static Brain GetBrainByAgentID(string id)
     {
         var pair = table.pairs.Find(x => x.agent_ID == id);
@@ -62,7 +65,9 @@ public static class DataLoader
     }
 
     /// <summary>
-    /// This function is called when loading the game, Load Data.
+    /// This function is called when loading the game, 
+    /// Load Data from the resources folder and save it
+    /// in the static variables of the class 
     /// </summary>
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Init()
@@ -78,7 +83,8 @@ public static class DataLoader
         var path = dataPath.Replace("/" + Application.productName +"_Data", "");
         LoadBrain(path + "/Brains");
         LoadPairs(path);
-#endif*/
+#endif
+        */
 
         LoadBrain(Path + "/Brains");
         LoadPairs(Path);
@@ -103,6 +109,11 @@ public static class DataLoader
     private static void LoadBrain(string root)
     {
         System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(root);
+
+        if(!dir.Exists)
+        {
+            dir.Create();
+        }
 
         var files = dir.GetFiles("*.brain");
         for (int i = 0; i < files.Length; i++)

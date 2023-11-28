@@ -1,3 +1,5 @@
+using ArtificialIntelligence.Utility;
+using Generic;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -111,5 +113,27 @@ namespace Generic
         {
             return value.ToString();
         }
+    }
+}
+
+[System.Serializable]
+public class WrapperConsideration : WraperValue // necesairo (?)
+{
+    [SerializeReference]
+    public UtilityConsideration consideration;
+
+    public override object Clone()
+    {
+        return new WrapperConsideration { name = name, consideration = consideration };
+    }
+
+    public override object Getvalue()
+    {
+        return consideration;
+    }
+
+    public override string ToString()
+    {
+        return consideration.ToString();
     }
 }

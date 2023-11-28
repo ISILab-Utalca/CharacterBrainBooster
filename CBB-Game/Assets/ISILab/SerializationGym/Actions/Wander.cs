@@ -78,12 +78,20 @@ namespace CBB.InternalTool
 
         public override void SetParams(DataGeneric data)
         {
-            throw new System.NotImplementedException();
+            this._minWaitTimer = (float) data.Get("MinWaitTimer").Getvalue();
+            this._maxWaitTimer = (float) data.Get("MaxWaitTimer").Getvalue();
+            this._walkRadius = (float) data.Get("WalkRadius").Getvalue();
+            this._tickCheck = (float) data.Get("TickCheck").Getvalue();
         }
 
         public override DataGeneric GetGeneric()
         {
-            throw new System.NotImplementedException();
+            var data = new DataGeneric(typeof(Wander));
+            data.Add(new WraperNumber { name = "MinWaitTimer", value = _minWaitTimer });
+            data.Add(new WraperNumber { name = "MaxWaitTimer", value = _maxWaitTimer });
+            data.Add(new WraperNumber { name = "WalkRadius", value = _walkRadius });
+            data.Add(new WraperNumber { name = "TickCheck", value = _tickCheck });
+            return data;
         }
         #endregion
 

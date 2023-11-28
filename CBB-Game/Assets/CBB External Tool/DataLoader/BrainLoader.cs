@@ -36,6 +36,14 @@ public class BrainLoader : MonoBehaviour
         }
     }
 
+    private void Reset()
+    {
+        agent_ID = this.gameObject.name;
+    }
+
+    /// <summary>
+    /// create a brain file with the current configuration
+    /// </summary>
     public void CreateBrainFile()
     {
         var brain = new Brain();
@@ -56,6 +64,10 @@ public class BrainLoader : MonoBehaviour
         DataLoader.SaveBrain(brain);
     }
 
+    /// <summary>
+    /// find monobehaviours related to the brain and store them in lists
+    /// enable the brain to be initialized with the brain data
+    /// </summary>
     public void FindBHsReferences()
     {
         // Get all actions in this game object and its children
@@ -65,9 +77,12 @@ public class BrainLoader : MonoBehaviour
         // Get all sensors in this game object and its children
         sensors = GetComponents<Sensor>().ToList();
         sensors.AddRange(GetComponentsInChildren<Sensor>());
-
     }
 
+    /// <summary>
+    /// Initialize the brain with the brain data
+    /// </summary>
+    /// <param name="brain"></param>
     public void Init(Brain brain)
     {
         var szedAction = brain.serializedActions;
@@ -103,6 +118,23 @@ public class BrainLoader : MonoBehaviour
         }
     }
 }
+
+#if UNITY_EDITOR
+[Editor(typeof(BrainLoader))]
+public class BrainLoaderEditor : UnityEditor.Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        var BL = (BrainLoader)target;
+        if (BL.agent_ID == "")
+        {
+            GUI.Box(new Rect(0, 0, 100, 100), "Agrege una ID para el agente para que no tenga errores.");
+        }
+    }
+}
+#endif
 
 /// <summary>
 /// this class is used to store the generic brain data  
