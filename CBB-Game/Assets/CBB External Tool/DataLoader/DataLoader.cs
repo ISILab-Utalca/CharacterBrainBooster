@@ -110,6 +110,11 @@ public static class DataLoader
     {
         System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(root);
 
+        if(!dir.Exists)
+        {
+            dir.Create();
+        }
+
         var files = dir.GetFiles("*.brain");
         for (int i = 0; i < files.Length; i++)
         {
