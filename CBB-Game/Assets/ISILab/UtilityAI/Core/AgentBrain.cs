@@ -10,7 +10,7 @@ namespace ArtificialIntelligence.Utility
     /// Observes changes on sensors and calls the Utility system
     /// to start new behaviours
     /// </summary>
-    
+    [RequireComponent(typeof(BrainLoader))]
     public class AgentBrain : MonoBehaviour, IAgentBrain
     {
         [SerializeField, Tooltip("The brain will tell the Utility System class to pick an option based on this heuristic")]
