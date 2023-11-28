@@ -16,6 +16,7 @@ namespace Utility
             using StreamWriter writer = new StreamWriter(path);
             writer.Write(jsonString);
         }
+
         public static string SerializeData<T>(T data, JsonConverter jc)
         {
             // generate serializer setting
@@ -34,6 +35,7 @@ namespace Utility
                 jsonSerializerSettings
                 );
         }
+
         public static string SerializeData<T>(T data, List<JsonConverter> jc)
         {
             // generate serializer setting
@@ -58,6 +60,7 @@ namespace Utility
                 jsonSerializerSettings
                 );
         }
+
         public static string SerializeData<T>(T data)
         {
             // generate serializer setting
@@ -76,6 +79,8 @@ namespace Utility
                 jsonSerializerSettings
                 );
         }
+
+
         public static void SaveData<T>(string directoryName, string fileName, T data)
         {
             string directoryPath = directoryName;

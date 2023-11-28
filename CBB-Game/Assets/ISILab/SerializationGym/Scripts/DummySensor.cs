@@ -1,6 +1,7 @@
 using ArtificialIntelligence.Utility;
 using CBB.Api;
 using CBB.Lib;
+using Generic;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class DummySensor : Sensor
     public string StringProperty { get; set; }
 
 
+
     public override SensorStatus GetSensorData()
     {
         StringProperty = "Hola";
@@ -32,6 +34,16 @@ public class DummySensor : Sensor
     }
 
     public override string SerializeSensor()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void SetParams(DataGeneric data)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override DataGeneric GetGeneric()
     {
         throw new NotImplementedException();
     }

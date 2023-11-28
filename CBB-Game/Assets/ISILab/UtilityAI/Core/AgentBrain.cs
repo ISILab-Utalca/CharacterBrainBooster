@@ -1,4 +1,6 @@
 using ArtificialIntelligence.Utility.Actions;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -28,6 +30,9 @@ namespace ArtificialIntelligence.Utility
         private ActionRunner _actionRunner;
 
         public BubbleText panelText;
+
+        public UtilityDecisionMaker.PickMethod PickMethod { get => _pickMethod; set => _pickMethod = value; }
+        public int TopN { get => topN; set => topN = value; }
 
         public System.Action<List<Option>> OnCompletedScoring { get; set; }
         public System.Action OnSetupDone { get; set; }
@@ -118,6 +123,32 @@ namespace ArtificialIntelligence.Utility
                 sensor.OnSensorUpdate -= TryStartNewAction;
                 sensor.OnSensorUpdate -= OnSensorUpdate;
             }
+        }
+    }
+
+
+    public class AgentBrainConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(AgentBrain);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            var value = serializer.Deserialize<AgentBrain>(reader);
+            return value;
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var sensor = (AgentBrain)value;
+
+            writer.WriteStartObject();
+            writer.WritePropertyName("PickMethod");
+            writer.WriteValue(sensor.PickMethod);
+
+            writer.WriteEndObject();
         }
     }
 }

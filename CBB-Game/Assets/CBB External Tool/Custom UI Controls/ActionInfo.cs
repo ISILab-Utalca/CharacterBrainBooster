@@ -28,7 +28,7 @@ namespace CBB.ExternalTool
             TargetName = this.Q<Label>("target-name");
             ActionScore = this.Q<Label>("action-score");
             TimeStamp = this.Q<Label>("timestamp");
-            ActionID = this.Q<Label>("action-id");
+            ActionID = this.Q<Label>("action-agent_ID");
 
         }
     }

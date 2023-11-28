@@ -1,3 +1,4 @@
+using Generic;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,6 +58,16 @@ namespace ArtificialIntelligence.Utility.Actions
             }
             if (viewLogs) Debug.Log($"{gameObject.name} finished chasing {target.name}");
             FinishExecution();
+        }
+
+        public override void SetParams(DataGeneric data)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override DataGeneric GetGeneric()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

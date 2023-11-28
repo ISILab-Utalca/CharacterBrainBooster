@@ -1,3 +1,4 @@
+using Generic;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -70,6 +71,16 @@ namespace ArtificialIntelligence.Utility.Actions
             if (viewLogs) Debug.LogWarning($"CAUTION: UNLOCKING ACTION EXECUTION ON {gameObject.name}.\nUnlocked action: {this}");
             if (viewLogs) Debug.Log($"Run away finished on {gameObject.name}");
             FinishExecution();
+        }
+
+        public override void SetParams(DataGeneric data)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override DataGeneric GetGeneric()
+        {
+            throw new System.NotImplementedException();
         }
         #endregion
     }

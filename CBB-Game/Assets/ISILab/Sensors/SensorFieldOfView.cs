@@ -1,4 +1,8 @@
 using ArtificialIntelligence.Utility;
+using CBB.Lib;
+using Generic;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
@@ -66,7 +70,6 @@ namespace CBB.Lib
         {
             base.Awake();
             boxCollider = GetComponent<BoxCollider>();
-
         }
 
         private void OnTriggerEnter(Collider other)
@@ -96,9 +99,54 @@ namespace CBB.Lib
         {
             painter.DrawCilinder(this.transform.position, 5, 3, Vector3.up, Color.red);
         }
+
         public override SensorStatus GetSensorData()
         {
             throw new System.NotImplementedException();
+        }
+
+        public override void SetParams(DataGeneric data)
+        {
+            this.HorizontalFOV = (float)data.Get("HorizontalFOV").Getvalue();
+            this.VerticalFOV = (float)data.Get("VerticalFOV").Getvalue();
+            this.FrontalFOV = (float)data.Get("FrontalFOV").Getvalue();
+        }
+
+        public override DataGeneric GetGeneric()
+        {
+            var data = new DataGeneric(typeof(SensorFieldOfView));
+            data.Add(new WraperNumber { name = "HorizontalFOV", value = HorizontalFOV });
+            data.Add(new WraperNumber { name = "VerticalFOV", value = VerticalFOV });
+            data.Add(new WraperNumber { name = "FrontalFOV", value = FrontalFOV });
+            return data;
+        }
+    }
+
+    public class SensorFieldOfViewConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(SensorFieldOfView);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            var value = serializer.Deserialize<SensorFieldOfView>(reader);
+            return value;
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var sensor = (SensorFieldOfView)value;
+
+            writer.WriteStartObject();
+            writer.WritePropertyName("HorizontalFOV");
+            writer.WriteValue(sensor.HorizontalFOV);
+            writer.WritePropertyName("VerticalFOV");
+            writer.WriteValue(sensor.VerticalFOV);
+            writer.WritePropertyName("FrontalFOV");
+            writer.WriteValue(sensor.FrontalFOV);
+            writer.WriteEndObject();
         }
     }
 }

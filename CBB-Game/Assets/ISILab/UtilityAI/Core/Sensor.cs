@@ -1,5 +1,6 @@
 using CBB.InternalTool;
 using CBB.Lib;
+using Generic;
 using System;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace ArtificialIntelligence.Utility
     /// A "Sensor" should only care (update) about one aspect (property)
     /// of the Agent attached to, e.g. it's health.
     /// </summary>
-    public abstract class Sensor : MonoBehaviour, ISensor
+    public abstract class Sensor : MonoBehaviour, ISensor, IGeneric
     {
         // Event for when the sensor detects something
         protected LocalAgentMemory _agentMemory;
@@ -49,6 +50,10 @@ namespace ArtificialIntelligence.Utility
         public abstract SensorStatus GetSensorData();
 
         public abstract string SerializeSensor();
+
+        public abstract void SetParams(DataGeneric data);
+
+        public abstract DataGeneric GetGeneric();
     }
 }
 

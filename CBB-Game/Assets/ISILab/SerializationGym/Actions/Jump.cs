@@ -1,4 +1,5 @@
 using ArtificialIntelligence.Utility;
+using Generic;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -63,6 +64,16 @@ namespace CBB.InternalTool
             IsBlocked = false;
 
             FinishExecution();
+        }
+
+        public override void SetParams(DataGeneric data)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override DataGeneric GetGeneric()
+        {
+            throw new System.NotImplementedException();
         }
         #endregion
 

@@ -1,3 +1,4 @@
+using Generic;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace ArtificialIntelligence.Utility
     /// Base class for any action that the AI agent can perform.
     /// </summary>
     [RequireComponent(typeof(NavMeshAgent),typeof(LocalAgentMemory))]
-    public abstract class ActionState : MonoBehaviour, IAction
+    public abstract class ActionState : MonoBehaviour, IAction, IGeneric
     {
         #region Fields
         [Header("Action general settings")]
@@ -178,6 +179,10 @@ namespace ArtificialIntelligence.Utility
         {
             return _considerations;
         }
+
+        public abstract void SetParams(DataGeneric data);
+
+        public abstract DataGeneric GetGeneric();
         #endregion
     }
 }

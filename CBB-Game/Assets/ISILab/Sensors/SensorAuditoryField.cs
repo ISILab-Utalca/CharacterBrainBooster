@@ -1,13 +1,17 @@
 using ArtificialIntelligence.Utility;
 using CBB.Api;
 using CBB.Lib;
+using Generic;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using Utility;
 
+[RequireComponent(typeof(SphereCollider))]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class SensorAuditoryField : Sensor
+public class SensorAuditoryField : Sensor, IGeneric
 {
     [Header("Memory")]
     [SensorMemory]
@@ -101,7 +105,7 @@ public class SensorAuditoryField : Sensor
 
     protected override void RenderGui(GLPainter painter)
     {
-        painter.DrawCircle(this.transform.position, hearingRadius, Vector3.up, Color.green);
+        painter.DrawCircle(this.transform.position, hearingRadius, UnityEngine.Vector3.up, Color.green);
     }
 
     public override SensorStatus GetSensorData()
@@ -114,5 +118,44 @@ public class SensorAuditoryField : Sensor
         };
         return sensorData;
     }
+
+    public override void SetParams(DataGeneric data)
+    {
+        this.HearingRadius = (float)data.Get("HearingRadius").Getvalue();
+    }
+
+    public override DataGeneric GetGeneric()
+    {
+        var data = new DataGeneric(typeof(SensorAuditoryField));
+        data.Add(new WraperNumber { name = "HearingRadius", value = this.HearingRadius });
+        return data;
+    }
     #endregion
+}
+
+public class AuditoryFieldConverter : JsonConverter
+{
+    public override bool CanConvert(Type objectType)
+    {
+        return objectType == typeof(SensorAuditoryField);
+    }
+
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    {
+        var value = serializer.Deserialize<SensorAuditoryField>(reader);
+        return value;
+
+        //var value = serializer.Deserialize(reader);
+        //return JsonConvert.DeserializeObject<SensorAuditoryField>(value.ToString());
+    }
+
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    {
+        var sensor = (SensorAuditoryField)value;
+
+        writer.WriteStartObject();
+        writer.WritePropertyName("HearingRadius");
+        writer.WriteValue(sensor.HearingRadius);
+        writer.WriteEndObject();
+    }
 }
