@@ -7,11 +7,14 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.ComponentModel;
 
 namespace CBB.ExternalTool
 {
     public class HistoryPanelController : MonoBehaviour, IMessageHandler
     {
+
+        public bool logDebug = false;
         readonly JsonSerializerSettings settings = new()
         {
             NullValueHandling = NullValueHandling.Include,
@@ -63,6 +66,8 @@ namespace CBB.ExternalTool
             list.itemsSource = packages;
             list.selectionChanged += ShowSelectedDetail;
 
+            var ve = list.Q<VisualElement>("unity-content-container");
+            ve.style.flexDirection = FlexDirection.ColumnReverse;
             // Show dropdown
             this.showField = historyPanel.Q<EnumField>();
             showField.value = HistoryPanel.ShowType.Decisions;
@@ -74,21 +79,23 @@ namespace CBB.ExternalTool
 
         private void ShowSelectedDetail(IEnumerable<object> enumerable)
         {
-            if(enumerable.Count() <= 0)
+            if (enumerable.Count() <= 0)
             {
                 detailPanelController.ClearDetails();
                 return;
             }
-
             var selected = enumerable.ToArray()[0];
 
-            if(selected is DecisionPackage decision)
+            if (selected is DecisionPackage decision)
             {
+                if(logDebug) Debug.Log("Selection changed on History Panel to Decision Package\n" +
+                    "(Time stamp): " + decision.timestamp + "\nAgent ID: " + decision.agentID);
                 detailPanelController.DisplayDecisionDetails(decision);
             }
-            else if(selected is SensorPackage sensor)
+            else if (selected is SensorPackage sensor)
             {
-               detailPanelController.DisplaySensorDetails(sensor);
+                if(logDebug) Debug.Log("Selection changed on History Panel to Sensor Package (Time stamp): " + sensor.timestamp);
+                detailPanelController.DisplaySensorDetails(sensor);
             }
         }
 
@@ -100,6 +107,7 @@ namespace CBB.ExternalTool
                 pack = JsonConvert.DeserializeObject<DecisionPackage>(message, settings);
                 if (pack is DecisionPackage)
                 {
+                    if (logDebug) Debug.Log("Decision Package received");
                     GameData.HandleDecisionPackage(pack);
                 }
             }
@@ -110,6 +118,7 @@ namespace CBB.ExternalTool
                 pack = JsonConvert.DeserializeObject<SensorPackage>(message, settings);
                 if (pack is SensorPackage)
                 {
+                    if (logDebug) Debug.Log("Sensor Package received");
                     GameData.HandleDecisionPackage(pack);
                 }
             }
@@ -118,24 +127,29 @@ namespace CBB.ExternalTool
             // Update the view only if necessary
             if (pack?.agentID == currentlySelectedAgentID)
             {
-                UpdateHistoryPanelView(pack.agentID);
+                UpdateHistoryPanelView();
             }
         }
-
+        private void UpdateHistoryPanelView()
+        {
+            list.Rebuild();
+        }
         public void UpdateHistoryPanelView(int agentID)
         {
-            list.ClearClassList();
+            //list.ClearClassList();
 
             currentlySelectedAgentID = agentID;
             packages = GameData.GetHistory(currentlySelectedAgentID);
             list.itemsSource = packages;
-            list.RefreshItems();
+            list.Rebuild();
+            //list.RefreshItems();
         }
 
         private VisualElement MakeItem()
         {
             var content = new VisualElement();
             content.style.flexGrow = 0;
+            content.focusable = true;
             /*
             var a = new ActionInfo();
             a.name = "Action";
@@ -150,20 +164,21 @@ namespace CBB.ExternalTool
 
         private void BindItem(VisualElement element, int index)
         {
-            var rIndex = packages.Count - 1 - index;
-
-            switch(showType)
+            switch (showType)
             {
                 case HistoryPanel.ShowType.Decisions:
-                    if (packages[rIndex] is DecisionPackage desition)
+                    if (packages[index] is DecisionPackage desition)
                     {
                         var view = new ActionInfo();
                         element.Add(view);
-                        BindActionItem(desition, rIndex, view);
+
+                        //element = new ActionInfo();
+                        //BindActionItem(desition, rIndex, view);
+                        BindActionItem(desition, (int)index, view, ref element);
                     }
                     break;
                 case HistoryPanel.ShowType.SensorEvents:
-                    if (packages[rIndex] is SensorPackage sensor)
+                    if (packages[index] is SensorPackage sensor)
                     {
                         var view = new SensorInfo();
                         element.Add(view);
@@ -171,13 +186,13 @@ namespace CBB.ExternalTool
                     }
                     break;
                 case HistoryPanel.ShowType.Both:
-                    if (packages[rIndex] is DecisionPackage desition2)
+                    if (packages[index] is DecisionPackage desition2)
                     {
                         var view = new ActionInfo();
                         element.Add(view);
-                        BindActionItem(desition2, rIndex, view);
+                        BindActionItem(desition2, (int)index, view);
                     }
-                    else if (packages[rIndex] is SensorPackage sensor2)
+                    else if (packages[index] is SensorPackage sensor2)
                     {
                         var view = new SensorInfo();
                         element.Add(view);
@@ -197,8 +212,12 @@ namespace CBB.ExternalTool
             sensorInfo.SensorName.text = sensor.sensorType;
             sensorInfo.ExtraInfo.text = sensor.extraData;
         }
-
-        private void BindActionItem(DecisionPackage decision,int index, ActionInfo actionPanel)
+        private void BindActionItem(DecisionPackage decision, int index, ActionInfo actionPanel, ref VisualElement element)
+        {
+            element = element as ActionInfo;
+            BindActionItem(decision, index, actionPanel);
+        }
+        private void BindActionItem(DecisionPackage decision, int index, ActionInfo actionPanel)
         {
             actionPanel.style.display = DisplayStyle.Flex;
 
