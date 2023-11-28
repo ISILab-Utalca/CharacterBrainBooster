@@ -187,7 +187,7 @@ namespace CBB.ExternalTool
                     {
                         var view = new ActionInfo();
                         element.Add(view);
-                        BindActionItem(desition2, (int)index, view);
+                        BindActionItem(desition2, index, view);
                     }
                     else if (packages[index] is SensorPackage sensor2)
                     {
