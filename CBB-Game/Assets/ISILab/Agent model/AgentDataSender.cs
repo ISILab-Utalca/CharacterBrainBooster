@@ -123,7 +123,6 @@ namespace CBB.Api
             foreach (ISensor sensor in agentBrain.Sensors)
             {
                 sensor.OnSensorUpdate += (s) => {
-                    var x = 1;
                     ReceiveSensorUpdateHandler(s); 
                 };
             }

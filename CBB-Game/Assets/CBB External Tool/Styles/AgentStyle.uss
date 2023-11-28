@@ -53,7 +53,6 @@
 
 .agent-text {
     flex-grow: 0;
-    background-color: rgba(0, 0, 0, 0);
     justify-content: center;
     width: 50%;
     padding-left: 9px;

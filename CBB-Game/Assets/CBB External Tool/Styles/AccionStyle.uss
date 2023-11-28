@@ -23,7 +23,7 @@
     flex-shrink: 1;
     justify-content: flex-start;
     flex-grow: 1;
-    background-color: rgba(48, 48, 48, 0);
+    background-color: rgb(48, 48, 48);
     transition-duration: 0.5s;
 }
 
@@ -55,7 +55,7 @@
     flex-shrink: 1;
     justify-content: flex-start;
     flex-grow: 1;
-    background-color: rgb(40, 40, 40);
+    background-color: rgb(15, 18, 70);
     border-left-color: rgb(89, 117, 191);
     border-left-width: 4px;
 }
