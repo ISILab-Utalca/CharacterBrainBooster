@@ -171,10 +171,7 @@ namespace CBB.ExternalTool
                     {
                         var view = new ActionInfo();
                         element.Add(view);
-
-                        //element = new ActionInfo();
-                        //BindActionItem(desition, rIndex, view);
-                        BindActionItem(desition, (int)index, view, ref element);
+                        BindActionItem(desition, index, view);
                     }
                     break;
                 case HistoryPanel.ShowType.SensorEvents:
@@ -212,11 +209,7 @@ namespace CBB.ExternalTool
             sensorInfo.SensorName.text = sensor.sensorType;
             sensorInfo.ExtraInfo.text = sensor.extraData;
         }
-        private void BindActionItem(DecisionPackage decision, int index, ActionInfo actionPanel, ref VisualElement element)
-        {
-            element = element as ActionInfo;
-            BindActionItem(decision, index, actionPanel);
-        }
+        
         private void BindActionItem(DecisionPackage decision, int index, ActionInfo actionPanel)
         {
             actionPanel.style.display = DisplayStyle.Flex;
