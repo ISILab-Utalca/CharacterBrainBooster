@@ -17,6 +17,24 @@ public static class DataLoader
     public static List<Brain> brains = new List<Brain>();
     private static PairBrainData table;
 
+    public static string Path
+    {
+        get
+        {
+#if UNITY_EDITOR
+            // load considerations from the editor folder
+            return Application.dataPath + "/Resources";
+#else
+        // load considerations from the build folder
+        var dataPath = Application.dataPath;
+        var path = dataPath.Replace("/" + Application.productName +"_Data", "");
+        return path;
+#endif
+        }
+    }
+
+
+
     /// <summary>
     /// Get loaded brain by index
     /// </summary>
@@ -49,6 +67,7 @@ public static class DataLoader
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Init()
     {
+        /*
 #if UNITY_EDITOR
         // load considerations from the editor folder
         LoadBrain(Application.dataPath + "/Resources/Brains");
@@ -59,7 +78,11 @@ public static class DataLoader
         var path = dataPath.Replace("/" + Application.productName +"_Data", "");
         LoadBrain(path + "/Brains");
         LoadPairs(path);
-#endif
+#endif*/
+
+        LoadBrain(Path + "/Brains");
+        LoadPairs(Path);
+
         Debug.Log("Loaded: " + brains.Count + " brains.");
     }
 
@@ -98,6 +121,12 @@ public static class DataLoader
             }
         }
     }
+    
+    public static void SaveBrain(Brain brain)
+    {
+        JSONDataManager.SaveData(Path + "/Brains", brain.brain_ID, "brain", brain);
+        brains.Add(brain);
+    }   
 }
 
 [System.Serializable]

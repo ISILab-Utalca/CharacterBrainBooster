@@ -9,6 +9,9 @@ using UnityEngine;
 
 public class BrainLoader : MonoBehaviour
 {
+    [Tooltip("Generate a brain file if it doesn't exist.")]
+    public bool CrerateBrain = false;
+
     public string agent_ID;
 
     private List<ActionState> actionStates = new List<ActionState>();
@@ -22,7 +25,35 @@ public class BrainLoader : MonoBehaviour
         // Load brain data
         DataLoader.Init();
         var brain = DataLoader.GetBrainByAgentID(agent_ID);
-        Init(brain);
+
+        if (brain != null)
+        {
+            Init(brain);
+        }
+        else if (CrerateBrain)
+        {
+            CreateBrainFile();
+        }
+    }
+
+    public void CreateBrainFile()
+    {
+        var brain = new Brain();
+        brain.brain_ID = agent_ID;
+        brain.serializedActions = new List<DataGeneric>();
+        brain.serializedSensors = new List<DataGeneric>();
+
+        for (int i = 0; i < actionStates.Count; i++)
+        {
+            brain.serializedActions.Add(actionStates[i].GetGeneric());
+        }
+
+        for (int i = 0; i < sensors.Count; i++)
+        {
+            brain.serializedSensors.Add(sensors[i].GetGeneric());
+        }
+
+        DataLoader.SaveBrain(brain);
     }
 
     public void FindBHsReferences()
