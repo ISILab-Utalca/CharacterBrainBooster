@@ -4,6 +4,13 @@
   "pairs": {
     "$id": "2",
     "$type": "System.Collections.Generic.List`1[[PairBrainData+PairBrain, Assembly-CSharp]], mscorlib",
-    "$values": []
+    "$values": [
+      {
+        "$id": "3",
+        "$type": "PairBrainData+PairBrain, Assembly-CSharp",
+        "agent_ID": "asdfghjkl",
+        "brain_ID": "asdfghjkl"
+      }
+    ]
   }
 }

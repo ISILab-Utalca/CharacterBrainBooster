@@ -169,7 +169,7 @@ namespace Utility
             return LoadData<T>(dataPath);
         }
 
-        public static object LoadData(string json)
+        private static object LoadData(string json)
         {
             // generate serializer setting
             var jsonSerializerSettings = new JsonSerializerSettings()

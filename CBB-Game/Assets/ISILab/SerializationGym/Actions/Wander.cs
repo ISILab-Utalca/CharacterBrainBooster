@@ -86,7 +86,7 @@ namespace CBB.InternalTool
 
         public override DataGeneric GetGeneric()
         {
-            var data = new DataGeneric(typeof(Wander));
+            var data = new DataGeneric() { ClassType = typeof(Wander) };
             data.Add(new WraperNumber { name = "MinWaitTimer", value = _minWaitTimer });
             data.Add(new WraperNumber { name = "MaxWaitTimer", value = _maxWaitTimer });
             data.Add(new WraperNumber { name = "WalkRadius", value = _walkRadius });

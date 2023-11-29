@@ -79,7 +79,7 @@ public static class Globals
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void OnBeforeSceneLoadRuntimeMethod()
     {
-        Debug.Log("<b><color=#d4fffeff>[CBB]</color>:</b> LoadPairs all variables");
+        Debug.Log("<b><color=#d4fffeff>[CBB]</color>:</b> LoadTable all variables");
         var agentTypes = UtilitySystem.CollectAgentTypes();
         var allVariables = agentTypes.Select(t => UtilitySystem.CollectVariables(t)).ToList();
 
