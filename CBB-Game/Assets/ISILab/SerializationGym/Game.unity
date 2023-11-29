@@ -447,6 +447,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Villager_0
       objectReference: {fileID: 0}
+    - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1650,8 +1654,6 @@ MonoBehaviour:
   testNum: 0
   brain:
     brainName: 
-    pickMethod: 0
-    topN: 0
 --- !u!4 &563929505
 Transform:
   m_ObjectHideFlags: 0
@@ -2040,6 +2042,10 @@ PrefabInstance:
     - target: {fileID: 4853649445717935730, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_Name
       value: Villager_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2618,6 +2624,7 @@ GameObject:
   - component: {fileID: 874170269}
   - component: {fileID: 874170272}
   - component: {fileID: 874170273}
+  - component: {fileID: 874170274}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Enemy
@@ -2712,7 +2719,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1f9064c50539894184a31a659a0880a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NeedAServer: 0
   showLogs: 0
 --- !u!195 &874170268
 NavMeshAgent:
@@ -2827,6 +2833,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 15cfe75fa5e2af14d833fd13329f4575, type: 2}
   <ActionCooldown>k__BackingField: 0
   damage: 20
+--- !u!114 &874170274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874170259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 013f8358b5a518c4fa775a22165b5193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CrerateBrain: 0
+  agent_ID: Goblin
 --- !u!1 &955458972
 GameObject:
   m_ObjectHideFlags: 0
@@ -3600,6 +3620,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Villager_5
       objectReference: {fileID: 0}
+    - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4316,6 +4340,10 @@ PrefabInstance:
     - target: {fileID: 4853649445717935730, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_Name
       value: Villager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9130257367612415918, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: viewLogs
@@ -5700,6 +5728,10 @@ PrefabInstance:
     - target: {fileID: 4853649445717935730, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_Name
       value: Villager_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

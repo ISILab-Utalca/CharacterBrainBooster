@@ -38,8 +38,6 @@ namespace CBB.Api
     public class AgentDataSender : MonoBehaviour
     {
         [SerializeField]
-        private bool NeedAServer = false;
-        [SerializeField]
         private bool showLogs = false;
 
         private IAgent agentComp;
@@ -58,21 +56,18 @@ namespace CBB.Api
             agentID = gameObject.GetInstanceID();
             agentBrain = GetComponent<IAgentBrain>();
 
-
-            agentBrain.OnDecisionTaken += ReceiveDecisionHandler;
+            agentBrain.OnDecisionTaken += SendDecision;
             agentBrain.OnSetupDone += SubscribeToSensors;
 
-            Server.OnNewClientConnected += SendAgentInitialDataToClient;
         }
         private void OnDestroy()
         {
-            agentBrain.OnDecisionTaken -= ReceiveDecisionHandler;
+            agentBrain.OnDecisionTaken -= SendDecision;
             agentBrain.OnSetupDone -= SubscribeToSensors;
             SendDataToAllClients(AgentWrapper.AgentStateType.DESTROYED);
-            Server.OnNewClientConnected -= SendAgentInitialDataToClient;
         }
 
-        private void ReceiveSensorUpdateHandler(ISensor sensor)
+        private void SendSensorUpdate(ISensor sensor)
         {
             var status = sensor.GetSensorData();
 
@@ -88,7 +83,7 @@ namespace CBB.Api
             SendDataToAllClients();
         }
 
-        private void ReceiveDecisionHandler(Option best, List<Option> otherOptions)
+        private void SendDecision(Option best, List<Option> otherOptions)
         {
             var decisionPackage = new DecisionPackage
             {
@@ -102,7 +97,7 @@ namespace CBB.Api
                 decisionPackage.otherOptions.Add(new DecisionData(option));
             }
             SendDataToAllClients(decisionPackage);
-            // We also need to send the agent state when OnDecisionTaken is fired
+            // We also need to send the agent state
             SendDataToAllClients();
         }
         private string SerializeAgentWrapperData(AgentWrapper.AgentStateType type = AgentWrapper.AgentStateType.CURRENT)
@@ -118,42 +113,35 @@ namespace CBB.Api
                 };
             return JSONDataManager.SerializeData(wrap, converters);
         }
+        /// <summary>
+        /// Subscribe to the Update event and send its information
+        /// </summary>
         private void SubscribeToSensors()
         {
             foreach (ISensor sensor in agentBrain.Sensors)
             {
-                sensor.OnSensorUpdate += (s) => {
-                    ReceiveSensorUpdateHandler(s); 
+                sensor.OnSensorUpdate += (s) =>
+                {
+                    SendSensorUpdate(s);
                 };
             }
         }
 
-        private void SendAgentInitialDataToClient(TcpClient client)
+        private void SendDataToAllClients(AgentPackage package)
         {
-            var data = SerializeAgentWrapperData(AgentWrapper.AgentStateType.NEW);
-            Server.SendMessageToClient(client, data);
-            Debug.Log("[AGENT DATA SENDER] Initial data sent to the Server");
-        }
-        private void SendDataToAllClients(AgentPackage decisionPackage)
-        {
-            var data = JSONDataManager.SerializeData(decisionPackage);
-            if (!NeedAServer)
+            if (!Server.IsRunning)
             {
-                if (showLogs)
-                {
-                    Debug.Log($"{name} has sent {decisionsSent} Packages");
-                    Debug.Log($"Data sent: {data}");
-                }
+                Debug.LogWarning("[AGENT DATA SENDER] Server is not running");
+                return;
             }
-            if (!Server.IsRunning) return;
+            var data = JSONDataManager.SerializeData(package);
             try
             {
                 Server.SendMessageToAllClients(data);
                 decisionsSent++;
                 if (showLogs)
                 {
-                    Debug.Log($"{name} has sent {decisionsSent} Packages");
-                    Debug.Log($"Data sent: {data}");
+                    Debug.Log($"[AGENT DATA SENDER {gameObject.name}] has sent {decisionsSent} packages:\n{package}");  
                 }
             }
             catch (System.Exception e)
@@ -164,7 +152,6 @@ namespace CBB.Api
         }
         public void SendDataToAllClients(AgentWrapper.AgentStateType type = AgentWrapper.AgentStateType.CURRENT)
         {
-            if (!NeedAServer) return;
             if (!Server.IsRunning) return;
             try
             {
@@ -174,8 +161,7 @@ namespace CBB.Api
                 dataSent++;
                 if (showLogs)
                 {
-                    Debug.Log($"{name} has sent {dataSent} data Packages");
-                    Debug.Log($"Data sent: {data}");
+                    Debug.Log($"[AGENT DATA SENDER {gameObject.name}] sent {dataSent} Agent Wrapper: {data}");
                 }
             }
             catch (System.Exception e)
