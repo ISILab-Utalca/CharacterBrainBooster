@@ -11,6 +11,9 @@ namespace CBB.ExternalTool
 
     public class AgentsPanelController : MonoBehaviour, IMessageHandler
     {
+        [SerializeField]
+        private bool showLogs;
+
         private HistoryPanelController historyPanel;
         private AgentsPanel agentsPanel;
         internal ListView list;
@@ -34,8 +37,6 @@ namespace CBB.ExternalTool
             list.makeItem += MakeItem;
             list.selectionChanged += NewAgentSelected;
 
-            //list.itemsChosen += NewAgentSelected;
-
             GameData.OnAddAgent += Refresh;
         }
         private void OnEnable()
@@ -48,7 +49,7 @@ namespace CBB.ExternalTool
             ExternalMonitor.OnMessageReceived -= HandleMessage;
         }
 
-        private VisualElement MakeItem() // hacer que esto sea un solo viewElement (!!!)
+        private VisualElement MakeItem()
         {
             return new AgentInfo();
         }
@@ -62,13 +63,14 @@ namespace CBB.ExternalTool
         }
         internal void Refresh(AgentData agent)
         {
-            list.RefreshItems();
-            //Debug.Log("[AGENT PANEL] Agents list updated");
+            list.Rebuild();
+            if (showLogs) Debug.Log("[AGENT PANEL] Agents list updated");
         }
         private void NewAgentSelected(IEnumerable<object> agents)
         {
-            // Go to the History panel and update its list, based on the selected agent ID
-            historyPanel.UpdateHistoryPanelView( (((int,string))agents.First()).Item1 );
+
+            var agentID = (((int, string))agents.First()).Item1;
+            historyPanel.UpdateHistoryPanelView(agentID);
         }
         public void HandleMessage(string message)
         {
@@ -77,17 +79,13 @@ namespace CBB.ExternalTool
                 var agentWrapper = JsonConvert.DeserializeObject<AgentWrapper>(message, settings);
                 // Pass to the model side of the app
                 GameData.HandleAgentWrapper(agentWrapper);
-                // Update the UI
-                //if (agentWrapper.type == AgentWrapper.AgentStateType.NEW)
-                list.RefreshItems();
-                return;
+                
+                if (showLogs)
+                {
+                    Debug.Log($"AgentWrapper received on {gameObject.name}:{this.name}");
+                }
             }
-            catch (System.Exception)
-            {
-                //Debug.Log("<color=red>[AGENTS PANEL CONTROLLER] Message is not an AgentWrapper: </color>" + ex);
-            }
+            catch (System.Exception) { }
         }
-
     }
-
 }
