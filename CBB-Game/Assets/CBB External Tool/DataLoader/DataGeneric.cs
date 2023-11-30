@@ -18,18 +18,19 @@ namespace Generic
     [System.Serializable]
     public class DataGeneric
     {
+        [SerializeField,JsonRequired]
         private string classType;
 
-        [SerializeReference]
+        [SerializeField, SerializeReference, JsonRequired]
         private List<WraperValue> values = new List<WraperValue>();
 
         [JsonIgnore]
-        public Type ClassType { get => Type.GetType(classType); }
-
-        public DataGeneric(Type type)
-        {
-            classType = type.ToString();
+        public Type ClassType { 
+            get => Type.GetType(classType); 
+            set => classType = value.ToString(); 
         }
+
+        public DataGeneric() { }
 
         public void Add(WraperValue wraper)
         {

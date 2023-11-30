@@ -2845,8 +2845,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013f8358b5a518c4fa775a22165b5193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CrerateBrain: 0
-  agent_ID: Goblin
+  _default: 0
+  createBrain: 0
+  agent_ID: 
 --- !u!1 &955458972
 GameObject:
   m_ObjectHideFlags: 0
@@ -4333,6 +4334,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1796074598853799715, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: showLogs
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2177107222128649367, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: viewLogs
       value: 0
@@ -4342,8 +4347,12 @@ PrefabInstance:
       value: Villager
       objectReference: {fileID: 0}
     - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
-      propertyPath: m_Enabled
-      value: 0
+      propertyPath: agent_ID
+      value: asdfghjkl
+      objectReference: {fileID: 0}
+    - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: createBrain
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9130257367612415918, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: viewLogs

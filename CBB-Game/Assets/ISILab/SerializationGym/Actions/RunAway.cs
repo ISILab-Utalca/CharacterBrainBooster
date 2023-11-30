@@ -76,13 +76,13 @@ namespace ArtificialIntelligence.Utility.Actions
         public override void SetParams(DataGeneric data)
         {
             this.safeDistance = (float)data.Get("safeDistance").Getvalue();
-            this.runSpeed = (int)data.Get("runSpeed").Getvalue();
+            this.runSpeed = (int)(float)data.Get("runSpeed").Getvalue();
             this.pauseAfterRunning = (float)data.Get("pauseAfterRunning").Getvalue();
         }
 
         public override DataGeneric GetGeneric()
         {
-            var data = new DataGeneric(typeof(RunAway));
+            var data = new DataGeneric() { ClassType = typeof(RunAway) };
             data.Add(new WraperNumber { name = "safeDistance", value = safeDistance });
             data.Add(new WraperNumber { name = "runSpeed", value = runSpeed });
             data.Add(new WraperNumber { name = "pauseAfterRunning", value = pauseAfterRunning });

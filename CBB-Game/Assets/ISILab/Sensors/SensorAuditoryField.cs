@@ -126,7 +126,8 @@ public class SensorAuditoryField : Sensor, IGeneric
 
     public override DataGeneric GetGeneric()
     {
-        var data = new DataGeneric(typeof(SensorAuditoryField));
+        var data = new DataGeneric() { ClassType = typeof(SensorAuditoryField) };
+
         data.Add(new WraperNumber { name = "HearingRadius", value = this.HearingRadius });
         return data;
     }
