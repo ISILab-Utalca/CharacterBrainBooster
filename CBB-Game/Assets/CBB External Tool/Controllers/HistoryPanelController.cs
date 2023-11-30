@@ -8,13 +8,14 @@ using UnityEngine.UIElements;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace CBB.ExternalTool
 {
     public class HistoryPanelController : MonoBehaviour, IMessageHandler
     {
 
-        public bool logDebug = false;
+        public bool showLogs = false;
         readonly JsonSerializerSettings settings = new()
         {
             NullValueHandling = NullValueHandling.Include,
@@ -22,7 +23,6 @@ namespace CBB.ExternalTool
             TypeNameHandling = TypeNameHandling.Auto,
         };
         private DetailPanelController detailPanelController;
-        private ObservableCollection<AgentPackage> packages;
         private HistoryPanel historyPanel;
         private ListView list;
         private EnumField showField;
@@ -30,27 +30,6 @@ namespace CBB.ExternalTool
         private int currentlySelectedAgentID = -1;
         private Label historyPanelTitle;
         private Label detailsPanelTitle;
-
-        /*
-        private ObservableCollection<AgentPackage> Packages
-        {
-            get
-            {
-                if(showType == HistoryPanel.ShowType.Decisions)
-                {
-                    return new ObservableCollection<AgentPackage>(packages.Where(x => x is DecisionPackage));
-                }
-                else if(showType == HistoryPanel.ShowType.SensorEvents)
-                {
-                    return new ObservableCollection<AgentPackage>(packages.Where(x => x is SensorPackage));
-                }
-                else
-                {
-                    return packages;
-                }
-            }
-        }
-        */
 
         private void Awake()
         {
@@ -63,11 +42,9 @@ namespace CBB.ExternalTool
             this.list = historyPanel.Q<ListView>();
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
-            list.itemsSource = packages;
+            
             list.selectionChanged += ShowSelectedDetail;
-
-            var ve = list.Q<VisualElement>("unity-content-container");
-            ve.style.flexDirection = FlexDirection.ColumnReverse;
+            list.selectedIndicesChanged += ShowSelectedDetail;
             // Show dropdown
             this.showField = historyPanel.Q<EnumField>();
             showField.value = HistoryPanel.ShowType.Decisions;
@@ -75,6 +52,11 @@ namespace CBB.ExternalTool
 
             detailPanelController = GetComponent<DetailPanelController>();
             ExternalMonitor.OnMessageReceived += HandleMessage;
+        }
+
+        private void ShowSelectedDetail(IEnumerable<int> enumerable)
+        {
+            int rIndex = list.itemsSource.Count - enumerable.First() - 1;
         }
 
         private void ShowSelectedDetail(IEnumerable<object> enumerable)
@@ -88,13 +70,13 @@ namespace CBB.ExternalTool
 
             if (selected is DecisionPackage decision)
             {
-                if(logDebug) Debug.Log("Selection changed on History Panel to Decision Package\n" +
+                if(showLogs) Debug.Log("Selection changed on History Panel to Decision Package\n" +
                     "(Time stamp): " + decision.timestamp + "\nAgent ID: " + decision.agentID);
                 detailPanelController.DisplayDecisionDetails(decision);
             }
             else if (selected is SensorPackage sensor)
             {
-                if(logDebug) Debug.Log("Selection changed on History Panel to Sensor Package (Time stamp): " + sensor.timestamp);
+                if(showLogs) Debug.Log("Selection changed on History Panel to Sensor Package (Time stamp): " + sensor.timestamp);
                 detailPanelController.DisplaySensorDetails(sensor);
             }
         }
@@ -105,95 +87,89 @@ namespace CBB.ExternalTool
             try
             {
                 pack = JsonConvert.DeserializeObject<DecisionPackage>(message, settings);
-                if (pack is DecisionPackage)
+                if (pack is DecisionPackage dp)
                 {
-                    if (logDebug) Debug.Log("Decision Package received");
-                    GameData.HandleDecisionPackage(pack);
+                    if (showLogs) Debug.Log("Decision Package received");
+                    GameData.HandleDecisionPackage(dp);
                 }
             }
             catch (Exception) { }
-
             try
             {
                 pack = JsonConvert.DeserializeObject<SensorPackage>(message, settings);
-                if (pack is SensorPackage)
+                if (pack is SensorPackage sp)
                 {
-                    if (logDebug) Debug.Log("Sensor Package received");
-                    GameData.HandleDecisionPackage(pack);
+                    if (showLogs) Debug.Log("Sensor Package received");
+                    GameData.HandleSensorEventPackage(sp);
                 }
             }
             catch (Exception) { }
 
-            // Update the view only if necessary
-            if (pack?.agentID == currentlySelectedAgentID)
-            {
-                UpdateHistoryPanelView();
-            }
+            if (pack?.agentID != currentlySelectedAgentID) return;
+            UpdateHistoryPanelView();
         }
         private void UpdateHistoryPanelView()
         {
+            switch (showType)
+            {
+                case HistoryPanel.ShowType.Both:
+                    list.itemsSource = GameData.GetAgentFullHistory(currentlySelectedAgentID);
+                    break;
+                case HistoryPanel.ShowType.Decisions:
+                    list.itemsSource = GameData.GetAgentDecisions(currentlySelectedAgentID);
+                    break;
+                case HistoryPanel.ShowType.SensorEvents:
+                    list.itemsSource = GameData.GetAgentSensorEvents(currentlySelectedAgentID);
+                    break;
+            }
             list.Rebuild();
         }
+        
         public void UpdateHistoryPanelView(int agentID)
         {
-            //list.ClearClassList();
-
             currentlySelectedAgentID = agentID;
-            packages = GameData.GetHistory(currentlySelectedAgentID);
-            list.itemsSource = packages;
-            list.Rebuild();
-            //list.RefreshItems();
+            UpdateHistoryPanelView();
         }
 
         private VisualElement MakeItem()
         {
             var content = new VisualElement();
-            content.style.flexGrow = 0;
+            content.style.flexGrow = 1;
             content.focusable = true;
-            /*
-            var a = new ActionInfo();
-            a.name = "Action";
-            content.Add(a);
-            var s = new SensorInfo();
-            s.name = "Sensor";
-            content.Add(s);
-            */
 
             return content;
         }
 
         private void BindItem(VisualElement element, int index)
         {
+            int rIndex = list.itemsSource.Count - index - 1;
             switch (showType)
             {
                 case HistoryPanel.ShowType.Decisions:
-                    if (packages[index] is DecisionPackage desition)
-                    {
-                        var view = new ActionInfo();
-                        element.Add(view);
-                        BindActionItem(desition, index, view);
-                    }
+                    var view = new ActionInfo();
+                    element.Add(view);
+                    BindActionItem(list.itemsSource[rIndex] as DecisionPackage, rIndex, view);
                     break;
                 case HistoryPanel.ShowType.SensorEvents:
-                    if (packages[index] is SensorPackage sensor)
+                    if (list.itemsSource[rIndex] is SensorPackage sensor)
                     {
-                        var view = new SensorInfo();
-                        element.Add(view);
-                        BindSensorInfo(sensor, view);
+                        SensorInfo si = new();
+                        element.Add(si);
+                        BindSensorInfo(sensor, si);
                     }
                     break;
                 case HistoryPanel.ShowType.Both:
-                    if (packages[index] is DecisionPackage desition2)
+                    if (list.itemsSource[rIndex] is DecisionPackage desition2)
                     {
-                        var view = new ActionInfo();
-                        element.Add(view);
-                        BindActionItem(desition2, index, view);
+                        var ai = new ActionInfo();
+                        element.Add(ai);
+                        BindActionItem(desition2, index, ai);
                     }
-                    else if (packages[index] is SensorPackage sensor2)
+                    else if (list.itemsSource[rIndex] is SensorPackage sensor2)
                     {
-                        var view = new SensorInfo();
-                        element.Add(view);
-                        BindSensorInfo(sensor2, view);
+                        SensorInfo si = new();
+                        element.Add(si);
+                        BindSensorInfo(sensor2, si);
                     }
                     break;
             }
@@ -230,27 +206,27 @@ namespace CBB.ExternalTool
 
         private void OnChangeShowType(ChangeEvent<Enum> evt)
         {
-            list.ClearClassList();
+            //list.ClearClassList();
 
             showType = (HistoryPanel.ShowType)evt.newValue;
             // Update titles
-            if (showType == HistoryPanel.ShowType.Decisions)
+            switch (showType)
             {
-                historyPanelTitle.text = "DECISIONS HISTORY";
-                detailsPanelTitle.text = "DECISION DETAILS";
-            }
-            else if (showType == HistoryPanel.ShowType.SensorEvents)
-            {
-                historyPanelTitle.text = "SENSOR EVENTS HISTORY";
-                detailsPanelTitle.text = "SENSOR EVENT DETAILS";
-            }
-            else
-            {
-                historyPanelTitle.text = "ALL HISTORY";
-                detailsPanelTitle.text = "DETAILS";
+                case HistoryPanel.ShowType.Decisions:
+                    historyPanelTitle.text = "DECISIONS HISTORY";
+                    detailsPanelTitle.text = "DECISION DETAILS";
+                    break;
+                case HistoryPanel.ShowType.SensorEvents:
+                    historyPanelTitle.text = "SENSOR EVENTS HISTORY";
+                    detailsPanelTitle.text = "SENSOR EVENT DETAILS";
+                    break;
+                default:
+                    historyPanelTitle.text = "ALL HISTORY";
+                    detailsPanelTitle.text = "DETAILS";
+                    break;
             }
 
-            UpdateHistoryPanelView(currentlySelectedAgentID);
+            UpdateHistoryPanelView();
         }
 
     }
