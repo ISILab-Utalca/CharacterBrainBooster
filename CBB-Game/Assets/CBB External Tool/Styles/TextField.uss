@@ -25,3 +25,6 @@
     margin-left: 5px;
     -unity-font-style: bold;
 }
+
+.card-normal-text {
+}
