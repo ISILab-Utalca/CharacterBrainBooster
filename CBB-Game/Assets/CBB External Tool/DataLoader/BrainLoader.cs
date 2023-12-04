@@ -1,7 +1,5 @@
 using ArtificialIntelligence.Utility;
 using Generic;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -168,7 +166,7 @@ public class BrainLoaderEditor : UnityEditor.Editor
 #endif
 
 /// <summary>
-/// this class is used to store the generic brain data  
+/// this class is used to store the generic brain data
 /// </summary>
 [System.Serializable]
 public class Brain
