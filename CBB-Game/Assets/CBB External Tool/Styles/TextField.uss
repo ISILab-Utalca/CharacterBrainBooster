@@ -18,3 +18,10 @@
     border-right-width: 1px;
     border-left-width: 1px;
 }
+
+.top-window-title {
+    font-size: 22px;
+    color: rgb(255, 255, 255);
+    margin-left: 5px;
+    -unity-font-style: bold;
+}
