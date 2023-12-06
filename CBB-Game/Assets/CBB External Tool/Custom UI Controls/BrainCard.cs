@@ -26,12 +26,16 @@ namespace CBB.ExternalTool
             }
         }
         #endregion
-        
+
+        public Label brainName;
+        public Label brainID;
         public BrainCard()
         {
             var visualTree = Resources.Load<VisualTreeAsset>("Editor Mode/Brain Card");
-            visualTree.CloneTree(this);
             
+            visualTree.CloneTree(this);
+            brainName = this.Q<Label>("brain-name");
+            brainID = this.Q<Label>("brain-id");
         }
     }
 }
