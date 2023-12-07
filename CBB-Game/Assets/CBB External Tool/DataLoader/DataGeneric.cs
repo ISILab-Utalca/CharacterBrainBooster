@@ -16,7 +16,7 @@ namespace Generic
     }
 
     [System.Serializable]
-    public class DataGeneric
+    public class DataGeneric : IDataItem
     {
         [SerializeField,JsonRequired]
         private string classType;
@@ -40,6 +40,11 @@ namespace Generic
         public WraperValue Get(string name)
         {
             return values.Find(x => x.name == name);
+        }
+
+        public string GetItemName()
+        {
+            return values.Find(x => x.name == "name").Getvalue().ToString();
         }
     }
 
