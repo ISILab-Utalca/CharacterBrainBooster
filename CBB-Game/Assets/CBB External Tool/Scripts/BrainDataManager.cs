@@ -19,10 +19,7 @@ namespace CBB.ExternalTool
             ExternalMonitor.OnMessageReceived += HandleBrainData;
         }
         
-        interface IItemizable
-        {
-            string GetItemName();
-        }
+        
         private void HandleBrainData(string data)
         {
 
