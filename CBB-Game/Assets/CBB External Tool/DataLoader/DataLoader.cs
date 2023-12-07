@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Utility;
+using CBB.Comunication;
+using System.Net.Sockets;
+using Newtonsoft.Json;
 
 public static class DataLoader
 {
@@ -57,7 +60,7 @@ public static class DataLoader
 
         LoadTable(Path);
 
-        
+        Server.OnNewClientConnected += SendBrains;
     }
 
     /// <summary>
@@ -170,7 +173,11 @@ public static class DataLoader
     {
         return brains[i];
     }
-
+    public static List<Brain> GetAllBrains()
+    {
+        LoadBrain(Path + "/Brains");
+        return brains;
+    }
     private static void LoadBrain(string root)
     {
         System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(root);
@@ -179,7 +186,8 @@ public static class DataLoader
         {
             dir.Create();
         }
-
+        // Clear the brains list to avoid duplicates
+        brains.Clear();
         var files = dir.GetFiles("*.brain");
         for (int i = 0; i < files.Length; i++)
         {
@@ -197,6 +205,25 @@ public static class DataLoader
         JSONDataManager.SaveData(Path + "/Brains", brain.brain_ID, "brain", brain);
 
         LoadBrain(Path + "/Brains");
+    }
+    /// <summary>
+    /// When a new client connects, sends all the brains to it
+    /// </summary>
+    public static void SendBrains(TcpClient client)
+    {
+        var brains = GetAllBrains();
+        var settings = new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            TypeNameHandling = TypeNameHandling.Auto,
+            NullValueHandling = NullValueHandling.Ignore,
+            MissingMemberHandling = MissingMemberHandling.Ignore,
+            //Formatting = Formatting.Indented
+        };
+
+        var serializedBrains = JsonConvert.SerializeObject(brains, settings);
+        Debug.Log(serializedBrains);
+        Server.SendMessageToClient(client, serializedBrains);
     }
     #endregion
 }

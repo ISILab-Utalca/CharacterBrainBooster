@@ -1,6 +1,7 @@
 using ArtificialIntelligence.Utility;
 using Generic;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -64,6 +65,13 @@ public class BrainLoader : MonoBehaviour
         DataLoader.SaveBrain(this.agent_ID, brain); // parche (!!!) quitar mas adelante
     }
 
+#if UNITY_EDITOR
+    [ContextMenu("Debug serialized brains")]
+    public void DebugBrains()
+    {
+        DataLoader.SendBrains(null);
+    }
+#endif
     /// <summary>
     /// create a brain file with the current configuration
     /// </summary>
@@ -172,6 +180,7 @@ public class BrainLoaderEditor : UnityEditor.Editor
 public class Brain
 {
     public string brain_ID;
+    public string name;
     [SerializeField,SerializeReference]
     public List<DataGeneric> serializedActions;
     [SerializeField,SerializeReference]
