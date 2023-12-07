@@ -10,7 +10,7 @@ public class MainWindowController : MonoBehaviour
 {
     [SerializeField] private ExternalMonitor externalMonitor;
     [SerializeField] private MonitoringWindow monitoringWindow;
-    [SerializeField] private EditorWindow editorWindow;
+    [SerializeField] private EditorWindowController editorWindow;
     private MainWindow mainWindow;
 
     private void Awake()

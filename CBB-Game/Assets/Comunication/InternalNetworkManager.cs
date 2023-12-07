@@ -8,6 +8,9 @@ namespace CBB.Comunication
         CLIENT_STOPPED,
         SERVER_STOPPED,
     }
+    /// <summary>
+    /// Open or close the server when the application needs it
+    /// </summary>
     public class InternalNetworkManager : MonoBehaviour
     {
         /// <summary>
