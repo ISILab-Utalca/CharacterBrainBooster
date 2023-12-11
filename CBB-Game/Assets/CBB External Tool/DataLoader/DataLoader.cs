@@ -32,10 +32,10 @@ public static class DataLoader
         get
         {
 #if UNITY_EDITOR
-            // load considerations from the editor folder
+            // load data from the editor folder
             return Application.dataPath + "/Resources";
 #else
-            // load considerations from the build folder
+            // load data from the build folder
             var dataPath = Application.dataPath;
             var path = dataPath.Replace("/" + Application.productName +"_Data", "");
             return path;
@@ -133,7 +133,7 @@ public static class DataLoader
         {
             Table = Utility.JSONDataManager.LoadData<PairBrainData>(path, "PairsBrains", "Data");
         }
-        catch (System.Exception e)
+        catch (System.Exception)
         {
             Table = new PairBrainData();
             Utility.JSONDataManager.SaveData(path, "PairsBrains", "Data", Table);
@@ -181,7 +181,7 @@ public static class DataLoader
     private static void LoadBrain(string root)
     {
         System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(root);
-
+        Debug.Log("Loading brains from: " + dir.FullName);
         if(!dir.Exists)
         {
             dir.Create();

@@ -191,7 +191,7 @@ public class Brain : IDataItem
         return name;
     }
 }
-interface IDataItem
+public interface IDataItem
 {
     string GetItemName();
 }

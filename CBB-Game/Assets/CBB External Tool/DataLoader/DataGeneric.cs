@@ -44,7 +44,7 @@ namespace Generic
 
         public string GetItemName()
         {
-            return values.Find(x => x.name == "name").Getvalue().ToString();
+            return classType;
         }
     }
 
