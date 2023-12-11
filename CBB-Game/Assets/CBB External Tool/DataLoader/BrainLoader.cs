@@ -15,8 +15,8 @@ public class BrainLoader : MonoBehaviour
 
     public string agent_ID;
 
-    private List<ActionState> actionStates = new List<ActionState>();
-    private List<Sensor> sensors = new List<Sensor>();
+    private List<ActionState> actionStates = new();
+    private List<Sensor> sensors = new();
     private Brain brain;
 
     private void Start()
@@ -53,11 +53,6 @@ public class BrainLoader : MonoBehaviour
 
         // Initialize the brain with the brain data
         InitAgent(brain);
-    }
-
-    public void OnDestroy()
-    {
-        //DataLoader.SaveBrain(this.agent_ID, brain);
     }
 
     public void OnApplicationQuit()
@@ -98,6 +93,7 @@ public class BrainLoader : MonoBehaviour
 
         return brain;
     }
+    
 
     /// <summary>
     /// find monobehaviours related to the brain and store them in lists
@@ -180,7 +176,6 @@ public class BrainLoaderEditor : UnityEditor.Editor
 public class Brain : IDataItem
 {
     public string brain_ID;
-    public string name;
     [SerializeField,SerializeReference]
     public List<DataGeneric> serializedActions;
     [SerializeField,SerializeReference]
@@ -188,7 +183,7 @@ public class Brain : IDataItem
 
     public string GetItemName()
     {
-        return name;
+        return brain_ID;
     }
 }
 public interface IDataItem
