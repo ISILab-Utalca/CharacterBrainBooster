@@ -8,14 +8,14 @@ using Newtonsoft.Json;
 
 public static class DataLoader
 {
-    private static List<Brain> brains = new List<Brain>();
+    private static List<Brain> brains = new();
     private static PairBrainData table;
 
     public static PairBrainData Table
     {
         get
         {
-            if(table == null)
+            if (table == null)
             {
                 LoadTable(Path);
             }
@@ -71,35 +71,6 @@ public static class DataLoader
         SaveTable(Path);
     }
 
-    private static List<PairBrainData.PairBrain> CheckPairTableConsistency()
-    {
-        var tor = new List<PairBrainData.PairBrain>();
-        foreach (var pair in Table.pairs)
-        {
-            if(!brains.Any(b => b.brain_ID == pair.brain_ID))
-            {
-                tor.Add(pair);
-            }
-        }
-
-        if(tor.Count > 0)
-        {
-            DebugConsistency(tor);
-        }
-
-        return tor;
-    }
-
-    private static void DebugConsistency(List<PairBrainData.PairBrain> pairs)
-    {
-        var msg = "Los siguientes cerebros no exiten pero un agente esta pareado a ellos:";
-        foreach (var pair in pairs)
-        {
-            msg += "\n" + "Brain: " + pair.brain_ID + " - Agent: " + pair.agent_ID;
-        }
-        Debug.LogWarning(msg);
-    }
-
     #region #PAIR-METHODS
     internal static PairBrainData.PairBrain GetPairByAgentID(string agent_ID)
     {
@@ -110,11 +81,18 @@ public static class DataLoader
     public static void AddPair(PairBrainData.PairBrain pair)
     {
         Table.Add(pair);
+        Debug.Log($"Pair {pair.agent_ID} added.");
     }
 
-    public static void ReplacePair(PairBrainData.PairBrain pair)
+    public static void ReplacePair(PairBrainData.PairBrain pair, bool addPairIfNotFound = false)
     {
         var index = Table.pairs.FindIndex(x => x.agent_ID == pair.agent_ID);
+        if (index < 0)
+        {
+            Debug.LogWarning($"[DATA LOADER] Agent ID {pair.agent_ID} not found.");
+            if (addPairIfNotFound) AddPair(pair);
+            return;
+        }
         Table.pairs[index] = pair;
     }
 
@@ -142,7 +120,7 @@ public static class DataLoader
 
     public static void SaveTable(string path)
     {
-        if(Table != null)
+        if (Table != null)
         {
             Utility.JSONDataManager.SaveData(path, "PairsBrains", "Data", Table);
         }
@@ -180,9 +158,9 @@ public static class DataLoader
     }
     private static void LoadBrain(string root)
     {
-        System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(root);
+        System.IO.DirectoryInfo dir = new(root);
         Debug.Log("Loading brains from: " + dir.FullName);
-        if(!dir.Exists)
+        if (!dir.Exists)
         {
             dir.Create();
         }
@@ -238,16 +216,16 @@ public class PairBrainData
         public string brain_ID;
     }
 
-    public List<PairBrain> pairs = new List<PairBrain>();
+    public List<PairBrain> pairs = new();
 
     internal void Add(PairBrain pairBrain)
     {
-        if(pairs.Any(p => p.agent_ID == pairBrain.agent_ID))
+        if (pairs.Any(p => p.agent_ID == pairBrain.agent_ID))
         {
             Debug.LogWarning("Agent ID already exists.");
             return;
         }
-        
+
         pairs.Add(pairBrain);
     }
 
