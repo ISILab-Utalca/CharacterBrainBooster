@@ -1,13 +1,13 @@
 using ArtificialIntelligence.Utility;
 using Generic;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class BrainLoader : MonoBehaviour
 {
+
     [Tooltip("If activated, it bypasses the brain system and uses the default configuration.")]
     public bool _default = false;
     [Tooltip("Generate a brain file if it doesn't exist.")]
@@ -79,10 +79,12 @@ public class BrainLoader : MonoBehaviour
     {
         FindBHsReferences();
 
-        brain = new Brain();
-        brain.brain_ID = agent_ID;
-        brain.serializedActions = new List<DataGeneric>();
-        brain.serializedSensors = new List<DataGeneric>();
+        brain = new Brain
+        {
+            brain_ID = agent_ID,
+            serializedActions = new List<DataGeneric>(),
+            serializedSensors = new List<DataGeneric>()
+        };
 
         for (int i = 0; i < actionStates.Count; i++)
         {
@@ -104,11 +106,9 @@ public class BrainLoader : MonoBehaviour
     public void FindBHsReferences()
     {
         // Get all actions in this game object and its children
-        actionStates = GetComponents<ActionState>().ToList();
         actionStates.AddRange(GetComponentsInChildren<ActionState>());
 
         // Get all sensors in this game object and its children
-        sensors = GetComponents<Sensor>().ToList();
         sensors.AddRange(GetComponentsInChildren<Sensor>());
     }
 
