@@ -10,6 +10,18 @@
         "$type": "PairBrainData+PairBrain, Assembly-CSharp",
         "agent_ID": "asdfghjkl",
         "brain_ID": "asdfghjkl"
+      },
+      {
+        "$id": "4",
+        "$type": "PairBrainData+PairBrain, Assembly-CSharp",
+        "agent_ID": "villager_1",
+        "brain_ID": "villager_1"
+      },
+      {
+        "$id": "5",
+        "$type": "PairBrainData+PairBrain, Assembly-CSharp",
+        "agent_ID": "villager",
+        "brain_ID": "villager"
       }
     ]
   }
