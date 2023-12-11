@@ -103,8 +103,19 @@ namespace ArtificialIntelligence.Utility
         {
             return Vector3.Distance(target.position, agent.position) < range;
         }
+#if UNITY_EDITOR
+        // Menu item function to log the Application Data Path
+        [UnityEditor.MenuItem("Tools/Log Application Data Path")]
+        public static void LogApplicationDataPath()
+        {
+            Debug.Log($"Application dataPath:\n{Application.dataPath}");
+        }
+        // Menu item function to log the Persistent Data Path
+        [UnityEditor.MenuItem("Tools/Log Persistent Data Path")]
+        public static void LogPersistentDataPath()
+        {
+            Debug.Log($"Application persistentDataPath:\n{Application.persistentDataPath}");
+        } 
+#endif
     }
-
-
-
 }
