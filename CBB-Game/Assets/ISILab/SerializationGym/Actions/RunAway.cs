@@ -2,6 +2,7 @@ using Generic;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace ArtificialIntelligence.Utility.Actions
 {
     /// <summary>

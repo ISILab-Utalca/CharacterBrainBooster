@@ -1,12 +1,9 @@
-using ArtificialIntelligence.Utility;
 using Generic;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
-using Random = UnityEngine.Random;
 
-namespace CBB.InternalTool
+namespace ArtificialIntelligence.Utility.Actions
 {
     public class Jump : ActionState
     {
