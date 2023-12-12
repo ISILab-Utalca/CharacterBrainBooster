@@ -115,7 +115,30 @@ namespace ArtificialIntelligence.Utility
         public static void LogPersistentDataPath()
         {
             Debug.Log($"Application persistentDataPath:\n{Application.persistentDataPath}");
-        } 
+        }
+        // Menu item function find all the subclasses of ActionState
+        [UnityEditor.MenuItem("Tools/Log action types")]
+        public static void GetAllActions()
+        {
+            GetActionClasses<ActionState>();
+        }
 #endif
+        // Get all the classes that inherit from T
+        public static List<System.Type> GetActionClasses<T>()
+        {
+            var actionClasses = new List<System.Type>();
+            var types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
+            foreach (var type in types)
+            {
+                if (type.IsSubclassOf(typeof(T)))
+                {
+                    Debug.Log(type.Name);
+                    actionClasses.Add(type);
+                }
+            }
+            
+            return actionClasses;
+            
+        }
     }
 }
