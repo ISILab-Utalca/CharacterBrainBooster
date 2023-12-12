@@ -1,5 +1,8 @@
+using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Windows;
 
 
 namespace CBB.ExternalTool
@@ -46,7 +49,21 @@ namespace CBB.ExternalTool
         }
         private void BindItem(VisualElement element, int index)
         {
-            (element as Label).text = brainTree.GetItemDataForIndex<IDataItem>(index).GetItemName();
+            var item = element as Label;
+            var itemName = brainTree.GetItemDataForIndex<IDataItem>(index).GetItemName();
+            // Remove the namespace from the item name
+            string pointPattern = @"[^.]*$";
+            Match match = Regex.Match(itemName, pointPattern);
+            if (match.Success)
+            {
+                // Split by capital letters. Ej: "MyBrain" -> "My", "Brain"
+                string capitalPattern = @"(?=\p{Lu})";
+                string[] result = Regex.Split(match.Value, capitalPattern);
+                // Join the words in the array with a space
+                item.text = string.Join(" ", result);
+            }
+            // TODO: Style the item using a uss class
+            item.style.color = Color.white;
         }
     }
 }

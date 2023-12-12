@@ -9,7 +9,7 @@
                     <ui:Label tabindex="-1" text="BRAINS" display-tooltip-when-elided="true" class="top-window-title" style="height: 57px; -unity-text-align: middle-center;" />
                     <ui:Button text="RELOAD" display-tooltip-when-elided="true" name="reload-brains-button" style="background-color: rgb(44, 47, 82); color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 17px;" />
                 </ui:VisualElement>
-                <ui:TreeView view-data-key="unity-tree-view" focusable="true" name="brain-tree" />
+                <ui:TreeView view-data-key="unity-tree-view" focusable="true" name="brain-tree" virtualization-method="DynamicHeight" style="font-size: 20px;" />
             </ui:VisualElement>
             <ui:VisualElement name="container-2" class="visual-element-container" style="background-color: rgba(0, 0, 0, 0); align-self: stretch; width: 779px;">
                 <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); height: 44%;" />
