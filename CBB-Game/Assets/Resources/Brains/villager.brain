@@ -37,291 +37,98 @@
               "$type": "Generic.WraperNumber, Assembly-CSharp",
               "value": 0.2,
               "name": "TickCheck"
+            },
+            {
+              "$id": "9",
+              "$type": "WrapperConsideration, Assembly-CSharp",
+              "configuration": {
+                "$id": "10",
+                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
+                "name": "Idle",
+                "curve": {
+                  "$id": "11",
+                  "$type": "Constant, Assembly-CSharp",
+                  "value": 0.01,
+                  "Inverted": false
+                },
+                "normalizeInput": false,
+                "minValue": 0.0,
+                "maxValue": 2.0
+              },
+              "name": "Idle"
             }
           ]
         }
       },
       {
-        "$id": "9",
+        "$id": "12",
         "$type": "Generic.DataGeneric, Assembly-CSharp",
         "classType": "ArtificialIntelligence.Utility.Actions.RunAway",
         "values": {
-          "$id": "10",
+          "$id": "13",
           "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
           "$values": [
             {
-              "$id": "11",
+              "$id": "14",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
               "value": 6.0,
               "name": "safeDistance"
             },
             {
-              "$id": "12",
+              "$id": "15",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
               "value": 7.0,
               "name": "runSpeed"
             },
-            {
-              "$id": "13",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "pauseAfterRunning"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "14",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "ArtificialIntelligence.Utility.Actions.Wander",
-        "values": {
-          "$id": "15",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
             {
               "$id": "16",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
               "value": 1.0,
-              "name": "MinWaitTimer"
+              "name": "pauseAfterRunning"
             },
             {
               "$id": "17",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 5.0,
-              "name": "MaxWaitTimer"
+              "$type": "WrapperConsideration, Assembly-CSharp",
+              "configuration": {
+                "$id": "18",
+                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
+                "name": "Villager heard a threat",
+                "curve": {
+                  "$id": "19",
+                  "$type": "Linear, Assembly-CSharp",
+                  "value": 0.0,
+                  "m": 1.0,
+                  "dx": 0.0,
+                  "dy": 0.0,
+                  "Inverted": false
+                },
+                "normalizeInput": false,
+                "minValue": 0.0,
+                "maxValue": 0.0
+              },
+              "name": "Villager heard a threat"
             },
             {
-              "$id": "18",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 10.0,
-              "name": "WalkRadius"
-            },
-            {
-              "$id": "19",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 0.2,
-              "name": "TickCheck"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "20",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "ArtificialIntelligence.Utility.Actions.RunAway",
-        "values": {
-          "$id": "21",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "22",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 6.0,
-              "name": "safeDistance"
-            },
-            {
-              "$id": "23",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 7.0,
-              "name": "runSpeed"
-            },
-            {
-              "$id": "24",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "pauseAfterRunning"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "25",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "ArtificialIntelligence.Utility.Actions.Wander",
-        "values": {
-          "$id": "26",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "27",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "MinWaitTimer"
-            },
-            {
-              "$id": "28",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 5.0,
-              "name": "MaxWaitTimer"
-            },
-            {
-              "$id": "29",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 10.0,
-              "name": "WalkRadius"
-            },
-            {
-              "$id": "30",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 0.2,
-              "name": "TickCheck"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "31",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "ArtificialIntelligence.Utility.Actions.RunAway",
-        "values": {
-          "$id": "32",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "33",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 6.0,
-              "name": "safeDistance"
-            },
-            {
-              "$id": "34",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 7.0,
-              "name": "runSpeed"
-            },
-            {
-              "$id": "35",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "pauseAfterRunning"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "36",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "ArtificialIntelligence.Utility.Actions.Wander",
-        "values": {
-          "$id": "37",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "38",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "MinWaitTimer"
-            },
-            {
-              "$id": "39",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 5.0,
-              "name": "MaxWaitTimer"
-            },
-            {
-              "$id": "40",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 10.0,
-              "name": "WalkRadius"
-            },
-            {
-              "$id": "41",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 0.2,
-              "name": "TickCheck"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "42",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "ArtificialIntelligence.Utility.Actions.RunAway",
-        "values": {
-          "$id": "43",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "44",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 6.0,
-              "name": "safeDistance"
-            },
-            {
-              "$id": "45",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 7.0,
-              "name": "runSpeed"
-            },
-            {
-              "$id": "46",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "pauseAfterRunning"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "47",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "ArtificialIntelligence.Utility.Actions.Wander",
-        "values": {
-          "$id": "48",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "49",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "MinWaitTimer"
-            },
-            {
-              "$id": "50",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 5.0,
-              "name": "MaxWaitTimer"
-            },
-            {
-              "$id": "51",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 10.0,
-              "name": "WalkRadius"
-            },
-            {
-              "$id": "52",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 0.2,
-              "name": "TickCheck"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "53",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "ArtificialIntelligence.Utility.Actions.RunAway",
-        "values": {
-          "$id": "54",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "55",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 6.0,
-              "name": "safeDistance"
-            },
-            {
-              "$id": "56",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 7.0,
-              "name": "runSpeed"
-            },
-            {
-              "$id": "57",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "pauseAfterRunning"
+              "$id": "20",
+              "$type": "WrapperConsideration, Assembly-CSharp",
+              "configuration": {
+                "$id": "21",
+                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
+                "name": "Threat distance",
+                "curve": {
+                  "$id": "22",
+                  "$type": "Linear, Assembly-CSharp",
+                  "value": 0.0,
+                  "m": 1.0,
+                  "dx": 0.0,
+                  "dy": 0.0,
+                  "Inverted": true
+                },
+                "normalizeInput": true,
+                "minValue": 0.0,
+                "maxValue": 10.0
+              },
+              "name": "Threat distance"
             }
           ]
         }
@@ -329,89 +136,21 @@
     ]
   },
   "serializedSensors": {
-    "$id": "58",
+    "$id": "23",
     "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
     "$values": [
       {
-        "$id": "59",
+        "$id": "24",
         "$type": "Generic.DataGeneric, Assembly-CSharp",
         "classType": "SensorAuditoryField",
         "values": {
-          "$id": "60",
+          "$id": "25",
           "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
           "$values": [
             {
-              "$id": "61",
+              "$id": "26",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "HearingRadius"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "62",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "SensorAuditoryField",
-        "values": {
-          "$id": "63",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "64",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "HearingRadius"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "65",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "SensorAuditoryField",
-        "values": {
-          "$id": "66",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "67",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "HearingRadius"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "68",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "SensorAuditoryField",
-        "values": {
-          "$id": "69",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "70",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "HearingRadius"
-            }
-          ]
-        }
-      },
-      {
-        "$id": "71",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "SensorAuditoryField",
-        "values": {
-          "$id": "72",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "73",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
+              "value": 2.56,
               "name": "HearingRadius"
             }
           ]
