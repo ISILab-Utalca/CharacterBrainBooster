@@ -34,13 +34,23 @@ namespace CBB.ExternalTool
                 {
                     // This is an intermediate list to store the sensors and actions of the brain
                     var brainDataGroup = new List<TreeViewItemData<IDataItem>>();
-                    
+
                     // Second level: actions and sensors
                     var actionWrapper = new ItemWrapper("Actions");
                     var actionItems = new List<TreeViewItemData<IDataItem>>();
                     foreach (var action in brain.serializedActions)
                     {
-                        actionItems.Add(new TreeViewItemData<IDataItem>(id++, action));
+                        // Third level: considerations attached to this action
+                        var considerationItems = new List<TreeViewItemData<IDataItem>>();
+                        foreach (var value in action.Values)
+                        {
+                            if (value is WrapperConsideration wc)
+                            {
+                                considerationItems.Add(new TreeViewItemData<IDataItem>(id++, wc.configuration));
+                            }
+                            else { Debug.Log("[B. D. Manager] Not a consideration" + value.GetType()); }
+                        }
+                        actionItems.Add(new TreeViewItemData<IDataItem>(id++, action, considerationItems));
                     }
 
                     var sensorWrapper = new ItemWrapper("Sensors");
