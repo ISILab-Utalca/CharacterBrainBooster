@@ -25,3 +25,8 @@
     margin-left: 5px;
     -unity-font-style: bold;
 }
+
+.card-normal-text {
+    color: rgb(255, 255, 255);
+    margin-right: 6px;
+}

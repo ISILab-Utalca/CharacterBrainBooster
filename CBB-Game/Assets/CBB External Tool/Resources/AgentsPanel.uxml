@@ -1,5 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/CBB%20External%20Tool/Styles/ListViewTest.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ListViewTest" />
-    <ui:Label tabindex="-1" text="AGENTS" display-tooltip-when-elided="true" name="Title" tooltip="The agents living in the scene" style="color: rgb(255, 255, 255); padding-left: 4px; -unity-text-align: upper-center; -unity-font-style: bold; font-size: 22px; margin-bottom: 16px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; margin-left: 4px; margin-top: 16px;" />
-    <ui:ListView focusable="true" virtualization-method="DynamicHeight" name="ListPrueba" show-bound-collection-size="false" style="align-items: stretch; -unity-text-align: upper-center; justify-content: center; flex-grow: 1; align-self: stretch;" />
+    <ui:VisualElement style="background-color: rgba(0, 0, 0, 0);">
+        <ui:Label tabindex="-1" text="AGENTS" display-tooltip-when-elided="true" name="Title" tooltip="The agents living in the scene" style="color: rgb(255, 255, 255); padding-left: 4px; -unity-text-align: upper-left; -unity-font-style: bold; font-size: 22px; margin-bottom: 16px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; margin-left: 4px; margin-top: 16px;" />
+        <ui:ListView focusable="true" virtualization-method="DynamicHeight" name="ListPrueba" show-bound-collection-size="false" style="-unity-text-align: upper-center;" />
+    </ui:VisualElement>
 </ui:UXML>

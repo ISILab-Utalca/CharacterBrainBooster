@@ -1,7 +1,14 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/CBB%20External%20Tool/Styles/External%20Tool.uss?fileID=7433441132597879392&amp;guid=24e10b314967b554f903b40e9356bf0d&amp;type=3#External Tool" />
-    <ui:VisualElement name="main-container" class="visual-element-background" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row;">
-        <ui:VisualElement name="icon-container" class="visual-element-container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
-        <ui:VisualElement name="text-info-container" class="visual-element-container" style="flex-grow: 2; background-color: rgba(0, 0, 0, 0);" />
+    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/TextField.uss?fileID=7433441132597879392&amp;guid=2fd88df24d06fce4cb235ab79afe6089&amp;type=3#TextField" />
+    <ui:VisualElement name="main-container" class="visual-element-background" style="flex-grow: 1; flex-direction: row; align-items: stretch;">
+        <ui:VisualElement name="icon-container" class="visual-element-container" style="background-image: url(&apos;project://database/Assets/CBB%20External%20Tool/2DAssets/mental-health.png?fileID=2800000&amp;guid=3e1759ea8683db446bbb3fc40aa3b0a8&amp;type=3#mental-health&apos;); -unity-background-scale-mode: scale-to-fit; align-items: stretch; justify-content: flex-start; flex-grow: 4; align-self: auto;" />
+        <ui:VisualElement name="text-info-container" class="visual-element-container" style="flex-grow: 5; align-self: auto;">
+            <ui:Label tabindex="-1" display-tooltip-when-elided="true" focusable="false" text="Brain name" name="brain-name" class="card-normal-text" style="flex-shrink: 1; flex-grow: 1; color: rgb(255, 255, 255);" />
+            <ui:Label tabindex="-1" display-tooltip-when-elided="true" focusable="false" text="Brain ID" name="brain-id" class="card-normal-text" style="flex-shrink: 1; flex-grow: 1; color: rgb(255, 255, 255);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="buttons-container" style="flex-grow: 1; align-items: center; justify-content: center;">
+            <ui:Button display-tooltip-when-elided="true" style="background-image: url(&apos;project://database/Assets/CBB%20External%20Tool/2DAssets/editing.png?fileID=2800000&amp;guid=5b60767f8aa003e469da1bb6d27a58b0&amp;type=3#editing&apos;); -unity-background-scale-mode: scale-to-fit; background-color: rgb(180, 180, 180); -unity-slice-bottom: 1;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

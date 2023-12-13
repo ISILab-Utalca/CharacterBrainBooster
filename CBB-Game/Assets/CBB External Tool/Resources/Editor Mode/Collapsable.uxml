@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/External%20Tool.uss?fileID=7433441132597879392&amp;guid=24e10b314967b554f903b40e9356bf0d&amp;type=3#External Tool" />
+    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/TextField.uss?fileID=7433441132597879392&amp;guid=2fd88df24d06fce4cb235ab79afe6089&amp;type=3#TextField" />
+    <ui:VisualElement name="VisualElement" class="visual-element-background" style="flex-grow: 1;">
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center;">
+            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                <ui:Label tabindex="-1" text="NOMBRE ELEMENTO" display-tooltip-when-elided="true" class="top-window-title" />
+                <ui:Label tabindex="-1" text="Subtitulo" display-tooltip-when-elided="true" class="card-normal-text" />
+            </ui:VisualElement>
+            <ui:Button display-tooltip-when-elided="true" tooltip="Hola" name="collapse-button" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=4154780841294389669&amp;guid=2e86d368c25c3f347b19d47a66d6cfdb&amp;type=3#arrow-down&apos;);" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1;">
+            <ui:Label tabindex="-1" text="Content" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" />
+    </ui:VisualElement>
+</ui:UXML>

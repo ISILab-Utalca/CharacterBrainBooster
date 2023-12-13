@@ -1,7 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Git-Ignore/ListViewTest.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ListViewTest" />
-    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-basis: 20%; width: 20%; height: 20%; max-width: 30%;">
-        <ui:Button text="Button" display-tooltip-when-elided="true" />
-        <ui:ListView virtualization-method="DynamicHeight" name="ListPrueba" />
-    </ui:VisualElement>
-</ui:UXML>

@@ -2,6 +2,7 @@ using Generic;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace ArtificialIntelligence.Utility.Actions
 {
     /// <summary>
@@ -15,7 +16,7 @@ namespace ArtificialIntelligence.Utility.Actions
         [SerializeField]
         private int runSpeed = 2;
 
-        [SerializeField, Range(0,10)]
+        [SerializeField, Range(0, 10)]
         private float pauseAfterRunning = 1f;
 
         private float initialSpeed = 1;
@@ -75,9 +76,9 @@ namespace ArtificialIntelligence.Utility.Actions
 
         public override void SetParams(DataGeneric data)
         {
-            this.safeDistance = (float)data.Get("safeDistance").Getvalue();
-            this.runSpeed = (int)(float)data.Get("runSpeed").Getvalue();
-            this.pauseAfterRunning = (float)data.Get("pauseAfterRunning").Getvalue();
+            this.safeDistance = (float)data.FindValueByName("safeDistance").Getvalue();
+            this.runSpeed = (int)(float)data.FindValueByName("runSpeed").Getvalue();
+            this.pauseAfterRunning = (float)data.FindValueByName("pauseAfterRunning").Getvalue();
         }
 
         public override DataGeneric GetGeneric()
@@ -86,6 +87,7 @@ namespace ArtificialIntelligence.Utility.Actions
             data.Add(new WraperNumber { name = "safeDistance", value = safeDistance });
             data.Add(new WraperNumber { name = "runSpeed", value = runSpeed });
             data.Add(new WraperNumber { name = "pauseAfterRunning", value = pauseAfterRunning });
+            AddConsiderationsToConfiguration(data);
             return data;
         }
         #endregion

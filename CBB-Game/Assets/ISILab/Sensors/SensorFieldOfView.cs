@@ -107,9 +107,9 @@ namespace CBB.Lib
 
         public override void SetParams(DataGeneric data)
         {
-            this.HorizontalFOV = (float)data.Get("HorizontalFOV").Getvalue();
-            this.VerticalFOV = (float)data.Get("VerticalFOV").Getvalue();
-            this.FrontalFOV = (float)data.Get("FrontalFOV").Getvalue();
+            this.HorizontalFOV = (float)data.FindValueByName("HorizontalFOV").Getvalue();
+            this.VerticalFOV = (float)data.FindValueByName("VerticalFOV").Getvalue();
+            this.FrontalFOV = (float)data.FindValueByName("FrontalFOV").Getvalue();
         }
 
         public override DataGeneric GetGeneric()

@@ -1,4 +1,5 @@
 using ArtificialIntelligence.Utility;
+using CBB.Lib;
 using Generic;
 using Newtonsoft.Json;
 using System;
@@ -16,39 +17,53 @@ namespace Generic
     }
 
     [System.Serializable]
-    public class DataGeneric
+    public class DataGeneric : IDataItem
     {
         [SerializeField,JsonRequired]
         private string classType;
 
         [SerializeField, SerializeReference, JsonRequired]
-        private List<WraperValue> values = new List<WraperValue>();
+        private List<WraperValue> values = new();
 
         [JsonIgnore]
         public Type ClassType { 
             get => Type.GetType(classType); 
             set => classType = value.ToString(); 
         }
+        [JsonIgnore]
+        public List<WraperValue> Values { get => values; private set => values = value; }
 
         public DataGeneric() { }
 
         public void Add(WraperValue wraper)
         {
-            values.Add(wraper);
+            Values.Add(wraper);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name">The name of the value</param>
+        /// <returns>A <see cref="WraperValue"/>. <b>null</b> if not found</returns>
+        public WraperValue FindValueByName(string name)
+        {
+            return Values.Find(x => x.name == name);
         }
 
-        public WraperValue Get(string name)
+        public string GetItemName()
         {
-            return values.Find(x => x.name == name);
+            return classType;
         }
     }
 
     [System.Serializable]
-    public abstract class WraperValue : ICloneable
+    public abstract class WraperValue : ICloneable, IDataItem
     {
         public string name;
 
         public abstract object Clone();
+
+        public virtual string GetItemName() { return "DATA ITEM"; }
+
         public abstract object Getvalue();
         public abstract override string ToString();
     }
@@ -121,20 +136,24 @@ namespace Generic
 public class WrapperConsideration : WraperValue // necesairo (?)
 {
     [SerializeReference]
-    public UtilityConsideration consideration;
+    public ConsiderationConfiguration configuration;
+
 
     public override object Clone()
     {
-        return new WrapperConsideration { name = name, consideration = consideration };
+        return new WrapperConsideration { name = name, configuration = configuration };
     }
 
     public override object Getvalue()
     {
-        return consideration;
+        return configuration;
     }
-
+    public override string GetItemName()
+    {
+        return configuration.name;
+    }
     public override string ToString()
     {
-        return consideration.ToString();
+        return configuration.ToString();
     }
 }

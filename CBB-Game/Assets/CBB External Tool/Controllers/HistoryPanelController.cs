@@ -27,7 +27,7 @@ namespace CBB.ExternalTool
         private int currentlySelectedAgentID = -1;
         private Label historyPanelTitle;
         private Label detailsPanelTitle;
-
+        private AgentsPanelController agentsPanelController;
         private void Awake()
         {
             var monitoringWindow = GetComponent<MonitoringWindow>();
@@ -39,8 +39,8 @@ namespace CBB.ExternalTool
             this.list = historyPanel.Q<ListView>();
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
-            
-            list.selectionChanged += ShowSelectedDetail;
+
+            //list.selectionChanged += ShowSelectedDetail;
             list.selectedIndicesChanged += ShowSelectedDetail;
             // Show dropdown
             this.showField = historyPanel.Q<EnumField>();
@@ -48,12 +48,30 @@ namespace CBB.ExternalTool
             showField.RegisterValueChangedCallback(OnChangeShowType);
 
             detailPanelController = GetComponent<DetailPanelController>();
+            agentsPanelController = GetComponent<AgentsPanelController>();
+
+            agentsPanelController.OnNewAgentSelected += UpdateHistoryPanelView;
             ExternalMonitor.OnMessageReceived += HandleMessage;
         }
 
         private void ShowSelectedDetail(IEnumerable<int> enumerable)
         {
             int rIndex = list.itemsSource.Count - enumerable.First() - 1;
+            // Get the index selected on the selectedIndicesChanged event
+            var si = enumerable.First();
+            if (showLogs) Debug.Log("Selection changed on History Panel to index: " + si);
+            var selected = list.itemsSource[rIndex];
+            if (selected is DecisionPackage decision)
+            {
+                if (showLogs) Debug.Log("Selection changed on History Panel to Decision Package\n" +
+                    "(Time stamp): " + decision.timestamp + "\nAgent ID: " + decision.agentID);
+                detailPanelController.DisplayDecisionDetails(decision);
+            }
+            else if (selected is SensorPackage sensor)
+            {
+                if (showLogs) Debug.Log("Selection changed on History Panel to Sensor Package (Time stamp): " + sensor.timestamp);
+                detailPanelController.DisplaySensorDetails(sensor);
+            }
         }
 
         private void ShowSelectedDetail(IEnumerable<object> enumerable)
@@ -67,13 +85,13 @@ namespace CBB.ExternalTool
 
             if (selected is DecisionPackage decision)
             {
-                if(showLogs) Debug.Log("Selection changed on History Panel to Decision Package\n" +
+                if (showLogs) Debug.Log("Selection changed on History Panel to Decision Package\n" +
                     "(Time stamp): " + decision.timestamp + "\nAgent ID: " + decision.agentID);
                 detailPanelController.DisplayDecisionDetails(decision);
             }
             else if (selected is SensorPackage sensor)
             {
-                if(showLogs) Debug.Log("Selection changed on History Panel to Sensor Package (Time stamp): " + sensor.timestamp);
+                if (showLogs) Debug.Log("Selection changed on History Panel to Sensor Package (Time stamp): " + sensor.timestamp);
                 detailPanelController.DisplaySensorDetails(sensor);
             }
         }
@@ -121,7 +139,7 @@ namespace CBB.ExternalTool
             }
             list.Rebuild();
         }
-        
+
         public void UpdateHistoryPanelView(int agentID)
         {
             currentlySelectedAgentID = agentID;
@@ -182,7 +200,7 @@ namespace CBB.ExternalTool
             sensorInfo.SensorName.text = sensor.sensorType;
             sensorInfo.ExtraInfo.text = sensor.extraData;
         }
-        
+
         private void BindActionItem(DecisionPackage decision, int index, ActionInfo actionPanel)
         {
             actionPanel.style.display = DisplayStyle.Flex;

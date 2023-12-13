@@ -1,4 +1,3 @@
-using ArtificialIntelligence.Utility;
 using Generic;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-namespace CBB.InternalTool
+namespace ArtificialIntelligence.Utility.Actions
 {
     public class Wander : ActionState
     {
@@ -78,10 +77,10 @@ namespace CBB.InternalTool
 
         public override void SetParams(DataGeneric data)
         {
-            this._minWaitTimer = (float) data.Get("MinWaitTimer").Getvalue();
-            this._maxWaitTimer = (float) data.Get("MaxWaitTimer").Getvalue();
-            this._walkRadius = (float) data.Get("WalkRadius").Getvalue();
-            this._tickCheck = (float) data.Get("TickCheck").Getvalue();
+            this._minWaitTimer = (float) data.FindValueByName("MinWaitTimer").Getvalue();
+            this._maxWaitTimer = (float) data.FindValueByName("MaxWaitTimer").Getvalue();
+            this._walkRadius = (float) data.FindValueByName("WalkRadius").Getvalue();
+            this._tickCheck = (float) data.FindValueByName("TickCheck").Getvalue();
         }
 
         public override DataGeneric GetGeneric()
@@ -91,6 +90,7 @@ namespace CBB.InternalTool
             data.Add(new WraperNumber { name = "MaxWaitTimer", value = _maxWaitTimer });
             data.Add(new WraperNumber { name = "WalkRadius", value = _walkRadius });
             data.Add(new WraperNumber { name = "TickCheck", value = _tickCheck });
+            AddConsiderationsToConfiguration(data);
             return data;
         }
         #endregion

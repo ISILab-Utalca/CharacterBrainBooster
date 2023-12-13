@@ -103,8 +103,42 @@ namespace ArtificialIntelligence.Utility
         {
             return Vector3.Distance(target.position, agent.position) < range;
         }
+#if UNITY_EDITOR
+        // Menu item function to log the Application Data Path
+        [UnityEditor.MenuItem("Tools/Log Application Data Path")]
+        public static void LogApplicationDataPath()
+        {
+            Debug.Log($"Application dataPath:\n{Application.dataPath}");
+        }
+        // Menu item function to log the Persistent Data Path
+        [UnityEditor.MenuItem("Tools/Log Persistent Data Path")]
+        public static void LogPersistentDataPath()
+        {
+            Debug.Log($"Application persistentDataPath:\n{Application.persistentDataPath}");
+        }
+        // Menu item function find all the subclasses of ActionState
+        [UnityEditor.MenuItem("Tools/Log action types")]
+        public static void GetAllActions()
+        {
+            GetActionClasses<ActionState>();
+        }
+#endif
+        // Get all the classes that inherit from T
+        public static List<System.Type> GetActionClasses<T>()
+        {
+            var actionClasses = new List<System.Type>();
+            var types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
+            foreach (var type in types)
+            {
+                if (type.IsSubclassOf(typeof(T)))
+                {
+                    Debug.Log(type.Name);
+                    actionClasses.Add(type);
+                }
+            }
+            
+            return actionClasses;
+            
+        }
     }
-
-
-
 }
