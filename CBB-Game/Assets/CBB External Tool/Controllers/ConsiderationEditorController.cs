@@ -1,8 +1,6 @@
 using CBB.ExternalTool;
 using CBB.Lib;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -11,14 +9,13 @@ using UnityEngine.UIElements;
 public class ConsiderationEditorController : MonoBehaviour
 {
     DropdownField curveDropdown;
-    VisualElement root;
+    //VisualElement root;
     TextField considerationName;
     VisualElement curveParametersContainer;
     Chart chart;
     Curve selectedCurve;
     Button saveButton;
     Button sendButton;
-    Button closeButton;
     Toggle normalizeInput;
     FloatField minValue;
     FloatField maxValue;
@@ -30,38 +27,37 @@ public class ConsiderationEditorController : MonoBehaviour
         TypeNameHandling = TypeNameHandling.Auto,
         Formatting = Formatting.Indented
     };
-    private void Awake()
-    {
-        externalMonitor = FindObjectOfType<ExternalMonitor>();
-        root = GetComponent<UIDocument>().rootVisualElement;
+    //private void Awake()
+    //{
+    //    externalMonitor = FindObjectOfType<ExternalMonitor>();
+    //    root = GetComponent<UIDocument>().rootVisualElement;
 
-        considerationName = root.Q<TextField>("consideration-name");
+    //    considerationName = root.Q<TextField>("consideration-name");
         
-        curveDropdown = root.Q<DropdownField>("curve-type-dropdown");
+    //    curveDropdown = root.Q<DropdownField>("curve-type-dropdown");
         
-        curveParametersContainer = root.Q<VisualElement>("curve-parameters-container");
+    //    curveParametersContainer = root.Q<VisualElement>("curve-parameters-container");
         
-        saveButton = root.Q<Button>("save-button");
-        sendButton = root.Q<Button>("send-button");
-        closeButton = root.Q<Button>("close-button");
+    //    saveButton = root.Q<Button>("save-button");
+    //    sendButton = root.Q<Button>("send-button");
         
-        chart = root.Q<Chart>();
+    //    chart = root.Q<Chart>();
         
-        normalizeInput = root.Q<Toggle>("normalize-input");
+    //    normalizeInput = root.Q<Toggle>("normalize-input");
         
-        minValue = root.Q<FloatField>("min-value");
-        maxValue = root.Q<FloatField>("max-value");
+    //    minValue = root.Q<FloatField>("min-value");
+    //    maxValue = root.Q<FloatField>("max-value");
         
-        // Populate the dropdown with the curve types
-        var curves = Curve.GetCurves();
-        var curveNames = new List<string>();
-        foreach (var curve in curves)
-        {
-            curveNames.Add(curve.GetType().Name);
-        }
-        curveDropdown.choices = curveNames;
-    }
-    private void OnEnable()
+    //    // Populate the dropdown with the curve types
+    //    var curves = Curve.GetCurves();
+    //    var curveNames = new List<string>();
+    //    foreach (var curve in curves)
+    //    {
+    //        curveNames.Add(curve.GetType().Name);
+    //    }
+    //    curveDropdown.choices = curveNames;
+    //}
+    private void Subscribe()
     {
         saveButton.clicked += SaveCurveData;
         sendButton.clicked += SendConfiguration;
@@ -70,7 +66,7 @@ public class ConsiderationEditorController : MonoBehaviour
     }
 
 
-    private void OnDisable()
+    private void Unsubscribe()
     {
         saveButton.clicked -= SaveCurveData;
         sendButton.clicked -= SendConfiguration;
@@ -161,7 +157,6 @@ public class ConsiderationEditorController : MonoBehaviour
         string fieldname = ((FloatField)evt.currentTarget).label;
         selectedCurve.GetType().GetField(fieldname).SetValue(selectedCurve, evt.newValue);
         chart.SetCurve(selectedCurve);
-        Debug.Log("Updated chart");
     }
     /// <summary>
     /// Reflect the changes made to the curve's bool parameters
@@ -191,5 +186,41 @@ public class ConsiderationEditorController : MonoBehaviour
         
         externalMonitor.SendConfiguration(jsonObject);
     }
+    public void ShowConsideration(ConsiderationConfiguration consideration)
+    {
+        chart.SetCurve(consideration.curve);
+        curveDropdown.value = consideration.curve.GetType().Name;
+        considerationName.value = consideration.name;
+        minValue.value = consideration.minValue;
+        maxValue.value = consideration.maxValue;
+        normalizeInput.value = consideration.normalizeInput;
+    }
+    public void SetConsiderationEditor(ConsiderationEditor considerationEditor)
+    {
+        considerationName = considerationEditor.Q<TextField>("consideration-name");
 
+        curveDropdown = considerationEditor.Q<DropdownField>("curve-type-dropdown");
+
+        curveParametersContainer = considerationEditor.Q<VisualElement>("curve-parameters-container");
+
+        saveButton = considerationEditor.Q<Button>("save-button");
+        sendButton = considerationEditor.Q<Button>("send-button");
+
+        chart = considerationEditor.Q<Chart>();
+
+        normalizeInput = considerationEditor.Q<Toggle>("normalize-input");
+
+        minValue = considerationEditor.Q<FloatField>("min-value");
+        maxValue = considerationEditor.Q<FloatField>("max-value");
+
+        // Populate the dropdown with the curve types
+        var curves = Curve.GetCurves();
+        var curveNames = new List<string>();
+        foreach (var curve in curves)
+        {
+            curveNames.Add(curve.GetType().Name);
+        }
+        curveDropdown.choices = curveNames;
+        Subscribe();
+    }
 }
