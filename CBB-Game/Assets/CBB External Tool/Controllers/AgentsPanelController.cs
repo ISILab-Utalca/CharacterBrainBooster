@@ -14,7 +14,6 @@ namespace CBB.ExternalTool
         [SerializeField]
         private bool showLogs;
 
-        private HistoryPanelController historyPanel;
         private AgentsPanel agentsPanel;
         internal ListView list;
 
@@ -24,9 +23,9 @@ namespace CBB.ExternalTool
             MissingMemberHandling = MissingMemberHandling.Error
         };
 
+        public System.Action<int> OnNewAgentSelected { get; set; }
         private void Awake()
         {
-            historyPanel = GetComponent<HistoryPanelController>();
 
             var uiDocRoot = GetComponent<UIDocument>().rootVisualElement;
 
@@ -68,9 +67,8 @@ namespace CBB.ExternalTool
         }
         private void NewAgentSelected(IEnumerable<object> agents)
         {
-
             var agentID = (((int, string))agents.First()).Item1;
-            historyPanel.UpdateHistoryPanelView(agentID);
+            OnNewAgentSelected?.Invoke(agentID);
         }
         public void HandleMessage(string message)
         {
@@ -79,7 +77,7 @@ namespace CBB.ExternalTool
                 var agentWrapper = JsonConvert.DeserializeObject<AgentWrapper>(message, settings);
                 // Pass to the model side of the app
                 GameData.HandleAgentWrapper(agentWrapper);
-                
+
                 if (showLogs)
                 {
                     Debug.Log($"AgentWrapper received on {gameObject.name}:{this.name}");
