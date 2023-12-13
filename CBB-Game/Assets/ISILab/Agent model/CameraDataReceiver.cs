@@ -1,8 +1,6 @@
 using CBB.ExternalTool;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static CameraDataSender;
@@ -57,7 +55,7 @@ public class CameraDataReceiver : VisualElement
         ExternalMonitor.OnMessageReceived += HandleMessage;
     }
 
-
+    
     private void HandleMessage(string message)
     {
         CameraWraper pack = null;

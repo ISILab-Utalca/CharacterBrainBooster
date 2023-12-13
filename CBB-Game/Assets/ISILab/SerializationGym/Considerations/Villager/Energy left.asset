@@ -22,6 +22,7 @@ MonoBehaviour:
   - Idle
   - RoomTemperature
   - AttackOnCooldown
+  - EnergyLeft
   flags: 26
   _selectedMethodIndex: 0
   _curve:
