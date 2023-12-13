@@ -5,6 +5,8 @@ using System.Reflection;
 using UnityEngine;
 using CBB.Lib;
 using Newtonsoft.Json;
+using Generic;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -15,7 +17,7 @@ namespace ArtificialIntelligence.Utility
     /// Type of consideration that evaluates accross a range of values 
     /// </summary>
     [CreateAssetMenu(fileName = "New consideration", menuName = "Utility AI/Float consideration")]
-    public class UtilityConsideration : ScriptableObject
+    public class UtilityConsideration : ScriptableObject, IDataItem
     {
         [Header("Bookends")]
         [SerializeField, Tooltip("Set this to true if input for response curve needs to be normalized")]
@@ -29,14 +31,18 @@ namespace ArtificialIntelligence.Utility
 
         [Header("Method selection")]
         [Tooltip("The class instance that implements desired methods")]
+        [JsonIgnore]
         public UnityEngine.Object ImplementationReference;
         [Tooltip("Methods declared on Implementation Reference")]
         public List<string> m_methods = new();
         // Cache for selected method
+        [JsonIgnore]
         public MethodInfo _methodInfo;
         [Tooltip("Set this flags in the inspector to show different methods")]
+        [JsonIgnore]
         public BindingFlags flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly;
         [HideInInspector]
+        [JsonIgnore]
         public int _selectedMethodIndex;
 
         [Space]
@@ -45,6 +51,7 @@ namespace ArtificialIntelligence.Utility
         public List<Curve> _curveTypes;
         [SerializeReference, SerializeField]
         public Curve _curve;
+        [JsonIgnore]
         public int _selectedCurveIndex;
         public struct Evaluation
         {
@@ -195,6 +202,16 @@ namespace ArtificialIntelligence.Utility
                 m_maxValue = data.maxValue;
             }
         }
+
 #endif
+        public ConsiderationConfiguration GetConfiguration()
+        {
+            return new ConsiderationConfiguration(name, _curve, m_bookends, m_minValue, m_maxValue);
+        }
+
+        public string GetItemName()
+        {
+            return name;
+        }
     }
 }

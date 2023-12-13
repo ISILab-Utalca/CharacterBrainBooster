@@ -1,3 +1,4 @@
+using CBB.Lib;
 using Generic;
 using System.Collections;
 using System.Collections.Generic;
@@ -179,7 +180,17 @@ namespace ArtificialIntelligence.Utility
         {
             return _considerations;
         }
-
+        public void AddConsiderationsToConfiguration(DataGeneric config)
+        {
+            foreach (var item in _considerations)
+            {
+                config.Add(new WrapperConsideration()
+                {
+                    name = item.name,
+                    configuration = item.GetConfiguration()
+                });
+            }
+        }
         public abstract void SetParams(DataGeneric data);
 
         public abstract DataGeneric GetGeneric();

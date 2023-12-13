@@ -188,10 +188,10 @@ namespace CBB.Lib
     }
     /// <summary>
     /// Plain Old C# Object to store the configuration set
-    /// on the editor <see cref="ConsiderationEditorController"/>
+    /// on this Consideration in the editor <see cref="ConsiderationEditorController"/>
     /// </summary>
     [System.Serializable]
-    public class ConsiderationConfiguration
+    public class ConsiderationConfiguration : IDataItem
     {
         public string name;
         [SerializeReference]
@@ -199,5 +199,19 @@ namespace CBB.Lib
         public bool normalizeInput;
         public float minValue;
         public float maxValue;
+        public ConsiderationConfiguration() { }
+        public ConsiderationConfiguration(string name, Curve curve, bool normalize, float minValue = 0, float maxValue = 0)
+        {
+            this.name = name;
+            this.curve = curve;
+            this.normalizeInput = normalize;
+            this.maxValue = maxValue;
+            this.minValue = minValue;
+        }
+
+        public string GetItemName()
+        {
+            return name;
+        }
     }
 }
