@@ -67,16 +67,14 @@ namespace CBB.Api
             SendDataToAllClients(AgentWrapper.AgentStateType.DESTROYED);
         }
 
-        private void SendSensorUpdate(ISensor sensor)
+        private void SendSensorUpdate(SensorActivation sensor)
         {
-            var status = sensor.GetSensorData();
-
             var sensorPackage = new SensorPackage
             {
                 agentID = agentID,
-                timestamp = System.DateTime.Now.ToString(),
-                sensorType = status.sensorType.ToString(),
-                extraData = status.configurations.ToString() + "\n" + status.memory.ToString(),
+                timestamp = sensor.activationTime,
+                sensorType = sensor.sensorName,
+                activator = sensor.activator
             };
             SendDataToAllClients(sensorPackage);
 

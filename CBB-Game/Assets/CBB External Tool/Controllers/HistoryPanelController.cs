@@ -198,7 +198,7 @@ namespace CBB.ExternalTool
             var tt = DateTime.Parse(t);
             sensorInfo.TimeStamp.text = tt.ToString("HH:mm:ss");
             sensorInfo.SensorName.text = sensor.sensorType;
-            sensorInfo.ExtraInfo.text = sensor.extraData;
+            sensorInfo.ExtraInfo.text = "Activator: " + sensor.activator;
         }
 
         private void BindActionItem(DecisionPackage decision, int index, ActionInfo actionPanel)

@@ -11,7 +11,7 @@
                 </ui:VisualElement>
                 <ui:TreeView view-data-key="unity-tree-view" focusable="true" name="brain-tree" virtualization-method="DynamicHeight" style="font-size: 20px;" />
             </ui:VisualElement>
-            <ui:VisualElement name="details-panel" class="visual-element-container" style="background-color: rgba(0, 0, 0, 0); align-self: stretch; width: 333px;" />
+            <ui:VisualElement name="details-panel" class="visual-element-container" style="background-color: rgba(0, 0, 0, 0); align-self: stretch; width: 405px;" />
             <ui:VisualElement name="container-4" class="visual-element-container" style="flex-grow: 1;">
                 <CBB.ExternalTool.AgentsPanel name="AgentsPanel" style="flex-grow: 0; flex-shrink: 0; max-height: initial; min-height: initial; height: initial;" />
                 <CBB.ExternalTool.HistoryPanel style="flex-grow: 0; flex-shrink: 0; max-height: initial; min-height: initial; height: 650px;" />
@@ -21,6 +21,7 @@
                     <CameraDataReceiver style="flex-grow: 1;" />
                 </ui:VisualElement>
                 <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-grow: 1;">
+                    <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="details-panel-title" class="top-window-title" />
                     <ui:ListView focusable="true" virtualization-method="DynamicHeight" name="decision-detail-list" style="flex-grow: 1;" />
                 </ui:VisualElement>
             </ui:VisualElement>

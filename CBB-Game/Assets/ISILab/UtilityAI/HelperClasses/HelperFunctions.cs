@@ -7,7 +7,15 @@ namespace ArtificialIntelligence.Utility
 {
     public static class HelperFunctions
     {
-
+        /// <summary>
+        /// Split a string by uppercase letters
+        /// </summary>
+        /// <param name="s">The string like "MyClassName"</param>
+        /// <returns></returns>
+        public static string SplitStringUppercase(string s)
+        {
+            return string.Concat(s.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+        }
         public static Texture GetTexture(string nameOfTexture)
         {
             var textures = Resources.FindObjectsOfTypeAll(typeof(Texture))
