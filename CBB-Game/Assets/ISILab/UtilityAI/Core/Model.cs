@@ -150,7 +150,7 @@ namespace CBB.Lib
     public class SensorPackage : AgentPackage
     {
         public string sensorType;
-        public string extraData;
+        public string activator;
     }
 
     [System.Serializable]

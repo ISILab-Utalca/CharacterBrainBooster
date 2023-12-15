@@ -75,16 +75,17 @@ namespace CBB.Lib
         private void OnTriggerEnter(Collider other)
         {
             if (viewLogs) Debug.Log($"Object detected: {other.name}");
-
             viewedObjects.Add(other.gameObject);
-            OnSensorUpdate?.Invoke(this);
+            var sa = new SensorActivation(GetType().Name, other.gameObject.name, DateTime.Now.ToString(), agentID);
+            OnSensorUpdate?.Invoke(sa);
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (viewLogs) Debug.Log($"Object lost: {other.name}");
+            var sa = new SensorActivation(GetType().Name, other.gameObject.name, DateTime.Now.ToString(), agentID);
             viewedObjects.Remove(other.gameObject);
-            OnSensorUpdate?.Invoke(this);
+            OnSensorUpdate?.Invoke(sa);
         }
 
         [ContextMenu("Serialize sensor")]

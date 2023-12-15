@@ -1,4 +1,5 @@
 using ArtificialIntelligence.Utility.Actions;
+using CBB.Lib;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace ArtificialIntelligence.Utility
         public System.Action<List<Option>> OnCompletedScoring { get; set; }
         public System.Action OnSetupDone { get; set; }
         public System.Action<Option, List<Option>> OnDecisionTaken { get; set; }
-        public System.Action<ISensor> OnSensorUpdate { get; set; }
+        public System.Action<SensorActivation> OnSensorUpdate { get; set; }
 
         public List<ISensor> Sensors { get; private set; }
 
@@ -76,7 +77,7 @@ namespace ArtificialIntelligence.Utility
             // Begin the life of this agent
             TryStartNewAction(null);
         }
-        public void TryStartNewAction(ISensor sensor)
+        public void TryStartNewAction(SensorActivation sensor)
         {
             Option newOption = GetNewOption();
             if (newOption != null && newOption.Score != 0)

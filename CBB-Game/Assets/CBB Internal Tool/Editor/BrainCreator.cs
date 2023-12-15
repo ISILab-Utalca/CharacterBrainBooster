@@ -13,7 +13,7 @@ namespace CBB.InternalTool
 
         private ObjectField m_BrainFileField = default;
         private Toggle m_CreatePairToggle = default;
-        [MenuItem("CBB/BrainCreator")]
+        [MenuItem("CBB/Brain Creator")]
         public static void ShowExample()
         {
             BrainCreator wnd = GetWindow<BrainCreator>();

@@ -1,4 +1,5 @@
 using ArtificialIntelligence.Utility;
+using CBB.Lib;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -67,7 +68,7 @@ public class BubbleText : MonoBehaviour
         actionText.text = option.Action.GetType().Name;
     }
 
-    private void SensorUpdate(ISensor senseor)
+    private void SensorUpdate(SensorActivation senseor)
     {
         sensorText.text = senseor.GetType().ToString();
     }

@@ -18,15 +18,16 @@ namespace ArtificialIntelligence.Utility
         public SensorStatus SensorData = new();
         [SerializeField]
         protected bool viewLogs = false;
-
+        protected int agentID = 1;
         // GUI
         private static GLPainter painter = new GLPainter();
 
-        public Action<ISensor> OnSensorUpdate { get; set; }
+        public Action<SensorActivation> OnSensorUpdate { get; set; }
 
         protected virtual void Awake()
         {
             _agentMemory = gameObject.GetComponentOnHierarchy<LocalAgentMemory>();
+            agentID = gameObject.GetInstanceID();
         }
 
         protected void OnEnable()
