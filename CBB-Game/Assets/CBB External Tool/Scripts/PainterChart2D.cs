@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Color = UnityEngine.Color;
@@ -10,7 +11,7 @@ public struct CurveFormat
     public Curve curve;
     public float value;
     public Color color;
-    public bool showValue; 
+    public bool showValue;
 }
 
 public class PainterChart2D : VisualElement
@@ -28,6 +29,8 @@ public class PainterChart2D : VisualElement
 
     public float Height => this.resolvedStyle.height;
     public float Width => this.resolvedStyle.width;
+
+    public Color ColorValuePoint { get => colorValuePoint; set => colorValuePoint = value; }
 
     public PainterChart2D()
     {
@@ -64,7 +67,7 @@ public class PainterChart2D : VisualElement
             var x = curve.value;
             var y = curve.curve.Calc(x);
             var point = AdjustPoint(new Vector2(x, y));
-            DrawPoint(point, 2.0f, colorValuePoint);
+            DrawPoint(point, 2.0f, ColorValuePoint);
 
             // Draw value lines
             var start = new Vector2(2, point.y);
@@ -79,7 +82,7 @@ public class PainterChart2D : VisualElement
         this.MarkDirtyRepaint();
     }
 
-    public void SetCurve(Curve curve, float value,Color color, bool showValue)
+    public void SetCurve(Curve curve, float value, Color color, bool showValue)
     {
         this.curvesFormats = new CurveFormat[] { new CurveFormat() { curve = curve, value = value, color = color, showValue = showValue } };
         this.MarkDirtyRepaint();

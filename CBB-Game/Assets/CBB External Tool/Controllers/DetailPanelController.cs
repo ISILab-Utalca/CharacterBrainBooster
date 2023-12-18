@@ -36,7 +36,7 @@ public class DetailPanelController : MonoBehaviour
 
             var names = "";
             var values = "";
-            for(int i = 0; i < considerationCount; i++)
+            for (int i = 0; i < considerationCount; i++)
             {
                 var consideration = evaluatedConsiderations[i];
                 curvesAndValues[i] = (consideration.Curve, consideration.InputValue);
@@ -47,10 +47,10 @@ public class DetailPanelController : MonoBehaviour
                 values += consideration.UtilityValue.ToString("N3") + y;
             }
             var totalUtility = decisionData.actionScore.ToString();
-            content.Chart.SetCurves(curvesAndValues);
-
+            // Plot the line that represents the total utility
+            content.Chart.SetCurves(curvesAndValues, true);
             content.baseFormula.text = "Base formula: " + names;
-            content.formulaUtility.text = "Formula utility: (" + values +") * " + decisionData.factor.ToString("N3");
+            content.formulaUtility.text = "Formula utility: (" + values + ") * " + decisionData.factor.ToString("N3");
             content.priorityAction.text = "Priority action: " + decisionData.priority.ToString("N3");
             content.TotalUtility.text = "Total utility: " + totalUtility;
             content.DisplayEvaluatedConsiderations(evaluatedConsiderations);
