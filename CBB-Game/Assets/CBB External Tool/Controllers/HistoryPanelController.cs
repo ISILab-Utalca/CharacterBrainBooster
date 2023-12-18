@@ -208,7 +208,7 @@ namespace CBB.ExternalTool
             var actionTypeName = decision.bestOption.actionName;
             string[] words = Regex.Split(actionTypeName, @"(?<!^)(?=[A-Z][a-z])");
 
-            actionPanel.ActionName.text = string.Join(" ", words); ;
+            actionPanel.ActionName.text = string.Join(" ", words);
 
             actionPanel.ActionScore.text = decision.bestOption.actionScore.ToString();
             actionPanel.TargetName.text = decision.bestOption.targetName;

@@ -2300,6 +2300,7 @@ MonoBehaviour:
   _defaultAction: {fileID: 874170269}
   viewLogs: 0
   panelText: {fileID: 0}
+  _isPaused: 0
 --- !u!114 &874170266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4383,6 +4384,10 @@ PrefabInstance:
     - target: {fileID: 9130257367612415918, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: viewLogs
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130257367612415918, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: _isPaused
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2177107222128649367, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}

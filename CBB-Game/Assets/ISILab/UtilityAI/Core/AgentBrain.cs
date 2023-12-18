@@ -8,8 +8,7 @@ using UnityEngine;
 namespace ArtificialIntelligence.Utility
 {
     /// <summary>
-    /// Observes changes on sensors and calls the Utility system
-    /// to start new behaviours
+    /// Gives an agent its capacity to think and take decisions
     /// </summary>
     [RequireComponent(typeof(BrainLoader))]
     public class AgentBrain : MonoBehaviour, IAgentBrain
@@ -32,6 +31,8 @@ namespace ArtificialIntelligence.Utility
 
         public BubbleText panelText;
 
+        [SerializeField]
+        private bool _isPaused = false;
         public UtilityDecisionMaker.PickMethod PickMethod { get => _pickMethod; set => _pickMethod = value; }
         public int TopN { get => topN; set => topN = value; }
 
@@ -79,6 +80,7 @@ namespace ArtificialIntelligence.Utility
         }
         public void TryStartNewAction(SensorActivation sensor)
         {
+            if (_isPaused) return;
             Option newOption = GetNewOption();
             if (newOption != null && newOption.Score != 0)
             {
@@ -89,13 +91,13 @@ namespace ArtificialIntelligence.Utility
                 // Execute an Idle action just to keep alive the Sense - Think - Act cycle
                 if (viewLogs) Debug.LogWarning("Executing default action on:" + gameObject.name);
                 newOption = new Option();
-                if(TryGetComponent(out Idle idleAction))
+                if (TryGetComponent(out Idle idleAction))
                 {
                     newOption.Action = idleAction;
                 }
                 else
                 {
-                    newOption.Action  = gameObject.AddComponent<Idle>();
+                    newOption.Action = gameObject.AddComponent<Idle>();
                 }
                 _actionRunner.ExecuteOption(newOption);
             }
@@ -124,6 +126,21 @@ namespace ArtificialIntelligence.Utility
                 sensor.OnSensorUpdate -= TryStartNewAction;
                 sensor.OnSensorUpdate -= OnSensorUpdate;
             }
+        }
+        /// <summary>
+        /// Pause the behaviour of this agent, i.e. stops thinking and taking decisions
+        /// </summary>
+        public void Pause()
+        {
+            _isPaused = true;
+        }
+        /// <summary>
+        /// Resume the behaviour of this agent, i.e. starts thinking and taking decisions
+        /// </summary>
+        public void Resume()
+        {
+            _isPaused = false;
+            TryStartNewAction(null);
         }
     }
 
