@@ -28,7 +28,7 @@ namespace CBB.ExternalTool
         }
         public void ShowConsideration(ConsiderationData consideration)
         {
-            chart.SetCurve(consideration.Curve, consideration.InputValue);
+            chart.SetCurve(consideration.Curve, consideration.InputValue, true);
             foldout.text = consideration.ConsiderationName;
             input.text = $"{consideration.EvaluatedVariableName}: {consideration.InputValue}";
             utility.text = $"Utility: {consideration.UtilityValue}";
