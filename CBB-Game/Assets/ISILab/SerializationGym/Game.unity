@@ -2455,6 +2455,7 @@ MonoBehaviour:
   _default: 0
   createBrain: 0
   agent_ID: 
+  showLogs: 0
 --- !u!1001 &889987404
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4376,6 +4377,10 @@ PrefabInstance:
     - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: agent_ID
       value: villager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: showLogs
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: createBrain

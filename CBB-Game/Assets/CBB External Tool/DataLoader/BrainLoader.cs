@@ -1,5 +1,7 @@
 using ArtificialIntelligence.Utility;
 using Generic;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -18,7 +20,13 @@ public class BrainLoader : MonoBehaviour
     private List<ActionState> actionStates = new();
     private List<Sensor> sensors = new();
     private Brain brain;
-
+    private AgentBrain agentBrain;
+    [SerializeField]
+    private bool showLogs = false;
+    private void Awake()
+    {
+        agentBrain = GetComponent<AgentBrain>();
+    }
     private void Start()
     {
         // If default is activated, bypass the brain system
@@ -53,6 +61,26 @@ public class BrainLoader : MonoBehaviour
 
         // Initialize the brain with the brain data
         InitAgent(brain);
+    }
+    /// <summary>
+    /// Update the brain data with the current configuration
+    /// </summary>
+    /// <param name="agent_ID"></param>
+    public void ReadBrain(string agent_ID)
+    {
+        StartCoroutine(PauseReadUpdate(agent_ID));
+    }
+    // NOTE: In order to not break the agent (stall, infinite loop, etc) is necessary
+    // to pause the agent, update the brain and then resume the agent on several steps (frames)
+    private IEnumerator PauseReadUpdate(string agent_ID)
+    {
+        this.agent_ID = agent_ID;
+        agentBrain.Pause();
+        yield return null;
+        Start();
+        yield return null;
+        agentBrain.Resume();
+        if(showLogs) Debug.Log($"[BRAIN LOADER] Brain updated for agent {agent_ID}");
     }
 
     public void OnApplicationQuit()
