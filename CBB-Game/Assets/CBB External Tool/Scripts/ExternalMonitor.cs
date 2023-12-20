@@ -66,7 +66,7 @@ namespace CBB.ExternalTool
             // Blocking call
             try
             {
-                client = new TcpClient(serverAddress, serverPort);
+                client = new(serverAddress, serverPort);
                 Debug.Log("<color=green>[MONITOR] Sync connection to server done.</color>");
                 Debug.Log($"[MONITOR] Local endpoint: {client.Client.LocalEndPoint}");
                 Debug.Log($"[MONITOR] Remote endpoint: {client.Client.RemoteEndPoint}");
@@ -87,6 +87,7 @@ namespace CBB.ExternalTool
             byte[] headerBuffer = new byte[InternalNetworkManager.HEADER_SIZE];
             int bytesRead;
 
+            // Read data from the server
             while (true)
             {
                 int missingHeaderBytes = 0;
@@ -150,6 +151,8 @@ namespace CBB.ExternalTool
                 }
             }
 
+            // Clean up
+            client.Close();
             Debug.Log("<color=yellow>[MONITOR] Communication thread finished</color>");
         }
 

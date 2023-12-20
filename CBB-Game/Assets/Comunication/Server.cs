@@ -19,7 +19,7 @@ namespace CBB.Comunication
         private static Dictionary<IPAddress, TcpClient> clients = new();
         public static Queue<TcpClient> clientsQueue = new();
         public static readonly object syncObject = new();
-
+        private static Queue<string> receivedMessages = new();
         #endregion
         public static bool IsRunning { get; set; } = false;
         #region Events
@@ -110,36 +110,58 @@ namespace CBB.Comunication
             byte[] header = new byte[InternalNetworkManager.HEADER_SIZE];
             int bytesRead;
             bool threadIsRunningCorrectly = true;
+
             while (IsRunning && threadIsRunningCorrectly)
             {
+                int missingHeaderBytes = 0;
+                int missingMessageBytes = 0;
                 try
-                // receive the header
                 {
-                    bytesRead = await stream.ReadAsync(header, 0, header.Length);
-                    if (bytesRead == 0)
+                    // Convention: 0 bytes read mean that the other endpoint closed the connection
+                    while ((bytesRead = await stream.ReadAsync(header, 0, header.Length)) != 0)
                     {
-                        // Convention: connection closed by the client
-                        // let's try it out
-                        Debug.Log("<color=cyan>[SERVER] Client </color>" + client.Client.RemoteEndPoint + "<color=cyan> quit.</color>");
-                        clients.Remove(((IPEndPoint)client.Client.RemoteEndPoint).Address);
-                        break;
+
+                        // This handles the case where the stream does not have yet the header
+                        // Maybe is unnecesary since the packets normally are larger than HEADER_SIZE
+                        if (bytesRead < InternalNetworkManager.HEADER_SIZE)
+                        {
+                            missingHeaderBytes = InternalNetworkManager.HEADER_SIZE - bytesRead;
+                            while (missingHeaderBytes > 0)
+                            {
+                                bytesRead = await stream.ReadAsync(header, bytesRead, missingHeaderBytes);
+                                missingHeaderBytes -= bytesRead;
+                            }
+
+                        }
+                        // We have the length of the message
+                        var messageLengthInBytes = header[0..InternalNetworkManager.HEADER_SIZE];
+                        int messageLength = BitConverter.ToInt32(messageLengthInBytes, 0);
+
+                        int offset = 0;
+                        byte[] messageBytes = new byte[messageLength];
+                        bytesRead = await stream.ReadAsync(header, offset, messageLength);
+
+                        // Read until receiving the expected amount of data
+                        missingMessageBytes = messageLength - bytesRead;
+                        while (missingMessageBytes > 0)
+                        {
+                            offset += bytesRead;
+                            bytesRead = await stream.ReadAsync(messageBytes, offset, missingMessageBytes);
+                            missingMessageBytes -= bytesRead;
+                        }
+                        if (missingMessageBytes < 0)
+                        {
+                            throw new Exception("[MONITOR] Communication thread read more data than it should/can");
+                        }
+                        // Let's asume that messageBytes is correctly filled
+                        string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
+                        //Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
+                        receivedMessages.Enqueue(receivedJsonMessage);
                     }
-
-                    int messageLength = BitConverter.ToInt32(header, 0);
-                    byte[] messageBytes = new byte[messageLength];
-
-                    // Read until the expected amoun of data is reached
-                    await stream.ReadAsync(messageBytes, 0, messageLength);
-                    string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
-
-                    //Check Internal message
-                    Enum.TryParse(typeof(InternalMessage), receivedJsonMessage, out object messageType);
-                    if (messageType != null)
-                    {
-                        InternalCallBack((InternalMessage)messageType, client);
-                    }
-
+                    Debug.Log("<color=cyan>[MONITOR] Thread coms quit. Read 0 bytes</color>");
+                    break;
                 }
+
                 catch (ObjectDisposedException disposedExcep)
                 {
                     Debug.Log("<color=orange>[SERVER] Communication thread error: </color>" + disposedExcep);
@@ -151,6 +173,11 @@ namespace CBB.Comunication
                 catch (IOException IOexcep)
                 {
                     Debug.Log("<color=orange>[SERVER] Communication thread error: </color>" + IOexcep);
+                }
+                catch (Exception excep)
+                {
+                    Debug.Log("<color=orange>[MONITOR] Communication thread error: </color>" + excep);
+                    break;
                 }
                 finally
                 {
@@ -190,7 +217,7 @@ namespace CBB.Comunication
 
             // Blocking operations, length prefix protocol
             NetworkStream stream = client.GetStream();
-            Debug.Log("[SERVER] Bytes sent length: " +  bytesSent.Length);
+            Debug.Log("[SERVER] Bytes sent length: " + bytesSent.Length);
             stream.Write(bytesSent, 0, bytesSent.Length);
         }
         public static byte[] WrapMessage(byte[] message)
