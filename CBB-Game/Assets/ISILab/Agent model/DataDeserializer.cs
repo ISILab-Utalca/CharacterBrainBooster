@@ -5,16 +5,20 @@ using UnityEngine;
 
 namespace CBB.Comunication
 {
+    /// <summary>
+    /// Deserialize the data received from the server 
+    /// </summary>
     public class DataDeserializer : MonoBehaviour
     {
         [SerializeField]
         private AgentDataSender agentDataSender;
+
         private void Start()
         {
             agentDataSender = GetComponent<AgentDataSender>();
             agentDataSender.OnSerializedData += DeserializeAgentData;
         }
-
+        
         private void DeserializeAgentData(string serializedAgentWrapper)
         {
             try
