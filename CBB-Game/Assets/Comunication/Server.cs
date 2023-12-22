@@ -19,12 +19,12 @@ namespace CBB.Comunication
         private static Dictionary<IPAddress, TcpClient> clients = new();
         public static Queue<TcpClient> clientsQueue = new();
         public static readonly object syncObject = new();
-        private static Queue<string> receivedMessages = new();
         #endregion
         public static bool IsRunning { get; set; } = false;
         #region Events
         public static Action<TcpClient> OnNewClientConnected { get; set; }
         public static Action OnClientDisconnected { get; set; }
+        public static Queue<string> ReceivedMessages { get; set; } = new();
         #endregion
         #region Methods
 
@@ -156,7 +156,7 @@ namespace CBB.Comunication
                         // Let's asume that messageBytes is correctly filled
                         string receivedJsonMessage = Encoding.UTF8.GetString(messageBytes);
                         //Debug.Log("[MONITOR] Message received: " + receivedJsonMessage);
-                        receivedMessages.Enqueue(receivedJsonMessage);
+                        ReceivedMessages.Enqueue(receivedJsonMessage);
                     }
                     Debug.Log("<color=cyan>[MONITOR] Thread coms quit. Read 0 bytes</color>");
                     break;
