@@ -1,12 +1,12 @@
 .visual-element-background {
-    background-color: rgb(34, 34, 34);
+    background-color: rgb(26, 26, 26);
 }
 
 .visual-element-container {
-    border-left-color: rgb(87, 87, 87);
-    border-right-color: rgb(87, 87, 87);
-    border-top-color: rgb(87, 87, 87);
-    border-bottom-color: rgb(87, 87, 87);
+    border-left-color: rgb(10, 10, 11);
+    border-right-color: rgb(10, 10, 11);
+    border-top-color: rgb(10, 10, 11);
+    border-bottom-color: rgb(10, 10, 11);
     border-left-width: 2px;
     border-right-width: 2px;
     border-top-width: 2px;
