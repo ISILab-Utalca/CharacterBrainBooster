@@ -48,7 +48,6 @@ namespace CBB.ExternalTool
                             {
                                 considerationItems.Add(new TreeViewItemData<IDataItem>(id++, wc.configuration));
                             }
-                            else { Debug.Log("[B. D. Manager] Not a consideration" + value.GetType()); }
                         }
                         actionItems.Add(new TreeViewItemData<IDataItem>(id++, action, considerationItems));
                     }
@@ -59,10 +58,6 @@ namespace CBB.ExternalTool
                     {
                         sensorItems.Add(new TreeViewItemData<IDataItem>(id++, sensor));
                     }
-
-                    // Wrap up all the items in the tree view (test version, only parent label)
-                    //brainDataGroup.Add(new TreeViewItemData<IDataItem>(id++, actionWrapper));
-                    //brainDataGroup.Add(new TreeViewItemData<IDataItem>(id++, sensorWrapper));
 
                     // Production version, with children
                     brainDataGroup.Add(new TreeViewItemData<IDataItem>(id++, actionWrapper, actionItems));
