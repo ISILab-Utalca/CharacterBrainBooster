@@ -1,5 +1,5 @@
 .visual-element-background {
-    background-color: rgb(26, 26, 26);
+    background-color: rgb(0, 0, 0);
 }
 
 .visual-element-container {

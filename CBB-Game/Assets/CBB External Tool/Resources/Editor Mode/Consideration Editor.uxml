@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:VisualElement style="background-color: rgba(0, 0, 0, 0);">
-        <ui:VisualElement style="background-color: rgb(56, 56, 56); padding-left: 5px; padding-top: 5px; border-top-color: rgb(38, 38, 38); border-left-width: 3px; border-right-width: 3px; border-top-width: 0; border-bottom-width: 3px; border-left-color: rgb(38, 38, 38); border-right-color: rgb(38, 38, 38); border-bottom-color: rgb(38, 38, 38); padding-right: 5px; padding-bottom: 5px;">
+    <ui:VisualElement style="background-color: rgb(26, 26, 26);">
+        <ui:VisualElement style="background-color: rgb(26, 26, 26); padding-left: 5px; padding-top: 5px; border-top-color: rgb(38, 38, 38); border-left-width: 3px; border-right-width: 3px; border-top-width: 0; border-bottom-width: 3px; border-left-color: rgb(38, 38, 38); border-right-color: rgb(38, 38, 38); border-bottom-color: rgb(38, 38, 38); padding-right: 5px; padding-bottom: 5px;">
             <ui:TextField picking-mode="Ignore" label="Name" value="name" name="consideration-name" style="font-size: 20px; color: rgb(233, 223, 223);" />
             <ui:DropdownField label="Curve type" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="curve-type-dropdown" style="color: rgb(255, 255, 255); font-size: 20px;" />
             <ui:Label tabindex="-1" text="Parameters:" display-tooltip-when-elided="true" enable-rich-text="true" style="font-size: 20px; color: rgb(255, 255, 255);" />
@@ -10,7 +10,7 @@
             <ui:FloatField label="Min value" value="42,2" name="min-value" style="font-size: 20px; align-self: stretch; justify-content: space-around; align-items: center; display: none;" />
             <ui:FloatField label="Max value" value="42,2" name="max-value" style="font-size: 20px; align-self: stretch; justify-content: space-around; align-items: center; display: none;" />
             <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); align-items: auto; justify-content: flex-end; align-self: stretch; flex-direction: row;">
-                <ui:Button text="Save" display-tooltip-when-elided="true" name="save-button" style="background-color: rgb(50, 61, 128); color: rgb(255, 255, 255);" />
+                <ui:Button text="Save" display-tooltip-when-elided="true" name="save-button" style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0);" />
                 <ui:Button text="Send" display-tooltip-when-elided="true" name="send-button" style="background-color: rgb(61, 41, 125); color: rgb(255, 255, 255); background-image: none;" />
             </ui:VisualElement>
         </ui:VisualElement>
