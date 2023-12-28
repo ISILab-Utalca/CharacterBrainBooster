@@ -30,3 +30,16 @@
     color: rgb(255, 255, 255);
     margin-right: 6px;
 }
+
+.my-scroll-vertical .unity-scroller--vertical {
+    width: 15px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    align-self: auto;
+}
