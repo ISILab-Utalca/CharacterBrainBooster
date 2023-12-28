@@ -19,7 +19,7 @@ public class PainterChart2D : VisualElement
     public new class UxmlFactory : UxmlFactory<PainterChart2D, UxmlTraits> { }
 
     private Painter2D paint2D;
-    private CurveFormat[] curvesFormats = new CurveFormat[] { new CurveFormat() { curve = new ExponencialInvertida(), value = 0.5f, color = Color.green, showValue = true } };
+    private CurveFormat[] curvesFormats = new CurveFormat[] { new() { curve = new ExponencialInvertida(), value = 0.5f, color = Color.green, showValue = true } };
 
     private Color colorLine = new(1f, 1f, 1f, .7f);
     private Color colorGrid = new(0f, 0f, 0f, .05f);
@@ -78,13 +78,13 @@ public class PainterChart2D : VisualElement
 
     public void SetCurve(Curve curve)
     {
-        this.curvesFormats = new CurveFormat[] { new CurveFormat() { curve = curve, value = 0.5f, color = Color.green, showValue = false } };
+        this.curvesFormats = new CurveFormat[] { new() { curve = curve, value = 0.5f, color = Color.green, showValue = false } };
         this.MarkDirtyRepaint();
     }
 
     public void SetCurve(Curve curve, float value, Color color, bool showValue)
     {
-        this.curvesFormats = new CurveFormat[] { new CurveFormat() { curve = curve, value = value, color = color, showValue = showValue } };
+        this.curvesFormats = new CurveFormat[] { new() { curve = curve, value = value, color = color, showValue = showValue } };
         this.MarkDirtyRepaint();
     }
 

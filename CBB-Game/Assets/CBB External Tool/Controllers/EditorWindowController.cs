@@ -14,6 +14,7 @@ namespace CBB.ExternalTool
 {
     public class EditorWindowController : MonoBehaviour
     {
+        #region FIELDS
         // UI
         private TreeView brainTree;
         private Button reloadBrainsButton;
@@ -35,7 +36,8 @@ namespace CBB.ExternalTool
             NullValueHandling = NullValueHandling.Ignore,
             MissingMemberHandling = MissingMemberHandling.Ignore,
             Formatting = Formatting.Indented
-        };
+        }; 
+        #endregion
 
         private void Awake()
         {
@@ -55,33 +57,25 @@ namespace CBB.ExternalTool
             brainTree.selectedIndicesChanged += OnElementSelected;
 
         }
+        private void OnEnable()
+        {
+            DisplayBrainsTreeView();
+        }
+
         private void SaveBrain()
         {
+            if(lastSelectedBrain == null)
+            {
+                Debug.LogWarning("[Editor Window Controller] No brain selected");
+                return;
+            }
             var b = lastSelectedBrain;
             // Save the updated file to a local path
-            string path = Application.dataPath + "/CBB/ExternalTool/Brains/" + b.brain_ID + ".json";
+            string path = "C:\\Users\\diego\\Escritorio\\Docs" + b.brain_ID + ".json";
             string json = JsonConvert.SerializeObject(b, settings);
 
             System.IO.File.WriteAllText(path, json);
             Debug.Log($"[Editor Window Controller] Brain saved to: {path}");
-        }
-        // Recursively, finds the brain associated to the selected item
-        private Brain GetParentBrain(int index)
-        {
-            var parentId = brainTree.GetParentIdForIndex(index);
-            // We hit the root of the tree
-            if (parentId == -1)
-            {
-                return brainTree.GetItemDataForIndex<Brain>(index);
-            }
-            DebugSelectedItemInfo(brainTree.selectedIndex);
-            // Else, set the selected item by id. This forces the tree to update the selected item
-            // thus being able to traverse the tree upwards, since its only possible to ask for the parent
-            // of an item by index i.e. you can't ask for the parent of an item by its id, neither can
-            // get the index of an item by its id, since it changes dynamically.
-            // Use selection without notify to avoid triggering the selectedItemsChanged event causing an infinite loop
-            brainTree.SetSelectionByIdWithoutNotify(new List<int>() { parentId });
-            return GetParentBrain(brainTree.selectedIndex);
         }
         private void OnElementSelected(IEnumerable<int> enumerable)
         {
@@ -108,9 +102,7 @@ namespace CBB.ExternalTool
         private void DisplayConsiderationEditor(ConsiderationConfiguration config)
         {
             detailsPanel.Clear();
-            var ce = new ConsiderationEditor();
-            considerationEditorController.SetConsiderationEditor(ce);
-            considerationEditorController.ShowConsideration(config);
+            var ce = considerationEditorController.CreateEditor(config);
             detailsPanel.Add(ce);
         }
         private void DisplayDataGenericDetails(DataGeneric data)
@@ -171,10 +163,6 @@ namespace CBB.ExternalTool
             brainTree.SetRootItems(brainDataManager.TreeRoots);
             brainTree.RefreshItems();
         }
-        private void OnEnable()
-        {
-            DisplayBrainsTreeView();
-        }
         private VisualElement MakeItem()
         {
             return new Label();
@@ -196,6 +184,26 @@ namespace CBB.ExternalTool
             }
             // TODO: Style the item using a uss class
             item.style.color = Color.white;
+        }
+
+        #region UTILITIES
+        // Recursively, finds the brain associated to the selected item
+        private Brain GetParentBrain(int index)
+        {
+            var parentId = brainTree.GetParentIdForIndex(index);
+            // We hit the root of the tree
+            if (parentId == -1)
+            {
+                return brainTree.GetItemDataForIndex<Brain>(index);
+            }
+            DebugSelectedItemInfo(brainTree.selectedIndex);
+            // Else, set the selected item by id. This forces the tree to update the selected item
+            // thus being able to traverse the tree upwards, since its only possible to ask for the parent
+            // of an item by index i.e. you can't ask for the parent of an item by its id, neither can
+            // get the index of an item by its id, since it changes dynamically.
+            // Use selection without notify to avoid triggering the selectedItemsChanged event causing an infinite loop
+            brainTree.SetSelectionByIdWithoutNotify(new List<int>() { parentId });
+            return GetParentBrain(brainTree.selectedIndex);
         }
         private string PrintArray(IEnumerable<int> array)
         {
@@ -219,6 +227,7 @@ namespace CBB.ExternalTool
             //$"\nitem parent's data (index): {brainTree.GetItemDataForIndex<object>(index)}" +
             //$"\nitem parent's data (ID): {brainTree.GetItemDataForId<object>(brainTree.GetParentIdForIndex(index))}"
             );
-        }
+        } 
+        #endregion
     }
 }

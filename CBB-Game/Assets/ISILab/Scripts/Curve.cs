@@ -1,4 +1,6 @@
+using ArtificialIntelligence.Utility.Actions;
 using CBB.Api;
+using Generic;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using UnityEngine;
 /// Curvas CBB blabla
 /// </summary>
 [System.Serializable]
-public abstract class Curve
+public abstract class Curve : IGeneric
 {
     [JsonRequired]
     public bool Inverted = false;
@@ -39,6 +41,10 @@ public abstract class Curve
         }
         return points;
     }
+
+    public abstract void SetParams(DataGeneric data);
+    public abstract DataGeneric GetGeneric();
+    
 }
 
 [Curve(name: "Linear")]
@@ -54,6 +60,20 @@ public class Linear : Curve
     [JsonRequired, Param("Dy", -1, 1)]
     public float dy = 0f;
 
+    public override DataGeneric GetGeneric()
+    {
+        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        data.Add(new WraperNumber { name = "m", value = m });
+        data.Add(new WraperNumber { name = "dx", value = dx });
+        data.Add(new WraperNumber { name = "dy", value = dy });
+        return data;
+    }
+    public override void SetParams(DataGeneric data)
+    {
+        this.m = (float)data.FindValueByName("m").Getvalue();
+        this.dx = (float)data.FindValueByName("dx").Getvalue();
+        this.dy = (float)data.FindValueByName("dy").Getvalue();
+    }
     public Linear() { }
 
     public Linear(float value, float m = 1f, float dx = 0f, float dy = 0f)
@@ -85,6 +105,7 @@ public class Linear : Curve
     {
         return (int)(Utils.StringToInt(GetType().ToString()) + value * 10 + m * 100 + dx * 1000 + dy * 10000);
     }
+
 }
 
 [Curve(name: "Inverted exponential")]
@@ -103,6 +124,25 @@ public class ExponencialInvertida : Curve
     public float sx = 1f;      // 1.0f
     [JsonRequired, Param("Sy", 0, 1)]
     public float sy = 1f;      // 1.0f
+
+    public override DataGeneric GetGeneric()
+    {
+        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        data.Add(new WraperNumber { name = "e", value = e });
+        data.Add(new WraperNumber { name = "dx", value = dx });
+        data.Add(new WraperNumber { name = "dy", value = dy });
+        data.Add(new WraperNumber { name = "sx", value = sx });
+        data.Add(new WraperNumber { name = "sy", value = sy });
+        return data;
+    }
+    public override void SetParams(DataGeneric data)
+    {
+        this.e = (float)data.FindValueByName("e").Getvalue();
+        this.dx = (float)data.FindValueByName("dx").Getvalue();
+        this.dy = (float)data.FindValueByName("dy").Getvalue();
+        this.sx = (float)data.FindValueByName("sx").Getvalue();
+        this.sy = (float)data.FindValueByName("sy").Getvalue();
+    }
 
     public ExponencialInvertida() { }
 
@@ -156,6 +196,24 @@ public class Exponencial : Curve
     [JsonRequired, Param("Sy", 0, 2)]
     public float sy = 1f;      // 1.0f
 
+    public override DataGeneric GetGeneric()
+    {
+        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        data.Add(new WraperNumber { name = "e", value = e });
+        data.Add(new WraperNumber { name = "dx", value = dx });
+        data.Add(new WraperNumber { name = "dy", value = dy });
+        data.Add(new WraperNumber { name = "sx", value = sx });
+        data.Add(new WraperNumber { name = "sy", value = sy });
+        return data;
+    }
+    public override void SetParams(DataGeneric data)
+    {
+        this.e = (float)data.FindValueByName("e").Getvalue();
+        this.dx = (float)data.FindValueByName("dx").Getvalue();
+        this.dy = (float)data.FindValueByName("dy").Getvalue();
+        this.sx = (float)data.FindValueByName("sx").Getvalue();
+        this.sy = (float)data.FindValueByName("sy").Getvalue();
+    }
     public Exponencial() { }
 
     public Exponencial(float value, float e = 2f, float dx = 0f, float dy = 0f, float sx = 1f, float sy = 1f)
@@ -204,6 +262,20 @@ public class Staggered : Curve
     [JsonRequired, Param("Min", 0, 1)]
     public float min = 0.05f;  //  0.05f; 
 
+    public override DataGeneric GetGeneric()
+    {
+        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        data.Add(new WraperNumber { name = "e", value = e });
+        data.Add(new WraperNumber { name = "max", value = max });
+        data.Add(new WraperNumber { name = "min", value = min });
+        return data;
+    }
+    public override void SetParams(DataGeneric data)
+    {
+        this.e = (float)data.FindValueByName("e").Getvalue();
+        this.max = (float)data.FindValueByName("max").Getvalue();
+        this.min = (float)data.FindValueByName("min").Getvalue();
+    }
     public Staggered() { }
 
     public Staggered(float value, float e = 0.5f, float max = 0.95f, float min = 0.05f)
@@ -252,6 +324,22 @@ public class Sigmoide : Curve
     [JsonRequired, Param("Sy", 0, 2)]
     public float sy = 1f;     // 10.0f
 
+    public override DataGeneric GetGeneric()
+    {
+        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        data.Add(new WraperNumber { name = "dx", value = dx });
+        data.Add(new WraperNumber { name = "dy", value = dy });
+        data.Add(new WraperNumber { name = "sx", value = sx });
+        data.Add(new WraperNumber { name = "sy", value = sy });
+        return data;
+    }
+    public override void SetParams(DataGeneric data)
+    {
+        this.dx = (float)data.FindValueByName("dx").Getvalue();
+        this.dy = (float)data.FindValueByName("dy").Getvalue();
+        this.sx = (float)data.FindValueByName("sx").Getvalue();
+        this.sy = (float)data.FindValueByName("sy").Getvalue();
+    }
     public Sigmoide() { }
 
     public Sigmoide(float value, float dx = 5f, float sx = 10f, float dy = 0f, float sy = 1f)
@@ -294,6 +382,16 @@ public class Constant : Curve
     [JsonRequired, Param("Value", 0, 1)]
     public float value = 0.5f;   // X
 
+    public override DataGeneric GetGeneric()
+    {
+        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        data.Add(new WraperNumber { name = "value", value = value });
+        return data;
+    }
+    public override void SetParams(DataGeneric data)
+    {
+        this.value = (float)data.FindValueByName("value").Getvalue();
+    }
     public Constant() { }
 
     public Constant(float value)
@@ -329,6 +427,22 @@ public class Bell : Curve
     [JsonRequired, Param("Dy", -1f, 1f)]
     public float dy = 0f;
 
+    public override DataGeneric GetGeneric()
+    {
+        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        data.Add(new WraperNumber { name = "b", value = b });
+        data.Add(new WraperNumber { name = "dx", value = dx });
+        data.Add(new WraperNumber { name = "dy", value = dy });
+        data.Add(new WraperNumber { name = "u", value = u });
+        return data;
+    }
+    public override void SetParams(DataGeneric data)
+    {
+        this.b = (float)data.FindValueByName("b").Getvalue();
+        this.dx = (float)data.FindValueByName("dx").Getvalue();
+        this.dy = (float)data.FindValueByName("dy").Getvalue();
+        this.u = (float)data.FindValueByName("u").Getvalue();
+    }
     public Bell() { }
 
     public Bell(float value, float o = 1f, float u = 1f, float dx = 0f, float dy = 0f)
