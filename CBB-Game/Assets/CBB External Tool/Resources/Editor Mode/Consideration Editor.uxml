@@ -1,12 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:VisualElement style="background-color: rgb(26, 26, 26);">
-        <ui:VisualElement style="background-color: rgb(26, 26, 26); padding-left: 5px; padding-top: 5px; border-top-color: rgb(38, 38, 38); border-left-width: 3px; border-right-width: 3px; border-top-width: 0; border-bottom-width: 3px; border-left-color: rgb(38, 38, 38); border-right-color: rgb(38, 38, 38); border-bottom-color: rgb(38, 38, 38); padding-right: 5px; padding-bottom: 5px;">
-            <ui:TextField picking-mode="Ignore" label="Name" value="name" name="consideration-name" style="font-size: 20px; color: rgb(233, 223, 223);" />
-            <ui:DropdownField label="Curve type" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="curve-type-dropdown" style="color: rgb(255, 255, 255); font-size: 20px;" />
-            <ui:Label tabindex="-1" text="Parameters:" display-tooltip-when-elided="true" enable-rich-text="true" style="font-size: 20px; color: rgb(255, 255, 255);" />
+    <Style src="project://database/Assets/CBB%20External%20Tool/Resources/USS/CBB-Style.uss?fileID=7433441132597879392&amp;guid=82cb7018893fc0040b707b6388cf3eb5&amp;type=3#CBB-Style" />
+    <ui:VisualElement style="background-color: rgb(0, 0, 0); flex-grow: 0;">
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:VisualElement style="background-color: rgb(26, 26, 26); padding-left: 8px; padding-top: 8px; border-top-color: rgb(38, 38, 38); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-left-color: rgb(38, 38, 38); border-right-color: rgb(38, 38, 38); border-bottom-color: rgb(38, 38, 38); padding-right: 8px; padding-bottom: 4px; margin-left: 8px; margin-right: 8px; margin-top: 8px; margin-bottom: 8px; border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px;">
+            <ui:TextField picking-mode="Ignore" label="Name" value="name" name="consideration-name" class="my-box" style="font-size: 16px; color: rgb(233, 223, 223);" />
+            <ui:DropdownField label="Curve type" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="curve-type-dropdown" class="my-box my-arrow" style="color: rgb(255, 255, 255); font-size: 16px; background-color: rgba(0, 0, 0, 0); -unity-text-align: middle-left;" />
+            <ui:Label tabindex="-1" text="Parameters" display-tooltip-when-elided="true" enable-rich-text="true" style="font-size: 16px; color: rgb(255, 255, 255);" />
             <ui:VisualElement name="curve-parameters-container" style="background-color: rgba(0, 0, 0, 0); margin-left: 4px; margin-right: 4px; margin-top: 4px; margin-bottom: 4px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; border-left-color: rgba(111, 111, 111, 0.96); border-right-color: rgba(111, 111, 111, 0.96); border-top-color: rgba(111, 111, 111, 0.96); border-bottom-color: rgba(111, 111, 111, 0.96); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px;" />
             <CBB.ExternalTool.Chart style="margin-left: 12px; margin-right: 12px; margin-top: 12px; margin-bottom: 12px; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px; align-self: center;" />
-            <ui:Toggle label="Normalize input" name="normalize-input" style="font-size: 20px; color: rgb(255, 255, 255);" />
+            <ui:Toggle label="Normalize input" name="normalize-input" class="my-check-mark" style="font-size: 16px; color: rgb(255, 255, 255);" />
             <ui:FloatField label="Min value" value="42,2" name="min-value" style="font-size: 20px; align-self: stretch; justify-content: space-around; align-items: center; display: none;" />
             <ui:FloatField label="Max value" value="42,2" name="max-value" style="font-size: 20px; align-self: stretch; justify-content: space-around; align-items: center; display: none;" />
             <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); align-items: auto; justify-content: flex-end; align-self: stretch; flex-direction: row;">

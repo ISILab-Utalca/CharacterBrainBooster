@@ -1,0 +1,55 @@
+.my-box > TextInput {
+    background-color: rgb(14, 14, 14);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    height: 25px;
+    padding-left: 8px;
+    padding-right: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.my-box > .unity-base-popup-field__input {
+    background-color: rgb(14, 14, 14);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    height: 25px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    -unity-background-image-tint-color: rgb(168, 12, 12);
+}
+
+.my-arrow .unity-base-popup-field__arrow {
+    background-color: rgba(137, 137, 137, 0);
+    -unity-background-image-tint-color: rgb(196, 196, 196);
+    height: 6px;
+}
+
+.my-check-mark .unity-toggle__checkmark {
+    background-color: rgb(51, 51, 51);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    width: 14px;
+    height: 14px;
+    -unity-background-image-tint-color: rgb(196, 196, 196);
+}
