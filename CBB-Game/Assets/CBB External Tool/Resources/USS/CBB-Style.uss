@@ -15,8 +15,7 @@
     border-bottom-right-radius: 2px;
 }
 
-.my-box > .unity-base-popup-field__input {
-    background-color: rgb(14, 14, 14);
+.my-box .unity-base-popup-field__input {
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
@@ -30,7 +29,7 @@
     border-bottom-left-radius: 2px;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
-    -unity-background-image-tint-color: rgb(168, 12, 12);
+    background-color: rgb(14, 14, 14);
 }
 
 .my-arrow .unity-base-popup-field__arrow {
