@@ -3,10 +3,10 @@
 }
 
 .visual-element-container {
-    border-left-color: rgb(10, 10, 11);
-    border-right-color: rgb(10, 10, 11);
-    border-top-color: rgb(10, 10, 11);
-    border-bottom-color: rgb(10, 10, 11);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
     border-left-width: 2px;
     border-right-width: 2px;
     border-top-width: 2px;
