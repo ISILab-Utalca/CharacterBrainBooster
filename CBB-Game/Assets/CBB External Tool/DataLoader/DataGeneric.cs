@@ -1,9 +1,7 @@
-using ArtificialIntelligence.Utility;
 using CBB.Lib;
 using Generic;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -133,8 +131,11 @@ namespace Generic
 }
 
 [System.Serializable]
-public class WrapperConsideration : WraperValue // necesairo (?)
+public class WrapperConsideration : WraperValue
 {
+    //NOTE: since storing a reference to a UtilityConsideration (ScriptableObject) had issues,
+    //we store a reference to a ConsiderationConfiguration object instead, which holds all the
+    //data we need to recreate/update the UtilityConsideration object
     [SerializeReference]
     public ConsiderationConfiguration configuration;
 

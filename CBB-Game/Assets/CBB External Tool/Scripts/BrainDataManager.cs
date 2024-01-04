@@ -21,8 +21,12 @@ namespace CBB.ExternalTool
             TypeNameHandling = TypeNameHandling.Auto,
             NullValueHandling = NullValueHandling.Ignore,
             MissingMemberHandling = MissingMemberHandling.Ignore,
-            //Formatting = Formatting.Indented
+            Formatting = Formatting.Indented
         };
+        void Start()
+        {
+            ExternalMonitor.OnMessageReceived += HandleBrainData;
+        }
         public IList<TreeViewItemData<IDataItem>> TreeRoots
         {
             get
@@ -79,11 +83,6 @@ namespace CBB.ExternalTool
                 return name;
             }
         }
-        void Start()
-        {
-            ExternalMonitor.OnMessageReceived += HandleBrainData;
-        }
-
 
         private void HandleBrainData(string data)
         {
@@ -102,6 +101,19 @@ namespace CBB.ExternalTool
                 //    Debug.LogError("Message is not brain data");
                 //}
                 //throw;
+            }
+        }
+
+        // Method to save the brains on disk
+        [ContextMenu("Save loaded brains")]
+        public void SaveLoadedBrains()
+        {
+            if (brains == null || brains.Count == 0) return;
+            string path = "C:\\Users\\diego\\Escritorio\\Docs\\CBB\\Loaded Brains\\";
+            foreach (var brain in brains)
+            {
+                string json = JsonConvert.SerializeObject(brain, settings);
+                System.IO.File.WriteAllText(path + brain.brain_ID + ".json", json);
             }
         }
 

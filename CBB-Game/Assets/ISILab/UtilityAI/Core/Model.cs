@@ -213,5 +213,28 @@ namespace CBB.Lib
         {
             return name;
         }
+        public void SetName(string name)
+        {
+            this.name = name;
+        }
+        public void SetCurve(Curve curve)
+        {
+            this.curve = curve;
+        }
+
+        public void SetNormalized(bool newValue)
+        {
+            normalizeInput = newValue;
+        }
+
+        internal void SetMinValue(float newValue)
+        {
+            minValue = newValue;
+        }
+        // Set max value
+        internal void SetMaxValue(float newValue)
+        {
+            maxValue = newValue;
+        }
     }
 }

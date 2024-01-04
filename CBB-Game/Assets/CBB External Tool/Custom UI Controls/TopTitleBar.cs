@@ -27,12 +27,16 @@ namespace CBB.ExternalTool
             }
         }
         public string WindowTitle { get; set; } = "Hola";
+        public Button CloseButton { get; set; }
+
         private Label windowTitleLabel;
+
         public TopTitleBar()
         {
             var visualTree = Resources.Load<VisualTreeAsset>("TopTitleBar");
             visualTree.CloneTree(this);
             windowTitleLabel = this.Q<Label>("window-title");
+            CloseButton = this.Q<Button>("close-button");
         }
     }
 }
