@@ -10,7 +10,7 @@
     padding-bottom: 0;
 }
 
-#ListPrueba #unity-low-button {
+#unity-low-button {
     background-color: rgb(21, 21, 21);
     -unity-background-image-tint-color: rgba(196, 196, 196, 0);
     border-left-color: rgba(36, 36, 36, 0);
@@ -31,7 +31,7 @@
     margin-bottom: 0;
 }
 
-#ListPrueba #unity-high-button {
+#unity-high-button {
     background-color: rgb(21, 21, 21);
     -unity-background-image-tint-color: rgba(196, 196, 196, 0);
     border-left-color: rgba(36, 36, 36, 0);
@@ -54,7 +54,7 @@
     padding-bottom: 0;
 }
 
-#ListPrueba #unity-tracker {
+#unity-tracker {
     background-color: rgb(21, 21, 21);
     -unity-background-image-tint-color: rgba(196, 196, 196, 0.81);
     height: 8px;
@@ -69,7 +69,7 @@
     margin-bottom: 0;
 }
 
-#ListPrueba #unity-dragger {
+#unity-dragger {
     background-color: rgb(37, 37, 37);
     -unity-background-image-tint-color: rgba(196, 196, 196, 0.81);
     border-top-left-radius: 8px;
@@ -88,13 +88,4 @@
     margin-top: 0;
     margin-bottom: 0;
     flex-grow: 1;
-}
-
-#ListPrueba VisualElement {
-    background-color: rgba(255, 255, 255, 0);
-    -unity-background-image-tint-color: rgba(196, 196, 196, 0.81);
-    border-left-color: rgba(36, 36, 36, 0);
-    border-right-color: rgba(36, 36, 36, 0);
-    border-top-color: rgba(36, 36, 36, 0);
-    border-bottom-color: rgba(36, 36, 36, 0);
 }
