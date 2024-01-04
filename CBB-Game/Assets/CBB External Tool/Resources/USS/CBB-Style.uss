@@ -29,7 +29,7 @@
     border-bottom-left-radius: 2px;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
-    background-color: rgb(212, 5, 5);
+    background-color: rgb(103, 255, 0);
 }
 
 .my-arrow .unity-base-popup-field__arrow {
