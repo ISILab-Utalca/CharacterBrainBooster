@@ -196,11 +196,17 @@ namespace ArtificialIntelligence.Utility
                 };
                 var data = JsonConvert.DeserializeObject<ConsiderationConfiguration>(json, settings);
                 // Update the parameters
-                _curve = data.curve;
-                m_bookends = data.normalizeInput;
-                m_minValue = data.minValue;
-                m_maxValue = data.maxValue;
+                SetParamsFromConfiguration(data);
             }
+        }
+
+        public void SetParamsFromConfiguration(ConsiderationConfiguration data)
+        {
+            _curve = data.curve;
+            name = data.name;
+            m_bookends = data.normalizeInput;
+            m_minValue = data.minValue;
+            m_maxValue = data.maxValue;
         }
 
 #endif
