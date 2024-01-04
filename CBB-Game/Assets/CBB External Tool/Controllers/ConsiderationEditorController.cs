@@ -2,13 +2,9 @@ using CBB.ExternalTool;
 using CBB.Lib;
 using Generic;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Reflection;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.Progress;
 
 public class ConsiderationEditorController : MonoBehaviour
 {
@@ -17,8 +13,6 @@ public class ConsiderationEditorController : MonoBehaviour
     TextField considerationName;
     VisualElement curveParametersContainer;
     Chart chart;
-    Button saveButton;
-    Button sendButton;
     Toggle normalizeInput;
     FloatField minValue;
     FloatField maxValue;
@@ -36,8 +30,6 @@ public class ConsiderationEditorController : MonoBehaviour
     #endregion
     private void Subscribe()
     {
-        saveButton.clicked += SaveConsiderationData;
-        sendButton.clicked += SendConfiguration;
 
         curveDropdown.RegisterValueChangedCallback(OnCurveTypeChanged);
         curveDropdown.RegisterValueChangedCallback(Utils_SetSelectedCurve);
@@ -51,8 +43,6 @@ public class ConsiderationEditorController : MonoBehaviour
     }
     private void Unsubscribe()
     {
-        saveButton.clicked -= SaveConsiderationData;
-        sendButton.clicked -= SendConfiguration;
 
         curveDropdown.UnregisterValueChangedCallback(OnCurveTypeChanged);
         curveDropdown.UnregisterValueChangedCallback(Utils_SetSelectedCurve);
@@ -175,9 +165,6 @@ public class ConsiderationEditorController : MonoBehaviour
         curveDropdown = considerationEditor.Q<DropdownField>("curve-type-dropdown");
         curveParametersContainer = considerationEditor.Q<VisualElement>("curve-parameters-container");
 
-        saveButton = considerationEditor.Q<Button>("save-button");
-        sendButton = considerationEditor.Q<Button>("send-button");
-
         chart = considerationEditor.Q<Chart>();
         normalizeInput = considerationEditor.Q<Toggle>("normalize-input");
 
@@ -203,46 +190,6 @@ public class ConsiderationEditorController : MonoBehaviour
         // Copy where changes are applied
         lastConfig = config;
         return considerationEditor;
-    }
-
-    /// <summary>
-    /// Iterate through the consideration container and save the values
-    /// on a json file
-    /// </summary>
-    private void SaveConsiderationData()
-    {
-        ConsiderationConfiguration cc = new()
-        {
-            name = considerationName.text,
-            curve = lastConfig.curve,
-            normalizeInput = normalizeInput.value,
-            minValue = minValue.value,
-            maxValue = maxValue.value
-        };
-
-        string json = JsonConvert.SerializeObject(cc, settings);
-        // Save the json object to a file
-        string path = Application.dataPath + "/CBB External Tool/Resources/ConsiderationConfigurations/" + considerationName.text + ".json";
-        Debug.Log(path);
-        // Create the directory if it doesn't exist
-        System.IO.Directory.CreateDirectory(Application.dataPath + "/CBB External Tool/Resources/ConsiderationConfigurations/");
-        System.IO.File.WriteAllText(path, json);
-    }
-    private void SendConfiguration()
-    {
-        ConsiderationConfiguration cc = new()
-        {
-            name = considerationName.text,
-            curve = lastConfig.curve,
-            normalizeInput = normalizeInput.value,
-            minValue = minValue.value,
-            maxValue = maxValue.value
-        };
-
-        var jsonObject = JsonConvert.SerializeObject(cc, settings);
-        // No need to handle a reference on the inspector
-
-        externalMonitor.SendConfiguration(jsonObject);
     }
 
     #region UTILS METHODS
