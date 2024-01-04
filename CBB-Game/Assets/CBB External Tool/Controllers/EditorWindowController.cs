@@ -38,7 +38,8 @@ namespace CBB.ExternalTool
             NullValueHandling = NullValueHandling.Ignore,
             MissingMemberHandling = MissingMemberHandling.Ignore,
             Formatting = Formatting.Indented
-        }; 
+        };
+        private ExternalMonitor monitor;
         #endregion
 
         private void Awake()
@@ -83,11 +84,12 @@ namespace CBB.ExternalTool
             }
             var b = lastSelectedBrain;
             // Save the updated file to a local path
-            string path = "C:\\Users\\diego\\Escritorio\\Docs" + b.brain_ID + ".json";
+            //string path = "C:\\Users\\diego\\Escritorio\\Docs" + b.brain_ID + ".json";
+            //System.IO.File.WriteAllText(path, json);
+            //Debug.Log($"[Editor Window Controller] Brain saved to: {path}");
             string json = JsonConvert.SerializeObject(b, settings);
-
-            System.IO.File.WriteAllText(path, json);
-            Debug.Log($"[Editor Window Controller] Brain saved to: {path}");
+            //Send to server
+            monitor.SendData(json);
         }
         private void OnElementSelected(IEnumerable<int> enumerable)
         {
