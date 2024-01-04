@@ -181,7 +181,8 @@ public static class DataLoader
     public static void SaveBrain(string AgentID, Brain brain)
     {
         JSONDataManager.SaveData(Path + "/Brains", brain.brain_ID, "brain", brain);
-
+        Debug.Log($"Brain {brain.brain_ID} saved to: {Path}");
+        //TODO: possible point of failure
         LoadBrain(Path + "/Brains");
     }
     /// <summary>

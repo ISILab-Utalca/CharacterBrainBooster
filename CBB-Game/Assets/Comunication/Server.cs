@@ -120,7 +120,7 @@ namespace CBB.Comunication
                     // Convention: 0 bytes read mean that the other endpoint closed the connection
                     while ((bytesRead = await stream.ReadAsync(header, 0, header.Length)) != 0)
                     {
-
+                        Debug.Log("[MONITOR] Bytes read: " + bytesRead);
                         // This handles the case where the stream does not have yet the header
                         // Maybe is unnecesary since the packets normally are larger than HEADER_SIZE
                         if (bytesRead < InternalNetworkManager.HEADER_SIZE)
@@ -134,12 +134,14 @@ namespace CBB.Comunication
 
                         }
                         // We have the length of the message
-                        var messageLengthInBytes = header[0..InternalNetworkManager.HEADER_SIZE];
+                        byte[] messageLengthInBytes = header[0..InternalNetworkManager.HEADER_SIZE];
+                        Debug.Log("[MONITOR] Message length in bytes: " + messageLengthInBytes.Length);
                         int messageLength = BitConverter.ToInt32(messageLengthInBytes, 0);
+                        Debug.Log("[MONITOR] Message length in number: " + messageLength);
 
                         int offset = 0;
                         byte[] messageBytes = new byte[messageLength];
-                        bytesRead = await stream.ReadAsync(header, offset, messageLength);
+                        bytesRead = await stream.ReadAsync(messageBytes, offset, messageLength);
 
                         // Read until receiving the expected amount of data
                         missingMessageBytes = messageLength - bytesRead;
@@ -162,18 +164,6 @@ namespace CBB.Comunication
                     break;
                 }
 
-                catch (ObjectDisposedException disposedExcep)
-                {
-                    Debug.Log("<color=orange>[SERVER] Communication thread error: </color>" + disposedExcep);
-                }
-                catch (SocketException socketExcep)
-                {
-                    Debug.Log("<color=orange>[SERVER] Communication thread error: </color>" + socketExcep);
-                }
-                catch (IOException IOexcep)
-                {
-                    Debug.Log("<color=orange>[SERVER] Communication thread error: </color>" + IOexcep);
-                }
                 catch (Exception excep)
                 {
                     Debug.Log("<color=orange>[MONITOR] Communication thread error: </color>" + excep);
@@ -217,7 +207,7 @@ namespace CBB.Comunication
 
             // Blocking operations, length prefix protocol
             NetworkStream stream = client.GetStream();
-            Debug.Log("[SERVER] Bytes sent length: " + bytesSent.Length);
+            //Debug.Log("[SERVER] Bytes sent length: " + bytesSent.Length);
             stream.Write(bytesSent, 0, bytesSent.Length);
         }
         public static byte[] WrapMessage(byte[] message)
