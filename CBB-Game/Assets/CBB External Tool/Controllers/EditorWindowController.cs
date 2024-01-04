@@ -20,7 +20,9 @@ namespace CBB.ExternalTool
         private Button reloadBrainsButton;
         private VisualElement detailsPanel;
         private Button saveBrainButton;
-
+        private Button closeButton;
+        [SerializeField]
+        private GameObject mainMenu;
         // Logic
         [SerializeField]
         private BrainDataManager brainDataManager;
@@ -48,6 +50,7 @@ namespace CBB.ExternalTool
             reloadBrainsButton = root.Q<Button>("reload-brains-button");
             saveBrainButton = root.Q<Button>("save-brain-button");
             detailsPanel = root.Q<VisualElement>("details-panel");
+            closeButton = root.Q<TopTitleBar>().CloseButton;
 
             // Add listeners to UI elements
             reloadBrainsButton.clicked += DisplayBrainsTreeView;
@@ -55,8 +58,17 @@ namespace CBB.ExternalTool
             brainTree.makeItem = MakeItem;
             brainTree.bindItem = BindItem;
             brainTree.selectedIndicesChanged += OnElementSelected;
+            closeButton.clicked += BackToMainMenu;
 
+            monitor = GameObject.Find("External Monitor").GetComponent<ExternalMonitor>();
         }
+
+        private void BackToMainMenu()
+        {
+            mainMenu.SetActive(true);
+            gameObject.SetActive(false);
+        }
+
         private void OnEnable()
         {
             DisplayBrainsTreeView();
