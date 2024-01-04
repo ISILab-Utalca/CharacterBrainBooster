@@ -234,9 +234,28 @@ namespace CBB.ExternalTool
             GameData.ClearData();
         }
 
-        internal void SendConfiguration(string jsonObject)
+        internal void SendData(string message)
         {
-            
+            // Convert the string message into an array of bytes
+            // This is the data that is going to be sent accross the network
+            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+            byte[] bytesSent = WrapMessage(messageBytes);
+
+            // Blocking operations, length prefix protocol
+            NetworkStream stream = client.GetStream();
+            Debug.Log("[External Monitor] Bytes sent length: " + bytesSent.Length);
+            stream.Write(bytesSent, 0, bytesSent.Length);
+        }
+        public static byte[] WrapMessage(byte[] message)
+        {
+            // Get the length prefix for the message
+            byte[] lengthPrefix = BitConverter.GetBytes(message.Length);
+            // Concatenate the length prefix and the message
+            byte[] messageWithHeader = new byte[lengthPrefix.Length + message.Length];
+            lengthPrefix.CopyTo(messageWithHeader, 0);
+            message.CopyTo(messageWithHeader, lengthPrefix.Length);
+
+            return messageWithHeader;
         }
         #endregion
     }
