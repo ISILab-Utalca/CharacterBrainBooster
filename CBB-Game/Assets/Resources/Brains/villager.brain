@@ -47,8 +47,13 @@
                 "name": "Idle",
                 "curve": {
                   "$id": "11",
-                  "$type": "Constant, Assembly-CSharp",
-                  "value": 0.01,
+                  "$type": "ExponencialInvertida, Assembly-CSharp",
+                  "value": 1.0,
+                  "e": 2.78,
+                  "dx": 1.0,
+                  "dy": 0.0,
+                  "sx": 1.0,
+                  "sy": 1.0,
                   "Inverted": false
                 },
                 "normalizeInput": false,
@@ -71,19 +76,19 @@
             {
               "$id": "14",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 6.0,
+              "value": 9.57,
               "name": "safeDistance"
             },
             {
               "$id": "15",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 7.0,
+              "value": 12.36,
               "name": "runSpeed"
             },
             {
               "$id": "16",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
+              "value": 1.75,
               "name": "pauseAfterRunning"
             },
             {
@@ -95,11 +100,13 @@
                 "name": "Villager heard a threat",
                 "curve": {
                   "$id": "19",
-                  "$type": "Linear, Assembly-CSharp",
-                  "value": 0.0,
-                  "m": 1.0,
+                  "$type": "Exponencial, Assembly-CSharp",
+                  "value": 1.0,
+                  "e": 2.0,
                   "dx": 0.0,
-                  "dy": 0.0,
+                  "dy": 1.09,
+                  "sx": 2.65,
+                  "sy": 1.0,
                   "Inverted": false
                 },
                 "normalizeInput": false,

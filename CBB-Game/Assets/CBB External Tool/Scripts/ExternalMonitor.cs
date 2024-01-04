@@ -58,6 +58,7 @@ namespace CBB.ExternalTool
                 serverClosedConnection = false;
             }
         }
+        
         #endregion
 
         #region METHODS

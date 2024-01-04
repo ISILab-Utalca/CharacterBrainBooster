@@ -520,6 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64a9d60669df54f4184e1735fafc80a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenu: {fileID: 1167354335}
   brainDataManager: {fileID: 665520825}
   showLogs: 0
 --- !u!114 &1204376771
