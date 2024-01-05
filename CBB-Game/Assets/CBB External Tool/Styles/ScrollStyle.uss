@@ -12,7 +12,6 @@
 
 #unity-low-button {
     background-color: rgb(21, 21, 21);
-    -unity-background-image-tint-color: rgba(196, 196, 196, 0);
     border-left-color: rgba(36, 36, 36, 0);
     border-right-color: rgba(36, 36, 36, 0);
     border-top-color: rgba(36, 36, 36, 0);
@@ -29,11 +28,11 @@
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 0;
+    -unity-background-image-tint-color: rgb(21, 21, 21);
 }
 
 #unity-high-button {
     background-color: rgb(21, 21, 21);
-    -unity-background-image-tint-color: rgba(196, 196, 196, 0);
     border-left-color: rgba(36, 36, 36, 0);
     border-right-color: rgba(36, 36, 36, 0);
     border-top-color: rgba(36, 36, 36, 0);
@@ -52,11 +51,12 @@
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
+    -unity-background-image-tint-color: rgb(21, 21, 21);
 }
 
 #unity-tracker {
     background-color: rgb(21, 21, 21);
-    -unity-background-image-tint-color: rgba(196, 196, 196, 0.81);
+    -unity-background-image-tint-color: rgb(21, 21, 21);
     height: 8px;
     width: 12px;
     padding-left: 0;

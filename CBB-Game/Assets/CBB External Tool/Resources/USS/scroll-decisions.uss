@@ -1,9 +1,11 @@
 FloatField {
-    background-color: rgba(0, 0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    -unity-font-style: normal;
 }
 
 FloatField #unity-text-input {
-    background-color: rgb(19, 19, 19);
+    background-color: rgb(14, 14, 14);
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
@@ -17,4 +19,15 @@ FloatField #unity-text-input {
     padding-right: 8px;
     padding-top: 4px;
     padding-bottom: 4px;
+}
+
+.Titulo1 {
+    flex-grow: 0;
+    background-color: rgb(0, 0, 0);
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom-width: 3px;
+    border-bottom-color: rgb(0, 0, 0);
+    height: 46px;
 }

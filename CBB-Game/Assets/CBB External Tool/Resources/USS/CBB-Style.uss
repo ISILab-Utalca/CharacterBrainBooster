@@ -1,4 +1,4 @@
-.my-box > TextInput {
+TextInput {
     background-color: rgb(14, 14, 14);
     border-left-width: 0;
     border-right-width: 0;
@@ -15,7 +15,7 @@
     border-bottom-right-radius: 2px;
 }
 
-.my-box .unity-base-popup-field__input {
+.unity-base-popup-field__input {
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
@@ -32,13 +32,13 @@
     background-color: rgb(14, 14, 14);
 }
 
-.my-arrow .unity-base-popup-field__arrow {
+.unity-base-popup-field__arrow {
     background-color: rgba(137, 137, 137, 0);
     -unity-background-image-tint-color: rgb(196, 196, 196);
     height: 6px;
 }
 
-.my-check-mark .unity-toggle__checkmark {
+.unity-toggle__checkmark {
     background-color: rgb(51, 51, 51);
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);

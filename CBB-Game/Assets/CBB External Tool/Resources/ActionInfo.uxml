@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/CBB%20External%20Tool/Styles/AccionStyle.uss?fileID=7433441132597879392&amp;guid=21d0c9d84c018114cabe6ad793112d41&amp;type=3#AccionStyle" />
-    <ui:VisualElement focusable="true" style="flex-grow: 0; background-color: rgb(17, 17, 17); margin-bottom: 4px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 4px; margin-right: 2px; margin-top: 2px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;">
+    <ui:VisualElement focusable="true" class="accion-background">
         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; align-self: stretch; align-items: center;">
             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center;">
                 <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/CBB%20External%20Tool/2DAssets/starazul.png?fileID=2800000&amp;guid=47725e370ecaff54cbb9e8fe99b1aa20&amp;type=3#starazul&apos;); height: 14px; width: 15px; align-items: stretch; padding-left: 4px; margin-left: 8px; -unity-background-image-tint-color: rgb(26, 80, 183); padding-top: 0; margin-top: 4px; margin-bottom: 1px;" />

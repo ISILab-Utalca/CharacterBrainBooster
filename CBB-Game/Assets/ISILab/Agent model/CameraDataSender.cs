@@ -71,8 +71,8 @@ public class CameraDataSender : MonoBehaviour
 
 public static class ExtensionMethod
 {
-    private static Rect rect = new Rect(0, 0, 256, 256);
-    private static Texture2D tex = new Texture2D(256, 256, TextureFormat.RGB24, false);
+    private static Rect rect = new Rect(0, 0, 300, 300);
+    private static Texture2D tex = new Texture2D(300, 300, TextureFormat.RGB24, false);
 
     public static Texture2D toTexture2D(this RenderTexture rTex)
     {

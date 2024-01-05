@@ -50,6 +50,8 @@ public class CameraDataReceiver : VisualElement
         this.style.height = 256 + 32;
 
         image = new Image();
+        image.style.display = DisplayStyle.Flex;
+        image.style.flexGrow = 1;
         content.Add(image);
 
         ExternalMonitor.OnMessageReceived += HandleMessage;

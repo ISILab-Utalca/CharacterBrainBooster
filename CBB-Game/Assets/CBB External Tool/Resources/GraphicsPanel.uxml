@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/CBB%20External%20Tool/Styles/ScrollStyle.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ScrollStyle" />
-    <ui:Foldout text="Foldout" name="Title" style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold; height: auto; width: auto; margin-bottom: 8px; flex-grow: 1; margin-left: 4px; margin-right: 2px;">
+    <ui:Foldout text="Foldout" name="Title" style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold; height: auto; width: auto; margin-bottom: 8px; flex-grow: 1; margin-left: 4px; margin-right: 2px; padding-right: 12px;">
         <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(41, 41, 41, 0); flex-direction: column; height: auto; width: auto; justify-content: flex-start; margin-right: 12px;">
             <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; margin-right: 24px; margin-bottom: 0;">
                 <ui:VisualElement name="Action-Select" style="flex-grow: 0; background-color: rgba(46, 46, 46, 0); width: auto; height: auto; align-items: flex-start; flex-direction: row; margin-right: 42px;">
