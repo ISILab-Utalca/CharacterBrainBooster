@@ -33,24 +33,10 @@ namespace Generic
 
         public DataGeneric() { }
 
-        public void Add(WraperValue wraper)
-        {
-            Values.Add(wraper);
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name">The name of the value</param>
-        /// <returns>A <see cref="WraperValue"/>. <b>null</b> if not found</returns>
-        public WraperValue FindValueByName(string name)
-        {
-            return Values.Find(x => x.name == name);
-        }
-
-        public string GetItemName()
-        {
-            return classType;
-        }
+        public void Add(WraperValue wraper) => Values.Add(wraper);
+        public WraperValue FindValueByName(string name) => Values.Find(x => x.name == name);
+        public string GetItemName() => classType;
+        public object GetInstance() => this;
     }
 
     [System.Serializable]
@@ -60,10 +46,11 @@ namespace Generic
 
         public abstract object Clone();
 
-        public virtual string GetItemName() { return "DATA ITEM"; }
+        public virtual string GetItemName() => "DATA ITEM";
 
         public abstract object Getvalue();
         public abstract override string ToString();
+        public object GetInstance() => this;
     }
 
     [System.Serializable]
@@ -71,20 +58,11 @@ namespace Generic
     {
         public float value;
 
-        public override object Clone()
-        {
-            return new WraperNumber { name = name, value = value };
-        }
+        public override object Clone() => new WraperNumber { name = name, value = value };
 
-        public override object Getvalue()
-        {
-            return value;
-        }
+        public override object Getvalue() => value;
 
-        public override string ToString()
-        {
-            return value.ToString();
-        }
+        public override string ToString() => value.ToString();
     }
 
     [System.Serializable]
@@ -92,20 +70,11 @@ namespace Generic
     {
         public string value;
 
-        public override object Clone()
-        {
-            return new WraperString { name = name, value = value };
-        }
+        public override object Clone() => new WraperString { name = name, value = value };
 
-        public override object Getvalue()
-        {
-            return value;
-        }
+        public override object Getvalue() => value;
 
-        public override string ToString()
-        {
-            return value.ToString();
-        }
+        public override string ToString() => value.ToString();
     }
 
     [System.Serializable]
@@ -113,20 +82,11 @@ namespace Generic
     {
         public bool value;
 
-        public override object Clone()
-        {
-            return new WraperBoolean { name = name, value = value };
-        }
+        public override object Clone() => new WraperBoolean { name = name, value = value };
 
-        public override object Getvalue()
-        {
-            return value;
-        }
+        public override object Getvalue() => value;
 
-        public override string ToString()
-        {
-            return value.ToString();
-        }
+        public override string ToString() => value.ToString();
     }
 }
 
@@ -140,21 +100,9 @@ public class WrapperConsideration : WraperValue
     public ConsiderationConfiguration configuration;
 
 
-    public override object Clone()
-    {
-        return new WrapperConsideration { name = name, configuration = configuration };
-    }
+    public override object Clone() => new WrapperConsideration { name = name, configuration = configuration };
 
-    public override object Getvalue()
-    {
-        return configuration;
-    }
-    public override string GetItemName()
-    {
-        return configuration.name;
-    }
-    public override string ToString()
-    {
-        return configuration.ToString();
-    }
+    public override object Getvalue() => configuration;
+    public override string GetItemName() => configuration.considerationName;
+    public override string ToString() => configuration.ToString();
 }
