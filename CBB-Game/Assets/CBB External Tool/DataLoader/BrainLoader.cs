@@ -66,6 +66,8 @@ public class BrainLoader : MonoBehaviour
 
         // Initialize the brain with the brain data
         InitAgent(brain);
+        // Kickstart the agent behaviour
+        agentBrain.TryStartNewAction(null);
     }
     /// <summary>
     /// Update the brain data with the current configuration
@@ -145,9 +147,11 @@ public class BrainLoader : MonoBehaviour
     public void FindBHsReferences()
     {
         // Get all actions in this game object and its children
+        actionStates.Clear();
         actionStates.AddRange(GetComponentsInChildren<ActionState>());
 
         // Get all sensors in this game object and its children
+        sensors.Clear();
         sensors.AddRange(GetComponentsInChildren<Sensor>());
     }
 
@@ -165,16 +169,11 @@ public class BrainLoader : MonoBehaviour
         for (int i = 0; i < szedAction.Count; i++)
         {
             var act = actionStates.Find(x => x.GetType() == szedAction[i].ClassType);
-            if (act != null)
-            {
-                act.SetParams(szedAction[i]);
-                actionStates.Remove(act);
-            }
-            else
+            if (act == null)
             {
                 act = this.gameObject.AddComponent(szedAction[i].ClassType) as ActionState;
-                act.SetParams(szedAction[i]);
             }
+            act.SetParams(szedAction[i]);
         }
 
         var szedSensor = brain.serializedSensors;
@@ -224,14 +223,15 @@ public class Brain : IDataItem
     [SerializeField, SerializeReference]
     public List<DataGeneric> serializedSensors;
 
-    public string GetItemName()
-    {
-        return brain_ID;
-    }
+    public object GetInstance() => this;
+
+    public string GetItemName() => brain_ID;
+    
 }
 public interface IDataItem
 {
     string GetItemName();
+    object GetInstance();
 }
 
 
