@@ -13,7 +13,7 @@ namespace CBB.UI
 
         public CustomItem()
         {
-            var visualTree = Resources.Load<VisualTreeAsset>("Editor Mode/Button Item");
+            var visualTree = Resources.Load<VisualTreeAsset>("Editor Mode/Custom Item");
 
             visualTree.CloneTree(this);
 
