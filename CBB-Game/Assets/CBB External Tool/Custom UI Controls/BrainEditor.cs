@@ -93,7 +93,6 @@ namespace CBB.UI
             ReloadButton.clicked += DisplayBrainsTreeView;
             BrainTree.makeItem = MakeItem;
             BrainTree.bindItem = BindItem;
-            BrainTree.unbindItem = (element, index) => { };
 
             BrainTree.selectedIndicesChanged += OnElementSelected;
         }
@@ -112,64 +111,26 @@ namespace CBB.UI
 
         private VisualElement MakeItem()
         {
-            return new CustomItem();
+            return new Label();
         }
         private void BindItem(VisualElement element, int index)
         {
             var itemData = BrainTree.GetItemDataForIndex<IDataItem>(index);
-            var uiElement = element as CustomItem;
-            try
+            var uiElement = element as Label;
+            var itemName = itemData.GetItemName();
+            // Remove the namespace from the item name
+            string pointPattern = @"[^.]*$";
+            Match match = Regex.Match(itemName, pointPattern);
+            if (match.Success)
             {
-                if (itemData.GetInstance() is ConsiderationConfiguration obj)
-                {
-                    uiElement.ActionButton.text = "-";
-                    uiElement.ItemName.text = obj.considerationName;
-                    //button.clicked += () =>
-                    //{
-                    //    var b = LastSelectedBrain;
-                    //    if (b == null)
-                    //    {
-                    //        Debug.LogWarning("[Editor Window Controller] No brain selected");
-                    //        return;
-                    //    }
-                    //    var parentId = BrainTree.GetParentIdForIndex(index);
-                    //    var parent = BrainTree.GetItemDataForIndex<IDataItem>(parentId);
-                    //    var parentAction = parent.GetInstance() as ActionConfiguration;
-                    //    DisplayConsiderationEditor(obj);
-                    //};
-                }
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError(e);
-                throw;
-            }
-            try
-            {
-                if (itemData.GetInstance() is ItemWrapper)
-                {
-                    var itemName = itemData.GetItemName();
-                    // Remove the namespace from the item name
-                    string pointPattern = @"[^.]*$";
-                    Match match = Regex.Match(itemName, pointPattern);
-                    if (match.Success)
-                    {
-                        // Split by capital letters. Ej: "MyBrain" -> "My", "Brain"
-                        string capitalPattern = @"(?=\p{Lu})";
-                        string[] result = Regex.Split(match.Value, capitalPattern);
-                        // Join the words in the array with a space
-                        uiElement.ItemName.text = string.Join(" ", result);
-                    }
-                    // TODO: Style the item using a uss class
-                    uiElement.style.color = Color.white;
-                }
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError(e);
-                throw;
+                // Split by capital letters. Ej: "MyBrain" -> "My", "Brain"
+                string capitalPattern = @"(?=\p{Lu})";
+                string[] result = Regex.Split(match.Value, capitalPattern);
+                // Join the words in the array with a space
+                uiElement.text = string.Join(" ", result);
             }
         }
+
         public void SetReloadButtonCallback(System.Action callback)
         {
             reloadButtonCallbacks.Add(callback);
@@ -193,13 +154,13 @@ namespace CBB.UI
             this.brains = brains;
             DisplayBrainsTreeView();
         }
-        public void DisplayConsiderationEditor(ConsiderationConfiguration config)
+        private void DisplayConsiderationEditor(ConsiderationConfiguration config)
         {
             DetailsPanel.Clear();
             var ce = new ConsiderationEditor(config, EvaluationMethods);
             DetailsPanel.Add(ce);
         }
-        public void DisplayDataGenericDetails(DataGeneric data)
+        private void DisplayDataGenericDetails(DataGeneric data)
         {
             DetailsPanel.Clear();
             foreach (var item in data.Values)
@@ -251,13 +212,42 @@ namespace CBB.UI
                         break;
                 }
             }
+            var impl = data.GetInstance();
+            //switch (impl)
+            //{
+            //    case Brain:
+            //        uiElement.HideActionButton();
+            //        break;
+            //    case DataGeneric:
+            //        uiElement.ActionButton.text = "+";
+            //        break;
+            //    case ConsiderationConfiguration:
+            //        uiElement.ActionButton.text = "-";
+            //        break;
+            //    case ItemWrapper:
+            //        uiElement.ActionButton.text = "+";
+            //        break;
+            //    default:
+            //        break;
+            //}
         }
-        public void DisplayBrainsTreeView()
+        private void DisplayBrainsTreeView()
         {
             BrainTree.SetRootItems(TreeRoots);
             BrainTree.Rebuild();
         }
-        public Brain GetParentBrainFromIndex(int itemIndex)
+        private void DisplayItemWrapperDetails(IEnumerable<IDataItem> childrenData, string subTitle)
+        {
+            DetailsPanel.Clear();
+            foreach (var child in childrenData)
+            {
+                var gc = new GenericCard();
+                gc.SetTitle(child.GetItemName());
+                gc.SetSubtitle(subTitle);
+                DetailsPanel.Add(gc);
+            }
+        }
+        private Brain GetParentBrainFromIndex(int itemIndex)
         {
             var parentId = BrainTree.GetParentIdForIndex(itemIndex);
             // We hit the root of the tree
@@ -294,6 +284,17 @@ namespace CBB.UI
             {
                 if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected config: {config}");
                 DisplayConsiderationEditor(config);
+            }
+            else if (item is ItemWrapper wrapper)
+            {
+                // Get the children of the wrapper
+                var children = BrainTree.GetChildrenIdsForIndex(index);
+                // Get the data of the children
+                var childrenData = children.Select(id => BrainTree.GetItemDataForId<IDataItem>(id));
+
+                var subTitle = wrapper.GetItemName();
+
+                DisplayItemWrapperDetails(childrenData, subTitle);
             }
         }
         public object GetInstance() => this;

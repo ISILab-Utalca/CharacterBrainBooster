@@ -29,6 +29,13 @@ namespace CBB.UI
                 ActionButton.style.display = DisplayStyle.None;
             }
         }
+        public void ShowActionButton()
+        {
+            if(ActionButton != null)
+            {
+                ActionButton.style.display = DisplayStyle.Flex;
+            }
+        }
 
     }
 

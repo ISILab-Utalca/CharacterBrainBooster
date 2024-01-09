@@ -13,7 +13,7 @@ public class GraphicsPanel : VisualElement
     public new class UxmlFactory : UxmlFactory<GraphicsPanel, UxmlTraits> { }
     #endregion
     #region PROPERTIES
-    public Label ActionName { get; set; }
+    public Foldout ActionName { get; set; }
 
     public Label baseFormula { get; set; }
     public Label formulaUtility { get; set; }
@@ -29,7 +29,7 @@ public class GraphicsPanel : VisualElement
         var visualTree = Resources.Load<VisualTreeAsset>("GraphicsPanel");
         visualTree.CloneTree(this);
 
-        this.ActionName = this.Q<Label>("action-name");
+        this.ActionName = this.Q<Foldout>("Title");
         this.Chart = this.Q<Chart>();
         this.evaluationsList = this.Q<ListView>("evaluations-list");
         this.baseFormula = this.Q<Label>("base-formula-utility");

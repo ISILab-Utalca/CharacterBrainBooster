@@ -52,7 +52,14 @@ namespace CBB.InternalTool
             brainEditor.SaveBrainButton.clicked += () =>
             {
                 var b = brainEditor.LastSelectedBrain;
-                DataLoader.SaveBrain(b.brain_ID, b);
+                if (b != null)
+                {
+                    DataLoader.SaveBrain(b.brain_ID, b);
+                }
+                else
+                {
+                    Debug.LogWarning("[BRAIN CREATOR] Brain is null");
+                }
             };
         }
         private static void LoadEvaluationMethods(BrainEditor brainEditor)

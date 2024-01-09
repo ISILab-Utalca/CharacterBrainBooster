@@ -83,7 +83,6 @@ namespace ArtificialIntelligence.Utility.Actions
             this._walkRadius = (float) data.FindValueByName("WalkRadius").Getvalue();
             this._tickCheck = (float) data.FindValueByName("TickCheck").Getvalue();
         }
-
         public override DataGeneric GetGeneric()
         {
             var data = new DataGeneric() { ClassType = typeof(Wander) };
