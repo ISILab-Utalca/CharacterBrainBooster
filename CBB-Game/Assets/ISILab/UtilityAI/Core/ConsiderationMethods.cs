@@ -1,17 +1,44 @@
-﻿using ArtificialIntelligence.Utility;
-using ArtificialIntelligence.Utility.Actions;
+﻿using ArtificialIntelligence.Utility.Actions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
-namespace dnorambu.AI.Utility
+namespace ArtificialIntelligence.Utility
 {
-    [CreateAssetMenu(fileName = "General consideration methods", menuName = "Utility AI/General Methods instance")]
-    public class ConsiderationMethods : ScriptableObject
+    public class ConsiderationMethods
     {
         public struct MethodEvaluation
         {
             public string EvaluatedVariableName;
             public float OutputValue;
         }
+        /// <summary>
+        /// Provides a way to choose a method to be evaluated on a consideration
+        /// </summary>
+        /// <returns>all declared public static methods of this class, except for this one</returns>
+        public static List<MethodInfo> GetAllMethods()
+        {
+            var methods = typeof(ConsiderationMethods).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly).ToList();
+            // Remove a method from the list if it is not marked with the attribute
+            methods.RemoveAll(m => m.GetCustomAttribute<ConsiderationMethodAttribute>() == null);
+            return methods;
+        }
+        public static List<string> GetAllMethodNames()
+        {
+               return GetAllMethods().Select(m => m.Name).ToList();
+        }
+        /// <summary>
+        /// Transforms back a method name into a MethodInfo object
+        /// </summary>
+        /// <param name="methodName">The name of the method being searched</param>
+        /// <returns>A <see cref="MethodInfo"/> if the object has </returns>
+        public static MethodInfo GetMethodByName(string methodName)
+        {
+            return GetAllMethods().Find(m => m.Name == methodName);
+        }
+        
+        [ConsiderationMethod("Distance to target")]
         public static MethodEvaluation DistanceToTarget(LocalAgentMemory agentMemory, GameObject target)
         {
             MethodEvaluation methodEvaluation;
@@ -31,9 +58,10 @@ namespace dnorambu.AI.Utility
                     OutputValue = Vector3.Distance(agentMemory.transform.position, target.transform.position)
                 };
             }
-            
+
             return methodEvaluation;
         }
+        [ConsiderationMethod("Threat heard")]
         public static MethodEvaluation ThreatHeard(LocalAgentMemory agentMemory, GameObject target)
         {
             MethodEvaluation methodEvaluation = new()
@@ -43,6 +71,7 @@ namespace dnorambu.AI.Utility
             };
             return methodEvaluation;
         }
+        [ConsiderationMethod("Idle")]
         public static MethodEvaluation Idle(LocalAgentMemory agentMemory, GameObject target)
         {
             MethodEvaluation methodEvaluation = new()
@@ -52,15 +81,17 @@ namespace dnorambu.AI.Utility
             };
             return methodEvaluation;
         }
+        [ConsiderationMethod("room temperature")]
         public static MethodEvaluation RoomTemperature(LocalAgentMemory agentMemory, GameObject target)
         {
             MethodEvaluation methodEvaluation = new()
             {
                 EvaluatedVariableName = "Temperature",
-                OutputValue = UnityEngine.Random.Range(0,0.3f),
+                OutputValue = Random.Range(0, 0.3f),
             };
             return methodEvaluation;
         }
+        [ConsiderationMethod("Attack on cooldown")]
         public static MethodEvaluation AttackOnCooldown(LocalAgentMemory agentMemory, GameObject target)
         {
             MethodEvaluation methodEvaluation = new()
@@ -75,14 +106,24 @@ namespace dnorambu.AI.Utility
             return methodEvaluation;
 
         }
+        [ConsiderationMethod("Energy left")]
         public static MethodEvaluation EnergyLeft(LocalAgentMemory agentMemory, GameObject target)
         {
             MethodEvaluation methodEvaluation = new()
             {
                 EvaluatedVariableName = "Energy",
-                OutputValue = UnityEngine.Random.Range(0, 1f),
+                OutputValue = Random.Range(0, 1f),
             };
             return methodEvaluation;
+        }
+    }
+    // Create an attribute to be used on the methods
+    public class ConsiderationMethodAttribute : System.Attribute
+    {
+        public string Name { get; private set; }
+        public ConsiderationMethodAttribute(string name)
+        {
+            Name = name;
         }
     }
 }
