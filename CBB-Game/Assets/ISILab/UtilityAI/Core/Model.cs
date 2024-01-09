@@ -188,53 +188,43 @@ namespace CBB.Lib
     }
     /// <summary>
     /// Plain Old C# Object to store the configuration set
-    /// on this Consideration in the editor <see cref="ConsiderationEditorController"/>
+    /// on this Consideration in the editor <see cref="ConsiderationEditor"/>
     /// </summary>
     [System.Serializable]
     public class ConsiderationConfiguration : IDataItem
     {
-        public string name;
+        public string considerationName;
+        public string evaluationMethod;
         [SerializeReference]
         public Curve curve;
         public bool normalizeInput;
         public float minValue;
         public float maxValue;
         public ConsiderationConfiguration() { }
-        public ConsiderationConfiguration(string name, Curve curve, bool normalize, float minValue = 0, float maxValue = 0)
+        public ConsiderationConfiguration(
+            string considerationName,
+            Curve curve,
+            string evalMethod,
+            bool normalize,
+            float minValue = 0,
+            float maxValue = 0)
         {
-            this.name = name;
+            this.considerationName = considerationName;
             this.curve = curve;
+            this.evaluationMethod = evalMethod;
             this.normalizeInput = normalize;
             this.maxValue = maxValue;
             this.minValue = minValue;
         }
 
-        public string GetItemName()
-        {
-            return name;
-        }
-        public void SetName(string name)
-        {
-            this.name = name;
-        }
-        public void SetCurve(Curve curve)
-        {
-            this.curve = curve;
-        }
+        public void SetName(string name) => considerationName = name;
+        public void SetCurve(Curve curve) => this.curve = curve;
 
-        public void SetNormalized(bool newValue)
-        {
-            normalizeInput = newValue;
-        }
+        public void SetNormalized(bool newValue) => normalizeInput = newValue;
 
-        internal void SetMinValue(float newValue)
-        {
-            minValue = newValue;
-        }
-        // Set max value
-        internal void SetMaxValue(float newValue)
-        {
-            maxValue = newValue;
-        }
+        internal void SetMinValue(float newValue) => minValue = newValue;
+        internal void SetMaxValue(float newValue) => maxValue = newValue;
+        public string GetItemName() => considerationName;
+        public object GetInstance() => this;
     }
 }
