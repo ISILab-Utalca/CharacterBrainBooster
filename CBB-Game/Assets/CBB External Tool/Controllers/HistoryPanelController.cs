@@ -192,7 +192,6 @@ namespace CBB.ExternalTool
 
         private void BindSensorInfo(SensorPackage sensor, SensorInfo sensorInfo)
         {
-            sensorInfo.style.display = DisplayStyle.Flex;
 
             var t = sensor.timestamp;
             var tt = DateTime.Parse(t);

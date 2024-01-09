@@ -35,7 +35,7 @@ public class BrainLoader : MonoBehaviour
         // If default is activated, bypass the brain system
         if (_default)
             return;
-
+        Debug.Log("[BRAIN LOADER] Data Loader PATH: " + DataLoader.Path);
         // Get the pair data by the agent ID
         var pair = DataLoader.GetPairByAgentID(agent_ID);
         if (pair == null)
@@ -49,7 +49,7 @@ public class BrainLoader : MonoBehaviour
             }
             return;
         }
-
+        Debug.Log("[BRAIN LOADER] Pair is not null");
         // Get the brain data by the brain ID
         var brain = DataLoader.GetBrainByID(pair.brain_ID);
         if (brain == null)
@@ -63,6 +63,7 @@ public class BrainLoader : MonoBehaviour
             }
             return;
         }
+        Debug.Log("[BRAIN LOADER] Brain is not null");
 
         // Initialize the brain with the brain data
         InitAgent(brain);
@@ -171,7 +172,7 @@ public class BrainLoader : MonoBehaviour
             var act = actionStates.Find(x => x.GetType() == szedAction[i].ClassType);
             if (act == null)
             {
-                act = this.gameObject.AddComponent(szedAction[i].ClassType) as ActionState;
+                act = gameObject.AddComponent(szedAction[i].ClassType) as ActionState;
             }
             act.SetParams(szedAction[i]);
         }

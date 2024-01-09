@@ -360,7 +360,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   externalMonitor: {fileID: 1787822075}
   monitoringWindow: {fileID: 291235146}
-  editorWindow: {fileID: 1204376770}
+  editorWindow: {fileID: 0}
 --- !u!1 &1169461148
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,11 +465,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1204376769}
   - component: {fileID: 1204376768}
-  - component: {fileID: 1204376770}
-  - component: {fileID: 1204376771}
   - component: {fileID: 1204376774}
   - component: {fileID: 1204376773}
   - component: {fileID: 1204376772}
+  - component: {fileID: 1204376775}
   m_Layer: 0
   m_Name: EditorWindow
   m_TagString: Untagged
@@ -508,33 +507,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1204376770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1204376766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a9d60669df54f4184e1735fafc80a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainMenu: {fileID: 1167354335}
-  brainDataManager: {fileID: 665520825}
-  showLogs: 0
---- !u!114 &1204376771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1204376766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afeec19ad355aeb4ea67aa50c618add0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1204376772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -572,6 +544,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40bc83cc34727ef468f4595662a2f2ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showLogs: 0
+--- !u!114 &1204376775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204376766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9b6def38fab7fd43ab35c8ea1cfcffd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainMenu: {fileID: 1167354335}
   showLogs: 0
 --- !u!1 &1234883281
 GameObject:
