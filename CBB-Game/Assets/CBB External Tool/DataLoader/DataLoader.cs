@@ -5,6 +5,7 @@ using Utility;
 using CBB.Comunication;
 using System.Net.Sockets;
 using Newtonsoft.Json;
+using ArtificialIntelligence.Utility;
 
 public static class DataLoader
 {
@@ -203,6 +204,10 @@ public static class DataLoader
         var serializedBrains = JsonConvert.SerializeObject(brains, settings);
         Debug.Log(serializedBrains);
         Server.SendMessageToClient(client, serializedBrains);
+
+        var considerationEvaluationMethods = ConsiderationMethods.GetAllMethodNames();
+        var serializedMethods = JsonConvert.SerializeObject(considerationEvaluationMethods, settings);
+        Server.SendMessageToClient(client, serializedMethods);
     }
     #endregion
 }
