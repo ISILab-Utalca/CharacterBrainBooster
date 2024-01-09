@@ -72,12 +72,7 @@ namespace ArtificialIntelligence.Utility
         {
             TryStartNewAction(null);
         }
-
-        private void Start()
-        {
-            // Begin the life of this agent
-            TryStartNewAction(null);
-        }
+        
         public void TryStartNewAction(SensorActivation sensor)
         {
             if (_isPaused) return;
