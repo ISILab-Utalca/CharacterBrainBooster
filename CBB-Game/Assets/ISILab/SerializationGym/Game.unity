@@ -1492,6 +1492,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Villager_1
       objectReference: {fileID: 0}
+    - target: {fileID: 4853649445717935730, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: agent_ID
       value: villager_1
@@ -1499,6 +1503,10 @@ PrefabInstance:
     - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: createBrain
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7087020024904256385, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: _considerations.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9130257367612415918, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: viewLogs
@@ -2364,13 +2372,15 @@ MonoBehaviour:
   _actionPriority: 0.1
   defaultActionCooldown: 0
   viewLogs: 0
-  _considerations:
-  - {fileID: 11400000, guid: 162ae36199f646c49a82fdd47075673a, type: 2}
+  _considerations: []
   <ActionCooldown>k__BackingField: 0
   _minWaitTimer: 1
   _maxWaitTimer: 5
   _walkRadius: 10
   _tickCheck: 0.2
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &874170270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2415,11 +2425,12 @@ MonoBehaviour:
   _actionPriority: 1
   defaultActionCooldown: 0
   viewLogs: 1
-  _considerations:
-  - {fileID: 11400000, guid: cdc15eb71c8b9194c9c04fd3b64108b8, type: 2}
-  - {fileID: 11400000, guid: 1e24083a718ea8a47afe6395928da1b9, type: 2}
+  _considerations: []
   <ActionCooldown>k__BackingField: 0
   chaseSpeed: 5
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &874170273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2435,11 +2446,12 @@ MonoBehaviour:
   _actionPriority: 2
   defaultActionCooldown: 1
   viewLogs: 1
-  _considerations:
-  - {fileID: 11400000, guid: 7370bd3dae10bae419b7c5ec742c7873, type: 2}
-  - {fileID: 11400000, guid: 15cfe75fa5e2af14d833fd13329f4575, type: 2}
+  _considerations: []
   <ActionCooldown>k__BackingField: 0
   damage: 20
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &874170274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4374,6 +4386,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Villager
       objectReference: {fileID: 0}
+    - target: {fileID: 4853649445717935730, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: agent_ID
       value: villager
@@ -4385,6 +4401,10 @@ PrefabInstance:
     - target: {fileID: 6487134912478453476, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: createBrain
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7087020024904256385, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: _considerations.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9130257367612415918, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: viewLogs

@@ -349,6 +349,7 @@ MonoBehaviour:
   _defaultAction: {fileID: 7920206726018689438}
   viewLogs: 0
   panelText: {fileID: 2124317112111874518, guid: 14563d2f0f3bdc04e9a98e7a18b3587e, type: 3}
+  _isPaused: 0
 --- !u!114 &1796074598853799715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,7 +362,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1f9064c50539894184a31a659a0880a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NeedAServer: 1
   showLogs: 1
 --- !u!114 &2924268747235082367
 MonoBehaviour:
@@ -406,8 +406,7 @@ MonoBehaviour:
   _actionPriority: 0.3
   defaultActionCooldown: 0
   viewLogs: 0
-  _considerations:
-  - {fileID: 11400000, guid: c0673ff4b07d6724094b26c534af2a32, type: 2}
+  _considerations: []
   <ActionCooldown>k__BackingField: 0
   _minWaitTimer: 1
   _maxWaitTimer: 5
@@ -428,9 +427,7 @@ MonoBehaviour:
   _actionPriority: 1
   defaultActionCooldown: 0
   viewLogs: 0
-  _considerations:
-  - {fileID: 11400000, guid: ab3013bbb11cfd64fa4cde34b0aea1f9, type: 2}
-  - {fileID: 11400000, guid: 2f06f9b2aaf3bc44285c05574d5ab64d, type: 2}
+  _considerations: []
   <ActionCooldown>k__BackingField: 0
   safeDistance: 6
   runSpeed: 7
@@ -447,8 +444,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013f8358b5a518c4fa775a22165b5193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CrerateBrain: 0
+  _default: 0
+  createBrain: 0
   agent_ID: 
+  showLogs: 0
 --- !u!1 &6759708970964299137
 GameObject:
   m_ObjectHideFlags: 0
