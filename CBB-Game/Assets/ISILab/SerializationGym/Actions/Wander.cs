@@ -77,6 +77,7 @@ namespace ArtificialIntelligence.Utility.Actions
 
         public override void SetParams(DataGeneric data)
         {
+            base.SetParams(data);
             this._minWaitTimer = (float) data.FindValueByName("MinWaitTimer").Getvalue();
             this._maxWaitTimer = (float) data.FindValueByName("MaxWaitTimer").Getvalue();
             this._walkRadius = (float) data.FindValueByName("WalkRadius").Getvalue();

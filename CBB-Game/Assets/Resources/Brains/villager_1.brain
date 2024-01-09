@@ -44,7 +44,8 @@
               "configuration": {
                 "$id": "10",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "name": "Idle",
+                "considerationName": "Idle",
+                "evaluationMethod": "Idle",
                 "curve": {
                   "$id": "11",
                   "$type": "Constant, Assembly-CSharp",
@@ -92,11 +93,12 @@
               "configuration": {
                 "$id": "18",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "name": "Villager heard a threat",
+                "considerationName": "Close to danger",
+                "evaluationMethod": "ThreatHeard",
                 "curve": {
                   "$id": "19",
                   "$type": "Linear, Assembly-CSharp",
-                  "value": 0.0,
+                  "value": 1.0,
                   "m": 1.0,
                   "dx": 0.0,
                   "dy": 0.0,
@@ -114,11 +116,12 @@
               "configuration": {
                 "$id": "21",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "name": "Threat distance",
+                "considerationName": "Threat distance",
+                "evaluationMethod": "DistanceToTarget",
                 "curve": {
                   "$id": "22",
                   "$type": "Linear, Assembly-CSharp",
-                  "value": 0.0,
+                  "value": 1.0,
                   "m": 1.0,
                   "dx": 0.0,
                   "dy": 0.0,

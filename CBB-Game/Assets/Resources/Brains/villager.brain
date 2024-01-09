@@ -44,16 +44,12 @@
               "configuration": {
                 "$id": "10",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "name": "Idle",
+                "considerationName": "Idle",
+                "evaluationMethod": "Idle",
                 "curve": {
                   "$id": "11",
-                  "$type": "ExponencialInvertida, Assembly-CSharp",
-                  "value": 1.0,
-                  "e": 2.78,
-                  "dx": 1.0,
-                  "dy": 0.0,
-                  "sx": 1.0,
-                  "sy": 1.0,
+                  "$type": "Constant, Assembly-CSharp",
+                  "value": 0.02,
                   "Inverted": false
                 },
                 "normalizeInput": false,
@@ -97,16 +93,15 @@
               "configuration": {
                 "$id": "18",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "name": "Villager heard a threat",
+                "considerationName": "Danger is close",
+                "evaluationMethod": "ThreatHeard",
                 "curve": {
                   "$id": "19",
-                  "$type": "Exponencial, Assembly-CSharp",
-                  "value": 1.0,
-                  "e": 2.0,
+                  "$type": "Linear, Assembly-CSharp",
+                  "value": 0.0,
+                  "m": 1.0,
                   "dx": 0.0,
-                  "dy": 1.09,
-                  "sx": 2.65,
-                  "sy": 1.0,
+                  "dy": 0.0,
                   "Inverted": false
                 },
                 "normalizeInput": false,
@@ -121,7 +116,8 @@
               "configuration": {
                 "$id": "21",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "name": "Threat distance",
+                "considerationName": "Threat distance",
+                "evaluationMethod": "DistanceToTarget",
                 "curve": {
                   "$id": "22",
                   "$type": "Linear, Assembly-CSharp",

@@ -66,6 +66,7 @@ public class Linear : Curve
         data.Add(new WraperNumber { name = "m", value = m });
         data.Add(new WraperNumber { name = "dx", value = dx });
         data.Add(new WraperNumber { name = "dy", value = dy });
+        data.Add(new WraperBoolean { name = "Inverted", value = Inverted });
         return data;
     }
     public override void SetParams(DataGeneric data)
@@ -73,6 +74,7 @@ public class Linear : Curve
         this.m = (float)data.FindValueByName("m").Getvalue();
         this.dx = (float)data.FindValueByName("dx").Getvalue();
         this.dy = (float)data.FindValueByName("dy").Getvalue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
     }
     public Linear() { }
 
@@ -110,7 +112,7 @@ public class Linear : Curve
 
 [Curve(name: "Inverted exponential")]
 [System.Serializable]
-public class ExponencialInvertida : Curve
+public class InvertedExponential : Curve
 {
     [JsonRequired]
     public float value = 0f;   // X
@@ -133,6 +135,8 @@ public class ExponencialInvertida : Curve
         data.Add(new WraperNumber { name = "dy", value = dy });
         data.Add(new WraperNumber { name = "sx", value = sx });
         data.Add(new WraperNumber { name = "sy", value = sy });
+        data.Add(new WraperBoolean { name = "Inverted", value = Inverted });
+
         return data;
     }
     public override void SetParams(DataGeneric data)
@@ -142,11 +146,12 @@ public class ExponencialInvertida : Curve
         this.dy = (float)data.FindValueByName("dy").Getvalue();
         this.sx = (float)data.FindValueByName("sx").Getvalue();
         this.sy = (float)data.FindValueByName("sy").Getvalue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
     }
 
-    public ExponencialInvertida() { }
+    public InvertedExponential() { }
 
-    public ExponencialInvertida(float value, float e = 2f, float dx = 1f, float dy = 0f, float sx = 1f, float sy = 1f)
+    public InvertedExponential(float value, float e = 2f, float dx = 1f, float dy = 0f, float sx = 1f, float sy = 1f)
     {
         this.value = value;
         this.e = e;
@@ -181,7 +186,7 @@ public class ExponencialInvertida : Curve
 
 [Curve(name: "Exponential")]
 [System.Serializable]
-public class Exponencial : Curve
+public class Exponential : Curve
 {
     [JsonRequired]
     public float value = 0f;   // X
@@ -204,6 +209,7 @@ public class Exponencial : Curve
         data.Add(new WraperNumber { name = "dy", value = dy });
         data.Add(new WraperNumber { name = "sx", value = sx });
         data.Add(new WraperNumber { name = "sy", value = sy });
+        data.Add(new WraperBoolean { name = "Inverted", value = Inverted });
         return data;
     }
     public override void SetParams(DataGeneric data)
@@ -213,10 +219,11 @@ public class Exponencial : Curve
         this.dy = (float)data.FindValueByName("dy").Getvalue();
         this.sx = (float)data.FindValueByName("sx").Getvalue();
         this.sy = (float)data.FindValueByName("sy").Getvalue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
     }
-    public Exponencial() { }
+    public Exponential() { }
 
-    public Exponencial(float value, float e = 2f, float dx = 0f, float dy = 0f, float sx = 1f, float sy = 1f)
+    public Exponential(float value, float e = 2f, float dx = 0f, float dy = 0f, float sx = 1f, float sy = 1f)
     {
         this.value = value;
         this.e = e;
@@ -268,6 +275,7 @@ public class Staggered : Curve
         data.Add(new WraperNumber { name = "e", value = e });
         data.Add(new WraperNumber { name = "max", value = max });
         data.Add(new WraperNumber { name = "min", value = min });
+        data.Add(new WraperBoolean { name = "Inverted", value = Inverted });
         return data;
     }
     public override void SetParams(DataGeneric data)
@@ -275,6 +283,7 @@ public class Staggered : Curve
         this.e = (float)data.FindValueByName("e").Getvalue();
         this.max = (float)data.FindValueByName("max").Getvalue();
         this.min = (float)data.FindValueByName("min").Getvalue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
     }
     public Staggered() { }
 
@@ -331,6 +340,8 @@ public class Sigmoide : Curve
         data.Add(new WraperNumber { name = "dy", value = dy });
         data.Add(new WraperNumber { name = "sx", value = sx });
         data.Add(new WraperNumber { name = "sy", value = sy });
+        data.Add(new WraperBoolean { name = "Inverted", value = Inverted });
+
         return data;
     }
     public override void SetParams(DataGeneric data)
@@ -339,6 +350,7 @@ public class Sigmoide : Curve
         this.dy = (float)data.FindValueByName("dy").Getvalue();
         this.sx = (float)data.FindValueByName("sx").Getvalue();
         this.sy = (float)data.FindValueByName("sy").Getvalue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
     }
     public Sigmoide() { }
 
@@ -434,6 +446,8 @@ public class Bell : Curve
         data.Add(new WraperNumber { name = "dx", value = dx });
         data.Add(new WraperNumber { name = "dy", value = dy });
         data.Add(new WraperNumber { name = "u", value = u });
+        data.Add(new WraperBoolean { name = "Inverted", value = Inverted });
+
         return data;
     }
     public override void SetParams(DataGeneric data)
@@ -442,6 +456,7 @@ public class Bell : Curve
         this.dx = (float)data.FindValueByName("dx").Getvalue();
         this.dy = (float)data.FindValueByName("dy").Getvalue();
         this.u = (float)data.FindValueByName("u").Getvalue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
     }
     public Bell() { }
 
@@ -469,7 +484,6 @@ public class Bell : Curve
     {
         var toR = Mathf.Clamp01((Mathf.Pow(b, -Mathf.Pow(v - dx, 2) * Mathf.Pow(10, u))) + dy);
         return Inverted ? 1 - toR : toR;
-        //return (1f / b * Mathf.Sqrt(2 * Mathf.PI)) * Mathf.Exp(-(0.5f) * ((Mathf.Pow(value - u, 2) / Mathf.Pow(b, 2)))) + dy;
     }
 }
 

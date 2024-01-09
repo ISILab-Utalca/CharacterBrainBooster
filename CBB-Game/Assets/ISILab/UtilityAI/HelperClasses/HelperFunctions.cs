@@ -8,6 +8,21 @@ namespace ArtificialIntelligence.Utility
     public static class HelperFunctions
     {
         /// <summary>
+        /// Print an array of elements in one line, sourrounded by brackets
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
+        public static string PrintArray<T>(IEnumerable<T> array)
+        {
+            string result = "[";
+            foreach (var item in array)
+            {
+                result += item + ", ";
+            }
+            result += "]";
+            return result;
+        }
+        /// <summary>
         /// Split a string by uppercase letters
         /// </summary>
         /// <param name="s">The string like "MyClassName"</param>
@@ -129,6 +144,16 @@ namespace ArtificialIntelligence.Utility
         public static void GetAllActions()
         {
             GetActionClasses<ActionState>();
+        }
+
+        [UnityEditor.MenuItem("Tools/Log consideration methods")]
+        public static void LogAllConsiderationMethods()
+        {
+            Debug.Log("All consideration methods: ");
+            foreach (var item in ConsiderationMethods.GetAllMethodNames())
+            {
+                Debug.Log(item);
+            }
         }
 #endif
         // Get all the classes that inherit from T

@@ -77,30 +77,10 @@ namespace ArtificialIntelligence.Utility.Actions
 
         public override void SetParams(DataGeneric data)
         {
+            base.SetParams(data);
             this.safeDistance = (float)data.FindValueByName("safeDistance").Getvalue();
             this.runSpeed = (int)(float)data.FindValueByName("runSpeed").Getvalue();
             this.pauseAfterRunning = (float)data.FindValueByName("pauseAfterRunning").Getvalue();
-            SetConsiderationsFromConfiguration(data);
-        }
-
-        private void SetConsiderationsFromConfiguration(DataGeneric data)
-        {
-            // Delete from disk all Utility considerations (scriptable objects) that are in the list
-            foreach (var consideration in _considerations)
-            {
-                Destroy(consideration);
-            }
-
-            foreach(var value in data.Values)
-            {
-                if (value is WrapperConsideration wc)
-                {
-                    UtilityConsideration consideration = ScriptableObject.CreateInstance<UtilityConsideration>();
-                    
-                    consideration.SetParamsFromConfiguration(wc.configuration);
-                    _considerations.Add(ScriptableObject.CreateInstance<UtilityConsideration>());
-                }
-            }
         }
 
         public override DataGeneric GetGeneric()

@@ -186,13 +186,30 @@ namespace ArtificialIntelligence.Utility
             {
                 config.Add(new WrapperConsideration()
                 {
-                    name = item.name,
+                    name = item.considerationName,
                     configuration = item.GetConfiguration()
                 });
             }
         }
-        public abstract void SetParams(DataGeneric data);
+        public virtual void SetParams(DataGeneric data)
+        {
+            SetConsiderationsFromConfiguration(data);
+        }
+        internal void SetConsiderationsFromConfiguration(DataGeneric data)
+        {
+            _considerations.Clear();
 
+            foreach (var value in data.Values)
+            {
+                if (value is WrapperConsideration wc)
+                {
+                    UtilityConsideration consideration = new();
+
+                    consideration.SetParamsFromConfiguration(wc.configuration);
+                    _considerations.Add(consideration);
+                }
+            }
+        }
         public abstract DataGeneric GetGeneric();
         #endregion
     }

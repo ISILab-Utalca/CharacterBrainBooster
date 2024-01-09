@@ -3,16 +3,20 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+using CBB.UI;
+using ArtificialIntelligence.Utility;
+using System.Linq;
 namespace CBB.InternalTool
 {
     public class BrainCreator : EditorWindow
     {
         [SerializeField]
         private VisualTreeAsset m_VisualTreeAsset = default;
-
         private ObjectField m_BrainFileField = default;
         private Toggle m_CreatePairToggle = default;
+        private Toggle showLogsToggle;
+
+
         [MenuItem("CBB/Brain Creator")]
         public static void ShowExample()
         {
@@ -22,24 +26,43 @@ namespace CBB.InternalTool
 
         public void CreateGUI()
         {
-            // Each editor window contains a root VisualElement object
             VisualElement root = rootVisualElement;
 
             // Instantiate UXML
             VisualElement labelFromUXML = m_VisualTreeAsset.Instantiate();
             root.Add(labelFromUXML);
-
-            // Get the create pair toggle
+            showLogsToggle = root.Q<Toggle>("show-logs-toggle");
+            m_BrainFileField = root.Q<ObjectField>("brain-object");
             m_CreatePairToggle = root.Q<Toggle>("create-pair-toggle");
-
-            // Get the create button
             var createButton = root.Q<Button>("create-brain-button");
             createButton.clickable.clicked += CreateBrainFile;
 
-            // Get the brain file field
-            m_BrainFileField = root.Q<ObjectField>("brain-object");
-        }
+            BrainEditor brainEditor = root.Q<BrainEditor>();
+            root.Add(brainEditor);
+            showLogsToggle.RegisterValueChangedCallback((evt) =>
+            {
+                Debug.Log(evt.newValue);
+                brainEditor.ShowLogs = evt.newValue;
+            });
 
+            // Load brains and display them in the editor
+            LoadBrainsFromEditor(brainEditor);
+            LoadEvaluationMethods(brainEditor);
+
+            brainEditor.SaveBrainButton.clicked += () =>
+            {
+                var b = brainEditor.LastSelectedBrain;
+                DataLoader.SaveBrain(b.brain_ID, b);
+            };
+        }
+        private static void LoadEvaluationMethods(BrainEditor brainEditor)
+        {
+            // Make a list of the names of the available methods for a consideration
+            var cm = ConsiderationMethods.GetAllMethods();
+            var methodNames = cm.Select(m => m.Name).ToList();
+            brainEditor.EvaluationMethods = methodNames;
+        }
+        private void LoadBrainsFromEditor(BrainEditor be) => be.SetBrains(DataLoader.GetAllBrains());
         private void CreateBrainFile()
         {
             if (m_BrainFileField.value == null)

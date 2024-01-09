@@ -23,65 +23,10 @@ namespace CBB.ExternalTool
             MissingMemberHandling = MissingMemberHandling.Ignore,
             Formatting = Formatting.Indented
         };
+        public static System.Action<List<Brain>> ReceivedBrains { get; set; }
         void Start()
         {
             ExternalMonitor.OnMessageReceived += HandleBrainData;
-        }
-        public IList<TreeViewItemData<IDataItem>> TreeRoots
-        {
-            get
-            {
-                int id = 0;
-                // First level: brains
-                var roots = new List<TreeViewItemData<IDataItem>>(brains.Count);
-                foreach (var brain in brains)
-                {
-                    // This is an intermediate list to store the sensors and actions of the brain
-                    var brainDataGroup = new List<TreeViewItemData<IDataItem>>();
-
-                    // Second level: actions and sensors
-                    var actionWrapper = new ItemWrapper("Actions");
-                    var actionItems = new List<TreeViewItemData<IDataItem>>();
-                    foreach (var action in brain.serializedActions)
-                    {
-                        // Third level: considerations attached to this action
-                        var considerationItems = new List<TreeViewItemData<IDataItem>>();
-                        foreach (var value in action.Values)
-                        {
-                            if (value is WrapperConsideration wc)
-                            {
-                                considerationItems.Add(new TreeViewItemData<IDataItem>(id++, wc.configuration));
-                            }
-                        }
-                        actionItems.Add(new TreeViewItemData<IDataItem>(id++, action, considerationItems));
-                    }
-
-                    var sensorWrapper = new ItemWrapper("Sensors");
-                    var sensorItems = new List<TreeViewItemData<IDataItem>>(brain.serializedSensors.Count);
-                    foreach (var sensor in brain.serializedSensors)
-                    {
-                        sensorItems.Add(new TreeViewItemData<IDataItem>(id++, sensor));
-                    }
-
-                    // Production version, with children
-                    brainDataGroup.Add(new TreeViewItemData<IDataItem>(id++, actionWrapper, actionItems));
-                    brainDataGroup.Add(new TreeViewItemData<IDataItem>(id++, sensorWrapper, sensorItems));
-                    roots.Add(new TreeViewItemData<IDataItem>(id++, brain, brainDataGroup));
-                }
-                return roots;
-            }
-        }
-        class ItemWrapper : IDataItem
-        {
-            readonly string name;
-            public ItemWrapper(string name)
-            {
-                this.name = name;
-            }
-            public string GetItemName()
-            {
-                return name;
-            }
         }
 
         private void HandleBrainData(string data)
@@ -92,7 +37,7 @@ namespace CBB.ExternalTool
                 // Deserialize back the string into a list of brains
                 brains = JsonConvert.DeserializeObject<List<Brain>>(data, settings);
                 if (showLogs) Debug.Log("Brain data received");
-
+                ReceivedBrains?.Invoke(brains);
             }
             catch (System.Exception)
             {
