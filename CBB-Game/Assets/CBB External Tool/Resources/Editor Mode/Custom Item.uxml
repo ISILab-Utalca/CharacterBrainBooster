@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/CBB%20External%20Tool/Styles/External%20Tool.uss?fileID=7433441132597879392&amp;guid=24e10b314967b554f903b40e9356bf0d&amp;type=3#External Tool" />
-    <ui:VisualElement name="VisualElement" class="visual-element-background" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: space-between;">
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: space-between;">
         <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="item-name" style="color: rgb(243, 243, 243);" />
         <ui:Button display-tooltip-when-elided="true" name="action-button" />
     </ui:VisualElement>
