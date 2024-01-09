@@ -15,10 +15,6 @@
             <ui:Toggle label="Normalize input" name="normalize-input" class="my-check-mark" style="font-size: 16px; color: rgb(255, 255, 255);" />
             <ui:FloatField label="Min value" value="42,2" name="min-value" style="font-size: 20px; align-self: stretch; justify-content: space-around; align-items: center; display: none;" />
             <ui:FloatField label="Max value" value="42,2" name="max-value" style="font-size: 20px; align-self: stretch; justify-content: space-around; align-items: center; display: none;" />
-            <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); align-items: auto; justify-content: flex-end; align-self: stretch; flex-direction: row;">
-                <ui:Button text="Save" display-tooltip-when-elided="true" name="save-button" style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0);" />
-                <ui:Button text="Send" display-tooltip-when-elided="true" name="send-button" style="background-color: rgb(61, 41, 125); color: rgb(255, 255, 255); background-image: none;" />
-            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
