@@ -8,23 +8,27 @@ namespace CBB.ExternalTool
         public new class UxmlFactory : UxmlFactory<GenericCard, UxmlTraits> { }
 
         private Label title;
-        private Label subtitle;
+        private Label subTitle;
         private Button removeButton;
         public GenericCard()
         {
             var vt = Resources.Load<VisualTreeAsset>("Editor Mode/Generic Card");
             vt.CloneTree(this);
             title = this.Q<Label>("title");
-            subtitle = this.Q<Label>("subtitle");
+            subTitle = this.Q<Label>("subtitle");
             removeButton = this.Q<Button>("remove-button");
         }
         public void SetTitle(string title)
         {
             this.title.text = title;
         }
-        public void SetSubtitle(string subtitle)
+        public void SetSubtitleText(string subTitle)
         {
-            this.subtitle.text = subtitle;
+            this.subTitle.text = subTitle;
+        }
+        public void SetSubtitleColor(Color color)
+        {
+            this.subTitle.style.color = color;
         }
     }
 }

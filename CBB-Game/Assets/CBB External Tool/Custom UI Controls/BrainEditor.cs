@@ -1,6 +1,8 @@
+using ArtificialIntelligence.Utility;
 using CBB.ExternalTool;
 using CBB.Lib;
 using Generic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -204,7 +206,7 @@ namespace CBB.UI
                     case WrapperConsideration wraper:
                         var gc = new GenericCard();
                         gc.SetTitle(wraper.name);
-                        gc.SetSubtitle("Consideration");
+                        gc.SetSubtitleText("Consideration");
                         DetailsPanel.Add(gc);
                         break;
                     default:
@@ -236,16 +238,58 @@ namespace CBB.UI
             BrainTree.SetRootItems(TreeRoots);
             BrainTree.Rebuild();
         }
-        private void DisplayItemWrapperDetails(IEnumerable<IDataItem> childrenData, string subTitle)
+        private void DisplayItemWrapperDetails(ItemWrapper wrapper, int index)
         {
             DetailsPanel.Clear();
+            // Get the children of the wrapper
+            var childrenIDs = BrainTree.GetChildrenIdsForIndex(index);
+            // Get the data of the children
+            var childrenData = childrenIDs.Select(id => BrainTree.GetItemDataForId<IDataItem>(id));
+
+            var subTitle = wrapper.GetItemName();
             foreach (var child in childrenData)
             {
                 var gc = new GenericCard();
                 gc.SetTitle(child.GetItemName());
-                gc.SetSubtitle(subTitle);
+                gc.SetSubtitleText(subTitle);
+                Debug.Log("SubTitle: " + subTitle);
+                switch (subTitle)
+                {
+                    case "Actions":
+                        gc.SetSubtitleColor(new Color(243, 120, 6, 1));
+                        break;
+                    case "Sensors":
+                        gc.SetSubtitleColor(new Color(243, 120, 6, 1));
+                        break;
+                    default:
+                        break;
+                }
                 DetailsPanel.Add(gc);
             }
+            if (subTitle == null) return;
+
+            var buttonContainer = new VisualElement();
+
+            var addButton = new Button
+            {
+                text = "Add " + subTitle
+            };
+
+            buttonContainer.Add(addButton);
+
+            if (subTitle == "Actions")
+            {
+                //addButton.clicked += () =>
+                //{
+                //    //TODO: Get Action classes from the game
+                //    var allActions = HelperFunctions.GetInheritedClasses<ActionState>();
+                //    //Select only the names
+                //    var actionsNames = allActions.Select(action => action.Name);
+
+                //}
+            }
+            DetailsPanel.Add(buttonContainer);
+
         }
         private Brain GetParentBrainFromIndex(int itemIndex)
         {
@@ -287,16 +331,13 @@ namespace CBB.UI
             }
             else if (item is ItemWrapper wrapper)
             {
-                // Get the children of the wrapper
-                var children = BrainTree.GetChildrenIdsForIndex(index);
-                // Get the data of the children
-                var childrenData = children.Select(id => BrainTree.GetItemDataForId<IDataItem>(id));
-
-                var subTitle = wrapper.GetItemName();
-
-                DisplayItemWrapperDetails(childrenData, subTitle);
+                DisplayItemWrapperDetails(wrapper, index);
             }
         }
         public object GetInstance() => this;
+        public void SetAgentActions(List<string> actions)
+        {
+
+        }
     }
 }
