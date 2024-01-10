@@ -143,7 +143,7 @@ namespace ArtificialIntelligence.Utility
         [UnityEditor.MenuItem("Tools/Log action types")]
         public static void GetAllActions()
         {
-            GetActionClasses<ActionState>();
+            GetInheritedClasses<ActionState>(true);
         }
 
         [UnityEditor.MenuItem("Tools/Log consideration methods")]
@@ -156,8 +156,12 @@ namespace ArtificialIntelligence.Utility
             }
         }
 #endif
-        // Get all the classes that inherit from T
-        public static List<System.Type> GetActionClasses<T>()
+        /// <summary>
+        /// Get all the classes that inherit from T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static List<System.Type> GetInheritedClasses<T>(bool showLogs = false)
         {
             var actionClasses = new List<System.Type>();
             var types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
@@ -165,7 +169,7 @@ namespace ArtificialIntelligence.Utility
             {
                 if (type.IsSubclassOf(typeof(T)))
                 {
-                    Debug.Log(type.Name);
+                    if (showLogs) Debug.Log(type.Name);
                     actionClasses.Add(type);
                 }
             }
