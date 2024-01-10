@@ -52,3 +52,23 @@ TextInput {
     height: 14px;
     -unity-background-image-tint-color: rgb(196, 196, 196);
 }
+
+.button-add {
+    background-color: rgb(16, 16, 16);
+    display: flex;
+    visibility: visible;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    margin-left: 16px;
+    margin-right: 16px;
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
