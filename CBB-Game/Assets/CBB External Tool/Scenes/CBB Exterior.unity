@@ -360,7 +360,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   externalMonitor: {fileID: 1787822075}
   monitoringWindow: {fileID: 291235146}
-  editorWindow: {fileID: 0}
+  editorWindow: {fileID: 1204376775}
 --- !u!1 &1169461148
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,7 +558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenu: {fileID: 1167354335}
-  showLogs: 0
+  showLogs: 1
 --- !u!1 &1234883281
 GameObject:
   m_ObjectHideFlags: 0
