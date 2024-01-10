@@ -1,7 +1,8 @@
+using ArtificialIntelligence.Utility;
 using CBB.Lib;
 using Generic;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,11 +10,11 @@ namespace CBB.ExternalTool
 {
     public class ConsiderationEditor : VisualElement
     {
-        #region CONTROL FACTORY
+        #region Factory
         public new class UxmlFactory : UxmlFactory<ConsiderationEditor, UxmlTraits> { }
         #endregion
 
-        #region FIELDS
+        #region Fields
         DropdownField curveDropdown;
         DropdownField methodDropdown;
         TextField considerationName;
@@ -26,6 +27,7 @@ namespace CBB.ExternalTool
         ConsiderationConfiguration originalConfig = null;
         #endregion
 
+        #region Constructors
         public ConsiderationEditor()
         {
             var visualTree = Resources.Load<VisualTreeAsset>("Editor Mode/Consideration Editor");
@@ -38,8 +40,9 @@ namespace CBB.ExternalTool
         public ConsiderationEditor(ConsiderationConfiguration cc, List<string> methodNames) : this(cc)
         {
             SetEvaluationMethodsDropdown(methodNames);
-        }
-        
+        } 
+        #endregion
+
         private void SetUpEditor(ConsiderationConfiguration config)
         {
             // Cache references to UI elements (needed for controller)
@@ -51,6 +54,8 @@ namespace CBB.ExternalTool
             Subscribe();
             // Display the consideration configuration on the editor
             ShowConsideration(config);
+            // Display the min-max values if config says so
+            DisplayRange(config.normalizeInput);
             // Cache the original config in case the user wants to undo changes
             originalConfig = config;
             // Copy where changes are applied
@@ -123,6 +128,12 @@ namespace CBB.ExternalTool
         }
         private void DisplayCurrentEvaluationMethod(ConsiderationConfiguration cc)
         {
+#if UNITY_STANDALONE_WIN
+            // Make a list of the names of the available methods for a consideration
+            var cm = ConsiderationMethods.GetAllMethods();
+            var methodNames = cm.Select(m => m.Name).ToList();
+            methodDropdown.choices = methodNames;
+#endif
             methodDropdown.value = cc.evaluationMethod;
         }
         private void Subscribe()
@@ -215,7 +226,11 @@ namespace CBB.ExternalTool
         /// <param name="evt"></param>
         private void DisplayRange(ChangeEvent<bool> evt)
         {
-            minValue.style.display = evt.newValue ? DisplayStyle.Flex : DisplayStyle.None;
+            DisplayRange(evt.newValue);
+        }
+        private void DisplayRange(bool b)
+        {
+            minValue.style.display = b ? DisplayStyle.Flex : DisplayStyle.None;
             maxValue.style.display = minValue.style.display;
         }
 
