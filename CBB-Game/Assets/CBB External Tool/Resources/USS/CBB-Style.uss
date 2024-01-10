@@ -72,3 +72,14 @@ TextInput {
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
 }
+
+.visual-element-stroke {
+    border-left-color: rgb(51, 51, 51);
+    border-right-color: rgb(51, 51, 51);
+    border-top-color: rgb(51, 51, 51);
+    border-bottom-color: rgb(51, 51, 51);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
