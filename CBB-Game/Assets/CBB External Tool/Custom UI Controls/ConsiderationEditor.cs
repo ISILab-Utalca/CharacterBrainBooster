@@ -1,7 +1,8 @@
+using ArtificialIntelligence.Utility;
 using CBB.Lib;
 using Generic;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -127,6 +128,12 @@ namespace CBB.ExternalTool
         }
         private void DisplayCurrentEvaluationMethod(ConsiderationConfiguration cc)
         {
+#if UNITY_STANDALONE_WIN
+            // Make a list of the names of the available methods for a consideration
+            var cm = ConsiderationMethods.GetAllMethods();
+            var methodNames = cm.Select(m => m.Name).ToList();
+            methodDropdown.choices = methodNames;
+#endif
             methodDropdown.value = cc.evaluationMethod;
         }
         private void Subscribe()
