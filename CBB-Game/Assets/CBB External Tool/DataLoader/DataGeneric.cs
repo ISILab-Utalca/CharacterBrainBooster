@@ -17,12 +17,21 @@ namespace Generic
     [System.Serializable]
     public class DataGeneric : IDataItem
     {
+        public enum DataType
+        {
+            Action,
+            Curve,
+            Sensor,
+            Default
+        }
         [SerializeField,JsonRequired]
         private string classType;
 
         [SerializeField, SerializeReference, JsonRequired]
         private List<WraperValue> values = new();
 
+        [SerializeField, JsonRequired]
+        private DataType dataType = DataType.Default;
         [JsonIgnore]
         public Type ClassType { 
             get => Type.GetType(classType); 
@@ -32,11 +41,15 @@ namespace Generic
         public List<WraperValue> Values { get => values; private set => values = value; }
 
         public DataGeneric() { }
-
+        public DataGeneric(DataType dataType) : this()
+        {
+            this.dataType = dataType;
+        }
         public void Add(WraperValue wraper) => Values.Add(wraper);
         public WraperValue FindValueByName(string name) => Values.Find(x => x.name == name);
         public string GetItemName() => classType;
         public object GetInstance() => this;
+        public DataType GetDataType() => dataType;
     }
 
     [System.Serializable]

@@ -62,7 +62,7 @@ public class Linear : Curve
 
     public override DataGeneric GetGeneric()
     {
-        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        var data = new DataGeneric(DataGeneric.DataType.Curve) { ClassType = typeof(Linear) };
         data.Add(new WraperNumber { name = "m", value = m });
         data.Add(new WraperNumber { name = "dx", value = dx });
         data.Add(new WraperNumber { name = "dy", value = dy });
@@ -129,7 +129,7 @@ public class InvertedExponential : Curve
 
     public override DataGeneric GetGeneric()
     {
-        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        var data = new DataGeneric(DataGeneric.DataType.Curve) { ClassType = typeof(Linear) };
         data.Add(new WraperNumber { name = "e", value = e });
         data.Add(new WraperNumber { name = "dx", value = dx });
         data.Add(new WraperNumber { name = "dy", value = dy });
@@ -203,7 +203,7 @@ public class Exponential : Curve
 
     public override DataGeneric GetGeneric()
     {
-        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        var data = new DataGeneric(DataGeneric.DataType.Curve) { ClassType = typeof(Linear) };
         data.Add(new WraperNumber { name = "e", value = e });
         data.Add(new WraperNumber { name = "dx", value = dx });
         data.Add(new WraperNumber { name = "dy", value = dy });
@@ -271,7 +271,7 @@ public class Staggered : Curve
 
     public override DataGeneric GetGeneric()
     {
-        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        var data = new DataGeneric(DataGeneric.DataType.Curve) { ClassType = typeof(Linear) };
         data.Add(new WraperNumber { name = "e", value = e });
         data.Add(new WraperNumber { name = "max", value = max });
         data.Add(new WraperNumber { name = "min", value = min });
@@ -335,7 +335,7 @@ public class Sigmoide : Curve
 
     public override DataGeneric GetGeneric()
     {
-        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        var data = new DataGeneric(DataGeneric.DataType.Curve) { ClassType = typeof(Linear) };
         data.Add(new WraperNumber { name = "dx", value = dx });
         data.Add(new WraperNumber { name = "dy", value = dy });
         data.Add(new WraperNumber { name = "sx", value = sx });
@@ -396,7 +396,7 @@ public class Constant : Curve
 
     public override DataGeneric GetGeneric()
     {
-        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        var data = new DataGeneric(DataGeneric.DataType.Curve) { ClassType = typeof(Linear) };
         data.Add(new WraperNumber { name = "value", value = value });
         return data;
     }
@@ -441,7 +441,7 @@ public class Bell : Curve
 
     public override DataGeneric GetGeneric()
     {
-        var data = new DataGeneric() { ClassType = typeof(Linear) };
+        var data = new DataGeneric(DataGeneric.DataType.Curve) { ClassType = typeof(Linear) };
         data.Add(new WraperNumber { name = "b", value = b });
         data.Add(new WraperNumber { name = "dx", value = dx });
         data.Add(new WraperNumber { name = "dy", value = dy });
