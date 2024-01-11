@@ -22,6 +22,10 @@ namespace CBB.UI
         #region Fields
         List<Brain> brains = new();
         List<System.Action> reloadButtonCallbacks = new();
+
+        // From Figma
+        Color colorOrange = new(243f / 255, 120f / 255, 6f / 255);
+        Color colorBlue = new(26f / 255, 80f / 255, 183f / 255);
         #endregion
 
         #region Properties
@@ -120,7 +124,12 @@ namespace CBB.UI
             var itemData = BrainTree.GetItemDataForIndex<IDataItem>(index);
             var uiElement = element as Label;
             var itemName = itemData.GetItemName();
-            // Remove the namespace from the item name
+            RemoveNamespace(uiElement, itemName);
+        }
+
+        // Remove the namespace from the item name
+        private static void RemoveNamespace(Label uiElement, string itemName)
+        {
             string pointPattern = @"[^.]*$";
             Match match = Regex.Match(itemName, pointPattern);
             if (match.Success)
@@ -207,6 +216,7 @@ namespace CBB.UI
                         var gc = new GenericCard();
                         gc.SetTitle(wraper.name);
                         gc.SetSubtitleText("Consideration");
+                        gc.SetSubtitleColor(colorBlue);
                         DetailsPanel.Add(gc);
                         break;
                     default:
@@ -214,24 +224,6 @@ namespace CBB.UI
                         break;
                 }
             }
-            var impl = data.GetInstance();
-            //switch (impl)
-            //{
-            //    case Brain:
-            //        uiElement.HideActionButton();
-            //        break;
-            //    case DataGeneric:
-            //        uiElement.ActionButton.text = "+";
-            //        break;
-            //    case ConsiderationConfiguration:
-            //        uiElement.ActionButton.text = "-";
-            //        break;
-            //    case ItemWrapper:
-            //        uiElement.ActionButton.text = "+";
-            //        break;
-            //    default:
-            //        break;
-            //}
         }
         private void DisplayBrainsTreeView()
         {
@@ -247,27 +239,6 @@ namespace CBB.UI
             var childrenData = childrenIDs.Select(id => BrainTree.GetItemDataForId<IDataItem>(id));
 
             var subTitle = wrapper.GetItemName();
-            foreach (var child in childrenData)
-            {
-                var gc = new GenericCard();
-                gc.SetTitle(child.GetItemName());
-                gc.SetSubtitleText(subTitle);
-                Debug.Log("SubTitle: " + subTitle);
-                switch (subTitle)
-                {
-                    case "Actions":
-                        gc.SetSubtitleColor(new Color(243, 120, 6, 1));
-                        break;
-                    case "Sensors":
-                        gc.SetSubtitleColor(new Color(243, 120, 6, 1));
-                        break;
-                    default:
-                        break;
-                }
-                DetailsPanel.Add(gc);
-            }
-            if (subTitle == null) return;
-
             var buttonContainer = new VisualElement();
 
             var addButton = new Button
@@ -276,21 +247,39 @@ namespace CBB.UI
             };
 
             buttonContainer.Add(addButton);
-
-            if (subTitle == "Actions")
+            foreach (var child in childrenData)
             {
-                //addButton.clicked += () =>
-                //{
-                //    //TODO: Get Action classes from the game
-                //    var allActions = HelperFunctions.GetInheritedClasses<ActionState>();
-                //    //Select only the names
-                //    var actionsNames = allActions.Select(action => action.Name);
-
-                //}
+                var gc = new GenericCard();
+                gc.SetTitle(child.GetItemName());
+                gc.SetSubtitleText(subTitle);
+                gc.SetSubtitleColor(colorOrange);
+                DetailsPanel.Add(gc);
+            }
+            switch (subTitle)
+            {
+                case "Actions":
+                    addButton.clicked += AddAction;
+                    break;
+                case "Sensors":
+                    addButton.clicked += AddSensor;
+                    break;
+                default:
+                    break;
             }
             DetailsPanel.Add(buttonContainer);
 
         }
+
+        private void AddSensor()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddAction()
+        {
+            throw new NotImplementedException();
+        }
+
         private Brain GetParentBrainFromIndex(int itemIndex)
         {
             var parentId = BrainTree.GetParentIdForIndex(itemIndex);
