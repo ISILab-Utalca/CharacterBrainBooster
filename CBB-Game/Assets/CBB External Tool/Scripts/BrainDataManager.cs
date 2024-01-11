@@ -61,12 +61,5 @@ namespace CBB.ExternalTool
                 System.IO.File.WriteAllText(path + brain.brain_ID + ".json", json);
             }
         }
-
-        public List<Brain> GetBrains()
-        {
-            // TODO: Bring an updated list of brains
-
-            return brains;
-        }
     }
 }
