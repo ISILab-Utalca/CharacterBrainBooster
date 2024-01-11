@@ -6,6 +6,9 @@ using CBB.Comunication;
 using System.Net.Sockets;
 using Newtonsoft.Json;
 using ArtificialIntelligence.Utility;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public static class DataLoader
 {
@@ -186,6 +189,18 @@ public static class DataLoader
         //TODO: possible point of failure
         LoadBrain(Path + "/Brains");
     }
+#if UNITY_EDITOR
+    // Save all brains on disk
+    [MenuItem("CBB/Save all brains to disk")]
+    public static void SaveAllBrains()
+    {
+        //LoadBrain(Path + "/Brains");
+        for (int i = 0; i < brains.Count; i++)
+        {
+            SaveBrain(brains[i].brain_ID, brains[i]);
+        }
+    }
+#endif
     /// <summary>
     /// When a new client connects, sends all the brains to it
     /// </summary>
@@ -234,12 +249,4 @@ public class PairBrainData
 
         pairs.Add(pairBrain);
     }
-
-
-    //public Brain GetBrain(string id)
-    //{
-    //    var pair = pairs.Find(x => x.agent_ID == id);
-    //    return pairs.Find(x => x.brain_ID == pair.brain_ID);
-    //}
-
 }
