@@ -1,12 +1,41 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.AI;
-
+#if UNITY_EDITOR
+using UnityEngine.UIElements;
+#endif
 namespace ArtificialIntelligence.Utility
 {
     public static class HelperFunctions
     {
+        #region UI
+        public static void SetButtonCallback(
+            Button button,
+            Action callback,
+            List<Action> buttonCallbacks)
+        {
+            buttonCallbacks.Add(callback);
+            button.clicked += callback;
+        }
+        public static void RemoveAllCallbacks(Button button, List<Action> callbacks)
+        {
+            if(button != null)
+            foreach (var callback in callbacks)
+            {
+                button.clicked -= callback;
+            }
+            callbacks.Clear();
+        }
+        public static void RemoveButtonCallback(Button button, Action callback, List<Action> allCallbacks)
+        {
+            button.clicked -= callback;
+            allCallbacks.Remove(callback);
+        }
+        #endregion
+
         /// <summary>
         /// Print an array of elements in one line, sourrounded by brackets
         /// </summary>
@@ -176,6 +205,21 @@ namespace ArtificialIntelligence.Utility
             
             return actionClasses;
             
+        }
+        // Remove the namespace from the item name
+        public static string RemoveNamespace(string itemName)
+        {
+            string pointPattern = @"[^.]*$";
+            Match match = Regex.Match(itemName, pointPattern);
+            if (match.Success)
+            {
+                // Split by capital letters. Ej: "MyBrain" -> "My", "Brain"
+                string capitalPattern = @"(?=\p{Lu})";
+                string[] result = Regex.Split(match.Value, capitalPattern);
+                // Join the words in the array with a space
+                return string.Join(" ", result);
+            }
+            return itemName + "{An error ocurred}";
         }
     }
 }

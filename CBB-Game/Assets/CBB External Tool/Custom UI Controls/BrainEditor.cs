@@ -5,7 +5,6 @@ using Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -22,6 +21,7 @@ namespace CBB.UI
         #region Fields
         List<Brain> brains = new();
         List<System.Action> reloadButtonCallbacks = new();
+        List<System.Action> addButtonCallbacks = new();
 
         // From Figma
         Color colorOrange = new(243f / 255, 120f / 255, 6f / 255);
@@ -82,6 +82,9 @@ namespace CBB.UI
         public Button SaveBrainButton { get; set; }
         public bool ShowLogs { get; set; } = false;
         public List<string> EvaluationMethods { get; set; } = new();
+        private VisualElement AddButtonContainer { get; set; }
+        private Button AddButton { get; set; }
+
         #endregion
 
         #region Constructors
@@ -95,6 +98,8 @@ namespace CBB.UI
             ReloadButton = this.Q<Button>("reload-brains-button");
             BrainTree = this.Q<TreeView>("brain-tree");
             SaveBrainButton = this.Q<Button>("save-brain-button");
+            AddButtonContainer = this.Q<VisualElement>("button-add-container");
+            AddButton = AddButtonContainer.Q<Button>("button-add");
 
             ReloadButton.clicked += DisplayBrainsTreeView;
             BrainTree.makeItem = MakeItem;
@@ -124,42 +129,10 @@ namespace CBB.UI
             var itemData = BrainTree.GetItemDataForIndex<IDataItem>(index);
             var uiElement = element as Label;
             var itemName = itemData.GetItemName();
-            RemoveNamespace(uiElement, itemName);
+            uiElement.text = HelperFunctions.RemoveNamespace(itemName);
         }
 
-        // Remove the namespace from the item name
-        private static void RemoveNamespace(Label uiElement, string itemName)
-        {
-            string pointPattern = @"[^.]*$";
-            Match match = Regex.Match(itemName, pointPattern);
-            if (match.Success)
-            {
-                // Split by capital letters. Ej: "MyBrain" -> "My", "Brain"
-                string capitalPattern = @"(?=\p{Lu})";
-                string[] result = Regex.Split(match.Value, capitalPattern);
-                // Join the words in the array with a space
-                uiElement.text = string.Join(" ", result);
-            }
-        }
-
-        public void SetReloadButtonCallback(System.Action callback)
-        {
-            reloadButtonCallbacks.Add(callback);
-            ReloadButton.clicked += callback;
-        }
-        public void RemoveAllReloadButtonCallbacks()
-        {
-            foreach (var callback in reloadButtonCallbacks)
-            {
-                ReloadButton.clicked -= callback;
-            }
-            reloadButtonCallbacks.Clear();
-        }
-        public void RemoveReloadButtonCallback(System.Action action)
-        {
-            ReloadButton.clicked -= action;
-            reloadButtonCallbacks.Remove(action);
-        }
+        
         public void SetBrains(List<Brain> brains)
         {
             this.brains = brains;
@@ -170,6 +143,7 @@ namespace CBB.UI
             DetailsPanel.Clear();
             var ce = new ConsiderationEditor(config, EvaluationMethods);
             DetailsPanel.Add(ce);
+            AddButtonContainer.SetDisplay(false);
         }
         private void DisplayDataGenericDetails(DataGeneric data)
         {
@@ -224,6 +198,19 @@ namespace CBB.UI
                         break;
                 }
             }
+            switch (data.GetDataType())
+            {
+                case DataGeneric.DataType.Action:
+                    AddButton.clicked += AddConsideration;
+                    break;
+                case SensorState sensor:
+                    AddButton.clicked += AddConsideration;
+                    break;
+                default:
+                    break;
+            }
+            AddButton.text = "Add new consideration";
+            AddButtonContainer.SetDisplay(true);
         }
         private void DisplayBrainsTreeView()
         {
@@ -239,14 +226,8 @@ namespace CBB.UI
             var childrenData = childrenIDs.Select(id => BrainTree.GetItemDataForId<IDataItem>(id));
 
             var subTitle = wrapper.GetItemName();
-            var buttonContainer = new VisualElement();
-
-            var addButton = new Button
-            {
-                text = "Add " + subTitle
-            };
-
-            buttonContainer.Add(addButton);
+            AddButton.text = "Add " + subTitle;
+            AddButtonContainer.SetDisplay(true);
             foreach (var child in childrenData)
             {
                 var gc = new GenericCard();
@@ -258,28 +239,25 @@ namespace CBB.UI
             switch (subTitle)
             {
                 case "Actions":
-                    addButton.clicked += AddAction;
+                    AddButton.clicked += AddAction;
                     break;
                 case "Sensors":
-                    addButton.clicked += AddSensor;
+                    AddButton.clicked += AddSensor;
                     break;
                 default:
                     break;
             }
-            DetailsPanel.Add(buttonContainer);
+            AddButtonContainer.SetDisplay(true);
 
         }
-
         private void AddSensor()
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
-
         private void AddAction()
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
-
         private Brain GetParentBrainFromIndex(int itemIndex)
         {
             var parentId = BrainTree.GetParentIdForIndex(itemIndex);
@@ -308,20 +286,30 @@ namespace CBB.UI
             BrainTree.SetSelectionByIdWithoutNotify(
                 new List<int>() { BrainTree.GetIdForIndex(index)
                 });
-            if (item is DataGeneric data)
+            switch (item)
             {
-                if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected brain: {data}");
-                DisplayDataGenericDetails(data);
+                case Brain brain:
+                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected brain: {brain}");
+                    DisplayBrainDetails(brain);
+                    break;
+                case ConsiderationConfiguration config:
+                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected config: {config}");
+                    DisplayConsiderationEditor(config);
+                    break;
+                case ItemWrapper wrapper:
+                    DisplayItemWrapperDetails(wrapper, index);
+                    break;
+                case DataGeneric data:
+                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected data generic: {data}");
+                    DisplayDataGenericDetails(data);
+                    break;
+                default:
+                    break;
             }
-            else if (item is ConsiderationConfiguration config)
-            {
-                if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected config: {config}");
-                DisplayConsiderationEditor(config);
-            }
-            else if (item is ItemWrapper wrapper)
-            {
-                DisplayItemWrapperDetails(wrapper, index);
-            }
+        }
+        private void DisplayBrainDetails(Brain brain)
+        {
+            AddButtonContainer.SetDisplay(false);
         }
         public object GetInstance() => this;
         public void SetAgentActions(List<string> actions)
