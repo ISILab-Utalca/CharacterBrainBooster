@@ -85,7 +85,7 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         public override DataGeneric GetGeneric()
         {
-            var data = new DataGeneric() { ClassType = typeof(Wander) };
+            var data = new DataGeneric(DataGeneric.DataType.Action) { ClassType = typeof(Wander) };
             data.Add(new WraperNumber { name = "MinWaitTimer", value = _minWaitTimer });
             data.Add(new WraperNumber { name = "MaxWaitTimer", value = _maxWaitTimer });
             data.Add(new WraperNumber { name = "WalkRadius", value = _walkRadius });

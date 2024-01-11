@@ -115,7 +115,7 @@ namespace CBB.Lib
 
         public override DataGeneric GetGeneric()
         {
-            var data = new DataGeneric() { ClassType = typeof(SensorFieldOfView) };
+            var data = new DataGeneric(DataGeneric.DataType.Sensor) { ClassType = typeof(SensorFieldOfView) };
             data.Add(new WraperNumber { name = "HorizontalFOV", value = HorizontalFOV });
             data.Add(new WraperNumber { name = "VerticalFOV", value = VerticalFOV });
             data.Add(new WraperNumber { name = "FrontalFOV", value = FrontalFOV });

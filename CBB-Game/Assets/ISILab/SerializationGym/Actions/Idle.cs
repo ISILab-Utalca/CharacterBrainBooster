@@ -49,7 +49,10 @@ namespace ArtificialIntelligence.Utility.Actions
 
         public override DataGeneric GetGeneric()
         {
-            throw new System.NotImplementedException();
+            return new DataGeneric(DataGeneric.DataType.Action)
+            {
+                ClassType = GetType(),
+            };
         }
         #endregion
     }

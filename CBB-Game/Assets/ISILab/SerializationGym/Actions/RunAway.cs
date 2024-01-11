@@ -85,7 +85,7 @@ namespace ArtificialIntelligence.Utility.Actions
 
         public override DataGeneric GetGeneric()
         {
-            var data = new DataGeneric() { ClassType = typeof(RunAway) };
+            var data = new DataGeneric(DataGeneric.DataType.Action) { ClassType = typeof(RunAway) };
             data.Add(new WraperNumber { name = "safeDistance", value = safeDistance });
             data.Add(new WraperNumber { name = "runSpeed", value = runSpeed });
             data.Add(new WraperNumber { name = "pauseAfterRunning", value = pauseAfterRunning });
