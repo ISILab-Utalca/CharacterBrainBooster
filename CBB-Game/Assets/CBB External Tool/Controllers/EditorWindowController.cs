@@ -64,7 +64,8 @@ namespace CBB.ExternalTool
             
             BrainDataManager.ReceivedBrains += brainEditor.SetBrains;
 
-            brainEditor.SetReloadButtonCallback(SendBrain);
+            brainEditor.SaveBrainButton.clicked += SendBrain;
+
             //TODO: set this through message and not directly from the class
             brainEditor.EvaluationMethods = ConsiderationMethods.GetAllMethodNames();
         }

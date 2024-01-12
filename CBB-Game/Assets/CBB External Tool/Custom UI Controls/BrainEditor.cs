@@ -20,8 +20,7 @@ namespace CBB.UI
 
         #region Fields
         List<Brain> brains = new();
-        List<System.Action> reloadButtonCallbacks = new();
-        List<System.Action> addButtonCallbacks = new();
+        Action addButtonCallback;
 
         // From Figma
         Color colorOrange = new(243f / 255, 120f / 255, 6f / 255);
@@ -133,11 +132,7 @@ namespace CBB.UI
         }
 
         
-        public void SetBrains(List<Brain> brains)
-        {
-            this.brains = brains;
-            DisplayBrainsTreeView();
-        }
+        
         private void DisplayConsiderationEditor(ConsiderationConfiguration config)
         {
             DetailsPanel.Clear();
@@ -201,21 +196,15 @@ namespace CBB.UI
             switch (data.GetDataType())
             {
                 case DataGeneric.DataType.Action:
-                    AddButton.clicked += AddConsideration;
+                    AddButton.text = "Add new consideration";
+                    SetUpButton(AddButton, AddConsideration);
                     break;
-                case SensorState sensor:
-                    AddButton.clicked += AddConsideration;
+                case DataGeneric.DataType.Sensor:
+                    AddButtonContainer.SetDisplay(false);
                     break;
                 default:
                     break;
             }
-            AddButton.text = "Add new consideration";
-            AddButtonContainer.SetDisplay(true);
-        }
-        private void DisplayBrainsTreeView()
-        {
-            BrainTree.SetRootItems(TreeRoots);
-            BrainTree.Rebuild();
         }
         private void DisplayItemWrapperDetails(ItemWrapper wrapper, int index)
         {
@@ -239,24 +228,85 @@ namespace CBB.UI
             switch (subTitle)
             {
                 case "Actions":
-                    AddButton.clicked += AddAction;
+                    SetUpButton(AddButton, AddAction);
                     break;
                 case "Sensors":
-                    AddButton.clicked += AddSensor;
+                    SetUpButton(AddButton, AddSensor);
                     break;
                 default:
                     break;
             }
-            AddButtonContainer.SetDisplay(true);
-
         }
+        private void DisplayBrainDetails(Brain brain)
+        {
+            DetailsPanel.Clear();
+            AddButtonContainer.SetDisplay(false);
+        }
+
         private void AddSensor()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Add sensor");
+
         }
         private void AddAction()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Add action");
+        }
+        private void AddConsideration()
+        {
+            Debug.Log("Add consideration");
+            // Steps:
+            // Get the last selected action
+            // Add a new wraper consideration to the action's values
+            // Rebuild the treeView
+            // Display the consideration editor
+
+            var lastSelectedAction = BrainTree.selectedItem as DataGeneric;
+            var newConsideration = new WrapperConsideration
+            {
+                configuration = new ConsiderationConfiguration(
+                "New Consideration",
+                //TODO: Do this better
+                new Linear(),
+                EvaluationMethods[0],
+                false,
+                0,
+                0
+                )
+            };
+            lastSelectedAction.Values.Add(newConsideration);
+            var v = TreeRoots;
+            Debug.Log(v);
+
+            BrainTree.Clear();
+            BrainTree.SetRootItems(TreeRoots);
+            BrainTree.Rebuild();
+            //BrainTree.SetSelectionByIdWithoutNotify(new List<int>() { BrainTree.GetIdForIndex(BrainTree.selectedIndex) });
+        }
+        
+        private void SetUpButton(Button button, Action newCallback)
+        {
+            try
+            {
+                button.clicked -= addButtonCallback;
+                button.clicked += newCallback;
+                addButtonCallback = newCallback;
+                //button.clicked -= AddSensor;
+                //button.clicked -= AddAction;
+                //button.clicked -= AddConsideration;
+
+                //button.clicked += newCallback;
+                AddButtonContainer.SetDisplay(true);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+        }
+        public void SetBrains(List<Brain> brains)
+        {
+            this.brains = brains;
+            DisplayBrainsTreeView();
         }
         private Brain GetParentBrainFromIndex(int itemIndex)
         {
@@ -297,6 +347,7 @@ namespace CBB.UI
                     DisplayConsiderationEditor(config);
                     break;
                 case ItemWrapper wrapper:
+                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected item wrapper: {wrapper}");
                     DisplayItemWrapperDetails(wrapper, index);
                     break;
                 case DataGeneric data:
@@ -307,14 +358,15 @@ namespace CBB.UI
                     break;
             }
         }
-        private void DisplayBrainDetails(Brain brain)
-        {
-            AddButtonContainer.SetDisplay(false);
-        }
-        public object GetInstance() => this;
         public void SetAgentActions(List<string> actions)
         {
 
         }
+        private void DisplayBrainsTreeView()
+        {
+            BrainTree.SetRootItems(TreeRoots);
+            BrainTree.Rebuild();
+        }
+        public object GetInstance() => this;
     }
 }

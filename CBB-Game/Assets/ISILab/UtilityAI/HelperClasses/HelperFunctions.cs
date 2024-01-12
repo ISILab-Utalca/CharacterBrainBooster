@@ -29,10 +29,9 @@ namespace ArtificialIntelligence.Utility
             }
             callbacks.Clear();
         }
-        public static void RemoveButtonCallback(Button button, Action callback, List<Action> allCallbacks)
+        public static void RemoveButtonCallback(Button button, Action callback)
         {
             button.clicked -= callback;
-            allCallbacks.Remove(callback);
         }
         #endregion
 
