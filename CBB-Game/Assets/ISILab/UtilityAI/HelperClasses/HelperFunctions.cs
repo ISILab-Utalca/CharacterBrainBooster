@@ -185,7 +185,8 @@ namespace ArtificialIntelligence.Utility
         }
 #endif
         /// <summary>
-        /// Get all the classes that inherit from T
+        /// Get all the classes that inherit from T. Note: this implementation assumes
+        /// that the Currently Executing Assembly is the one that contains the classes
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>

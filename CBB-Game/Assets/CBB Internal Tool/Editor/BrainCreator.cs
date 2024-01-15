@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -6,6 +5,7 @@ using UnityEngine.UIElements;
 using CBB.UI;
 using ArtificialIntelligence.Utility;
 using System.Linq;
+using Generic;
 namespace CBB.InternalTool
 {
     public class BrainCreator : EditorWindow
@@ -48,7 +48,8 @@ namespace CBB.InternalTool
             // Load brains and display them in the editor
             LoadBrainsFromEditor(brainEditor);
             LoadEvaluationMethods(brainEditor);
-
+            LoadAndSetActions(brainEditor);
+            LoadAndSetSensors(brainEditor);
             brainEditor.SaveBrainButton.clicked += () =>
             {
                 var b = brainEditor.LastSelectedBrain;
@@ -61,6 +62,39 @@ namespace CBB.InternalTool
                     Debug.LogWarning("[BRAIN CREATOR] Brain is null");
                 }
             };
+        }
+
+        private void LoadAndSetSensors(BrainEditor brainEditor)
+        {
+            brainEditor.Sensors.Clear();
+            // Find all sensors derived from SensorState
+            var sensors = HelperFunctions.GetInheritedClasses<Sensor>();
+            // Get all the data generic from the sensors
+            foreach (var sensor in sensors)
+            {
+                // Cast each sensor to IGeneric
+                var generic = (IGeneric)sensor;
+                // Get the data generic from the sensor
+                var data = generic.GetGeneric();
+                // Add the data generic to the brain editor
+                brainEditor.Sensors.Add(data);
+            }
+        }
+        private void LoadAndSetActions(BrainEditor brainEditor)
+        {
+            brainEditor.Actions.Clear();
+            // Find all actions derived from ActionState
+            var actions = HelperFunctions.GetInheritedClasses<ActionState>();
+            // Get all the data generic from the actions
+            foreach (var action in actions)
+            {
+                // Cast each action to IGeneric
+                var generic = (IGeneric)action;
+                // Get the data generic from the action
+                var data = generic.GetGeneric();
+                // Add the data generic to the brain editor
+                brainEditor.Actions.Add(data);
+            }
         }
         private static void LoadEvaluationMethods(BrainEditor brainEditor)
         {
