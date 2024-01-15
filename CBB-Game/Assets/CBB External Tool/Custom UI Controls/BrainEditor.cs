@@ -83,6 +83,14 @@ namespace CBB.UI
         public List<string> EvaluationMethods { get; set; } = new();
         private VisualElement AddButtonContainer { get; set; }
         private Button AddButton { get; set; }
+        /// <summary>
+        /// All the actions that an agent can perform.
+        /// </summary>
+        public List<DataGeneric> Actions { get; set; } = new();
+        /// <summary>
+        /// All the sensors that an agent can use.
+        /// </summary>
+        public List<DataGeneric> Sensors { get; set; } = new();
 
         #endregion
 
@@ -266,7 +274,8 @@ namespace CBB.UI
             {
                 configuration = new ConsiderationConfiguration(
                 "New Consideration",
-                //TODO: Do this better
+                //TODO: Make sure that EvaluationMethods is not null and has at least one element, injected
+                //from the brain editor
                 new Linear(),
                 EvaluationMethods[0],
                 false,
