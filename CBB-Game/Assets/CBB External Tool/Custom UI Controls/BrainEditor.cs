@@ -279,6 +279,12 @@ namespace CBB.UI
         }
         private void AddAction()
         {
+            // Avoid having multiple floating panels
+            CloseFloatingPanels();
+            var floatingPanel = new FloatingPanel(Actions, this);
+            // Adjust the panel position to be right below the add button
+            floatingPanel.SetUpPosition(AddButton.worldBound);
+            this.Add(floatingPanel);
             Debug.Log("Add action");
         }
         private void AddConsideration()
