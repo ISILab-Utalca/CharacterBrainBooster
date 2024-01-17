@@ -113,6 +113,22 @@ namespace CBB.UI
             BrainTree.bindItem = BindItem;
 
             BrainTree.selectedIndicesChanged += OnElementSelected;
+            HandleFloatingPanel();
+
+        }
+
+        private void HandleFloatingPanel()
+        {
+            // Remove any FloatingPanel that is currently open if the user clicks
+            // on any other element that is not a FloatingPanel or a FloatingPanelListItem
+            this.RegisterCallback<MouseDownEvent>(evt =>
+            {
+                var evtFP = evt.target as FloatingPanel;
+                var evtFPIL = evt.target as FloatingPanelListItem;
+                if (evtFP != null || evtFPIL != null) return;
+
+                CloseFloatingPanels();
+            });
         }
         #endregion
 
@@ -290,9 +306,13 @@ namespace CBB.UI
             BrainTree.Clear();
             BrainTree.SetRootItems(TreeRoots);
             BrainTree.Rebuild();
-            //BrainTree.SetSelectionByIdWithoutNotify(new List<int>() { BrainTree.GetIdForIndex(BrainTree.selectedIndex) });
         }
-        
+
+        private void CloseFloatingPanels()
+        {
+            var floatingPanels = this.Q<FloatingPanel>();
+            floatingPanels?.RemoveFromHierarchy();
+        }
         private void SetUpButton(Button button, Action newCallback)
         {
             try
