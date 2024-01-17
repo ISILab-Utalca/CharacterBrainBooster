@@ -1,13 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center;">
-        <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); height: 24px; width: 24px; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px;">
+    <ui:VisualElement name="parent-container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center;">
+        <ui:VisualElement name="action-icon-container" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); height: 24px; width: 24px; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; display: flex;">
             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/CBB%20External%20Tool/2DAssets/star.png?fileID=2800000&amp;guid=353c34b7732497f42838371b15ca8f9f&amp;type=3#star&apos;); -unity-background-scale-mode: scale-to-fit; -unity-background-image-tint-color: rgb(243, 120, 6);" />
         </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); height: 24px; width: 24px; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px;">
+        <ui:VisualElement name="sensor-icon-container" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); height: 24px; width: 24px; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px;">
             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/CBB%20External%20Tool/2DAssets/Sensor2.png?fileID=2800000&amp;guid=9871d4394f5367c4eac4540178cfe177&amp;type=3#Sensor2&apos;); -unity-background-scale-mode: scale-to-fit; -unity-background-image-tint-color: rgb(243, 120, 6);" />
         </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" />
+            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="item-name" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
