@@ -1,3 +1,5 @@
+using ArtificialIntelligence.Utility;
+using Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,6 +12,9 @@ namespace CBB.ExternalTool
         private Label title;
         private Label subTitle;
         private Button removeButton;
+        private DataGeneric data;
+
+        public System.Action<object> DeleteElement { get; set; }
         public GenericCard()
         {
             var vt = Resources.Load<VisualTreeAsset>("Editor Mode/Generic Card");
@@ -17,6 +22,18 @@ namespace CBB.ExternalTool
             title = this.Q<Label>("title");
             subTitle = this.Q<Label>("subtitle");
             removeButton = this.Q<Button>("remove-button");
+            removeButton.clickable.clicked += () =>
+            {
+                DeleteElement?.Invoke(data);
+                this.RemoveFromHierarchy();
+            };
+        }
+        public GenericCard(DataGeneric data, Color subtitleColor) : this()
+        {
+            this.data = data;
+            SetTitle(HelperFunctions.RemoveNamespace(data.ClassType.Name));
+            SetSubtitleText(data.GetDataType().ToString());
+            SetSubtitleColor(subtitleColor);
         }
         public void SetTitle(string title)
         {
