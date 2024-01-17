@@ -160,6 +160,24 @@
           ]
         },
         "dataType": 2
+      },
+      {
+        "$id": "27",
+        "$type": "Generic.DataGeneric, Assembly-CSharp",
+        "classType": "DummySensor",
+        "values": {
+          "$id": "28",
+          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
+          "$values": [
+            {
+              "$id": "29",
+              "$type": "Generic.WraperBoolean, Assembly-CSharp",
+              "value": false,
+              "name": "isAwake"
+            }
+          ]
+        },
+        "dataType": 2
       }
     ]
   }
