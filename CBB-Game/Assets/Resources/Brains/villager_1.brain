@@ -49,7 +49,7 @@
                 "curve": {
                   "$id": "11",
                   "$type": "Linear, Assembly-CSharp",
-                  "value": 1.0,
+                  "value": 0.0,
                   "m": 1.0,
                   "dx": 0.0,
                   "dy": 0.0,

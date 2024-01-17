@@ -23,7 +23,7 @@
             {
               "$id": "6",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 5.0,
+              "value": 4.09,
               "name": "MaxWaitTimer"
             },
             {
@@ -44,15 +44,12 @@
               "configuration": {
                 "$id": "10",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "asdadsa",
-                "evaluationMethod": "DistanceToTarget",
+                "considerationName": "Idle",
+                "evaluationMethod": "Idle",
                 "curve": {
                   "$id": "11",
-                  "$type": "Linear, Assembly-CSharp",
-                  "value": 1.0,
-                  "m": 1.0,
-                  "dx": 0.0,
-                  "dy": 0.0,
+                  "$type": "Constant, Assembly-CSharp",
+                  "value": 0.02,
                   "Inverted": false
                 },
                 "normalizeInput": false,
@@ -123,7 +120,7 @@
                 "curve": {
                   "$id": "22",
                   "$type": "Exponential, Assembly-CSharp",
-                  "value": 1.0,
+                  "value": 0.0,
                   "e": 2.0,
                   "dx": 0.0,
                   "dy": 0.0,

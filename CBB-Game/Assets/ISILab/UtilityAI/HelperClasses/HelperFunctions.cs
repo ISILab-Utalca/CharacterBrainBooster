@@ -11,29 +11,6 @@ namespace ArtificialIntelligence.Utility
 {
     public static class HelperFunctions
     {
-        #region UI
-        public static void SetButtonCallback(
-            Button button,
-            Action callback,
-            List<Action> buttonCallbacks)
-        {
-            buttonCallbacks.Add(callback);
-            button.clicked += callback;
-        }
-        public static void RemoveAllCallbacks(Button button, List<Action> callbacks)
-        {
-            if(button != null)
-            foreach (var callback in callbacks)
-            {
-                button.clicked -= callback;
-            }
-            callbacks.Clear();
-        }
-        public static void RemoveButtonCallback(Button button, Action callback)
-        {
-            button.clicked -= callback;
-        }
-        #endregion
 
         /// <summary>
         /// Print an array of elements in one line, sourrounded by brackets
@@ -185,26 +162,42 @@ namespace ArtificialIntelligence.Utility
         }
 #endif
         /// <summary>
-        /// Get all the classes that inherit from T. Note: this implementation assumes
-        /// that the Currently Executing Assembly is the one that contains the classes
+        /// Get all the classes that inherit from T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static List<System.Type> GetInheritedClasses<T>(bool showLogs = false)
+        /// <returns>A List<typeparamref name="T"/> with all non-abstract derived types</returns>
+        public static List<System.Type> GetInheritedClasses<T>(bool showLogs = false) where T : class
         {
             var actionClasses = new List<System.Type>();
-            var types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
+            var types = System.AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(x => x.GetTypes()).Where(x => x.IsSubclassOf(typeof(T)) && !x.IsAbstract);
+
             foreach (var type in types)
             {
-                if (type.IsSubclassOf(typeof(T)))
-                {
-                    if (showLogs) Debug.Log(type.Name);
-                    actionClasses.Add(type);
-                }
+                if (showLogs) Debug.Log(type.Name);
+                actionClasses.Add(type);
             }
-            
+
             return actionClasses;
-            
+
+        }
+        /// <summary>
+        /// Get all classes that implement the interface T and inherit from baseClass
+        /// </summary>
+        public static List<System.Type> GetInterfaceImplementations<T>(System.Type baseClass, bool showLogs = false)
+        {
+            var actionClasses = new List<System.Type>();
+            var types = System.AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(x => x.GetTypes()).Where(x => x.IsSubclassOf(baseClass) && !x.IsAbstract);
+
+            foreach (var type in types)
+            {
+                if (showLogs) Debug.Log(type.Name);
+                actionClasses.Add(type);
+            }
+
+            return actionClasses;
+
         }
         // Remove the namespace from the item name
         public static string RemoveNamespace(string itemName)
