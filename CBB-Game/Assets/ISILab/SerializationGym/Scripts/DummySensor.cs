@@ -17,14 +17,11 @@ public class DummySensor : Sensor
     public List<GameObject> randomObjects;
     [SensorConfiguration]
     public bool isAwake = true;
-    [SensorConfiguration]
-    public string StringProperty { get; set; }
 
 
 
     public override SensorStatus GetSensorData()
     {
-        StringProperty = "Hola";
         return new SensorStatus
         {
             sensorType = typeof(DummySensor),
@@ -40,12 +37,15 @@ public class DummySensor : Sensor
 
     public override void SetParams(DataGeneric data)
     {
-        throw new NotImplementedException();
+        this.isAwake = (bool)data.FindValueByName("isAwake").Getvalue();
     }
 
     public override DataGeneric GetGeneric()
     {
-        throw new NotImplementedException();
+        var data = new DataGeneric(DataGeneric.DataType.Sensor) { ClassType = GetType() };
+
+        data.Add(new WraperBoolean { name = "isAwake", value = this.isAwake });
+        return data;
     }
 
     protected override void RenderGui(GLPainter painter)

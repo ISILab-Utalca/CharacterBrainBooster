@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ArtificialIntelligence.Utility.Actions
 {
     /// <summary>
-    /// Replace this summary with a description of the class.
+    /// Basic behaviour of chasing a target that has a certain tag
     /// </summary>
     public class Chase : ActionState
     {
@@ -62,12 +62,19 @@ namespace ArtificialIntelligence.Utility.Actions
 
         public override void SetParams(DataGeneric data)
         {
-            throw new System.NotImplementedException();
+            base.SetParams(data);
+            this.chaseSpeed = (float)data.FindValueByName("chaseSpeed").Getvalue();
+            this.initialSpeed = (float)data.FindValueByName("initialSpeed").Getvalue();
+
         }
 
         public override DataGeneric GetGeneric()
         {
-            throw new System.NotImplementedException();
+            var data = new DataGeneric(DataGeneric.DataType.Action) { ClassType = GetType() };
+            data.Add(new WraperNumber { name = "chaseSpeed", value = chaseSpeed });
+            data.Add(new WraperNumber { name = "initialSpeed", value = initialSpeed });
+            AddConsiderationsToConfiguration(data);
+            return data;
         }
 
         #endregion

@@ -62,15 +62,20 @@ namespace ArtificialIntelligence.Utility.Actions
 
             FinishExecution();
         }
-
         public override void SetParams(DataGeneric data)
         {
-            throw new System.NotImplementedException();
+            base.SetParams(data);
+            this.jumpHeight = (float)data.FindValueByName("jumpHeight").Getvalue();
+            this.jumpDuration = (int)data.FindValueByName("jumpDuration").Getvalue();
         }
 
         public override DataGeneric GetGeneric()
         {
-            throw new System.NotImplementedException();
+            var data = new DataGeneric(DataGeneric.DataType.Action) { ClassType = GetType() };
+            data.Add(new WraperNumber { name = "jumpHeight", value = jumpHeight });
+            data.Add(new WraperNumber {name = "jumpDuration", value = jumpDuration });
+            AddConsiderationsToConfiguration(data);
+            return data;
         }
         #endregion
 

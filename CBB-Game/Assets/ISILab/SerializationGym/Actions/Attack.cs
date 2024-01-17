@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ArtificialIntelligence.Utility.Actions
 {
     /// <summary>
-    /// Replace this summary with a description of the class.
+    /// Basic attack behaviour
     /// </summary>
     public class Attack : ActionState
     {
@@ -51,7 +51,6 @@ namespace ArtificialIntelligence.Utility.Actions
         {
             return ScoreMultipleOptions(LocalAgentMemory.HeardObjects);
         }
-
         protected override IEnumerator Act(GameObject target = null)
         {
             if (target.TryGetComponent<Villager>(out var villager))
@@ -69,12 +68,15 @@ namespace ArtificialIntelligence.Utility.Actions
 
         public override void SetParams(DataGeneric data)
         {
-            throw new System.NotImplementedException();
+            base.SetParams(data);
+            this.damage = (int)data.FindValueByName("damage").Getvalue();
         }
-
         public override DataGeneric GetGeneric()
         {
-            throw new System.NotImplementedException();
+            var data = new DataGeneric(DataGeneric.DataType.Action) { ClassType = GetType() };
+            data.Add(new WraperNumber { name = "damage", value = damage });
+            AddConsiderationsToConfiguration(data);
+            return data;
         }
         #endregion
     }
