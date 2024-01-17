@@ -6,6 +6,8 @@ using CBB.UI;
 using ArtificialIntelligence.Utility;
 using System.Linq;
 using Generic;
+using System.Collections;
+using System.Collections.Generic;
 namespace CBB.InternalTool
 {
     public class BrainCreator : EditorWindow
@@ -28,9 +30,12 @@ namespace CBB.InternalTool
         {
             VisualElement root = rootVisualElement;
 
-            // Instantiate UXML
-            VisualElement labelFromUXML = m_VisualTreeAsset.Instantiate();
-            root.Add(labelFromUXML);
+            // This way of instantiating a UXML file disables the creation of
+            // an additional template container in the hierarchy, which is the
+            // source of problems related to different layouts between UI Builder
+            // and runtime.
+            m_VisualTreeAsset.CloneTree(root);
+
             showLogsToggle = root.Q<Toggle>("show-logs-toggle");
             m_BrainFileField = root.Q<ObjectField>("brain-object");
             m_CreatePairToggle = root.Q<Toggle>("create-pair-toggle");
@@ -48,8 +53,8 @@ namespace CBB.InternalTool
             // Load brains and display them in the editor
             LoadBrainsFromEditor(brainEditor);
             LoadEvaluationMethods(brainEditor);
-            LoadAndSetActions(brainEditor);
-            LoadAndSetSensors(brainEditor);
+            LoadFromGeneric<ActionState>(brainEditor.Actions);
+            LoadFromGeneric<Sensor>(brainEditor.Sensors);
             brainEditor.SaveBrainButton.clicked += () =>
             {
                 var b = brainEditor.LastSelectedBrain;
@@ -63,38 +68,24 @@ namespace CBB.InternalTool
                 }
             };
         }
-
-        private void LoadAndSetSensors(BrainEditor brainEditor)
+        
+        public void LoadFromGeneric<T>(List<DataGeneric> container) where T : class
         {
-            brainEditor.Sensors.Clear();
-            // Find all sensors derived from SensorState
-            var sensors = HelperFunctions.GetInheritedClasses<Sensor>();
-            // Get all the data generic from the sensors
-            foreach (var sensor in sensors)
-            {
-                // Cast each sensor to IGeneric
-                var generic = (IGeneric)sensor;
-                // Get the data generic from the sensor
-                var data = generic.GetGeneric();
-                // Add the data generic to the brain editor
-                brainEditor.Sensors.Add(data);
-            }
-        }
-        private void LoadAndSetActions(BrainEditor brainEditor)
-        {
-            brainEditor.Actions.Clear();
-            // Find all actions derived from ActionState
-            var actions = HelperFunctions.GetInheritedClasses<ActionState>();
+            container.Clear();
+            // Find all derived from T
+            var dataGenericImplementators = HelperFunctions.GetInheritedClasses<T>();
+            var dummygameObject = new GameObject();
             // Get all the data generic from the actions
-            foreach (var action in actions)
+            foreach (var item in dataGenericImplementators)
             {
-                // Cast each action to IGeneric
-                var generic = (IGeneric)action;
+                // In this case, al items are monobehaviours
+                var instance = dummygameObject.AddComponent(item);
                 // Get the data generic from the action
-                var data = generic.GetGeneric();
+                var data = ((IGeneric)instance).GetGeneric();
                 // Add the data generic to the brain editor
-                brainEditor.Actions.Add(data);
+                container.Add(data);
             }
+            DestroyImmediate(dummygameObject);
         }
         private static void LoadEvaluationMethods(BrainEditor brainEditor)
         {
@@ -124,8 +115,11 @@ namespace CBB.InternalTool
             // Save the brain file
             DataLoader.SaveBrain(brainLoader.agent_ID, b);
             // Replace the pair in the table
-            DataLoader.ReplacePair(new PairBrainData.PairBrain() { 
-                agent_ID = brainLoader.agent_ID, brain_ID = b.brain_ID }, 
+            DataLoader.ReplacePair(new PairBrainData.PairBrain()
+            {
+                agent_ID = brainLoader.agent_ID,
+                brain_ID = b.brain_ID
+            },
                 m_CreatePairToggle.value);
             DataLoader.SaveTable(DataLoader.Path);
         }
