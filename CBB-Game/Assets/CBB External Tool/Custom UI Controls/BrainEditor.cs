@@ -269,6 +269,11 @@ namespace CBB.UI
 
         private void AddSensor()
         {
+            CloseFloatingPanels();
+            var floatingPanel = new FloatingPanel(Sensors, this);
+            // Adjust the panel position to be right below the add button
+            floatingPanel.SetUpPosition(AddButton.worldBound);
+            this.Add(floatingPanel);
             Debug.Log("Add sensor");
 
         }
