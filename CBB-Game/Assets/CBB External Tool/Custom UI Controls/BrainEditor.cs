@@ -311,8 +311,6 @@ namespace CBB.UI
                 )
             };
             lastSelectedAction.Values.Add(newConsideration);
-            var v = TreeRoots;
-            Debug.Log(v);
 
             BrainTree.Clear();
             BrainTree.SetRootItems(TreeRoots);
@@ -331,11 +329,6 @@ namespace CBB.UI
                 button.clicked -= addButtonCallback;
                 button.clicked += newCallback;
                 addButtonCallback = newCallback;
-                //button.clicked -= AddSensor;
-                //button.clicked -= AddAction;
-                //button.clicked -= AddConsideration;
-
-                //button.clicked += newCallback;
                 AddButtonContainer.SetDisplay(true);
             }
             catch (Exception e)
@@ -397,10 +390,6 @@ namespace CBB.UI
                 default:
                     break;
             }
-        }
-        public void SetAgentActions(List<string> actions)
-        {
-
         }
         private void DisplayBrainsTreeView()
         {
