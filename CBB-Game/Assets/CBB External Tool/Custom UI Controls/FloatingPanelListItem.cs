@@ -11,7 +11,6 @@ public class FloatingPanelListItem : VisualElement
     readonly VisualElement actionIconContainer;
     readonly VisualElement sensorIconContainer;
 
-    DataGeneric data;
     public FloatingPanelListItem()
     {
         var visualTree = Resources.Load<VisualTreeAsset>("Editor Mode/Floating panel list item");
@@ -23,7 +22,6 @@ public class FloatingPanelListItem : VisualElement
     }
     public void SetUpItem(DataGeneric data)
     {
-        this.data = data;
         var itemName = HelperFunctions.RemoveNamespace(data.ClassType.Name);
 
         itemNameLabel.text = itemName;

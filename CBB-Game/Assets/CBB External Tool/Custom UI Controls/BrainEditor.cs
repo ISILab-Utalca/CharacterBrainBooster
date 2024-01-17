@@ -271,6 +271,11 @@ namespace CBB.UI
         {
             CloseFloatingPanels();
             var floatingPanel = new FloatingPanel(Sensors, this);
+            floatingPanel.ElementClicked += (data) =>
+            {
+                LastSelectedBrain.serializedSensors.Add(data);
+                ResetBrainTree();
+            };
             // Adjust the panel position to be right below the add button
             floatingPanel.SetUpPosition(AddButton.worldBound);
             this.Add(floatingPanel);
@@ -282,6 +287,11 @@ namespace CBB.UI
             // Avoid having multiple floating panels
             CloseFloatingPanels();
             var floatingPanel = new FloatingPanel(Actions, this);
+            floatingPanel.ElementClicked += (data) =>
+            {
+                LastSelectedBrain.serializedActions.Add(data);
+                ResetBrainTree();
+            };
             // Adjust the panel position to be right below the add button
             floatingPanel.SetUpPosition(AddButton.worldBound);
             this.Add(floatingPanel);
@@ -311,7 +321,12 @@ namespace CBB.UI
                 )
             };
             lastSelectedAction.Values.Add(newConsideration);
+            
+            ResetBrainTree();
+        }
 
+        private void ResetBrainTree()
+        {
             BrainTree.Clear();
             BrainTree.SetRootItems(TreeRoots);
             BrainTree.Rebuild();
@@ -322,6 +337,9 @@ namespace CBB.UI
             var floatingPanels = this.Q<FloatingPanel>();
             floatingPanels?.RemoveFromHierarchy();
         }
+        //TODO: Refactor this piece of code using Manipulators, in order to
+        //avoid coding very similar (almost duplicated) methods like
+        //AddAction and AddSensor, which only differs by its target
         private void SetUpButton(Button button, Action newCallback)
         {
             try
