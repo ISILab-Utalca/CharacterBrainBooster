@@ -3,9 +3,7 @@ using CBB.Comunication;
 using CBB.Lib;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using UnityEngine;
-using UnityEngine.UI;
 using Utility;
 
 namespace CBB.Api
