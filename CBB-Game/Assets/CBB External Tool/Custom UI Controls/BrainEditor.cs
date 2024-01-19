@@ -19,7 +19,6 @@ namespace CBB.UI
         #endregion
 
         #region Fields
-        List<Brain> brains = new();
         Action addButtonCallback;
 
         // From Figma
@@ -28,16 +27,16 @@ namespace CBB.UI
         #endregion
 
         #region Properties
-        public Brain LastSelectedBrain { get; private set; }
+        private Brain LastSelectedBrain { get; set; }
         public IList<TreeViewItemData<IDataItem>> TreeRoots
         {
             get
             {
-                if (brains == null) return null;
+                if (Brains == null) return null;
                 int id = 0;
                 // First level: brains
-                var roots = new List<TreeViewItemData<IDataItem>>(brains.Count);
-                foreach (var brain in brains)
+                var roots = new List<TreeViewItemData<IDataItem>>(Brains.Count);
+                foreach (var brain in Brains)
                 {
                     // This is an intermediate list to store the sensors and actions of the brain
                     var brainDataGroup = new List<TreeViewItemData<IDataItem>>();
@@ -91,6 +90,7 @@ namespace CBB.UI
         /// All the sensors that an agent can use.
         /// </summary>
         public List<DataGeneric> Sensors { get; set; } = new();
+        public List<Brain> Brains { get; set; } = new();
 
         #endregion
 
@@ -108,7 +108,7 @@ namespace CBB.UI
             AddButtonContainer = this.Q<VisualElement>("button-add-container");
             AddButton = AddButtonContainer.Q<Button>("button-add");
 
-            ReloadButton.clicked += DisplayBrainsTreeView;
+            ReloadButton.clicked += ResetBrainTree;
             BrainTree.makeItem = MakeItem;
             BrainTree.bindItem = BindItem;
 
@@ -152,10 +152,8 @@ namespace CBB.UI
             var itemData = BrainTree.GetItemDataForIndex<IDataItem>(index);
             var uiElement = element as Label;
             var itemName = itemData.GetItemName();
-            uiElement.text = HelperFunctions.RemoveNamespace(itemName);
+            uiElement.text = HelperFunctions.RemoveNamespaceSplit(itemName);
         }
-
-
 
         private void DisplayConsiderationEditor(ConsiderationConfiguration config)
         {
@@ -206,10 +204,18 @@ namespace CBB.UI
                         DetailsPanel.Add(toggle);
                         break;
                     case WrapperConsideration wraper:
-                        var gc = new GenericCard();
-                        gc.SetTitle(wraper.name);
+                        var gc = new GenericCard(wraper);
+                        gc.SetTitle(wraper.configuration.considerationName);
                         gc.SetSubtitleText("Consideration");
                         gc.SetSubtitleColor(colorBlue);
+                        gc.DeleteElement += (obj) =>
+                        {
+                            if (obj is WrapperConsideration wc)
+                            {
+                                data.Values.Remove(wc);
+                                ResetBrainTree();
+                            }
+                        };
                         DetailsPanel.Add(gc);
                         break;
                     default:
@@ -244,16 +250,16 @@ namespace CBB.UI
             foreach (var child in childrenData)
             {
                 var gc = new GenericCard(child.GetInstance());
-                gc.SetTitle(child.GetItemName());
+                gc.SetTitle(HelperFunctions.RemoveNamespaceSplit(child.GetItemName()));
                 gc.SetSubtitleText(subTitle);
                 gc.SetSubtitleColor(colorOrange);
+                // Add logic to delete the element from the brain
                 gc.DeleteElement += (obj) =>
                 {
-                    if(childrenData.Count() == 1)
+                    if(childrenData.Count() <= 1)
                     {
                         // TODO: Show a message to the user using a custom dialog
-                        Debug.LogWarning("Cannot delete the last element of a list");
-                        return;
+                        Debug.LogWarning($"This brain {LastSelectedBrain.brain_ID} won't work correctly without {subTitle}");
                     }
                     if (obj is DataGeneric generic)
                     {
@@ -270,7 +276,6 @@ namespace CBB.UI
                             default:
                                 break;
                         }
-                        gc.RemoveFromHierarchy();
                         ResetBrainTree();
                     }
                 };
@@ -352,11 +357,16 @@ namespace CBB.UI
             ResetBrainTree();
         }
 
-        private void ResetBrainTree()
+        public void ResetBrainTree()
         {
+            var lastSelectedObject = BrainTree.selectedItem;
+            var lastSelectedIndex = BrainTree.selectedIndex;
+
             BrainTree.Clear();
             BrainTree.SetRootItems(TreeRoots);
             BrainTree.Rebuild();
+
+            DisplayItem(lastSelectedIndex, lastSelectedObject);
         }
 
         private void CloseFloatingPanels()
@@ -383,8 +393,9 @@ namespace CBB.UI
         }
         public void SetBrains(List<Brain> brains)
         {
-            this.brains = brains;
-            DisplayBrainsTreeView();
+            this.Brains = brains;
+            // Reset the tree view automatically
+            ResetBrainTree();
         }
         private Brain GetParentBrainFromIndex(int itemIndex)
         {
@@ -414,6 +425,11 @@ namespace CBB.UI
             BrainTree.SetSelectionByIdWithoutNotify(
                 new List<int>() { BrainTree.GetIdForIndex(index)
                 });
+            DisplayItem(index, item);
+        }
+
+        private void DisplayItem(int index, object item)
+        {
             switch (item)
             {
                 case Brain brain:
@@ -436,11 +452,7 @@ namespace CBB.UI
                     break;
             }
         }
-        private void DisplayBrainsTreeView()
-        {
-            BrainTree.SetRootItems(TreeRoots);
-            BrainTree.Rebuild();
-        }
+
         public object GetInstance() => this;
     }
 }
