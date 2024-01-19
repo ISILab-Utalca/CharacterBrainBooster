@@ -20,7 +20,7 @@ namespace CBB.ExternalTool
         private Button closeButton;
         // Logic
 
-        [SerializeField,SerializeProperty("ShowLogs")]
+        [SerializeField, SerializeProperty("ShowLogs")]
         private bool showLogs = false;
         private ExternalMonitor monitor;
         private readonly JsonSerializerSettings settings = new()
@@ -42,7 +42,7 @@ namespace CBB.ExternalTool
             set
             {
                 showLogs = value;
-                if(brainEditor != null)
+                if (brainEditor != null)
                 {
                     brainEditor.ShowLogs = value;
                 }
@@ -52,16 +52,16 @@ namespace CBB.ExternalTool
         private void Awake()
         {
             var root = GetComponent<UIDocument>().rootVisualElement;
-            
+
             brainEditor = root.Q<BrainEditor>();
 
             closeButton = root.Q<TopTitleBar>().CloseButton;
-            
+
             // Set reference to TCP Client in order to exchange messages with the server
             monitor = GameObject.Find("External Monitor").GetComponent<ExternalMonitor>();
 
             closeButton.clicked += BackToMainMenu;
-            
+
             BrainDataManager.ReceivedBrains += brainEditor.SetBrains;
 
             brainEditor.SaveBrainButton.clicked += SendBrain;
@@ -76,17 +76,13 @@ namespace CBB.ExternalTool
         }
         private void SendBrain()
         {
-            var b = brainEditor.LastSelectedBrain;
-            if(b == null)
+            foreach (var b in brainEditor.Brains)
             {
-                Debug.LogWarning("[Editor Window Controller] No brain selected");
-                return;
+                string json = JsonConvert.SerializeObject(b, settings);
+                //Send to server
+                monitor.SendData(json);
             }
-            string json = JsonConvert.SerializeObject(b, settings);
-            
-            //Send to server
-            monitor.SendData(json);
         }
-        
+
     }
 }
