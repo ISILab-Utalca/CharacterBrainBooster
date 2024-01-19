@@ -1,3 +1,5 @@
+using ArtificialIntelligence.Utility;
+using Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,28 +9,36 @@ namespace CBB.ExternalTool
     {
         public new class UxmlFactory : UxmlFactory<GenericCard, UxmlTraits> { }
 
-        private Label title;
-        private Label subTitle;
-        private Button removeButton;
+        public System.Action<object> DeleteElement { get; set; }
+        public Label Title { get; set; }
+        public Label SubTitle { get; }
+        public Button RemoveButton { get; set; }
+        public object Data { get; set; }
+
         public GenericCard()
         {
             var vt = Resources.Load<VisualTreeAsset>("Editor Mode/Generic Card");
             vt.CloneTree(this);
-            title = this.Q<Label>("title");
-            subTitle = this.Q<Label>("subtitle");
-            removeButton = this.Q<Button>("remove-button");
+            Title = this.Q<Label>("title");
+            SubTitle = this.Q<Label>("subtitle");
+            RemoveButton = this.Q<Button>("remove-button");
+            RemoveButton.clicked += () => { DeleteElement?.Invoke(Data); RemoveFromHierarchy(); };
+        }
+        public GenericCard(object data) : this()
+        {
+            this.Data = data;
         }
         public void SetTitle(string title)
         {
-            this.title.text = title;
+            this.Title.text = title;
         }
         public void SetSubtitleText(string subTitle)
         {
-            this.subTitle.text = subTitle;
+            this.SubTitle.text = subTitle;
         }
         public void SetSubtitleColor(Color color)
         {
-            this.subTitle.style.color = color;
+            this.SubTitle.style.color = color;
         }
     }
 }

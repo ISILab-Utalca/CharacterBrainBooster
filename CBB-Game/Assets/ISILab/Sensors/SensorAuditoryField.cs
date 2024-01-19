@@ -5,7 +5,6 @@ using Generic;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 using Utility;
 
@@ -106,11 +105,6 @@ public class SensorAuditoryField : Sensor, IGeneric
         Debug.Log(ss);
         return ss;
     }
-    [ContextMenu("Serialize sensor heard objects")]
-    public void SerializeSensorHeardObjects()
-    {
-        Debug.Log($"Number of elements in hear objects: {heardObjects.Count}");
-    }
 
     protected override void RenderGui(GLPainter painter)
     {
@@ -141,31 +135,4 @@ public class SensorAuditoryField : Sensor, IGeneric
         return data;
     }
     #endregion
-}
-
-public class AuditoryFieldConverter : JsonConverter
-{
-    public override bool CanConvert(Type objectType)
-    {
-        return objectType == typeof(SensorAuditoryField);
-    }
-
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-    {
-        var value = serializer.Deserialize<SensorAuditoryField>(reader);
-        return value;
-
-        //var value = serializer.Deserialize(reader);
-        //return JsonConvert.DeserializeObject<SensorAuditoryField>(value.ToString());
-    }
-
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-    {
-        var sensor = (SensorAuditoryField)value;
-
-        writer.WriteStartObject();
-        writer.WritePropertyName("HearingRadius");
-        writer.WriteValue(sensor.HearingRadius);
-        writer.WriteEndObject();
-    }
 }

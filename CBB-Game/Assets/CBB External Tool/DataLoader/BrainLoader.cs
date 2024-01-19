@@ -1,17 +1,12 @@
 using ArtificialIntelligence.Utility;
-using CBB.Comunication;
-using CBB.InternalTool;
 using Generic;
-using Newtonsoft.Json;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BrainLoader : MonoBehaviour
 {
-
+    #region Fields
     [Tooltip("If activated, it bypasses the brain system and uses the default configuration.")]
     public bool _default = false;
     [Tooltip("Generate a brain file if it doesn't exist.")]
@@ -24,19 +19,20 @@ public class BrainLoader : MonoBehaviour
     private Brain brain;
     private AgentBrain agentBrain;
     [SerializeField]
-    private bool showLogs = false;
+    private bool showLogs = false; 
+    #endregion
+
     private void Awake()
     {
         agentBrain = GetComponent<AgentBrain>();
-        BrainDataUpdater.OnBrainUpdate += ReadBrain;
+        DataLoader.BrainUpdated += ReadBrain;
     }
     private void Start()
     {
         // If default is activated, bypass the brain system
-        if (_default)
-            return;
-        Debug.Log("[BRAIN LOADER] Data Loader PATH: " + DataLoader.Path);
-        // Get the pair data by the agent ID
+        if (_default) return;
+        
+        // Check if the agent has a brain associated
         var pair = DataLoader.GetPairByAgentID(agent_ID);
         if (pair == null)
         {
@@ -46,11 +42,13 @@ public class BrainLoader : MonoBehaviour
                 //TODO: BRAIN_ID must be different from agent_ID
                 DataLoader.SaveBrain(this.agent_ID, b);
                 DataLoader.AddPair(new PairBrainData.PairBrain() { agent_ID = agent_ID, brain_ID = b.brain_ID });
+                InitAgent(b);
+                agentBrain.TryStartNewAction(null);
             }
             return;
         }
-        Debug.Log("[BRAIN LOADER] Pair is not null");
-        // Get the brain data by the brain ID
+
+        // Check if the brain associated with the agent exists
         var brain = DataLoader.GetBrainByID(pair.brain_ID);
         if (brain == null)
         {
@@ -60,15 +58,19 @@ public class BrainLoader : MonoBehaviour
                 var b = CreateBrainFile();
                 DataLoader.SaveBrain(this.agent_ID, b);
                 DataLoader.ReplacePair(new PairBrainData.PairBrain() { agent_ID = agent_ID, brain_ID = b.brain_ID });
+                InitAgent(b);
+                agentBrain.TryStartNewAction(null);
             }
             return;
         }
-        Debug.Log("[BRAIN LOADER] Brain is not null");
-
-        // Initialize the brain with the brain data
+        
+        // All checked, update the brain and start the agent behaviour
         InitAgent(brain);
-        // Kickstart the agent behaviour
         agentBrain.TryStartNewAction(null);
+    }
+    private void OnDestroy()
+    {
+        DataLoader.BrainUpdated -= ReadBrain;
     }
     /// <summary>
     /// Update the brain data with the current configuration
@@ -106,13 +108,6 @@ public class BrainLoader : MonoBehaviour
         DataLoader.SaveBrain(this.agent_ID, brain); // parche (!!!) quitar mas adelante
     }
 
-#if UNITY_EDITOR
-    [ContextMenu("Debug serialized brains")]
-    public void DebugBrains()
-    {
-        DataLoader.SendBrains(null);
-    }
-#endif
     /// <summary>
     /// create a brain file with the current configuration
     /// </summary>
@@ -149,11 +144,11 @@ public class BrainLoader : MonoBehaviour
     {
         // Get all actions in this game object and its children
         actionStates.Clear();
-        actionStates.AddRange(GetComponentsInChildren<ActionState>());
+        actionStates.AddRange(gameObject.GetComponentsOnHierarchy<ActionState>());
 
         // Get all sensors in this game object and its children
         sensors.Clear();
-        sensors.AddRange(GetComponentsInChildren<Sensor>());
+        sensors.AddRange(gameObject.GetComponentsOnHierarchy<Sensor>());
     }
 
     /// <summary>
@@ -167,6 +162,15 @@ public class BrainLoader : MonoBehaviour
 
         this.brain = brain;
         var szedAction = brain.serializedActions;
+
+        foreach (var action in actionStates)
+        {
+            if (!szedAction.Exists(x => x.ClassType == action.GetType()))
+            {
+                Destroy(action);
+                break;
+            }
+        }
         for (int i = 0; i < szedAction.Count; i++)
         {
             var act = actionStates.Find(x => x.GetType() == szedAction[i].ClassType);
@@ -178,62 +182,24 @@ public class BrainLoader : MonoBehaviour
         }
 
         var szedSensor = brain.serializedSensors;
+        foreach (var sensor in sensors)
+        {
+            if (!szedSensor.Exists(x => x.ClassType == sensor.GetType()))
+            {
+                Destroy(sensor);
+                break;
+            }
+        }
         for (int i = 0; i < szedSensor.Count; i++)
         {
             var sens = sensors.Find(x => x.GetType() == szedSensor[i].ClassType);
-            if (sens != null)
+            if (sens == null)
             {
-                sens.SetParams(szedSensor[i]);
-                sensors.Remove(sens);
+                sens = gameObject.AddComponent(szedSensor[i].ClassType) as Sensor;
             }
-            else
-            {
-                sens = this.gameObject.AddComponent(szedSensor[i].ClassType) as Sensor;
-                sens.SetParams(szedSensor[i]);
-            }
+            sens.SetParams(szedSensor[i]);
         }
+
+        agentBrain.ReloadBehaviours();
     }
 }
-
-#if UNITY_EDITOR
-[Editor(typeof(BrainLoader))]
-public class BrainLoaderEditor : UnityEditor.Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-
-        var BL = (BrainLoader)target;
-        if (BL.agent_ID == "")
-        {
-            GUI.Box(new Rect(0, 0, 100, 100), "Agrege una ID para el agente para que no tenga errores.");
-        }
-    }
-}
-#endif
-
-/// <summary>
-/// this class is used to store the generic brain data
-/// </summary>
-[System.Serializable]
-public class Brain : IDataItem
-{
-    public string brain_ID;
-    [SerializeField, SerializeReference]
-    public List<DataGeneric> serializedActions;
-    [SerializeField, SerializeReference]
-    public List<DataGeneric> serializedSensors;
-
-    public object GetInstance() => this;
-
-    public string GetItemName() => brain_ID;
-    
-}
-public interface IDataItem
-{
-    string GetItemName();
-    object GetInstance();
-}
-
-
-

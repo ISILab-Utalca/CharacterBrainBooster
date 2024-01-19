@@ -184,8 +184,6 @@ GameObject:
   - component: {fileID: 1796074598853799715}
   - component: {fileID: 2924268747235082367}
   - component: {fileID: 1800467391348942283}
-  - component: {fileID: 7920206726018689438}
-  - component: {fileID: 7087020024904256385}
   - component: {fileID: 6487134912478453476}
   m_Layer: 0
   m_Name: Villager
@@ -346,7 +344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pickMethod: 0
   topN: 1
-  _defaultAction: {fileID: 7920206726018689438}
+  _defaultAction: {fileID: 0}
   viewLogs: 0
   panelText: {fileID: 2124317112111874518, guid: 14563d2f0f3bdc04e9a98e7a18b3587e, type: 3}
   _isPaused: 0
@@ -391,47 +389,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectives: []
   heardObjects: []
---- !u!114 &7920206726018689438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4853649445717935730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9368631d97170af45998934964efadd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _actionPriority: 0.3
-  defaultActionCooldown: 0
-  viewLogs: 0
-  _considerations: []
-  <ActionCooldown>k__BackingField: 0
-  _minWaitTimer: 1
-  _maxWaitTimer: 5
-  _walkRadius: 10
-  _tickCheck: 0.2
---- !u!114 &7087020024904256385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4853649445717935730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec170c9e09a9835489a8304eda4fcb23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _actionPriority: 1
-  defaultActionCooldown: 0
-  viewLogs: 0
-  _considerations: []
-  <ActionCooldown>k__BackingField: 0
-  safeDistance: 6
-  runSpeed: 7
-  pauseAfterRunning: 1
 --- !u!114 &6487134912478453476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,9 +402,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _default: 0
-  createBrain: 0
+  createBrain: 1
   agent_ID: 
-  showLogs: 0
+  showLogs: 1
 --- !u!1 &6759708970964299137
 GameObject:
   m_ObjectHideFlags: 0

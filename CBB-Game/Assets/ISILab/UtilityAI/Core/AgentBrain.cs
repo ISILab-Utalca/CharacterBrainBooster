@@ -17,10 +17,6 @@ namespace ArtificialIntelligence.Utility
         private UtilityDecisionMaker.PickMethod _pickMethod;
         [SerializeField, Range(0, 5), Tooltip("If Pick method is top N, define how many options to consider")]
         private int topN = 1;
-        [Tooltip("The actions that this agent can perform")]
-        [SerializeField]
-        private List<IAction> _actions = new();
-
         [Tooltip("Default action that this agent will execute if all are scored to 0")]
         [SerializeField]
         private ActionState _defaultAction;
@@ -41,14 +37,14 @@ namespace ArtificialIntelligence.Utility
         public System.Action<Option, List<Option>> OnDecisionTaken { get; set; }
         public System.Action<SensorActivation> OnSensorUpdate { get; set; }
 
-        public List<ISensor> Sensors { get; private set; }
+        [field: SerializeField]
+        public List<ISensor> Sensors { get; private set; } = new();
+        [field: SerializeField]
+        public List<IAction> Actions { get; private set; } = new();
 
-        // Get references to the action runner and all sensors and actions on the agent
         private void Awake()
         {
             _actionRunner = gameObject.AddComponent<ActionRunner>();
-            Sensors = gameObject.GetComponentsInChildren<ISensor>().ToList();
-            _actions.AddRange(gameObject.GetComponents<IAction>());
 
             var panel = Instantiate(panelText, panelText.Canvas.GetComponent<RectTransform>());
             panel.Init(this.gameObject.transform);
@@ -58,17 +54,17 @@ namespace ArtificialIntelligence.Utility
         private void OnEnable()
         {
             SubscribeToSensors(Sensors);
-            _actionRunner.OnFinishedExecution += TryStarNewActionOnFinish;
+            _actionRunner.OnFinishedExecution += TryStartNewActionOnFinish;
             OnSetupDone?.Invoke();
         }
         // Unsubscribe from sensor updates and finished action events
         private void OnDisable()
         {
             UnsubscribeFromSensors(Sensors);
-            _actionRunner.OnFinishedExecution -= TryStarNewActionOnFinish;
+            _actionRunner.OnFinishedExecution -= TryStartNewActionOnFinish;
         }
 
-        public void TryStarNewActionOnFinish()
+        public void TryStartNewActionOnFinish()
         {
             TryStartNewAction(null);
         }
@@ -99,7 +95,7 @@ namespace ArtificialIntelligence.Utility
         }
         private Option GetNewOption()
         {
-            List<Option> scoredOptions = UtilityDecisionMaker.GetPossibleOptions(_actions);
+            List<Option> scoredOptions = UtilityDecisionMaker.GetPossibleOptions(Actions);
             OnCompletedScoring?.Invoke(scoredOptions);
             var bestOption = UtilityDecisionMaker.PickFromPossibleOptions(scoredOptions, _pickMethod, topN);
             scoredOptions.Remove(bestOption);
@@ -137,31 +133,25 @@ namespace ArtificialIntelligence.Utility
             _isPaused = false;
             TryStartNewAction(null);
         }
-    }
 
-
-    public class AgentBrainConverter : JsonConverter
-    {
-        public override bool CanConvert(Type objectType)
+        public void ReloadBehaviours()
         {
-            return objectType == typeof(AgentBrain);
+            ReloadActions();
+            ReloadSensors();
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        private void ReloadSensors()
         {
-            var value = serializer.Deserialize<AgentBrain>(reader);
-            return value;
+            UnsubscribeFromSensors(Sensors);
+            Sensors.Clear();
+            Sensors = gameObject.GetComponentsInChildren<ISensor>().ToList();
+            SubscribeToSensors(Sensors);
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        private void ReloadActions()
         {
-            var sensor = (AgentBrain)value;
-
-            writer.WriteStartObject();
-            writer.WritePropertyName("PickMethod");
-            writer.WriteValue(sensor.PickMethod);
-
-            writer.WriteEndObject();
+            Actions.Clear();
+            Actions = gameObject.GetComponentsInChildren<IAction>().ToList();
         }
     }
 }

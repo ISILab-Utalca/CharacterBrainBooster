@@ -6,7 +6,6 @@ using CBB.UI;
 using ArtificialIntelligence.Utility;
 using System.Linq;
 using Generic;
-using System.Collections;
 using System.Collections.Generic;
 namespace CBB.InternalTool
 {
@@ -20,7 +19,7 @@ namespace CBB.InternalTool
 
 
         [MenuItem("CBB/Brain Creator")]
-        public static void ShowExample()
+        public static void ShowTool()
         {
             BrainCreator wnd = GetWindow<BrainCreator>();
             wnd.titleContent = new GUIContent("Brain creator");
@@ -51,24 +50,22 @@ namespace CBB.InternalTool
             });
 
             // Load brains and display them in the editor
-            LoadBrainsFromEditor(brainEditor);
+            LoadBrainsInto(brainEditor);
             LoadEvaluationMethods(brainEditor);
             LoadFromGeneric<ActionState>(brainEditor.Actions);
             LoadFromGeneric<Sensor>(brainEditor.Sensors);
+            
             brainEditor.SaveBrainButton.clicked += () =>
             {
-                var b = brainEditor.LastSelectedBrain;
-                if (b != null)
+                foreach (var b in brainEditor.Brains)
                 {
-                    DataLoader.SaveBrain(b.brain_ID, b);
+                    DataLoader.SaveBrain(b.brain_ID, b, false);
                 }
-                else
-                {
-                    Debug.LogWarning("[BRAIN CREATOR] Brain is null");
-                }
+                LoadBrainsInto(brainEditor);
+                brainEditor.ResetBrainTree();
             };
         }
-        
+
         public void LoadFromGeneric<T>(List<DataGeneric> container) where T : class
         {
             container.Clear();
@@ -94,7 +91,7 @@ namespace CBB.InternalTool
             var methodNames = cm.Select(m => m.Name).ToList();
             brainEditor.EvaluationMethods = methodNames;
         }
-        private void LoadBrainsFromEditor(BrainEditor be) => be.SetBrains(DataLoader.GetAllBrains());
+        private void LoadBrainsInto(BrainEditor be) => be.SetBrains(DataLoader.GetAllBrains());
         private void CreateBrainFile()
         {
             if (m_BrainFileField.value == null)

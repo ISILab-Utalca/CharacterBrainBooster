@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Utility;
 using CBB.Comunication;
 using System.Net.Sockets;
 using Newtonsoft.Json;
@@ -15,6 +14,7 @@ public static class DataLoader
     private static List<Brain> brains = new();
     private static PairBrainData table;
 
+    public static System.Action<string> BrainUpdated { get;set; }
     public static PairBrainData Table
     {
         get
@@ -60,7 +60,7 @@ public static class DataLoader
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Init()
     {
-        LoadBrain(Path + "/Brains");
+        LoadBrains(Path + "/Brains");
 
         LoadTable(Path);
 
@@ -137,30 +137,23 @@ public static class DataLoader
 
     #region BRAIN-METHODS
     /// <summary>
-    /// get loaded brain by name
+    /// Gets a brain by id. This method does not load the brain from disk,
+    /// instead it returns the brain from the <b>in-memory</b> list of brains.
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    public static Brain GetBrainByID(string name)
+    /// <param name="id">The brain id</param>
+    /// <returns>The <b>in-memory</b> brain with the corresponding ID</returns>
+    public static Brain GetBrainByID(string id)
     {
-        return brains.First(m => name.Equals(m.brain_ID));
+        return brains.First(m => id.Equals(m.brain_ID));
     }
-
-    /// <summary>
-    /// Get loaded brain by index
-    /// </summary>
-    /// <param name="i"></param>
-    /// <returns></returns>
-    public static Brain GetBrain(int i)
-    {
-        return brains[i];
-    }
+    
     public static List<Brain> GetAllBrains()
     {
-        LoadBrain(Path + "/Brains");
+        LoadBrains(Path + "/Brains");
         return brains;
     }
-    private static void LoadBrain(string root)
+    
+    public static void LoadBrains(string root)
     {
         System.IO.DirectoryInfo dir = new(root);
         Debug.Log("Loading brains from: " + dir.FullName);
@@ -175,19 +168,25 @@ public static class DataLoader
         {
             if (files[i].FullName.EndsWith(".brain"))
             {
-                var brain = JSONDataManager.LoadData<Brain>(files[i].DirectoryName, files[i].Name);
+                var brain = Utility.JSONDataManager.LoadData<Brain>(files[i].DirectoryName, files[i].Name);
                 brains.Add(brain);
+                BrainUpdated?.Invoke(brain.brain_ID);
             }
         }
         Debug.Log("Loaded: " + brains.Count + " brains.");
     }
-
-    public static void SaveBrain(string AgentID, Brain brain)
+    /// <summary>
+    /// Save the in-memory brain data to disk.
+    /// Optionally reloads the brains from disk.
+    /// </summary>
+    /// <param name="AgentID"></param>
+    /// <param name="brain"></param>
+    /// <param name="reloadBrains">If set, automatically load brains into memory</param>
+    public static void SaveBrain(string AgentID, Brain brain, bool reloadBrains = true)
     {
-        JSONDataManager.SaveData(Path + "/Brains", brain.brain_ID, "brain", brain);
+        Utility.JSONDataManager.SaveData(Path + "/Brains", brain.brain_ID, "brain", brain);
         Debug.Log($"Brain {brain.brain_ID} saved to: {Path}");
-        //TODO: possible point of failure
-        LoadBrain(Path + "/Brains");
+        if(reloadBrains) LoadBrains(Path + "/Brains");
     }
 #if UNITY_EDITOR
     // Save all brains on disk

@@ -23,7 +23,7 @@
             {
               "$id": "6",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 4.09,
+              "value": 3.0,
               "name": "MaxWaitTimer"
             },
             {
@@ -35,7 +35,7 @@
             {
               "$id": "8",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 0.2,
+              "value": 0.1,
               "name": "TickCheck"
             },
             {
@@ -49,7 +49,7 @@
                 "curve": {
                   "$id": "11",
                   "$type": "Constant, Assembly-CSharp",
-                  "value": 0.02,
+                  "value": 0.1,
                   "Inverted": false
                 },
                 "normalizeInput": false,
@@ -63,16 +63,16 @@
               "configuration": {
                 "$id": "13",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "jdjasdasd",
-                "evaluationMethod": "DistanceToTarget",
+                "considerationName": "Threat is near",
+                "evaluationMethod": "ThreatHeard",
                 "curve": {
                   "$id": "14",
-                  "$type": "Linear, Assembly-CSharp",
-                  "value": 1.0,
-                  "m": 1.0,
-                  "dx": 0.0,
-                  "dy": 0.0,
-                  "Inverted": false
+                  "$type": "Staggered, Assembly-CSharp",
+                  "value": 0.0,
+                  "e": 0.5,
+                  "max": 0.95,
+                  "min": 0.05,
+                  "Inverted": true
                 },
                 "normalizeInput": false,
                 "minValue": 0.0,
@@ -115,7 +115,7 @@
               "configuration": {
                 "$id": "21",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "Ahora si ",
+                "considerationName": "An enemy is near",
                 "evaluationMethod": "DistanceToTarget",
                 "curve": {
                   "$id": "22",
@@ -126,11 +126,11 @@
                   "dy": 0.0,
                   "sx": 1.0,
                   "sy": 1.0,
-                  "Inverted": false
+                  "Inverted": true
                 },
-                "normalizeInput": false,
+                "normalizeInput": true,
                 "minValue": 0.0,
-                "maxValue": 0.0
+                "maxValue": 5.0
               }
             }
           ]
@@ -154,7 +154,7 @@
             {
               "$id": "26",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 2.56,
+              "value": 4.44,
               "name": "HearingRadius"
             }
           ]

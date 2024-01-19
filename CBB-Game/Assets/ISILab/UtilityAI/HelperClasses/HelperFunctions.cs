@@ -150,7 +150,11 @@ namespace ArtificialIntelligence.Utility
         {
             GetInheritedClasses<ActionState>(true);
         }
-
+        [UnityEditor.MenuItem("Tools/Debug data loader path")]
+        public static void GetAllSensors()
+        {
+            Debug.Log("Data Loader PATH: " + DataLoader.Path);
+        }
         [UnityEditor.MenuItem("Tools/Log consideration methods")]
         public static void LogAllConsiderationMethods()
         {
@@ -199,11 +203,15 @@ namespace ArtificialIntelligence.Utility
             return actionClasses;
 
         }
-        // Remove the namespace from the item name
-        public static string RemoveNamespace(string itemName)
+        /// <summary>
+        /// Remove the namespace from the class name and split it by capital letters
+        /// </summary>
+        /// <param name="className"></param>
+        /// <returns></returns>
+        public static string RemoveNamespaceSplit(string className)
         {
             string pointPattern = @"[^.]*$";
-            Match match = Regex.Match(itemName, pointPattern);
+            Match match = Regex.Match(className, pointPattern);
             if (match.Success)
             {
                 // Split by capital letters. Ej: "MyBrain" -> "My", "Brain"
@@ -212,7 +220,7 @@ namespace ArtificialIntelligence.Utility
                 // Join the words in the array with a space
                 return string.Join(" ", result);
             }
-            return itemName + "{An error ocurred}";
+            return className + "{An error ocurred}";
         }
     }
 }
