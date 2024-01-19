@@ -20,7 +20,6 @@ namespace CBB.InternalTool
             TypeNameHandling = TypeNameHandling.Auto,
             Formatting = Formatting.Indented
         };
-        public static System.Action<string> OnBrainUpdate { get; set; }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Start()
         {
@@ -35,8 +34,6 @@ namespace CBB.InternalTool
                 var brain = JsonConvert.DeserializeObject<Brain>(msg, settings);
                 // Update the brain file
                 DataLoader.SaveBrain("",brain);
-                // Observers know which brain has been updated
-                OnBrainUpdate?.Invoke(brain.brain_ID);
             }
             catch (Exception e)
             {
