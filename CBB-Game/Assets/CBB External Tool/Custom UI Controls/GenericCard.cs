@@ -22,7 +22,7 @@ namespace CBB.ExternalTool
             Title = this.Q<Label>("title");
             SubTitle = this.Q<Label>("subtitle");
             RemoveButton = this.Q<Button>("remove-button");
-            RemoveButton.clicked += () => DeleteElement?.Invoke(Data);
+            RemoveButton.clicked += () => { DeleteElement?.Invoke(Data); RemoveFromHierarchy(); };
         }
         public GenericCard(object data) : this()
         {
