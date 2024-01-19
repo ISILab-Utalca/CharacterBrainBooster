@@ -13,7 +13,7 @@ namespace Utility
             var jsonString = SerializeData(data);
 
             // write json in a file
-            using StreamWriter writer = new StreamWriter(path);
+            using StreamWriter writer = new(path);
             writer.Write(jsonString);
         }
 
