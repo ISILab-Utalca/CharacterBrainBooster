@@ -22,7 +22,7 @@ public class FloatingPanelListItem : VisualElement
     }
     public void SetUpItem(DataGeneric data)
     {
-        var itemName = HelperFunctions.RemoveNamespace(data.ClassType.Name);
+        var itemName = HelperFunctions.RemoveNamespaceSplit(data.ClassType.Name);
 
         itemNameLabel.text = itemName;
         switch (data.GetDataType())
