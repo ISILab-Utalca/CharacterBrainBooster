@@ -1,7 +1,5 @@
 using ArtificialIntelligence.Utility.Actions;
 using CBB.Lib;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -143,14 +141,12 @@ namespace ArtificialIntelligence.Utility
         private void ReloadSensors()
         {
             UnsubscribeFromSensors(Sensors);
-            Sensors.Clear();
             Sensors = gameObject.GetComponentsInChildren<ISensor>().ToList();
             SubscribeToSensors(Sensors);
         }
 
         private void ReloadActions()
         {
-            Actions.Clear();
             Actions = gameObject.GetComponentsInChildren<IAction>().ToList();
         }
     }
