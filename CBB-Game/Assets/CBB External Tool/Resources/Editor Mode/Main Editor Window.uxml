@@ -24,7 +24,7 @@
                     <CameraDataReceiver style="flex-grow: 1;" />
                 </ui:VisualElement>
                 <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-grow: 1; height: 382px;">
-                    <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="details-panel-title" class="top-window-title" style="background-color: rgb(10, 10, 10); padding-bottom: 9px; padding-left: 12px; margin-left: 1px; margin-right: 1px; margin-bottom: 1px; padding-top: 8px; margin-top: 2px;" />
+                    <ui:Label tabindex="-1" text="Details panel" display-tooltip-when-elided="true" name="details-panel-title" class="top-window-title" style="background-color: rgb(10, 10, 10); padding-bottom: 9px; padding-left: 12px; margin-left: 1px; margin-right: 1px; margin-bottom: 1px; padding-top: 8px; margin-top: 2px;" />
                     <ui:ListView focusable="true" virtualization-method="DynamicHeight" name="decision-detail-list" class="my-scroll-vertical decision-detail" style="flex-grow: 1;" />
                 </ui:VisualElement>
             </ui:VisualElement>
