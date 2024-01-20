@@ -64,7 +64,6 @@ public static class DataLoader
 
         LoadTable(Path);
 
-        Server.OnNewClientConnected += SendBrains;
     }
 
     /// <summary>
