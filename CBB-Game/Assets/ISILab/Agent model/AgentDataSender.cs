@@ -32,14 +32,14 @@ namespace CBB.Api
     /// <summary>
     /// Allows an agent to send its data towards the external CBB server.
     /// </summary>
-    [RequireComponent(typeof(IAgent))]
+    [RequireComponent(typeof(IAgent),typeof(AgentBrain))]
     public class AgentDataSender : MonoBehaviour
     {
         [SerializeField]
         private bool showLogs = false;
 
         private IAgent agentComp;
-        private IAgentBrain agentBrain;
+        private AgentBrain agentBrain;
         private int agentID;
         private int decisionsSent = 0;
         private int dataSent = 0;
@@ -52,16 +52,15 @@ namespace CBB.Api
         {
             agentComp = GetComponent<IAgent>();
             agentID = gameObject.GetInstanceID();
-            agentBrain = GetComponent<IAgentBrain>();
+            agentBrain = GetComponent<AgentBrain>();
 
             agentBrain.OnDecisionTaken += SendDecision;
-            agentBrain.OnSetupDone += SubscribeToSensors;
+            agentBrain.OnSensorUpdate += SendSensorUpdate;
 
         }
         private void OnDestroy()
         {
             agentBrain.OnDecisionTaken -= SendDecision;
-            agentBrain.OnSetupDone -= SubscribeToSensors;
             SendDataToAllClients(AgentWrapper.AgentStateType.DESTROYED);
         }
 
@@ -114,6 +113,7 @@ namespace CBB.Api
         /// </summary>
         private void SubscribeToSensors()
         {
+            
             foreach (ISensor sensor in agentBrain.Sensors)
             {
                 sensor.OnSensorUpdate += (s) =>
