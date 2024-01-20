@@ -62,12 +62,12 @@ namespace CBB.ExternalTool
 
             closeButton.clicked += BackToMainMenu;
 
-            BrainDataManager.ReceivedBrains += brainEditor.SetBrains;
+            GameDataHandler.ReceivedBrains += brainEditor.SetBrains;
+            GameDataHandler.ReceivedActions += brainEditor.SetActions;
+            GameDataHandler.ReceivedSensors += brainEditor.SetSensors;
+            GameDataHandler.ReceivedEvaluationMethods += brainEditor.SetEvaluationMethods;
 
             brainEditor.SaveBrainButton.clicked += SendBrain;
-
-            //TODO: set this through message and not directly from the class
-            brainEditor.EvaluationMethods = ConsiderationMethods.GetAllMethodNames();
         }
         private void BackToMainMenu()
         {
@@ -79,7 +79,6 @@ namespace CBB.ExternalTool
             foreach (var b in brainEditor.Brains)
             {
                 string json = JsonConvert.SerializeObject(b, settings);
-                //Send to server
                 monitor.SendData(json);
             }
         }
