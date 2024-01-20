@@ -66,7 +66,7 @@ namespace CBB.InternalTool
             };
         }
 
-        public void LoadFromGeneric<T>(List<DataGeneric> container) where T : class
+        public static void LoadFromGeneric<T>(List<DataGeneric> container) where T : class
         {
             container.Clear();
             // Find all derived from T
