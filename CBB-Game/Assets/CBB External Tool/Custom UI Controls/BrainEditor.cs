@@ -153,8 +153,23 @@ namespace CBB.UI
             var uiElement = element as Label;
             var itemName = itemData.GetItemName();
             uiElement.text = HelperFunctions.RemoveNamespaceSplit(itemName);
+            uiElement.style.color = Color.white;
         }
 
+        private void OnElementSelected(IEnumerable<int> enumerable)
+        {
+            var index = enumerable.First();
+            var item = BrainTree.selectedItem;
+
+            //Cache the last selected brain for editing purposes.
+            LastSelectedBrain = item is Brain b ? b : GetParentBrainFromIndex(index);
+
+            // Reset the selection on the UI, so the user doesn't get confused
+            BrainTree.SetSelectionByIdWithoutNotify(
+                new List<int>() { BrainTree.GetIdForIndex(index)
+                });
+            DisplayItem(index, item);
+        }
         private void DisplayConsiderationEditor(ConsiderationConfiguration config)
         {
             DetailsPanel.Clear();
@@ -298,6 +313,30 @@ namespace CBB.UI
             DetailsPanel.Clear();
             AddButtonContainer.SetDisplay(false);
         }
+        private void DisplayItem(int index, object item)
+        {
+            switch (item)
+            {
+                case Brain brain:
+                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected brain: {brain}");
+                    DisplayBrainDetails(brain);
+                    break;
+                case ConsiderationConfiguration config:
+                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected config: {config}");
+                    DisplayConsiderationEditor(config);
+                    break;
+                case ItemWrapper wrapper:
+                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected item wrapper: {wrapper}");
+                    DisplayItemWrapperDetails(wrapper, index);
+                    break;
+                case DataGeneric data:
+                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected data generic: {data}");
+                    DisplayDataGenericDetails(data);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         private void AddSensor()
         {
@@ -357,26 +396,25 @@ namespace CBB.UI
             ResetBrainTree();
         }
 
-        public void ResetBrainTree()
+
+        public void SetBrains(List<Brain> brains)
         {
-            var lastSelectedObject = BrainTree.selectedItem;
-            var lastSelectedIndex = BrainTree.selectedIndex;
-
-            BrainTree.Clear();
-            BrainTree.SetRootItems(TreeRoots);
-            BrainTree.Rebuild();
-
-            DisplayItem(lastSelectedIndex, lastSelectedObject);
+            this.Brains = brains;
+            // Reset the tree view automatically
+            ResetBrainTree();
         }
-
-        private void CloseFloatingPanels()
+        public void SetActions(List<DataGeneric> actions)
         {
-            var floatingPanels = this.Q<FloatingPanel>();
-            floatingPanels?.RemoveFromHierarchy();
+            this.Actions = actions;
         }
-        //TODO: Refactor this piece of code using Manipulators, in order to
-        //avoid coding very similar (almost duplicated) methods like
-        //AddAction and AddSensor, which only differs by its target
+        public void SetSensors(List<DataGeneric> sensors)
+        {
+            this.Sensors = sensors;
+        }
+        public void SetEvaluationMethods(List<string> methods)
+        {
+            this.EvaluationMethods = methods;
+        }
         private void SetUpButton(Button button, Action newCallback)
         {
             try
@@ -391,12 +429,26 @@ namespace CBB.UI
                 Debug.LogError(e);
             }
         }
-        public void SetBrains(List<Brain> brains)
+
+        public void ResetBrainTree()
         {
-            this.Brains = brains;
-            // Reset the tree view automatically
-            ResetBrainTree();
+            var lastSelectedObject = BrainTree.selectedItem;
+            var lastSelectedIndex = BrainTree.selectedIndex;
+
+            BrainTree.Clear();
+            BrainTree.SetRootItems(TreeRoots);
+            BrainTree.Rebuild();
+
+            DisplayItem(lastSelectedIndex, lastSelectedObject);
         }
+        private void CloseFloatingPanels()
+        {
+            var floatingPanels = this.Q<FloatingPanel>();
+            floatingPanels?.RemoveFromHierarchy();
+        }
+        //TODO: Refactor this piece of code using Manipulators, in order to
+        //avoid coding very similar (almost duplicated) methods like
+        //AddAction and AddSensor, which only differs by its target
         private Brain GetParentBrainFromIndex(int itemIndex)
         {
             var parentId = BrainTree.GetParentIdForIndex(itemIndex);
@@ -413,46 +465,6 @@ namespace CBB.UI
             BrainTree.SetSelectionByIdWithoutNotify(new List<int>() { parentId });
             return GetParentBrainFromIndex(BrainTree.selectedIndex);
         }
-        private void OnElementSelected(IEnumerable<int> enumerable)
-        {
-            var index = enumerable.First();
-            var item = BrainTree.selectedItem;
-
-            //Cache the last selected brain for editing purposes.
-            LastSelectedBrain = item is Brain b ? b : GetParentBrainFromIndex(index);
-
-            // Reset the selection on the UI, so the user doesn't get confused
-            BrainTree.SetSelectionByIdWithoutNotify(
-                new List<int>() { BrainTree.GetIdForIndex(index)
-                });
-            DisplayItem(index, item);
-        }
-
-        private void DisplayItem(int index, object item)
-        {
-            switch (item)
-            {
-                case Brain brain:
-                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected brain: {brain}");
-                    DisplayBrainDetails(brain);
-                    break;
-                case ConsiderationConfiguration config:
-                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected config: {config}");
-                    DisplayConsiderationEditor(config);
-                    break;
-                case ItemWrapper wrapper:
-                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected item wrapper: {wrapper}");
-                    DisplayItemWrapperDetails(wrapper, index);
-                    break;
-                case DataGeneric data:
-                    if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected data generic: {data}");
-                    DisplayDataGenericDetails(data);
-                    break;
-                default:
-                    break;
-            }
-        }
-
         public object GetInstance() => this;
     }
 }
