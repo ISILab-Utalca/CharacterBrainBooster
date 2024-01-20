@@ -1,3 +1,4 @@
+using Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -221,6 +222,25 @@ namespace ArtificialIntelligence.Utility
                 return string.Join(" ", result);
             }
             return className + "{An error ocurred}";
+        }
+
+        public static void LoadFromGeneric<T>(List<DataGeneric> container) where T : class
+        {
+            container.Clear();
+            // Find all derived from T
+            var dataGenericImplementators = GetInheritedClasses<T>();
+            var dummygameObject = new GameObject();
+            // Get all the data generic from the actions
+            foreach (var item in dataGenericImplementators)
+            {
+                // In this case, al items are monobehaviours
+                var instance = dummygameObject.AddComponent(item);
+                // Get the data generic from the action
+                var data = ((IGeneric)instance).GetGeneric();
+                // Add the data generic to the brain editor
+                container.Add(data);
+            }
+            UnityEngine.Object.DestroyImmediate(dummygameObject);
         }
     }
 }
