@@ -31,7 +31,6 @@ namespace ArtificialIntelligence.Utility
         public int TopN { get => topN; set => topN = value; }
 
         public System.Action<List<Option>> OnCompletedScoring { get; set; }
-        public System.Action OnSetupDone { get; set; }
         public System.Action<Option, List<Option>> OnDecisionTaken { get; set; }
         public System.Action<SensorActivation> OnSensorUpdate { get; set; }
 
@@ -43,18 +42,13 @@ namespace ArtificialIntelligence.Utility
         private void Awake()
         {
             _actionRunner = gameObject.AddComponent<ActionRunner>();
+            _actionRunner.OnFinishedExecution += TryStartNewActionOnFinish;
 
             var panel = Instantiate(panelText, panelText.Canvas.GetComponent<RectTransform>());
             panel.Init(this.gameObject.transform);
 
         }
-        // Subscribe to sensor updates and finished action events
-        private void OnEnable()
-        {
-            SubscribeToSensors(Sensors);
-            _actionRunner.OnFinishedExecution += TryStartNewActionOnFinish;
-            OnSetupDone?.Invoke();
-        }
+        
         // Unsubscribe from sensor updates and finished action events
         private void OnDisable()
         {
