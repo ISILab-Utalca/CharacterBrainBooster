@@ -10,7 +10,7 @@
             <ui:Label tabindex="-1" text="Actions" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); -unity-text-align: upper-center; -unity-font-style: bold;" />
         </ui:VisualElement>
         <ui:VisualElement class="visual-element-stroke" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); padding-left: 4px; padding-right: 4px; padding-top: 2px;">
-            <ui:ListView focusable="true" name="ListView" style="flex-grow: 1;" />
+            <ui:ListView focusable="true" name="ListView" virtualization-method="DynamicHeight" style="flex-grow: 1;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
