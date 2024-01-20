@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class UILooksCamera : MonoBehaviour
 {
-    new Camera camera;
+    Camera cam;
     private void Start()
     {
-        camera = Camera.main;
+        cam = Camera.main;
     }
     void Update()
     {
         
-        transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
+        transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
     }
 }

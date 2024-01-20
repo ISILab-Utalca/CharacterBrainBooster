@@ -17,7 +17,7 @@
             {
               "$id": "5",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 2.0,
+              "value": 3.0,
               "name": "MinWaitTimer"
             },
             {
