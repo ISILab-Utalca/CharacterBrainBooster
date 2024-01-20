@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CBB.Lib;
+using System.Collections.Generic;
 
 namespace ArtificialIntelligence.Utility
 {
@@ -6,6 +7,6 @@ namespace ArtificialIntelligence.Utility
     {
         List<ISensor> Sensors { get; }
         System.Action<Option, List<Option>> OnDecisionTaken { get; set; }
-        System.Action OnSetupDone { get; set; }
+        System.Action<SensorActivation> OnSensorUpdate { get; set; }
     }
 }
