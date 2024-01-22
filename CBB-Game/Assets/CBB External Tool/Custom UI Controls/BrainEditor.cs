@@ -27,7 +27,7 @@ namespace CBB.UI
         #endregion
 
         #region Properties
-        private Brain LastSelectedBrain { get; set; }
+        private Brain LastSelectedBrain { get; set; } = new Brain();
         public IList<TreeViewItemData<IDataItem>> TreeRoots
         {
             get
@@ -271,7 +271,7 @@ namespace CBB.UI
                 // Add logic to delete the element from the brain
                 gc.DeleteElement += (obj) =>
                 {
-                    if(childrenData.Count() <= 1)
+                    if (childrenData.Count() <= 1)
                     {
                         // TODO: Show a message to the user using a custom dialog
                         Debug.LogWarning($"This brain {LastSelectedBrain.brain_ID} won't work correctly without {subTitle}");
@@ -345,7 +345,7 @@ namespace CBB.UI
             floatingPanel.ElementClicked += (data) =>
             {
                 LastSelectedBrain.serializedSensors.Add(data);
-                ResetBrainTree();
+                ResetTreeAndDisplayItem(data);
             };
             // Adjust the panel position to be right below the add button
             floatingPanel.SetUpPosition(AddButton.worldBound);
@@ -361,7 +361,7 @@ namespace CBB.UI
             floatingPanel.ElementClicked += (data) =>
             {
                 LastSelectedBrain.serializedActions.Add(data);
-                ResetBrainTree();
+                ResetTreeAndDisplayItem(data);
             };
             // Adjust the panel position to be right below the add button
             floatingPanel.SetUpPosition(AddButton.worldBound);
@@ -393,9 +393,8 @@ namespace CBB.UI
             };
             lastSelectedAction.Values.Add(newConsideration);
 
-            ResetBrainTree();
+            ResetTreeAndDisplayItem(newConsideration.configuration);
         }
-
 
         public void SetBrains(List<Brain> brains)
         {
@@ -430,16 +429,21 @@ namespace CBB.UI
             }
         }
 
-        public void ResetBrainTree()
+        private void ResetTreeAndDisplayItem(object item)
         {
             var lastSelectedObject = BrainTree.selectedItem;
             var lastSelectedIndex = BrainTree.selectedIndex;
 
+            ResetBrainTree();
+
+            if (item != null) DisplayItem(lastSelectedIndex, item);
+            else DisplayItem(lastSelectedIndex, lastSelectedObject);
+        }
+        public void ResetBrainTree()
+        {
             BrainTree.Clear();
             BrainTree.SetRootItems(TreeRoots);
             BrainTree.Rebuild();
-
-            DisplayItem(lastSelectedIndex, lastSelectedObject);
         }
         private void CloseFloatingPanels()
         {
