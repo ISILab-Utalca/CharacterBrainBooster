@@ -12,10 +12,10 @@ public class InternalGameDataSender
     {
         ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
         // This is an important property in order to avoid type errors when deserializing
-        TypeNameHandling = TypeNameHandling.Auto,
+        TypeNameHandling = TypeNameHandling.All,
         NullValueHandling = NullValueHandling.Ignore,
         MissingMemberHandling = MissingMemberHandling.Ignore,
-        Formatting = Formatting.Indented
+        Formatting = Formatting.None
     };
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
