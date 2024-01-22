@@ -33,7 +33,7 @@ namespace CBB.InternalTool
             {
                 var brain = JsonConvert.DeserializeObject<Brain>(msg, settings);
                 // Update the brain file
-                DataLoader.SaveBrain("",brain);
+                DataLoader.SaveBrain("",brain,true);
             }
             catch (Exception e)
             {
