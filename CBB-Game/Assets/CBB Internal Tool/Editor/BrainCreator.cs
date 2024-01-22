@@ -7,7 +7,7 @@ using ArtificialIntelligence.Utility;
 using System.Linq;
 using Generic;
 using System.Collections.Generic;
-using CBB.InternalTool.DebugTools;
+
 namespace CBB.InternalTool
 {
     public class BrainCreator : EditorWindow
