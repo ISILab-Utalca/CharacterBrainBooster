@@ -1,6 +1,5 @@
 using Generic;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -19,16 +18,15 @@ namespace CBB.ExternalTool
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             // This is an important property in order to avoid type errors when deserializing
-            TypeNameHandling = TypeNameHandling.Auto,
+            TypeNameHandling = TypeNameHandling.All,
             NullValueHandling = NullValueHandling.Ignore,
             MissingMemberHandling = MissingMemberHandling.Ignore,
-            Formatting = Formatting.Indented
         };
         
         public static System.Action<List<Brain>> ReceivedBrains { get; set; }
         public static System.Action<List<DataGeneric>> ReceivedActions { get; set; }
         public static System.Action<List<DataGeneric>> ReceivedSensors { get; set; }
-        public static Action<List<string>> ReceivedEvaluationMethods { get; internal set; }
+        public static System.Action<List<string>> ReceivedEvaluationMethods { get; internal set; }
 
         void Start()
         {
