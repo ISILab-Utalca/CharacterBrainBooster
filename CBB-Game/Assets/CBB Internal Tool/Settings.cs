@@ -1,13 +1,7 @@
-namespace CBB.InternalTool
+namespace CBB.InternalTool.DebugTools
 {
     public class Settings
     {
-        private static bool showGUI = false;
-
-        public static bool ShowGUI
-        {
-            get => showGUI;
-            set => showGUI = value;
-        }
+        public static bool ShowGUI { get; set; } = false;
     }
 }

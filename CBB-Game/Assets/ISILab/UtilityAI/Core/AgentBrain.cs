@@ -23,8 +23,6 @@ namespace ArtificialIntelligence.Utility
         private bool viewLogs = false;
         private ActionRunner _actionRunner;
 
-        public BubbleText panelText;
-
         [SerializeField]
         private bool _isPaused = false;
         public UtilityDecisionMaker.PickMethod PickMethod { get => _pickMethod; set => _pickMethod = value; }
@@ -43,9 +41,6 @@ namespace ArtificialIntelligence.Utility
         {
             _actionRunner = gameObject.AddComponent<ActionRunner>();
             _actionRunner.OnFinishedExecution += TryStartNewActionOnFinish;
-
-            var panel = Instantiate(panelText, panelText.Canvas.GetComponent<RectTransform>());
-            panel.Init(this.gameObject.transform);
 
         }
         

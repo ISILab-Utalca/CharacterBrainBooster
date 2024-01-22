@@ -1,4 +1,3 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Toggle label="Show Sensor GUI" value="false" name="ShowSensorGUI" style="align-items: stretch; justify-content: flex-start; flex-shrink: 1; flex-grow: 0;" />
-    <ui:Button text="Disconnect" display-tooltip-when-elided="true" name="DisconnectButton" />
+    <ui:Toggle label="Show Sensor GUI" value="false" name="ShowSensorGUI" />
 </ui:UXML>

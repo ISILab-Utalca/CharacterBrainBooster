@@ -7,6 +7,7 @@ using ArtificialIntelligence.Utility;
 using System.Linq;
 using Generic;
 using System.Collections.Generic;
+using CBB.InternalTool.DebugTools;
 namespace CBB.InternalTool
 {
     public class BrainCreator : EditorWindow
@@ -16,7 +17,6 @@ namespace CBB.InternalTool
         private ObjectField m_BrainFileField = default;
         private Toggle m_CreatePairToggle = default;
         private Toggle showLogsToggle;
-
 
         [MenuItem("CBB/Brain Creator")]
         public static void ShowTool()
@@ -38,8 +38,6 @@ namespace CBB.InternalTool
             showLogsToggle = root.Q<Toggle>("show-logs-toggle");
             m_BrainFileField = root.Q<ObjectField>("brain-object");
             m_CreatePairToggle = root.Q<Toggle>("create-pair-toggle");
-            var createButton = root.Q<Button>("create-brain-button");
-            createButton.clickable.clicked += CreateBrainFile;
 
             BrainEditor brainEditor = root.Q<BrainEditor>();
             root.Add(brainEditor);

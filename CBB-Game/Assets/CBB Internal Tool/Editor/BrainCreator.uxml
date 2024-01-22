@@ -3,12 +3,6 @@
     <Style src="project://database/Assets/CBB%20External%20Tool/Styles/ScrollStyle.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ScrollStyle" />
     <Style src="project://database/Assets/CBB%20External%20Tool/Styles/TextField.uss?fileID=7433441132597879392&amp;guid=2fd88df24d06fce4cb235ab79afe6089&amp;type=3#TextField" />
     <ui:Toggle label="Show logs" name="show-logs-toggle" style="display: flex; visibility: visible;" />
-    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); display: none;">
-        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-            <uie:ObjectField label="Object Field" name="brain-object" />
-        </ui:VisualElement>
-    </ui:VisualElement>
-    <ui:Toggle label="Create pair if not found in Table" name="create-pair-toggle" style="display: none;" />
-    <ui:Button text="Create" display-tooltip-when-elided="true" name="create-brain-button" style="display: none;" />
+    <ui:Toggle label="Show sensors" name="show-sensors-toggle" value="true" />
     <CBB.UI.BrainEditor style="flex-grow: 1;" />
 </ui:UXML>

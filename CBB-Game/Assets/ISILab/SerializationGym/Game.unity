@@ -661,7 +661,6 @@ Transform:
   - {fileID: 1478792137}
   - {fileID: 818698327}
   - {fileID: 874170260}
-  - {fileID: 563929505}
   - {fileID: 80555024}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1518,55 +1517,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
---- !u!1 &563929503
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 563929505}
-  - component: {fileID: 563929504}
-  m_Layer: 0
-  m_Name: Serialization Gym
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &563929504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 563929503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dae0a16245bda30469d51602b8a08604, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pathToJson: 
-  jsonFileName: 
-  testNum: 0
-  brain:
-    brainName: 
---- !u!4 &563929505
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 563929503}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.0722904, y: -3.0365257, z: 5.5354586}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 255309945}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &596904296
 GameObject:
   m_ObjectHideFlags: 0
@@ -2307,7 +2257,6 @@ MonoBehaviour:
   topN: 1
   _defaultAction: {fileID: 874170269}
   viewLogs: 0
-  panelText: {fileID: 0}
   _isPaused: 0
 --- !u!114 &874170266
 MonoBehaviour:
@@ -4318,10 +4267,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1377744222494455768, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
-      propertyPath: m_Lightmapping
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 1773057720227866707, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -4416,7 +4361,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2177107222128649367, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6793508083806505940, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}

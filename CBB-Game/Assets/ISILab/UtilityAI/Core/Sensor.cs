@@ -1,4 +1,5 @@
 using CBB.InternalTool;
+using CBB.InternalTool.DebugTools;
 using CBB.Lib;
 using Generic;
 using System;
@@ -42,8 +43,7 @@ namespace ArtificialIntelligence.Utility
         }
         private void InternalGUI(object obj)
         {
-            if (Settings.ShowGUI)
-                RenderGui(painter);
+            if(Settings.ShowGUI) RenderGui(painter);
         }
 
         protected abstract void RenderGui(GLPainter painter);
