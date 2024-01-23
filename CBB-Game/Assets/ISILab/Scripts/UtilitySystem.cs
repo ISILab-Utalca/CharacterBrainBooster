@@ -15,32 +15,6 @@ namespace CBB.Api
         private const BindingFlags SENSOR_MEMORY_BFLAGS = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.Public | BindingFlags.NonPublic;
         private const BindingFlags SENSOR_CONFIG_BFLAGS = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.Public | BindingFlags.NonPublic;
         private const BindingFlags AGENT_INTERNAL_STATE_BFLAGS = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.Public | BindingFlags.NonPublic;
-        //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        //private static void OnBeforeSceneLoadRuntimeMethod()
-        //{
-        //    Debug.Log("<b><color=#d4fffeff>[CBB]</color>:</b> Load agent data.");
-        //    // We need to send this data over to the external CBB
-        //    CollectAgentBaseData();
-        //}
-
-        /// <summary>
-        /// Collects basic data about all agents in the utility system.
-        /// </summary>
-        /// <returns>Array of agent data for each agent in the utility system.</returns>
-        //public static AgentData[] CollectAgentBaseData()
-        //{
-        //    var agentTypes = UtilitySystem.CollectAgentTypes();
-        //    var agents = new List<AgentData>();
-        //    foreach (var type in agentTypes)
-        //    {
-        //        var inputs = UtilitySystem.CollectVariables(type);
-        //        var actions = UtilitySystem.CollectActions(type);
-
-        //        agents.Add(new AgentData(type, inputs.ToList(), actions.ToList()));
-        //    }
-
-        //    return agents.ToArray();
-        //}
 
         /// <summary>
         /// Collects the types of agents in the utility system.
@@ -77,20 +51,6 @@ namespace CBB.Api
                 if (atts.Any(a => a.GetType() == typeof(SensorConfigurationAttribute)))
                 {
                     fieldName = field.Name;
-                    //if (typeof(IList).IsAssignableFrom(field.FieldType))
-                    //{
-                    //    var fieldListValue = field.GetValue(sensorInstance) as IList;
-                    //    List<object> values = new List<object>();
-                    //    foreach (var value in fieldListValue)
-                    //    {
-                    //            values.Add(value);
-                    //    }
-                    //    fieldValue = values.ToArray();
-                    //}
-                    //else
-                    //{
-
-                    //}
                     fieldValue = field.GetValue(sensorInstance);
                     sensorConfig.Add(fieldName, fieldValue);
                 }

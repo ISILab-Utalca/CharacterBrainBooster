@@ -108,20 +108,6 @@ namespace CBB.Api
                 };
             return JSONDataManager.SerializeData(wrap, converters);
         }
-        /// <summary>
-        /// Subscribe to the Update event and send its information
-        /// </summary>
-        private void SubscribeToSensors()
-        {
-            
-            foreach (ISensor sensor in agentBrain.Sensors)
-            {
-                sensor.OnSensorUpdate += (s) =>
-                {
-                    SendSensorUpdate(s);
-                };
-            }
-        }
 
         private void SendDataToAllClients(AgentPackage package)
         {
