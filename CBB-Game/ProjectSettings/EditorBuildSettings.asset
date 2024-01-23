@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/CBB External Tool/Scenes/CBB Exterior.unity
+    path: Assets/_CBB/Scenes/CBB External Tool.unity
     guid: 722ecc2bdbc1dc246ae8dd45580bca13
   - enabled: 0
-    path: Assets/ISILab/SerializationGym/Game.unity
+    path: Assets/_CBB/Scenes/CBB Gameplay Demo.unity
     guid: 8be22c3f17d3a1544b843b69318f5f93
   - enabled: 0
     path: Assets/Git-Ignore/Playground.unity
