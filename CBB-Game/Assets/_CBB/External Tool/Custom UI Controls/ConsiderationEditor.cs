@@ -17,7 +17,6 @@ namespace CBB.ExternalTool
         #region Fields
         DropdownField curveDropdown;
         DropdownField methodDropdown;
-        TextField considerationName;
         VisualElement curveParametersContainer;
         Chart chart;
         Toggle normalizeInput;
@@ -25,6 +24,12 @@ namespace CBB.ExternalTool
         FloatField maxValue;
         ConsiderationConfiguration lastConfig = null;
         ConsiderationConfiguration originalConfig = null;
+
+        /// <summary>
+        /// Expose this field to the controller to get the name of the consideration
+        /// and set the events to update the name of another items on the UI
+        /// </summary>
+        public TextField ConsiderationName { get; set; }
         #endregion
 
         #region Constructors
@@ -63,7 +68,7 @@ namespace CBB.ExternalTool
         }
         private void SetLocalEditorReferences()
         {
-            considerationName = this.Q<TextField>("consideration-name");
+            ConsiderationName = this.Q<TextField>("consideration-name");
             curveDropdown = this.Q<DropdownField>("curve-type-dropdown");
             methodDropdown = this.Q<DropdownField>("evaluation-method-dropdown");
             curveParametersContainer = this.Q<VisualElement>("curve-parameters-container");
@@ -147,7 +152,7 @@ namespace CBB.ExternalTool
             normalizeInput.RegisterValueChangedCallback(DisplayRange);
             normalizeInput.RegisterValueChangedCallback(Utils_SetNormalized);
 
-            considerationName.RegisterValueChangedCallback(Utils_SetConfigurationName);
+            ConsiderationName.RegisterValueChangedCallback(Utils_SetConfigurationName);
             minValue.RegisterValueChangedCallback(Utils_SetMinValue);
             maxValue.RegisterValueChangedCallback(Utils_SetmaxValue);
         }
@@ -189,7 +194,7 @@ namespace CBB.ExternalTool
         {
             chart.SetCurve(config.curve);
             curveDropdown.value = config.curve.GetType().Name;
-            considerationName.value = config.considerationName;
+            ConsiderationName.value = config.considerationName;
             minValue.value = config.minValue;
             maxValue.value = config.maxValue;
             normalizeInput.value = config.normalizeInput;
