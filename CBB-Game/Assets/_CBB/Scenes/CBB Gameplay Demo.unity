@@ -1858,7 +1858,7 @@ GameObject:
   m_Component:
   - component: {fileID: 799238070}
   m_Layer: 0
-  m_Name: <<< GAMEPLAY >>>
+  m_Name: --- GAMEPLAY ---
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3052,7 +3052,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1166752873}
   m_Layer: 0
-  m_Name: <<< DEBUG SETTINGS >>>
+  m_Name: --- DEBUG SETTINGS ---
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

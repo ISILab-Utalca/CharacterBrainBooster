@@ -2,6 +2,7 @@
   "$id": "1",
   "$type": "Brain, Assembly-CSharp",
   "brain_ID": "villager_1",
+  "brain_Name": "Villager - Brave",
   "serializedActions": {
     "$id": "2",
     "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
@@ -44,7 +45,7 @@
               "configuration": {
                 "$id": "10",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "Idle",
+                "considerationName": "IDLE TEST",
                 "evaluationMethod": "Idle",
                 "curve": {
                   "$id": "11",

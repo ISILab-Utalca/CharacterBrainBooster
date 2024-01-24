@@ -1,0 +1,16 @@
+{
+  "$id": "1",
+  "$type": "Brain, Assembly-CSharp",
+  "brain_ID": "",
+  "brain_Name": "Anything",
+  "serializedActions": {
+    "$id": "2",
+    "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
+    "$values": []
+  },
+  "serializedSensors": {
+    "$id": "3",
+    "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
+    "$values": []
+  }
+}
