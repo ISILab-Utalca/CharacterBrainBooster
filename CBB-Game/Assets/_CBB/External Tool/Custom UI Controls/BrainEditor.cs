@@ -1,4 +1,5 @@
 using ArtificialIntelligence.Utility;
+using CBB.Api;
 using CBB.ExternalTool;
 using CBB.Lib;
 using Generic;
@@ -81,7 +82,7 @@ namespace CBB.UI
         public bool ShowLogs { get; set; } = false;
         public List<string> EvaluationMethods { get; set; } = new();
         private VisualElement AddButtonContainer { get; set; }
-        private Button AddButton { get; set; }
+        private Button AddItemButton { get; set; }
         /// <summary>
         /// All the actions that an agent can perform.
         /// </summary>
@@ -91,7 +92,7 @@ namespace CBB.UI
         /// </summary>
         public List<DataGeneric> Sensors { get; set; } = new();
         public List<Brain> Brains { get; set; } = new();
-
+        private Button AddBrainButton { get; set; }
         #endregion
 
         #region Constructors
@@ -106,11 +107,18 @@ namespace CBB.UI
             BrainTree = this.Q<TreeView>("brain-tree");
             SaveBrainButton = this.Q<Button>("save-brain-button");
             AddButtonContainer = this.Q<VisualElement>("button-add-container");
-            AddButton = AddButtonContainer.Q<Button>("button-add");
+            AddItemButton = AddButtonContainer.Q<Button>("button-add");
+            AddBrainButton = this.Q<Button>("add-brains-button");
 
             ReloadButton.clicked += ResetBrainTree;
             BrainTree.makeItem = MakeItem;
             BrainTree.bindItem = BindItem;
+            AddBrainButton.clickable.clicked += () =>
+            {
+                var newBrain = new Brain();
+                Brains.Add(newBrain);
+                ResetTreeAndDisplayItem(newBrain);
+            };
 
             BrainTree.selectedIndicesChanged += OnElementSelected;
             HandleFloatingPanel();
@@ -308,22 +316,39 @@ namespace CBB.UI
                     break;
             }
         }
-        private void DisplayBrainDetails(Brain brain)
+        private void DisplayBrainDetails(Brain brain,int index)
         {
             DetailsPanel.Clear();
+            var textField = new TextField
+            {
+                label = "Brain Name",
+                value = brain.brain_Name
+            };
+            textField.RegisterValueChangedCallback(SyncText(brain,index));
+            DetailsPanel.Add(textField);
             AddButtonContainer.SetDisplay(false);
         }
+
+        private EventCallback<ChangeEvent<string>> SyncText(INameable item, int index)
+        {
+            return (evt) =>
+            {
+                item.SetName(evt.newValue);
+                BrainTree.RefreshItem(index);
+            };
+        }
+
         private void DisplayItem(int index, object item)
         {
             switch (item)
             {
                 case Brain brain:
                     if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected brain: {brain}");
-                    DisplayBrainDetails(brain);
+                    DisplayBrainDetails(brain,index);
                     break;
                 case ConsiderationConfiguration config:
                     if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected config: {config}");
-                    DisplayConsiderationEditor(config);
+                    DisplayConsiderationEditor(config, index);
                     break;
                 case ItemWrapper wrapper:
                     if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected item wrapper: {wrapper}");
