@@ -1,4 +1,5 @@
 using ArtificialIntelligence.Utility;
+using CBB.Api;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -191,7 +192,7 @@ namespace CBB.Lib
     /// on this Consideration in the editor <see cref="ConsiderationEditor"/>
     /// </summary>
     [System.Serializable]
-    public class ConsiderationConfiguration : IDataItem
+    public class ConsiderationConfiguration : IDataItem, INameable
     {
         public string considerationName;
         public string evaluationMethod;
@@ -226,5 +227,6 @@ namespace CBB.Lib
         internal void SetMaxValue(float newValue) => maxValue = newValue;
         public string GetItemName() => considerationName;
         public object GetInstance() => this;
+
     }
 }
