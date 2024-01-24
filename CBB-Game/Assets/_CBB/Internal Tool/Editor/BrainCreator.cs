@@ -90,33 +90,6 @@ namespace CBB.InternalTool
             brainEditor.EvaluationMethods = methodNames;
         }
         private void LoadBrainsInto(BrainEditor be) => be.SetBrains(DataLoader.GetAllBrains());
-        private void CreateBrainFile()
-        {
-            if (m_BrainFileField.value == null)
-            {
-                Debug.LogWarning("No brain file selected.");
-                return;
-            }
-            // The object holding the components
-            var go = (GameObject)m_BrainFileField.value;
-            // Get the brain loader component
-            if (!go.TryGetComponent<BrainLoader>(out var brainLoader))
-            {
-                Debug.LogWarning("No brain loader component found.");
-                return;
-            }
-            // Call the create brain method of the brain loader, using the name of this brain
-            var b = brainLoader.CreateBrainFile();
-            // Save the brain file
-            DataLoader.SaveBrain(brainLoader.agent_ID, b);
-            // Replace the pair in the table
-            DataLoader.ReplacePair(new PairBrainData.PairBrain()
-            {
-                agent_ID = brainLoader.agent_ID,
-                brain_ID = b.brain_ID
-            },
-                m_CreatePairToggle.value);
-            DataLoader.SaveTable(DataLoader.Path);
-        }
+        
     }
 }
