@@ -6,21 +6,44 @@ namespace CBB.ExternalTool
 {
     public class MainWindowController : MonoBehaviour
     {
+        // View
         [SerializeField] private ExternalMonitor externalMonitor;
-        [SerializeField] private MonitoringWindow monitoringWindow;
         [SerializeField] private EditorWindowController editorWindow;
-        private MainWindow mainWindow;
+        private TextField addresField;
+        private TextField portField;
+        private Button startButton;
+        private Label connectionInformation;
 
+        public System.Action<string, int> OnConnectionToServerStarted { get; set; }
         private void Awake()
         {
-            mainWindow = GetComponent<MainWindow>();
-            mainWindow.OnConnectionToServerStarted += externalMonitor.ConnectToServer;
-            MonitoringWindow.OnDisconnectionButtonPressed += OpenWindow;
+            var root = GetComponent<UIDocument>().rootVisualElement;
+            this.addresField = root.Q<TextField>("AddressField");
+            this.portField = root.Q<TextField>("PortField");
+            this.startButton = root.Q<Button>();
+            startButton.clicked += StartConnection;
+
+            // InformationLabel
+            this.connectionInformation = root.Q<Label>("ConnectionInformation");
+            
+            OnConnectionToServerStarted += externalMonitor.ConnectToServer;
             ExternalMonitor.OnConnectionClosedByServer += OpenWindow;
             ExternalMonitor.OnServerConnected += CloseWindow;
             ExternalMonitor.OnConnectionError += HandleConnectionError;
         }
-
+        
+        private void StartConnection()
+        {
+            var serverAddress = addresField.value;
+            var serverPort = int.Parse(portField.value);
+            OnConnectionToServerStarted?.Invoke(serverAddress, serverPort);
+            Debug.Log("[MONITOR] Client connection event fired");
+        }
+        public void SetConnectionStatus(string connectionStatus)
+        {
+            connectionInformation.text = connectionStatus;
+        }
+       
         private void HandleConnectionError(Exception exception)
         {
             var uiDocRoot = GetComponent<UIDocument>().rootVisualElement.Q<Label>("connection-information");
@@ -29,8 +52,6 @@ namespace CBB.ExternalTool
 
         private void OnDestroy()
         {
-            mainWindow.OnConnectionToServerStarted -= externalMonitor.ConnectToServer;
-            MonitoringWindow.OnDisconnectionButtonPressed -= OpenWindow;
             ExternalMonitor.OnConnectionClosedByServer -= OpenWindow;
             ExternalMonitor.OnServerConnected -= CloseWindow;
         }
@@ -40,18 +61,8 @@ namespace CBB.ExternalTool
         }
         private void CloseWindow()
         {
-            switch (mainWindow.startMode.value)
-            {
-                case 0:
-                    monitoringWindow.gameObject.SetActive(true); break;
-                case 1:
-                    editorWindow.gameObject.SetActive(true); break;
-                default
-                    :
-                    break;
-            }
+            editorWindow.gameObject.SetActive(true);
             gameObject.SetActive(false);
         }
     }
-
 }
