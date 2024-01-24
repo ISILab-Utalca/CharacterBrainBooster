@@ -178,10 +178,11 @@ namespace CBB.UI
                 });
             DisplayItem(index, item);
         }
-        private void DisplayConsiderationEditor(ConsiderationConfiguration config)
+        private void DisplayConsiderationEditor(ConsiderationConfiguration config, int index)
         {
             DetailsPanel.Clear();
             var ce = new ConsiderationEditor(config, EvaluationMethods);
+            ce.ConsiderationName.RegisterValueChangedCallback(SyncText(config, index));
             DetailsPanel.Add(ce);
             AddButtonContainer.SetDisplay(false);
         }
@@ -249,8 +250,8 @@ namespace CBB.UI
             switch (data.GetDataType())
             {
                 case DataGeneric.DataType.Action:
-                    AddButton.text = "Add new consideration";
-                    SetUpButton(AddButton, AddConsideration);
+                    AddItemButton.text = "Add new consideration";
+                    SetUpButton(AddItemButton, AddConsideration);
                     break;
                 case DataGeneric.DataType.Sensor:
                     AddButtonContainer.SetDisplay(false);
@@ -268,7 +269,7 @@ namespace CBB.UI
             var childrenData = childrenIDs.Select(id => BrainTree.GetItemDataForId<IDataItem>(id));
 
             var subTitle = wrapper.GetItemName();
-            AddButton.text = "Add " + subTitle;
+            AddItemButton.text = "Add " + subTitle;
             AddButtonContainer.SetDisplay(true);
             foreach (var child in childrenData)
             {
@@ -307,10 +308,10 @@ namespace CBB.UI
             switch (subTitle)
             {
                 case "Actions":
-                    SetUpButton(AddButton, AddAction);
+                    SetUpButton(AddItemButton, AddAction);
                     break;
                 case "Sensors":
-                    SetUpButton(AddButton, AddSensor);
+                    SetUpButton(AddItemButton, AddSensor);
                     break;
                 default:
                     break;
@@ -373,7 +374,7 @@ namespace CBB.UI
                 ResetTreeAndDisplayItem(data);
             };
             // Adjust the panel position to be right below the add button
-            floatingPanel.SetUpPosition(AddButton.worldBound);
+            floatingPanel.SetUpPosition(AddItemButton.worldBound);
             this.Add(floatingPanel);
             Debug.Log("Add sensor");
 
@@ -389,7 +390,7 @@ namespace CBB.UI
                 ResetTreeAndDisplayItem(data);
             };
             // Adjust the panel position to be right below the add button
-            floatingPanel.SetUpPosition(AddButton.worldBound);
+            floatingPanel.SetUpPosition(AddItemButton.worldBound);
             this.Add(floatingPanel);
             Debug.Log("Add action");
         }
