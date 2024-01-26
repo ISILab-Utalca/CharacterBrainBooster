@@ -186,7 +186,7 @@ namespace CBB.UI
             DetailsPanel.Add(ce);
             AddButtonContainer.SetDisplay(false);
         }
-        private void DisplayDataGenericDetails(DataGeneric data)
+        private void DisplayDataGenericDetails(DataGeneric data, int index)
         {
             DetailsPanel.Clear();
             foreach (var item in data.Values)
@@ -202,6 +202,7 @@ namespace CBB.UI
                         };
                         // Bind the value of the text field to the value of the wrapper
                         textField.RegisterValueChangedCallback((evt) => wraper.value = evt.newValue);
+                        textField.AddToClassList("cbb-text-field");
                         textField.style.color = Color.white;
                         DetailsPanel.Add(textField);
                         break;
@@ -250,8 +251,9 @@ namespace CBB.UI
             switch (data.GetDataType())
             {
                 case DataGeneric.DataType.Action:
+                    int elementID = BrainTree.GetIdForIndex(index);
                     AddItemButton.text = "Add new consideration";
-                    SetUpButton(AddItemButton, AddConsideration);
+                    SetUpButton(AddItemButton, AddConsideration(data, elementID));
                     break;
                 case DataGeneric.DataType.Sensor:
                     AddButtonContainer.SetDisplay(false);
@@ -305,19 +307,20 @@ namespace CBB.UI
                 };
                 DetailsPanel.Add(gc);
             }
+            var parentElementID = BrainTree.GetIdForIndex(index);
             switch (subTitle)
             {
                 case "Actions":
-                    SetUpButton(AddItemButton, AddAction);
+                    SetUpButton(AddItemButton, AddNewItem(parentElementID, LastSelectedBrain.serializedActions, Actions));
                     break;
                 case "Sensors":
-                    SetUpButton(AddItemButton, AddSensor);
+                    SetUpButton(AddItemButton, AddNewItem(parentElementID, LastSelectedBrain.serializedSensors, Sensors));
                     break;
                 default:
                     break;
             }
         }
-        private void DisplayBrainDetails(Brain brain,int index)
+        private void DisplayBrainDetails(Brain brain, int index)
         {
             DetailsPanel.Clear();
             var textField = new TextField
@@ -325,7 +328,8 @@ namespace CBB.UI
                 label = "Brain Name",
                 value = brain.brain_Name
             };
-            textField.RegisterValueChangedCallback(SyncText(brain,index));
+            textField.AddToClassList("cbb-text-field");
+            textField.RegisterValueChangedCallback(SyncText(brain, index));
             DetailsPanel.Add(textField);
             AddButtonContainer.SetDisplay(false);
         }
@@ -345,7 +349,7 @@ namespace CBB.UI
             {
                 case Brain brain:
                     if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected brain: {brain}");
-                    DisplayBrainDetails(brain,index);
+                    DisplayBrainDetails(brain, index);
                     break;
                 case ConsiderationConfiguration config:
                     if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected config: {config}");
@@ -357,69 +361,60 @@ namespace CBB.UI
                     break;
                 case DataGeneric data:
                     if (ShowLogs) Debug.Log($"[Editor Window Controller] Selected data generic: {data}");
-                    DisplayDataGenericDetails(data);
+                    DisplayDataGenericDetails(data, index);
                     break;
                 default:
                     break;
             }
         }
 
-        private void AddSensor()
+        private Action AddNewItem(int parentActionID,
+                                  List<DataGeneric> modifiedCollection,
+                                  List<DataGeneric> sourceItems)
         {
-            CloseFloatingPanels();
-            var floatingPanel = new FloatingPanel(Sensors, this);
-            floatingPanel.ElementClicked += (data) =>
+            return () =>
             {
-                LastSelectedBrain.serializedSensors.Add(data);
-                ResetTreeAndDisplayItem(data);
+                CloseFloatingPanels();
+                var floatingPanel = new FloatingPanel(sourceItems, this);
+                floatingPanel.ElementClicked += (data) =>
+                {
+                    modifiedCollection.Add(data);
+                    ResetTreeAndDisplayItem(data);
+                    BrainTree.SetSelectionById(parentActionID);
+                };
+                // Adjust the panel position to be right below the add button
+                floatingPanel.SetUpPosition(AddItemButton.worldBound);
+                this.Add(floatingPanel);
             };
-            // Adjust the panel position to be right below the add button
-            floatingPanel.SetUpPosition(AddItemButton.worldBound);
-            this.Add(floatingPanel);
-            Debug.Log("Add sensor");
-
         }
-        private void AddAction()
+        private System.Action AddConsideration(DataGeneric lastSelectedAction, int id)
         {
-            // Avoid having multiple floating panels
-            CloseFloatingPanels();
-            var floatingPanel = new FloatingPanel(Actions, this);
-            floatingPanel.ElementClicked += (data) =>
-            {
-                LastSelectedBrain.serializedActions.Add(data);
-                ResetTreeAndDisplayItem(data);
-            };
-            // Adjust the panel position to be right below the add button
-            floatingPanel.SetUpPosition(AddItemButton.worldBound);
-            this.Add(floatingPanel);
-            Debug.Log("Add action");
-        }
-        private void AddConsideration()
-        {
-            Debug.Log("Add consideration");
             // Steps:
-            // Get the last selected action
             // Add a new wraper consideration to the action's values
             // Rebuild the treeView
             // Display the consideration editor
-
-            var lastSelectedAction = BrainTree.selectedItem as DataGeneric;
-            var newConsideration = new WrapperConsideration
+            return () =>
             {
-                configuration = new ConsiderationConfiguration(
-                "New Consideration",
-                //TODO: Make sure that EvaluationMethods is not null and has at least one element, injected
-                //from the brain editor
-                new Linear(),
-                EvaluationMethods[0],
-                false,
-                0,
-                0
-                )
-            };
-            lastSelectedAction.Values.Add(newConsideration);
 
-            ResetTreeAndDisplayItem(newConsideration.configuration);
+                var newConsideration = new WrapperConsideration
+                {
+                    configuration = new ConsiderationConfiguration(
+                    "New Consideration",
+                    //TODO: Make sure that EvaluationMethods is not null and has at least one element, injected
+                    //from the brain editor
+                    new Linear(),
+                    EvaluationMethods[0],
+                    false,
+                    0,
+                    0
+                    )
+                };
+                lastSelectedAction.Values.Add(newConsideration);
+
+                ResetTreeAndDisplayItem(newConsideration.configuration);
+                BrainTree.SetSelectionById(id);
+                Debug.Log("Add consideration");
+            };
         }
 
         public void SetBrains(List<Brain> brains)
@@ -442,17 +437,10 @@ namespace CBB.UI
         }
         private void SetUpButton(Button button, Action newCallback)
         {
-            try
-            {
-                button.clicked -= addButtonCallback;
-                button.clicked += newCallback;
-                addButtonCallback = newCallback;
-                AddButtonContainer.SetDisplay(true);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
+            button.clicked -= addButtonCallback;
+            button.clicked += newCallback;
+            addButtonCallback = newCallback;
+            AddButtonContainer.SetDisplay(true);
         }
 
         private void ResetTreeAndDisplayItem(object item)
@@ -476,9 +464,6 @@ namespace CBB.UI
             var floatingPanels = this.Q<FloatingPanel>();
             floatingPanels?.RemoveFromHierarchy();
         }
-        //TODO: Refactor this piece of code using Manipulators, in order to
-        //avoid coding very similar (almost duplicated) methods like
-        //AddAction and AddSensor, which only differs by its target
         private Brain GetParentBrainFromIndex(int itemIndex)
         {
             var parentId = BrainTree.GetParentIdForIndex(itemIndex);
