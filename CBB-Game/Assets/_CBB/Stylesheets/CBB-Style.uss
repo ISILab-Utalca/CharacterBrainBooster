@@ -139,3 +139,24 @@ TextInput {
 .header-title-1 {
     background-color: rgb(0, 0, 0);
 }
+
+FloatField {
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+}
+
+FloatField FloatInput {
+    background-color: rgb(13, 13, 13);
+}
+
+Toggle {
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+}
+
+.cbb-text-field {
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    justify-content: flex-start;
+    align-items: center;
+}
