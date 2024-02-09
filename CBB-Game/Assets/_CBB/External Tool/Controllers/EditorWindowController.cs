@@ -13,15 +13,20 @@ namespace CBB.ExternalTool
     public class EditorWindowController : MonoBehaviour
     {
         #region FIELDS
-        // UI
+        [Header("UI Configuration")]
         [SerializeField]
         private GameObject mainMenu;
-        private BrainEditor brainEditor;
-        private Button closeButton;
-        // Logic
+        [SerializeField]
+        private Color ButtonColorUnsavedChanges;
+        [SerializeField]
+        private Color ButtonColorDefault;
 
+        [Header("Debug Configuration")]
         [SerializeField, SerializeProperty("ShowLogs")]
         private bool showLogs = false;
+
+        private BrainEditor brainEditor;
+        private Button closeButton;
         private ExternalMonitor monitor;
         private readonly JsonSerializerSettings settings = new()
         {
@@ -54,7 +59,22 @@ namespace CBB.ExternalTool
             var root = GetComponent<UIDocument>().rootVisualElement;
 
             brainEditor = root.Q<BrainEditor>();
-
+            brainEditor.RegisterCallback<ChangeEvent<bool>>(evt =>
+            {
+                brainEditor.SaveBrainButton.style.backgroundColor = ButtonColorUnsavedChanges;
+            });
+            brainEditor.RegisterCallback<ChangeEvent<string>>(evt =>
+            {
+                brainEditor.SaveBrainButton.style.backgroundColor = ButtonColorUnsavedChanges;
+            });
+            brainEditor.RegisterCallback<ChangeEvent<float>>(evt =>
+            {
+                brainEditor.SaveBrainButton.style.backgroundColor = ButtonColorUnsavedChanges;
+            });
+            brainEditor.SaveBrainButton.clicked += () =>
+            {
+                brainEditor.SaveBrainButton.style.backgroundColor = ButtonColorDefault;
+            };
             closeButton = root.Q<TopTitleBar>().CloseButton;
 
             // Set reference to TCP Client in order to exchange messages with the server
@@ -62,10 +82,10 @@ namespace CBB.ExternalTool
 
             closeButton.clicked += BackToMainMenu;
 
-            GameDataHandler.ReceivedBrains += brainEditor.SetBrains;
-            GameDataHandler.ReceivedActions += brainEditor.SetActions;
-            GameDataHandler.ReceivedSensors += brainEditor.SetSensors;
-            GameDataHandler.ReceivedEvaluationMethods += brainEditor.SetEvaluationMethods;
+            IncomingGameDataHandler.ReceivedBrains += brainEditor.DisplayReceivedBrains;
+            IncomingGameDataHandler.ReceivedActions += brainEditor.SetActions;
+            IncomingGameDataHandler.ReceivedSensors += brainEditor.SetSensors;
+            IncomingGameDataHandler.ReceivedEvaluationMethods += brainEditor.SetEvaluationMethods;
 
             brainEditor.SaveBrainButton.clicked += SendBrain;
         }

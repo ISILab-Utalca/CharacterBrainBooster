@@ -1,12 +1,12 @@
 using ArtificialIntelligence.Utility;
 using CBB.Api;
+using CBB.DataManagement;
 using CBB.Lib;
 using Generic;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Utility;
 
 [RequireComponent(typeof(SphereCollider))]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]

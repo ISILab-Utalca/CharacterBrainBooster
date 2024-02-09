@@ -1,3 +1,4 @@
+// Source: https://forum.unity.com/threads/serialize-c-properties-how-to-with-code.506027/
 using System;
 using System.Reflection;
 using UnityEngine;

@@ -30,13 +30,8 @@ public class Brain : IDataItem, INameable
         this.serializedSensors = new List<DataGeneric>();
     }
     public object GetInstance() => this;
-
     public string GetItemName() => brain_Name;
-
-    public void SetName(string name)
-    {
-        brain_Name = name;
-    }
+    public void SetName(string name) => brain_Name = name;
 }
 
 

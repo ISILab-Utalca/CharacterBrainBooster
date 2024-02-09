@@ -29,7 +29,7 @@ public class CameraDataReceiver : VisualElement
 
     public CameraDataReceiver()
     {
-        var visualTree = Resources.Load<VisualTreeAsset>("CameraDataReciver");
+        var visualTree = Resources.Load<VisualTreeAsset>("CameraDataReceiver");
         visualTree.CloneTree(this);
 
         content = this.Q<VisualElement>("Content");

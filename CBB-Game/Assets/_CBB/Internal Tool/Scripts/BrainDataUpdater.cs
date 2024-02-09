@@ -1,4 +1,5 @@
 using CBB.Comunication;
+using CBB.DataManagement;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -23,23 +24,27 @@ namespace CBB.InternalTool
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Start()
         {
-            InternalNetworkManager.OnServerMessageDequeued += UpdateBrain;
+            InternalNetworkManager.OnServerMessageDequeued += ProcessMessage;
         }
 
-        private static void UpdateBrain(string msg)
+        private static void ProcessMessage(string msg)
         {
-            // Try to deserialize the message into a brain object
             try
             {
-                var brain = JsonConvert.DeserializeObject<Brain>(msg, settings);
-                // Update the brain file
-                DataLoader.SaveBrain("",brain,true);
+                UpdateBrain(msg);
             }
             catch (Exception e)
             {
                 Debug.LogError("[BRAIN LOADER] Message is not Brain type: " + e);
                 throw;
             }
+        }
+
+        private static void UpdateBrain(string msg)
+        {
+            var brain = JsonConvert.DeserializeObject<Brain>(msg, settings);
+            DataLoader.SaveBrain(brain);
+            DataLoader.BrainUpdated?.Invoke(brain.brain_ID);
         }
     }
 }

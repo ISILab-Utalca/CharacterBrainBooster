@@ -1,27 +1,46 @@
 using ArtificialIntelligence.Utility;
-using Generic;
+using CBB.DataManagement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BrainLoader : MonoBehaviour
 {
+    public class Memento
+    {
+        private readonly string m_brainName;
+        private string m_agent_ID;
+        public string Agent_ID { get => m_agent_ID; private set => m_agent_ID = value; }
+        public Memento(string brainName, string agent_ID)
+        {
+            this.m_brainName = brainName;
+            this.m_agent_ID = agent_ID;
+        }
+    }
     #region Fields
-    [Tooltip("If activated, it bypasses the brain system and uses the default configuration.")]
-    public bool _default = false;
-    [Tooltip("Generate a brain file if it doesn't exist.")]
-    public bool createBrain = false;
 
-    public string agent_ID;
+    public string m_agent_ID;
 
     private List<ActionState> actionStates = new();
     private List<Sensor> sensors = new();
+
     private Brain brain;
     private AgentBrain agentBrain;
-    [SerializeField]
-    private bool showLogs = false; 
     #endregion
+    [HideInInspector]
+    public string m_brainName;
+    [SerializeField]
+    private bool showLogs = false;
 
+    public string BrainName
+    {
+        get => m_brainName;
+        set
+        {
+            m_brainName = value;
+            if (showLogs) Debug.Log($"[BRAIN LOADER] Brain name updated: {m_brainName}");
+        }
+    }
     private void Awake()
     {
         agentBrain = GetComponent<AgentBrain>();
@@ -29,136 +48,65 @@ public class BrainLoader : MonoBehaviour
     }
     private void Start()
     {
-        // If default is activated, bypass the brain system
-        if (_default) return;
-        
         // Check if the agent has a brain associated
-        var pair = DataLoader.GetPairByAgentID(agent_ID);
-        if (pair == null)
+        var bindingData = BindingManager.AgentIDBrainID.data;
+        if (!bindingData.ContainsKey(m_agent_ID))
         {
-            if (createBrain)
-            {
-                var b = CreateBrainFile();
-                //TODO: BRAIN_ID must be different from agent_ID
-                DataLoader.SaveBrain(this.agent_ID, b);
-                DataLoader.AddPair(new PairBrainData.PairBrain() { agent_ID = agent_ID, brain_ID = b.brain_ID });
-                InitAgent(b);
-                agentBrain.TryStartNewAction(null);
-            }
+            Debug.LogWarning("Agent has no associated brain");
             return;
         }
-
-        // Check if the brain associated with the agent exists
-        var brain = DataLoader.GetBrainByID(pair.brain_ID);
-        if (brain == null)
-        {
-            if (createBrain)
-            {
-                //TODO: BRAIN_ID must be different from agent_ID
-                var b = CreateBrainFile();
-                DataLoader.SaveBrain(this.agent_ID, b);
-                DataLoader.ReplacePair(new PairBrainData.PairBrain() { agent_ID = agent_ID, brain_ID = b.brain_ID });
-                InitAgent(b);
-                agentBrain.TryStartNewAction(null);
-            }
-            return;
-        }
-        
-        // All checked, update the brain and start the agent behaviour
-        InitAgent(brain);
-        agentBrain.TryStartNewAction(null);
+        var brain_ID = bindingData[m_agent_ID];
+        brain = DataLoader.GetBrainByID(brain_ID);
+        InitializeAgentWithBrain(brain);
+        agentBrain.TryStartNewAction();
     }
     private void OnDestroy()
     {
         DataLoader.BrainUpdated -= ReadBrain;
     }
+    
     /// <summary>
     /// Update the brain data with the current configuration
     /// </summary>
     /// <param name="brain_ID"></param>
     public void ReadBrain(string brain_ID)
     {
-        // Check if the updated brain ID matches the brain associated with the agent
-        if (brain_ID == null) return;
-        var pair = DataLoader.GetPairByAgentID(this.agent_ID);
-        if (pair == null) return;
-        if (brain_ID != pair.brain_ID) return;
-
+        // TODO:
+        var bindingData = BindingManager.AgentIDBrainID.data;
+        if (!bindingData.ContainsKey(m_agent_ID))
+        {
+            Debug.LogWarning("Agent has no associated brain");
+            return;
+        }
+        if (bindingData[m_agent_ID] != brain_ID)
+        {
+            Debug.LogWarning("This is not the brain associated with this agent");
+            return;
+        }
         // All checked, update the brain
-        StartCoroutine(PauseReadUpdate(brain_ID));
+        StartCoroutine(UpdateAgentBehaviourWithBrain(brain_ID));
     }
     // NOTE: In order to not break the agent (stall, infinite loop, etc) is necessary
     // to pause the agent, update the brain and then resume the agent on several steps (frames)
-    private IEnumerator PauseReadUpdate(string brain_ID)
+    private IEnumerator UpdateAgentBehaviourWithBrain(string brain_ID)
     {
-        this.agent_ID = brain_ID;
+        var memento = GetMemento();
         agentBrain.Pause();
         yield return null;
 
         var brain = DataLoader.GetBrainByID(brain_ID);
-        InitAgent(brain);
+        InitializeAgentWithBrain(brain);
+        BindingManager.UpdateAgentIDBrainIDBinding(memento, m_agent_ID, m_brainName);
         yield return null;
 
         agentBrain.Resume();
-        if (showLogs) Debug.Log($"[BRAIN LOADER] Agent updated with brain: {brain_ID}");
+        if (showLogs) Debug.Log($"[BRAIN LOADER] Agent updated with brain: {brain.brain_Name}");
     }
 
-    public void OnApplicationQuit()
-    {
-        DataLoader.SaveBrain(this.agent_ID, brain); // parche (!!!) quitar mas adelante
-    }
-
-    /// <summary>
-    /// create a brain file with the current configuration
-    /// </summary>
-    public Brain CreateBrainFile()
-    {
-        FindBHsReferences();
-        //TODO: BRAIN_ID must be different from agent_ID
-        brain = new Brain
-        {
-            brain_ID = agent_ID,
-            serializedActions = new List<DataGeneric>(),
-            serializedSensors = new List<DataGeneric>()
-        };
-
-        for (int i = 0; i < actionStates.Count; i++)
-        {
-            brain.serializedActions.Add(actionStates[i].GetGeneric());
-        }
-
-        for (int i = 0; i < sensors.Count; i++)
-        {
-            brain.serializedSensors.Add(sensors[i].GetGeneric());
-        }
-
-        return brain;
-    }
-
-
-    /// <summary>
-    /// find monobehaviours related to the brain and store them in lists
-    /// enable the brain to be initialized with the brain data
-    /// </summary>
-    public void FindBHsReferences()
-    {
-        // Get all actions in this game object and its children
-        actionStates.Clear();
-        actionStates.AddRange(gameObject.GetComponentsOnHierarchy<ActionState>());
-
-        // Get all sensors in this game object and its children
-        sensors.Clear();
-        sensors.AddRange(gameObject.GetComponentsOnHierarchy<Sensor>());
-    }
-
-    /// <summary>
-    /// Initialize the brain with the brain data
-    /// </summary>
-    /// <param name="brain"></param>
-    public void InitAgent(Brain brain)
+    public void InitializeAgentWithBrain(Brain brain)
     {
         // Find monobehaviours refs
-        FindBHsReferences();
+        GetBehaviourComponents();
 
         this.brain = brain;
         var szedAction = brain.serializedActions;
@@ -201,5 +149,28 @@ public class BrainLoader : MonoBehaviour
         }
 
         agentBrain.ReloadBehaviours();
+    }
+
+    public void GetBehaviourComponents()
+    {
+        GetAssignedActions();
+        GetAssignedSensors();
+    }
+
+    private void GetAssignedActions()
+    {
+        actionStates.Clear();
+        actionStates.AddRange(gameObject.GetComponentsOnHierarchy<ActionState>());
+    }
+
+    private void GetAssignedSensors()
+    {
+        sensors.Clear();
+        sensors.AddRange(gameObject.GetComponentsOnHierarchy<Sensor>());
+    }
+
+    public Memento GetMemento()
+    {
+        return new Memento(m_brainName, m_agent_ID);
     }
 }

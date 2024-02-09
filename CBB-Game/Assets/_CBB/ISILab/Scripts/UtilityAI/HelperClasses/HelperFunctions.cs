@@ -1,13 +1,11 @@
+using CBB.DataManagement;
 using Generic;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.AI;
-#if UNITY_EDITOR
-using UnityEngine.UIElements;
-#endif
+
 namespace ArtificialIntelligence.Utility
 {
     public static class HelperFunctions
@@ -99,7 +97,7 @@ namespace ArtificialIntelligence.Utility
         }
         public static bool CheckTargetInList<T>(List<T> targets, T target)
         {
-            return targets != null ? targets.Contains(target) : false;
+            return targets != null && targets.Contains(target);
         }
         public static void AddTargetToList<T>(List<T> targets, T target)
         {

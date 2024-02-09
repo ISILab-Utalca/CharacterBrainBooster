@@ -74,28 +74,6 @@ namespace CBB.ExternalTool
             }
         }
 
-        private void ShowSelectedDetail(IEnumerable<object> enumerable)
-        {
-            if (enumerable.Count() <= 0)
-            {
-                detailPanelController.ClearDetails();
-                return;
-            }
-            var selected = enumerable.ToArray()[0];
-
-            if (selected is DecisionPackage decision)
-            {
-                if (showLogs) Debug.Log("Selection changed on History Panel to Decision Package\n" +
-                    "(Time stamp): " + decision.timestamp + "\nAgent ID: " + decision.agentID);
-                detailPanelController.DisplayDecisionDetails(decision);
-            }
-            else if (selected is SensorPackage sensor)
-            {
-                if (showLogs) Debug.Log("Selection changed on History Panel to Sensor Package (Time stamp): " + sensor.timestamp);
-                detailPanelController.DisplaySensorDetails(sensor);
-            }
-        }
-
         public void HandleMessage(string message)
         {
             AgentPackage pack = null;

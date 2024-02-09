@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Utility
+namespace CBB.DataManagement
 {
     public static class JSONDataManager
     {
@@ -168,85 +168,6 @@ namespace Utility
 
             return LoadData<T>(dataPath);
         }
-
-        private static object LoadData(string json)
-        {
-            // generate serializer setting
-            var jsonSerializerSettings = new JsonSerializerSettings()
-            {
-                PreserveReferencesHandling = PreserveReferencesHandling.All,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                TypeNameHandling = TypeNameHandling.All,
-                Formatting = Formatting.Indented,
-                NullValueHandling = NullValueHandling.Ignore,
-            };
-
-            // add converters to serializer
-            jsonSerializerSettings.Converters.Add(new Vector3Converter());
-            jsonSerializerSettings.Converters.Add(new Vector2Converter());
-            jsonSerializerSettings.Converters.Add(new GameObjectConverter());
-
-            // generate data from string
-            var data = JsonConvert.DeserializeObject<object>(
-                json,
-                jsonSerializerSettings
-                );
-
-            if (data == null)
-                Debug.LogWarning("Error trying to deserialize json '" + json + "'.");
-
-            return data;
-        }
-        public static T DeserializeData<T>(string json)
-        {
-            // generate serializer setting
-            var jsonSerializerSettings = new JsonSerializerSettings()
-            {
-                PreserveReferencesHandling = PreserveReferencesHandling.All,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                TypeNameHandling = TypeNameHandling.All,
-                Formatting = Formatting.Indented,
-                NullValueHandling = NullValueHandling.Ignore,
-            };
-
-            // add converters to serializer
-            jsonSerializerSettings.Converters.Add(new Vector3Converter());
-            jsonSerializerSettings.Converters.Add(new Vector2Converter());
-            jsonSerializerSettings.Converters.Add(new GameObjectConverter());
-
-            // generate data from string
-            var data = JsonConvert.DeserializeObject<T>(
-                json,
-                jsonSerializerSettings
-                );
-
-            if (data == null)
-                Debug.LogWarning("Error trying to deserialize json '" + json + "'.");
-
-            return data;
-        }
-        public static List<string> GetJSONFiles(string path)
-        {
-            if (!Directory.Exists(path))
-            {
-                return null;
-                //return new List<string>(); // (??) return empty list
-            }
-
-            string[] files = System.IO.Directory.GetFiles(path);
-            List<string> jsonFiles = new List<string>();
-            foreach (string s in files)
-            {
-                if (s.EndsWith(".json"))
-                {
-                    string[] lines = s.Split('/');
-                    jsonFiles.Add(lines[^1].Split('\\')[^1]);
-                }
-            }
-
-            return jsonFiles;
-        }
-
 
     }
 

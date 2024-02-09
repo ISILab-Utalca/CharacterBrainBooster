@@ -40,7 +40,7 @@ namespace ArtificialIntelligence.Utility
         private void Awake()
         {
             _actionRunner = gameObject.AddComponent<ActionRunner>();
-            _actionRunner.OnFinishedExecution += TryStartNewActionOnFinish;
+            _actionRunner.OnFinishedExecution += TryStartNewAction;
 
         }
         
@@ -48,15 +48,14 @@ namespace ArtificialIntelligence.Utility
         private void OnDisable()
         {
             UnsubscribeFromSensors(Sensors);
-            _actionRunner.OnFinishedExecution -= TryStartNewActionOnFinish;
+            _actionRunner.OnFinishedExecution -= TryStartNewAction;
         }
 
-        public void TryStartNewActionOnFinish()
+        private void StartNewActionAfterSensorActivation(SensorActivation sensorActivation)
         {
-            TryStartNewAction(null);
+            TryStartNewAction();
         }
-        
-        public void TryStartNewAction(SensorActivation sensor)
+        public void TryStartNewAction()
         {
             if (_isPaused) return;
             Option newOption = GetNewOption();
@@ -93,7 +92,7 @@ namespace ArtificialIntelligence.Utility
         {
             foreach (ISensor sensor in sensors)
             {
-                sensor.OnSensorUpdate += TryStartNewAction;
+                sensor.OnSensorUpdate += StartNewActionAfterSensorActivation;
                 sensor.OnSensorUpdate += OnSensorUpdate;
             }
         }
@@ -101,7 +100,7 @@ namespace ArtificialIntelligence.Utility
         {
             foreach (ISensor sensor in sensors)
             {
-                sensor.OnSensorUpdate -= TryStartNewAction;
+                sensor.OnSensorUpdate -= StartNewActionAfterSensorActivation;
                 sensor.OnSensorUpdate -= OnSensorUpdate;
             }
         }
@@ -118,7 +117,7 @@ namespace ArtificialIntelligence.Utility
         public void Resume()
         {
             _isPaused = false;
-            TryStartNewAction(null);
+            TryStartNewAction();
         }
 
         public void ReloadBehaviours()

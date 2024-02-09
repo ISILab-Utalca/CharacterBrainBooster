@@ -44,7 +44,6 @@ namespace ArtificialIntelligence.Utility
 
         /// <summary>
         /// Interrupts the current executing action.
-        /// Doesn't invoke OnUnlockedExecution to avoid loops.
         /// </summary>
         private void InterruptExecution(ActionState action)
         {

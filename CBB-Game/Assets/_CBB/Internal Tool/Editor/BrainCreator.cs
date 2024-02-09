@@ -7,6 +7,7 @@ using ArtificialIntelligence.Utility;
 using System.Linq;
 using Generic;
 using System.Collections.Generic;
+using CBB.DataManagement;
 
 namespace CBB.InternalTool
 {
@@ -14,11 +15,9 @@ namespace CBB.InternalTool
     {
         [SerializeField]
         private VisualTreeAsset m_VisualTreeAsset = default;
-        private ObjectField m_BrainFileField = default;
-        private Toggle m_CreatePairToggle = default;
         private Toggle showLogsToggle;
 
-        [MenuItem("CBB/Brain Creator")]
+        [MenuItem("Window/Character Brain Booster")]
         public static void ShowTool()
         {
             BrainCreator wnd = GetWindow<BrainCreator>();
@@ -36,8 +35,6 @@ namespace CBB.InternalTool
             m_VisualTreeAsset.CloneTree(root);
 
             showLogsToggle = root.Q<Toggle>("show-logs-toggle");
-            m_BrainFileField = root.Q<ObjectField>("brain-object");
-            m_CreatePairToggle = root.Q<Toggle>("create-pair-toggle");
 
             BrainEditor brainEditor = root.Q<BrainEditor>();
             root.Add(brainEditor);
@@ -49,6 +46,8 @@ namespace CBB.InternalTool
 
             // Load brains and display them in the editor
             LoadBrainsInto(brainEditor);
+            brainEditor.ResetBrainTree();
+
             LoadEvaluationMethods(brainEditor);
             LoadFromGeneric<ActionState>(brainEditor.Actions);
             LoadFromGeneric<Sensor>(brainEditor.Sensors);
@@ -57,10 +56,9 @@ namespace CBB.InternalTool
             {
                 foreach (var b in brainEditor.Brains)
                 {
-                    DataLoader.SaveBrain(b.brain_ID, b, false);
+                    DataLoader.SaveBrain(b);
+                    DataLoader.BrainUpdated?.Invoke(b.brain_ID);
                 }
-                LoadBrainsInto(brainEditor);
-                brainEditor.ResetBrainTree();
             };
         }
 

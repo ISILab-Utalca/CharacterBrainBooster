@@ -115,7 +115,10 @@ namespace CBB.UI
             BrainTree.bindItem = BindItem;
             AddBrainButton.clickable.clicked += () =>
             {
-                var newBrain = new Brain();
+                var newBrain = new Brain
+                {
+                    brain_Name = "New Brain"
+                };
                 Brains.Add(newBrain);
                 ResetTreeAndDisplayItem(newBrain);
             };
@@ -416,12 +419,14 @@ namespace CBB.UI
                 Debug.Log("Add consideration");
             };
         }
-
+        public void DisplayReceivedBrains(List<Brain> brains)
+        {
+            SetBrains(brains);
+            ResetBrainTree();
+        }
         public void SetBrains(List<Brain> brains)
         {
             this.Brains = brains;
-            // Reset the tree view automatically
-            ResetBrainTree();
         }
         public void SetActions(List<DataGeneric> actions)
         {

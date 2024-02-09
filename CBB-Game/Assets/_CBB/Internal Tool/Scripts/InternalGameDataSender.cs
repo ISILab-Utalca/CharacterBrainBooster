@@ -1,5 +1,6 @@
 using ArtificialIntelligence.Utility;
 using CBB.Comunication;
+using CBB.DataManagement;
 using Generic;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -21,8 +22,6 @@ public class InternalGameDataSender
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Start()
     {
-        Debug.Log("<color=red>Hola</color>");
-        // Subscribe to the event that is triggered when a new client is connected
         Server.OnNewClientConnected += SendGameData;
     }
 

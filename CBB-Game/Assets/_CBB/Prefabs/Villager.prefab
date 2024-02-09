@@ -401,9 +401,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013f8358b5a518c4fa775a22165b5193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _default: 0
-  createBrain: 1
-  agent_ID: 
+  m_agent_ID: Juanitos
+  m_brainName: Villager Normal
   showLogs: 1
 --- !u!1 &6759708970964299137
 GameObject:

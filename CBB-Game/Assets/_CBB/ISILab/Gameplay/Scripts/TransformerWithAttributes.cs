@@ -1,6 +1,6 @@
+using CBB.DataManagement;
 using Newtonsoft.Json;
 using UnityEngine;
-using Utility;
 /// <summary>
 /// Helper class inherited from Monobehaviour. It's serialized using the
 /// Attributes approach

@@ -9,7 +9,7 @@ namespace CBB.ExternalTool
     /// <summary>
     /// Handles the data received from the server.
     /// </summary>
-    public class GameDataHandler : MonoBehaviour
+    public class IncomingGameDataHandler : MonoBehaviour
     {
         [SerializeField]
         private bool showLogs = false;

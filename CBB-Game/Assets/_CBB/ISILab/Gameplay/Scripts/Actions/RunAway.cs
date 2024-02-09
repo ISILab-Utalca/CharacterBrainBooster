@@ -22,10 +22,7 @@ namespace ArtificialIntelligence.Utility.Actions
 
         private float initialSpeed = 1;
         private const float RUN_TICK = 0.1f;
-        WaitForSeconds runCheckTick = new(RUN_TICK);
-
-        #endregion
-        #region Properties
+        readonly WaitForSeconds runCheckTick = new(RUN_TICK);
 
         #endregion
         #region Methods

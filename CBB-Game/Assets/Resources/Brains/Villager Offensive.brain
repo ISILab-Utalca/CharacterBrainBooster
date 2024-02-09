@@ -1,8 +1,8 @@
 {
   "$id": "1",
   "$type": "Brain, Assembly-CSharp",
-  "brain_ID": "",
-  "brain_Name": "Anything",
+  "brain_ID": "fe7c2efd8c3f4dc0acad9df40b9bd5a8",
+  "brain_Name": "Villager Offensive",
   "serializedActions": {
     "$id": "2",
     "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",

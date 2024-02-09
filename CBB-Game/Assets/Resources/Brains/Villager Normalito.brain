@@ -1,8 +1,8 @@
 {
   "$id": "1",
   "$type": "Brain, Assembly-CSharp",
-  "brain_ID": "villager",
-  "brain_Name": "Villager - Coward",
+  "brain_ID": "958b1c88229b496ab044a92dfd05e63c",
+  "brain_Name": "Villager Normalito",
   "serializedActions": {
     "$id": "2",
     "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
@@ -18,13 +18,13 @@
             {
               "$id": "5",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
+              "value": 2.0,
               "name": "MinWaitTimer"
             },
             {
               "$id": "6",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 3.0,
+              "value": 5.0,
               "name": "MaxWaitTimer"
             },
             {
@@ -36,7 +36,7 @@
             {
               "$id": "8",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 0.1,
+              "value": 0.2,
               "name": "TickCheck"
             },
             {
@@ -45,35 +45,13 @@
               "configuration": {
                 "$id": "10",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "Idle",
+                "considerationName": "Default",
                 "evaluationMethod": "Idle",
                 "curve": {
                   "$id": "11",
                   "$type": "Constant, Assembly-CSharp",
-                  "value": 0.1,
+                  "value": 0.04,
                   "Inverted": false
-                },
-                "normalizeInput": false,
-                "minValue": 0.0,
-                "maxValue": 0.0
-              }
-            },
-            {
-              "$id": "12",
-              "$type": "WrapperConsideration, Assembly-CSharp",
-              "configuration": {
-                "$id": "13",
-                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "Threat is near",
-                "evaluationMethod": "ThreatHeard",
-                "curve": {
-                  "$id": "14",
-                  "$type": "Staggered, Assembly-CSharp",
-                  "value": 1.0,
-                  "e": 0.5,
-                  "max": 0.95,
-                  "min": 0.05,
-                  "Inverted": true
                 },
                 "normalizeInput": false,
                 "minValue": 0.0,
@@ -85,43 +63,43 @@
         "dataType": 0
       },
       {
-        "$id": "15",
+        "$id": "12",
         "$type": "Generic.DataGeneric, Assembly-CSharp",
         "classType": "ArtificialIntelligence.Utility.Actions.RunAway",
         "values": {
-          "$id": "16",
+          "$id": "13",
           "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
           "$values": [
             {
-              "$id": "17",
+              "$id": "14",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 6.0,
+              "value": 3.0,
               "name": "safeDistance"
             },
             {
-              "$id": "18",
+              "$id": "15",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 7.0,
+              "value": 2.0,
               "name": "runSpeed"
             },
             {
-              "$id": "19",
+              "$id": "16",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
               "value": 1.0,
               "name": "pauseAfterRunning"
             },
             {
-              "$id": "20",
+              "$id": "17",
               "$type": "WrapperConsideration, Assembly-CSharp",
               "configuration": {
-                "$id": "21",
+                "$id": "18",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "An enemy is near",
+                "considerationName": "Enemy distance",
                 "evaluationMethod": "DistanceToTarget",
                 "curve": {
-                  "$id": "22",
+                  "$id": "19",
                   "$type": "Exponential, Assembly-CSharp",
-                  "value": 0.0,
+                  "value": 1.0,
                   "e": 2.0,
                   "dx": 0.0,
                   "dy": 0.0,
@@ -131,7 +109,7 @@
                 },
                 "normalizeInput": true,
                 "minValue": 0.0,
-                "maxValue": 5.0
+                "maxValue": 4.0
               }
             }
           ]
@@ -141,21 +119,21 @@
     ]
   },
   "serializedSensors": {
-    "$id": "23",
+    "$id": "20",
     "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
     "$values": [
       {
-        "$id": "24",
+        "$id": "21",
         "$type": "Generic.DataGeneric, Assembly-CSharp",
         "classType": "SensorAuditoryField",
         "values": {
-          "$id": "25",
+          "$id": "22",
           "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
           "$values": [
             {
-              "$id": "26",
+              "$id": "23",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 4.44,
+              "value": 4.0,
               "name": "HearingRadius"
             }
           ]
