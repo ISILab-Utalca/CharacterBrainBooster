@@ -94,13 +94,13 @@
               "configuration": {
                 "$id": "18",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "Enemy distance",
+                "considerationName": "Distance to threats",
                 "evaluationMethod": "DistanceToTarget",
                 "curve": {
                   "$id": "19",
                   "$type": "Exponential, Assembly-CSharp",
                   "value": 1.0,
-                  "e": 2.0,
+                  "e": 4.0,
                   "dx": 0.0,
                   "dy": 0.0,
                   "sx": 1.0,
@@ -109,7 +109,7 @@
                 },
                 "normalizeInput": true,
                 "minValue": 0.0,
-                "maxValue": 4.0
+                "maxValue": 10.0
               }
             }
           ]
