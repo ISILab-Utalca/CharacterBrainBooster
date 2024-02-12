@@ -160,3 +160,11 @@ Toggle {
     justify-content: flex-start;
     align-items: center;
 }
+
+.cbb_tool-item-container {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.cbb_tool-item-container:hover {
+    background-color: rgb(33, 33, 33);
+}
