@@ -39,11 +39,11 @@ namespace CBB.DataManagement
             {
 #if UNITY_EDITOR
                 // load data from the editor folder
-                return Application.dataPath + "/_CBB/Bindings";
+                return Application.dataPath + "/_CBB/Configuration/Bindings";
 #else
             // load data from the build folder
             var dataPath = Application.dataPath;
-            var path = dataPath.Replace("/" + Application.productName +"_Data", "");
+            var path = dataPath.Replace("/" + Application.productName +"_Data", "/CBB Data/Bindings");
             return path;
 #endif
             }

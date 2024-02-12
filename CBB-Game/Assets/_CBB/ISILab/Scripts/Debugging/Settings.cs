@@ -10,5 +10,10 @@ namespace CBB.InternalTool.DebugTools
         {
             ShowGUI = !ShowGUI;
         }
+        public void LogDataPaths()
+        {
+            Debug.Log("DataLoader Path: " + DataManagement.DataLoader.Path);
+            Debug.Log("BindingManager Path: " + DataManagement.BindingManager.Path);
+        }
     }
 }

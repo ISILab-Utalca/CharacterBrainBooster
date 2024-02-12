@@ -19,11 +19,11 @@ namespace CBB.DataManagement
             {
 #if UNITY_EDITOR
                 // load data from the editor folder
-                return Application.dataPath + "/Resources/Brains";
+                return Application.dataPath + "/_CBB/Configuration/Brains";
 #else
             // load data from the build folder
             var dataPath = Application.dataPath;
-            var path = dataPath.Replace("/" + Application.productName +"_Data", "");
+            var path = dataPath.Replace("/" + Application.productName +"_Data", "/CBB Data/Brains");
             return path;
 #endif
             }
@@ -36,7 +36,7 @@ namespace CBB.DataManagement
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Init()
         {
-            LoadBrains(Path);
+            LoadBrains();
         }
 
         #region #BRAIN-METHODS
@@ -46,7 +46,7 @@ namespace CBB.DataManagement
         }
         public static Brain GetBrainByName(string name)
         {
-            if (brains.Count == 0) LoadBrains(Path);
+            if (brains.Count == 0) LoadBrains();
             return brains.First(m => name.Equals(m.brain_Name));
         }
         public static string GenerateID()
@@ -55,13 +55,13 @@ namespace CBB.DataManagement
         }
         public static List<Brain> GetAllBrains()
         {
-            if (brains.Count == 0) LoadBrains(Path);
+            if (brains.Count == 0) LoadBrains();
             return brains;
         }
 
-        public static void LoadBrains(string root)
+        public static void LoadBrains()
         {
-            System.IO.FileInfo[] files = GetAllBrainFiles(root);
+            System.IO.FileInfo[] files = GetAllBrainFiles();
             for (int i = 0; i < files.Length; i++)
             {
 
@@ -74,16 +74,10 @@ namespace CBB.DataManagement
             Debug.Log("Loaded: " + brains.Count + " brains.");
         }
 
-        public static System.IO.FileInfo[] GetAllBrainFiles(string root)
+        public static System.IO.FileInfo[] GetAllBrainFiles()
         {
-            System.IO.DirectoryInfo dir = new(root);
+            System.IO.DirectoryInfo dir = new(Path);
             Debug.Log("Loading brains from: " + dir.FullName);
-            if (!dir.Exists)
-            {
-                dir.Create();
-            }
-            // Clear the brains list to avoid duplicates
-            brains.Clear();
             var files = dir.GetFiles("*.brain");
             return files;
         }
@@ -103,11 +97,11 @@ namespace CBB.DataManagement
             }
             if (BrainFileWasRenamed(brain))
             {
-                RemoveBrainFile(BindingManager.BrainIDFileName.data[brain.brain_ID]);
+                RemovePreviousBrainFile(BindingManager.BrainIDFileName.data[brain.brain_ID]);
             }
-            JSONDataManager.SaveData(Path, brain.brain_Name, "brain", brain);
+            JSONDataManager.SaveData(Path, brain.brain_Name + ".brain", brain);
             BindingManager.StoreBrainIDFilenameBinding(brain);
-            Debug.Log($"Brain {brain.brain_ID} saved to: {Path}");
+            Debug.Log($"Brain {brain.brain_ID} saved to: {Path + "/" + brain.brain_Name}.brain");
         }
 
         /// <summary>
@@ -131,7 +125,7 @@ namespace CBB.DataManagement
         {
             return BindingManager.BrainIDFileName.data.ContainsKey(brainID);
         }
-        private static void RemoveBrainFile(string brainFileName)
+        private static void RemovePreviousBrainFile(string brainFileName)
         {
             System.IO.File.Delete(Path + "/" + brainFileName + ".brain");
             // Delete meta
@@ -185,5 +179,5 @@ namespace CBB.DataManagement
 
             pairs.Add(pairBrain);
         }
-    } 
+    }
 }
