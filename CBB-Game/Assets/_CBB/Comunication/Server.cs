@@ -221,25 +221,7 @@ namespace CBB.Comunication
 
             return ret;
         }
-        private static void InternalCallBack(InternalMessage message, TcpClient client)
-        {
-            switch (message)
-            {
-                case InternalMessage.CLIENT_CONNECTED:
-                    OnNewClientConnected?.Invoke(client);
-                    break;
-                case InternalMessage.CLIENT_STOPPED:
-                    OnClientDisconnected?.Invoke();
-                    break;
-                default:
-                    Debug.LogWarning("El 'InternalMessage:" + message + "' no esta implementado para procesarce.");
-                    break;
-            }
-        }
-        public static void SetAddressPort(int port)
-        {
-            serverPort = port;
-        }
+        
         public static bool GetNewClientConnected(out TcpClient lastConnectedclient)
         {
             if (clientsQueue.Count > 0)
