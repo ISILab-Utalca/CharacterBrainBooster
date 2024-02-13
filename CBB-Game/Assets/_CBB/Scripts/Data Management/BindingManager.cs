@@ -105,7 +105,7 @@ namespace CBB.DataManagement
             DataFileProperties agentBrainAssociationProperties = new(Path, BIND_AGENT_ID_BRAIN_ID, BIND_FORMAT);
             SaveBinding(agentBrainAssociationProperties, AgentIDBrainID);
         }
-        public static void StoreBrainIDFilenameBinding(Brain brain)
+        public static void SaveBrainIDFilenameBinding(Brain brain)
         {
             if (BrainIDFileName.data.ContainsKey(brain.brain_ID))
             {
