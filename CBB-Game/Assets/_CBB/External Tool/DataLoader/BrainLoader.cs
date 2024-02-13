@@ -68,33 +68,31 @@ public class BrainLoader : MonoBehaviour
     /// <summary>
     /// Update the brain data with the current configuration
     /// </summary>
-    /// <param name="brain_ID"></param>
-    public void ReadBrain(string brain_ID)
+    /// <param name="brain"></param>
+    public void ReadBrain(Brain brain)
     {
-        // TODO:
         var bindingData = BindingManager.AgentIDBrainID.data;
         if (!bindingData.ContainsKey(m_agent_ID))
         {
             Debug.LogWarning("Agent has no associated brain");
             return;
         }
-        if (bindingData[m_agent_ID] != brain_ID)
+        if (bindingData[m_agent_ID] != brain.brain_ID)
         {
             Debug.LogWarning("This is not the brain associated with this agent");
             return;
         }
         // All checked, update the brain
-        StartCoroutine(UpdateAgentBehaviourWithBrain(brain_ID));
+        StartCoroutine(UpdateAgentBehaviourWithBrain(brain));
     }
     // NOTE: In order to not break the agent (stall, infinite loop, etc) is necessary
     // to pause the agent, update the brain and then resume the agent on several steps (frames)
-    private IEnumerator UpdateAgentBehaviourWithBrain(string brain_ID)
+    private IEnumerator UpdateAgentBehaviourWithBrain(Brain brain)
     {
         var memento = GetMemento();
         agentBrain.Pause();
         yield return null;
 
-        var brain = DataLoader.GetBrainByID(brain_ID);
         InitializeAgentWithBrain(brain);
         BindingManager.UpdateAgentIDBrainIDBinding(memento, m_agent_ID, m_brainName);
         yield return null;

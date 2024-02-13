@@ -56,7 +56,7 @@ namespace CBB.InternalTool
                 foreach (var b in brainEditor.Brains)
                 {
                     DataLoader.SaveBrain(b);
-                    DataLoader.BrainUpdated?.Invoke(b.brain_ID);
+                    DataLoader.BrainUpdated?.Invoke(b);
                 }
             };
         }

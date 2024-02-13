@@ -11,7 +11,7 @@ namespace CBB.DataManagement
     public static class DataLoader
     {
         private static List<Brain> brains = new();
-        public static System.Action<string> BrainUpdated { get; set; }
+        public static System.Action<Brain> BrainUpdated { get; set; }
 
         public static string Path
         {
@@ -100,7 +100,7 @@ namespace CBB.DataManagement
                 RemovePreviousBrainFile(BindingManager.BrainIDFileName.data[brain.brain_ID]);
             }
             JSONDataManager.SaveData(Path, brain.brain_Name + ".brain", brain);
-            BindingManager.StoreBrainIDFilenameBinding(brain);
+            BindingManager.SaveBrainIDFilenameBinding(brain);
             Debug.Log($"Brain {brain.brain_ID} saved to: {Path + "/" + brain.brain_Name}.brain");
         }
 

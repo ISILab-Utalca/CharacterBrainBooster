@@ -2,8 +2,6 @@ using CBB.Comunication;
 using CBB.DataManagement;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -44,7 +42,7 @@ namespace CBB.InternalTool
         {
             var brain = JsonConvert.DeserializeObject<Brain>(msg, settings);
             DataLoader.SaveBrain(brain);
-            DataLoader.BrainUpdated?.Invoke(brain.brain_ID);
+            DataLoader.BrainUpdated?.Invoke(brain);
         }
     }
 }
