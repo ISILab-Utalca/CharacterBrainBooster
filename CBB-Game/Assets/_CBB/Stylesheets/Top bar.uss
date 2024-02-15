@@ -1,0 +1,14 @@
+.close-button {
+    height: 24px;
+    width: 26px;
+    background-color: rgb(87, 87, 87);
+    align-self: center;
+    flex-direction: column;
+    color: rgb(0, 0, 0);
+    -unity-font-style: bold;
+}
+
+.root-container {
+    flex-direction: row;
+    justify-content: space-between;
+}
