@@ -9,7 +9,7 @@
             <SplitView fixed-pane-initial-dimension="814">
                 <CBB.UI.BrainEditor style="flex-grow: 1;" />
                 <SplitView fixed-pane-initial-dimension="300">
-                    <ui:VisualElement name="container-4" class="visual-element-container" style="flex-grow: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; background-color: rgb(26, 26, 26); align-self: stretch; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); width: 290px;">
+                    <ui:VisualElement name="container-4" style="flex-grow: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; background-color: rgb(26, 26, 26); align-self: stretch; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); width: 290px;">
                         <ui:VisualElement name="toolset" style="flex-grow: 0; background-color: rgb(0, 0, 0); height: 46px; width: auto; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; border-bottom-width: 3px; border-bottom-color: rgb(0, 0, 0); flex-direction: row; align-self: auto; align-items: center; justify-content: flex-start; flex-shrink: 0;">
                             <ui:VisualElement name="agent-brains-item-container" class="cbb_tool-item-container" style="margin-left: 5px; margin-right: 5px; display: flex;">
                                 <ui:Button display-tooltip-when-elided="true" name="bindings-button" style="border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-bottom-width: 0; margin-bottom: 0; padding-bottom: 15px; margin-left: 5px; margin-right: 5px; margin-top: 5px; border-left-width: 0; border-right-width: 0; border-top-width: 0; background-image: url(&apos;project://database/Assets/_CBB/External%20Tool/2DAssets/PersonWhite.png?fileID=2800000&amp;guid=8b96cf7695f326d4eb50f311ffdfa2fb&amp;type=3#PersonWhite&apos;); background-color: rgba(6, 6, 6, 0);" />
@@ -28,8 +28,8 @@
                         <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-grow: 1;">
                             <CameraDataReceiver style="flex-grow: 1;" />
                         </ui:VisualElement>
-                        <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-grow: 1; height: 382px;">
-                            <ui:Label tabindex="-1" text="Details panel" display-tooltip-when-elided="true" name="details-panel-title" class="top-window-title" style="background-color: rgb(10, 10, 10); padding-bottom: 9px; padding-left: 12px; margin-left: 1px; margin-right: 1px; margin-bottom: 1px; padding-top: 8px; margin-top: 2px;" />
+                        <ui:VisualElement class="container-all-borders" style="background-color: rgba(0, 0, 0, 0); flex-grow: 1; height: 382px;">
+                            <ui:Label tabindex="-1" text="Details panel" display-tooltip-when-elided="true" name="details-panel-title" class="title" style="background-color: rgb(10, 10, 10); padding-bottom: 9px; padding-left: 12px; margin-left: 1px; margin-right: 1px; margin-bottom: 1px; padding-top: 8px; margin-top: 2px;" />
                             <ui:ListView focusable="true" virtualization-method="DynamicHeight" name="decision-detail-list" class="my-scroll-vertical decision-detail" style="flex-grow: 1;" />
                         </ui:VisualElement>
                     </ui:VisualElement>

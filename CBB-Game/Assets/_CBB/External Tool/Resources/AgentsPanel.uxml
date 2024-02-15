@@ -2,10 +2,10 @@
     <Style src="project://database/Assets/_CBB/Stylesheets/ScrollStyle.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ScrollStyle" />
     <Style src="project://database/Assets/_CBB/Stylesheets/CBB-Style.uss?fileID=7433441132597879392&amp;guid=82cb7018893fc0040b707b6388cf3eb5&amp;type=3#CBB-Style" />
     <Style src="project://database/Assets/_CBB/Stylesheets/Agents%20Panel.uss?fileID=7433441132597879392&amp;guid=13b7689436a0dbc4c8134afd60e09bf2&amp;type=3#Agents Panel" />
-    <ui:VisualElement class="root-container">
+    <ui:VisualElement class="root-container title-card-container">
         <ui:VisualElement class="title-card-container">
             <ui:Label tabindex="-1" text="Agents" display-tooltip-when-elided="true" name="Title" tooltip="The agents living in the scene" class="title-card" />
         </ui:VisualElement>
-        <ui:ListView focusable="true" virtualization-method="DynamicHeight" name="ListPrueba" show-bound-collection-size="false" class="top-border" style="-unity-text-align: upper-center;" />
+        <ui:ListView focusable="true" virtualization-method="DynamicHeight" name="ListPrueba" show-bound-collection-size="false" class="top-border" style="-unity-text-align: upper-center; flex-grow: 1;" />
     </ui:VisualElement>
 </ui:UXML>

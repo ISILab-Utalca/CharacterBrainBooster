@@ -2,7 +2,7 @@
     <Style src="project://database/Assets/_CBB/Stylesheets/ScrollStyle.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ScrollStyle" />
     <Style src="project://database/Assets/_CBB/Stylesheets/History%20Panel.uss?fileID=7433441132597879392&amp;guid=9564431e30be5b541ac202de3eb4f598&amp;type=3#History Panel" />
     <Style src="project://database/Assets/_CBB/Stylesheets/CBB-Style.uss?fileID=7433441132597879392&amp;guid=82cb7018893fc0040b707b6388cf3eb5&amp;type=3#CBB-Style" />
-    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column;">
+    <ui:VisualElement class="container-all-borders" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column;">
         <ui:VisualElement class="title-card-container">
             <ui:Label tabindex="-1" text="Decisions history" display-tooltip-when-elided="true" name="title" class="title-card" />
             <ui:EnumField type="CBB.ExternalTool.HistoryPanel+ShowType, Assembly-CSharp" name="my-show-field" include-obsolete-values="false" value="Decisions" class="MyVisualElement my-arrow" style="flex-grow: 1; flex-shrink: 1; margin-left: 10px; margin-right: 0; overflow: visible; flex-direction: row; margin-top: 0; margin-bottom: 0; padding-top: 2px;" />
