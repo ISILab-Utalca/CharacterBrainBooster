@@ -20,10 +20,12 @@
                                 <ui:VisualElement style="border-bottom-color: rgb(255, 214, 30); border-bottom-width: 12px;" />
                             </ui:VisualElement>
                         </ui:VisualElement>
-                        <CBB.ExternalTool.AgentsPanel name="AgentsPanel" style="flex-grow: 0; flex-shrink: 0; max-height: initial; min-height: initial; height: 285px; display: flex;" />
-                        <CBB.ExternalTool.HistoryPanel style="flex-grow: 0; flex-shrink: 1; max-height: initial; min-height: initial; height: 650px; display: flex;" />
-                        <CBB.ExternalTool.BindingsPanel />
+                        <SplitView orientation="Vertical" fixed-pane-initial-dimension="420" name="agents-history-panel-container">
+                            <CBB.ExternalTool.AgentsPanel name="AgentsPanel" style="flex-grow: 0; flex-shrink: 0; max-height: initial; min-height: initial; height: 285px; display: flex;" />
+                            <CBB.ExternalTool.HistoryPanel style="flex-grow: 0; flex-shrink: 1; max-height: initial; min-height: initial; height: 650px; display: flex;" />
+                        </SplitView>
                     </ui:VisualElement>
+                    <CBB.ExternalTool.BindingsPanel style="display: none;" />
                     <ui:VisualElement name="container-3" class="visual-element-container" style="background-color: rgb(26, 26, 26); align-self: stretch; width: 779px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;">
                         <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-grow: 1;">
                             <CameraDataReceiver style="flex-grow: 1;" />
