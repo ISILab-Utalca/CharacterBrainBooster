@@ -5,42 +5,40 @@ using UnityEngine.UIElements;
 
 public class ToolsetController : MonoBehaviour
 {
-    private AgentsPanel m_agentsPanel;
-    private HistoryPanel m_historyPanel;
+    private SplitView m_splitView;
     private BindingsPanel m_bindingsPanel;
     private Button m_agentBrainButton;
     private Button m_historyButton;
     private void Start()
     {
         GetLocalReferences();
-        SetAgentBrainClickCallback();
-        SetHistoryButtonCallback();
+        SetBindingCallback();
+        SetHistoryCallback();
     }
 
-    private void SetHistoryButtonCallback()
+    private void SetHistoryCallback()
     {
-        m_historyButton.clicked += HistoryCallback;
+        m_historyButton.clicked += AgentsHistoryCallback;
     }
 
-    private void HistoryCallback()
+    private void AgentsHistoryCallback()
     {
-        m_historyPanel.style.display = DisplayStyle.Flex;
-        m_agentsPanel.style.display = DisplayStyle.Flex;
-
+        m_splitView.style.display = DisplayStyle.Flex;
         // Hide the other panel 
+        m_bindingsPanel.style.display = DisplayStyle.None;
     }
 
-    private void SetAgentBrainClickCallback()
+    private void SetBindingCallback()
     {
-        m_agentBrainButton.clicked += AgentBrainCallback;
+        m_agentBrainButton.clicked += BindingCallback;
     }
 
-    private void AgentBrainCallback()
+    private void BindingCallback()
     {
-        m_historyPanel.style.display = DisplayStyle.None;
-        m_agentsPanel.style.display = DisplayStyle.None;
+        m_splitView.style.display = DisplayStyle.None;
 
         // Display the new panel
+        m_bindingsPanel.style.display = DisplayStyle.Flex;
     }
 
     private void GetLocalReferences()
@@ -48,8 +46,7 @@ public class ToolsetController : MonoBehaviour
         UIDocument document = GetComponent<UIDocument>();
         VisualElement root = document.rootVisualElement;
 
-        m_agentsPanel = root.Q<AgentsPanel>();
-        m_historyPanel = root.Q<HistoryPanel>();
+        m_splitView = root.Q<SplitView>("agents-history-panel-container");
         m_bindingsPanel = root.Q<BindingsPanel>();
         var toolset = root.Q<VisualElement>("toolset");
 
