@@ -7,6 +7,7 @@ public class ToolsetController : MonoBehaviour
 {
     private AgentsPanel m_agentsPanel;
     private HistoryPanel m_historyPanel;
+    private BindingsPanel m_bindingsPanel;
     private Button m_agentBrainButton;
     private Button m_historyButton;
     private void Start()
@@ -47,11 +48,12 @@ public class ToolsetController : MonoBehaviour
         UIDocument document = GetComponent<UIDocument>();
         VisualElement root = document.rootVisualElement;
 
-        m_agentsPanel = root.Q<AgentsPanel>("agents-panel");
-        m_historyPanel = root.Q<HistoryPanel>("history-panel");
+        m_agentsPanel = root.Q<AgentsPanel>();
+        m_historyPanel = root.Q<HistoryPanel>();
+        m_bindingsPanel = root.Q<BindingsPanel>();
         var toolset = root.Q<VisualElement>("toolset");
 
-        m_agentBrainButton = toolset.Q<Button>("agent-brain-bindings-button");
+        m_agentBrainButton = toolset.Q<Button>("bindings-button");
         m_historyButton = toolset.Q<Button>("history-button");
     }
 }
