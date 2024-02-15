@@ -1,15 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/TextField.uss?fileID=7433441132597879392&amp;guid=2fd88df24d06fce4cb235ab79afe6089&amp;type=3#TextField" />
-    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/External%20Tool.uss?fileID=7433441132597879392&amp;guid=24e10b314967b554f903b40e9356bf0d&amp;type=3#External Tool" />
-    <ui:VisualElement class="visual-element-background visual-element-container" style="flex-grow: 0; flex-direction: row; align-items: flex-start; background-color: rgb(2, 2, 2); padding-left: 8px; margin-left: 4px; margin-right: 4px; margin-top: 8px; margin-bottom: 6px; border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; height: 70px; border-right-width: 0;">
-        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); justify-content: space-around;">
-            <ui:Label tabindex="-1" text="Element name" display-tooltip-when-elided="true" name="title" class="top-window-title" style="font-size: 22px; margin-bottom: 0; padding-bottom: 0; margin-top: 2px; padding-top: 2px; -unity-font-style: bold; color: rgb(255, 255, 255);" />
-            <ui:Label tabindex="-1" text="Subtitle" display-tooltip-when-elided="true" name="subtitle" style="padding-bottom: 2px; padding-top: 0; margin-top: 2px; margin-left: 5px; font-size: 16px; -unity-font-style: bold;" />
+    <Style src="project://database/Assets/_CBB/Stylesheets/Generic%20card.uss?fileID=7433441132597879392&amp;guid=61ab5981473d3bd469b1337728423570&amp;type=3#Generic card" />
+    <Style src="project://database/Assets/_CBB/Stylesheets/CBB-Style.uss?fileID=7433441132597879392&amp;guid=82cb7018893fc0040b707b6388cf3eb5&amp;type=3#CBB-Style" />
+    <ui:VisualElement class="card-background root-container">
+        <ui:VisualElement>
+            <ui:Label tabindex="-1" text="Element name" display-tooltip-when-elided="true" name="title" class="title" />
+            <ui:Label tabindex="-1" text="Subtitle" display-tooltip-when-elided="true" name="subtitle" class="subtitle" />
         </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column; align-items: flex-end; height: 68px; justify-content: flex-end; width: auto;">
-            <ui:Button display-tooltip-when-elided="true" tooltip="Delete" name="remove-button" style="border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; width: 33px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; align-items: center; justify-content: center; background-color: rgb(23, 23, 23); height: 33px;">
-                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/CBB%20External%20Tool/2DAssets/TrashDef.png?fileID=2800000&amp;guid=70234b08f23cbf24fbe7915b4083cede&amp;type=3#TrashDef&apos;); -unity-background-scale-mode: scale-to-fit; height: 6px; width: 14px; margin-left: 1px; margin-right: 1px; margin-top: 2px; margin-bottom: 2px; -unity-background-image-tint-color: rgb(204, 204, 204);" />
-            </ui:Button>
+        <ui:VisualElement>
+            <ui:Button display-tooltip-when-elided="true" tooltip="Delete" name="remove-button" class="remove-button" style="min-height: 15px; height: 15px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

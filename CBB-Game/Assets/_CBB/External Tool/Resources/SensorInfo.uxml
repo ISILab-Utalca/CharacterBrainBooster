@@ -1,6 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/External%20Tool.uss?fileID=7433441132597879392&amp;guid=24e10b314967b554f903b40e9356bf0d&amp;type=3#External Tool" />
-    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/AccionStyle.uss?fileID=7433441132597879392&amp;guid=21d0c9d84c018114cabe6ad793112d41&amp;type=3#AccionStyle" />
     <ui:VisualElement class="accion-background" style="flex-grow: 0; flex-direction: row;">
         <ui:VisualElement name="VisualElement" style="flex-grow: 9; background-color: rgba(0, 0, 0, 0); flex-direction: column; align-items: stretch; padding-bottom: 4px; margin-bottom: 4px; padding-left: 2px; margin-left: 2px;">
             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center;">

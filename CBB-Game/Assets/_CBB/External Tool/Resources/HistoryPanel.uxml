@@ -1,11 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/MonitorTextField.uss?fileID=7433441132597879392&amp;guid=b1ae81bb3415fba48bb3762b3b09de33&amp;type=3#MonitorTextField" />
-    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/ScrollStyle.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ScrollStyle" />
+    <Style src="project://database/Assets/_CBB/Stylesheets/ScrollStyle.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ScrollStyle" />
+    <Style src="project://database/Assets/_CBB/Stylesheets/History%20Panel.uss?fileID=7433441132597879392&amp;guid=9564431e30be5b541ac202de3eb4f598&amp;type=3#History Panel" />
+    <Style src="project://database/Assets/_CBB/Stylesheets/CBB-Style.uss?fileID=7433441132597879392&amp;guid=82cb7018893fc0040b707b6388cf3eb5&amp;type=3#CBB-Style" />
     <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column;">
-        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column; margin-left: 0; margin-right: 0; margin-top: 2px; margin-bottom: 2px; align-items: stretch; justify-content: space-between; flex-shrink: 1;">
-            <ui:Label tabindex="-1" text="Decisions history" display-tooltip-when-elided="true" name="title" class="title-letter" style="flex-grow: 1; flex-shrink: 1; color: rgb(255, 255, 255); -unity-font-style: bold; padding-left: 12px; padding-right: 8px; padding-top: 12px; padding-bottom: 14px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; font-size: 18px; background-color: rgb(10, 10, 10);" />
-            <ui:EnumField type="CBB.ExternalTool.HistoryPanel+ShowType, Assembly-CSharp" name="my-show-field" include-obsolete-values="false" value="Decisions" class="MyVisualElement my-arrow" style="flex-grow: 1; flex-shrink: 1; height: auto; width: 346px; margin-left: 12px; margin-right: 0; align-self: auto; justify-content: flex-start; align-items: stretch; overflow: visible; flex-direction: row; margin-top: 0; margin-bottom: 0; padding-top: 2px;" />
+        <ui:VisualElement class="title-card-container">
+            <ui:Label tabindex="-1" text="Decisions history" display-tooltip-when-elided="true" name="title" class="title-card" />
+            <ui:EnumField type="CBB.ExternalTool.HistoryPanel+ShowType, Assembly-CSharp" name="my-show-field" include-obsolete-values="false" value="Decisions" class="MyVisualElement my-arrow" style="flex-grow: 1; flex-shrink: 1; margin-left: 10px; margin-right: 0; overflow: visible; flex-direction: row; margin-top: 0; margin-bottom: 0; padding-top: 2px;" />
         </ui:VisualElement>
-        <ui:ListView focusable="true" virtualization-method="DynamicHeight" name="ListPrueba" show-foldout-header="false" horizontal-scrolling="false" class="my-scroll-vertical" style="height: 100%; color: rgb(255, 255, 255); flex-direction: column; flex-grow: 0; align-items: stretch; align-self: stretch; flex-basis: auto; flex-shrink: 1; justify-content: space-around;" />
+        <ui:ListView focusable="true" virtualization-method="DynamicHeight" show-foldout-header="false" horizontal-scrolling="false" class="my-scroll-vertical" style="height: 100%; color: rgb(255, 255, 255); flex-direction: column; flex-grow: 0; align-items: stretch; align-self: stretch; flex-basis: auto; flex-shrink: 1; justify-content: space-around;" />
     </ui:VisualElement>
 </ui:UXML>
