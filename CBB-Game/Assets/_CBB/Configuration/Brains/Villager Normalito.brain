@@ -10,7 +10,7 @@
       {
         "$id": "3",
         "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "ArtificialIntelligence.Utility.Actions.Wander",
+        "classType": "ArtificialIntelligence.Utility.Actions.RunAway",
         "values": {
           "$id": "4",
           "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
@@ -18,86 +18,31 @@
             {
               "$id": "5",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 2.0,
-              "name": "MinWaitTimer"
+              "value": 6.0,
+              "name": "safeDistance"
             },
             {
               "$id": "6",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 5.0,
-              "name": "MaxWaitTimer"
-            },
-            {
-              "$id": "7",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 10.0,
-              "name": "WalkRadius"
-            },
-            {
-              "$id": "8",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 0.2,
-              "name": "TickCheck"
-            },
-            {
-              "$id": "9",
-              "$type": "WrapperConsideration, Assembly-CSharp",
-              "configuration": {
-                "$id": "10",
-                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "Default",
-                "evaluationMethod": "Idle",
-                "curve": {
-                  "$id": "11",
-                  "$type": "Constant, Assembly-CSharp",
-                  "value": 0.04,
-                  "Inverted": false
-                },
-                "normalizeInput": false,
-                "minValue": 0.0,
-                "maxValue": 0.0
-              }
-            }
-          ]
-        },
-        "dataType": 0
-      },
-      {
-        "$id": "12",
-        "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "ArtificialIntelligence.Utility.Actions.RunAway",
-        "values": {
-          "$id": "13",
-          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
-          "$values": [
-            {
-              "$id": "14",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 3.0,
-              "name": "safeDistance"
-            },
-            {
-              "$id": "15",
-              "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 2.0,
+              "value": 8.0,
               "name": "runSpeed"
             },
             {
-              "$id": "16",
+              "$id": "7",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
               "value": 1.0,
               "name": "pauseAfterRunning"
             },
             {
-              "$id": "17",
+              "$id": "8",
               "$type": "WrapperConsideration, Assembly-CSharp",
               "configuration": {
-                "$id": "18",
+                "$id": "9",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
                 "considerationName": "Distance to threats",
                 "evaluationMethod": "DistanceToTarget",
                 "curve": {
-                  "$id": "19",
+                  "$id": "10",
                   "$type": "Exponential, Assembly-CSharp",
                   "value": 1.0,
                   "e": 4.0,
@@ -110,6 +55,61 @@
                 "normalizeInput": true,
                 "minValue": 0.0,
                 "maxValue": 10.0
+              }
+            }
+          ]
+        },
+        "dataType": 0
+      },
+      {
+        "$id": "11",
+        "$type": "Generic.DataGeneric, Assembly-CSharp",
+        "classType": "ArtificialIntelligence.Utility.Actions.Wander",
+        "values": {
+          "$id": "12",
+          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
+          "$values": [
+            {
+              "$id": "13",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 1.0,
+              "name": "MinWaitTimer"
+            },
+            {
+              "$id": "14",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 5.0,
+              "name": "MaxWaitTimer"
+            },
+            {
+              "$id": "15",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 10.0,
+              "name": "WalkRadius"
+            },
+            {
+              "$id": "16",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 0.2,
+              "name": "TickCheck"
+            },
+            {
+              "$id": "17",
+              "$type": "WrapperConsideration, Assembly-CSharp",
+              "configuration": {
+                "$id": "18",
+                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
+                "considerationName": "Default",
+                "evaluationMethod": "DistanceToTarget",
+                "curve": {
+                  "$id": "19",
+                  "$type": "Constant, Assembly-CSharp",
+                  "value": 0.06,
+                  "Inverted": false
+                },
+                "normalizeInput": false,
+                "minValue": 0.0,
+                "maxValue": 0.0
               }
             }
           ]
