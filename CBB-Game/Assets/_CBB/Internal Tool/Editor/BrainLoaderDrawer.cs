@@ -1,4 +1,5 @@
 using CBB.DataManagement;
+using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -60,6 +61,7 @@ public class BrainLoaderDrawer : Editor
         {
             brainNameProperty.stringValue = evt.newValue;
             serializedObject.ApplyModifiedProperties();
+            TryToUpdateBrain(evt.newValue);
         });
         dropdown.AddToClassList(BaseField<string>.alignedFieldUssClassName);
         textField.AddToClassList(BaseField<string>.alignedFieldUssClassName);
@@ -67,6 +69,18 @@ public class BrainLoaderDrawer : Editor
         container.Add(textField);
         container.Add(dropdown);
         return container;
+    }
+    /// <summary>
+    /// If the game is running, tries to update the brain of the agent
+    /// </summary>
+    /// <param name="newValue"></param>
+    /// <exception cref="NotImplementedException"></exception>
+    private void TryToUpdateBrain(string newValue)
+    {
+        if (Application.isPlaying)
+        {
+            Debug.Log("Updating brain: " + newValue);
+        }
     }
 
     private void ApplyAndSaveChanges()

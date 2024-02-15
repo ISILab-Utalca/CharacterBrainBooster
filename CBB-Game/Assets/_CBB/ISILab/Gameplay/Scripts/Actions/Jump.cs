@@ -32,7 +32,7 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         public override List<Option> GetOptions()
         {
-            return ScoreSingleOption(out Option option) != null ? new List<Option> { option } : null;
+            return ScoreMultipleOptions(LocalAgentMemory.HeardObjects);
         }
         protected override IEnumerator Act(GameObject target = null)
         {
