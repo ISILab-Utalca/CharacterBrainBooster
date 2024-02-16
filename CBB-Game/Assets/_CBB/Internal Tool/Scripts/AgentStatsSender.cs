@@ -30,10 +30,10 @@ namespace CBB.Api
     }
 
     /// <summary>
-    /// Allows an agent to send its data towards the external CBB server.
+    /// Allows an agent to send its data outside of the game
     /// </summary>
     [RequireComponent(typeof(IAgent),typeof(AgentBrain))]
-    public class AgentDataSender : MonoBehaviour
+    public class AgentStatsSender : MonoBehaviour
     {
         [SerializeField]
         private bool showLogs = false;
