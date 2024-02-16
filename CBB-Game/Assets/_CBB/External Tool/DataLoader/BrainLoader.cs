@@ -29,8 +29,6 @@ public class BrainLoader : MonoBehaviour
     #endregion
     [HideInInspector]
     public string m_brainName;
-    [SerializeField]
-    private bool showLogs = false;
 
     public string BrainName
     {
@@ -38,7 +36,6 @@ public class BrainLoader : MonoBehaviour
         set
         {
             m_brainName = value;
-            if (showLogs) Debug.Log($"[BRAIN LOADER] Brain name updated: {m_brainName}");
         }
     }
     private void Awake()
@@ -48,23 +45,25 @@ public class BrainLoader : MonoBehaviour
     }
     private void Start()
     {
-        // Check if the agent has a brain associated
-        var bindingData = BindingManager.AgentIDBrainID.data;
-        if (!bindingData.ContainsKey(m_agent_ID))
+        if(AgentHasBrain())
         {
-            Debug.LogWarning("Agent has no associated brain");
-            return;
+            SetupAgentBehaviour(brain);
+            agentBrain.TryStartNewAction();
         }
-        var brain_ID = bindingData[m_agent_ID];
-        brain = DataLoader.GetBrainByID(brain_ID);
-        InitializeAgentWithBrain(brain);
-        agentBrain.TryStartNewAction();
     }
     private void OnDestroy()
     {
         DataLoader.BrainUpdated -= ReadBrain;
     }
-    
+    private bool AgentHasBrain()
+    {
+        var bindingData = BindingManager.AgentIDBrainID.data;
+        if (!bindingData.ContainsKey(m_agent_ID)) return false;
+        
+        var brain_ID = bindingData[m_agent_ID];
+        brain = DataLoader.GetBrainByID(brain_ID);
+        return brain != null;
+    }
     /// <summary>
     /// Update the brain data with the current configuration
     /// </summary>
@@ -82,28 +81,25 @@ public class BrainLoader : MonoBehaviour
             Debug.LogWarning("This is not the brain associated with this agent");
             return;
         }
-        // All checked, update the brain
-        StartCoroutine(UpdateAgentBehaviourWithBrain(brain));
+        StartCoroutine(ResetAgentBehaviour(brain));
     }
     // NOTE: In order to not break the agent (stall, infinite loop, etc) is necessary
     // to pause the agent, update the brain and then resume the agent on several steps (frames)
-    private IEnumerator UpdateAgentBehaviourWithBrain(Brain brain)
+    private IEnumerator ResetAgentBehaviour(Brain brain)
     {
         var memento = GetMemento();
         agentBrain.Pause();
         yield return null;
 
-        InitializeAgentWithBrain(brain);
+        SetupAgentBehaviour(brain);
         BindingManager.UpdateAgentIDBrainIDBinding(memento, m_agent_ID, m_brainName);
         yield return null;
 
         agentBrain.Resume();
-        if (showLogs) Debug.Log($"[BRAIN LOADER] Agent updated with brain: {brain.brain_Name}");
     }
 
-    public void InitializeAgentWithBrain(Brain brain)
+    public void SetupAgentBehaviour(Brain brain)
     {
-        // Find monobehaviours refs
         GetBehaviourComponents();
 
         this.brain = brain;
