@@ -236,7 +236,16 @@ namespace CBB.Lib
         public string groupName;
         public string brainName;
         public string agentName;
-        public string agentID;
+        public int agentID;
+        public AgentBrainAssociation() { }
+        public AgentBrainAssociation(string agentTypeName, string groupName, string brainName, string agentName, int agentID)
+        {
+            this.agentTypeName = agentTypeName;
+            this.groupName = groupName;
+            this.brainName = brainName;
+            this.agentName = agentName;
+            this.agentID = agentID;
+        }
     }
 
 }
