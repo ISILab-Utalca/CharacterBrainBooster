@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [CustomEditor(typeof(BehaviourLoader))]
-public class BrainLoaderDrawer : Editor
+public class BehaviourLoaderDrawer : Editor
 {
     /// <summary>
     /// Holds the previous state of the BrainLoader

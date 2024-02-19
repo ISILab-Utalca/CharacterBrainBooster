@@ -1,10 +1,8 @@
 using ArtificialIntelligence.Utility;
-using CBB.Api;
 using CBB.Comunication;
 using CBB.DataManagement;
 using CBB.Lib;
 using Newtonsoft.Json;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
