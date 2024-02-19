@@ -378,7 +378,7 @@ namespace CBB.UI
             return () =>
             {
                 CloseFloatingPanels();
-                var floatingPanel = new FloatingPanel(sourceItems, this);
+                var floatingPanel = new FloatingPanel(sourceItems);
                 floatingPanel.ElementClicked += (data) =>
                 {
                     modifiedCollection.Add(data);
@@ -416,7 +416,6 @@ namespace CBB.UI
 
                 ResetTreeAndDisplayItem(newConsideration.configuration);
                 BrainTree.SetSelectionById(id);
-                Debug.Log("Add consideration");
             };
         }
         public void DisplayReceivedBrains(List<Brain> brains)
@@ -477,11 +476,6 @@ namespace CBB.UI
             {
                 return BrainTree.GetItemDataForIndex<Brain>(itemIndex);
             }
-            // Else, set the selected item by id. This forces the tree to update the selected item
-            // thus being able to traverse the tree upwards, since its only possible to ask for the parent
-            // of an item by index i.e. you can't ask for the parent of an item by its id, neither can
-            // get the index of an item by its id, since it changes dynamically.
-            // Use selection without notify to avoid triggering the selectedItemsChanged event causing an infinite loop
             BrainTree.SetSelectionByIdWithoutNotify(new List<int>() { parentId });
             return GetParentBrainFromIndex(BrainTree.selectedIndex);
         }

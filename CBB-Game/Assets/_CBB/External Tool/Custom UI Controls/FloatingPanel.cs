@@ -20,7 +20,7 @@ public class FloatingPanel : VisualElement
         // Do not close the panel if the user clicks on it
         this.RegisterCallback<MouseDownEvent>(evt => evt.StopPropagation());
     }
-    public FloatingPanel(List<DataGeneric> items, BrainEditor brainEditor) : this()
+    public FloatingPanel(List<DataGeneric> items) : this()
     {
         DisplayItems(items);
     }
