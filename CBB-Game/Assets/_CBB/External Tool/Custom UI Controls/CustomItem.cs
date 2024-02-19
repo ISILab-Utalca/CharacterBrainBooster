@@ -1,7 +1,6 @@
-﻿using CBB.ExternalTool;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 using UnityEngine;
-namespace CBB.UI
+namespace CBB.ExternalTool
 
 {
     public class CustomItem : VisualElement, IDataItem
@@ -24,19 +23,22 @@ namespace CBB.UI
         public object GetInstance() => this;
         public void HideActionButton()
         {
-            if(ActionButton != null)
+            if (ActionButton != null)
             {
                 ActionButton.style.display = DisplayStyle.None;
             }
         }
         public void ShowActionButton()
         {
-            if(ActionButton != null)
+            if (ActionButton != null)
             {
                 ActionButton.style.display = DisplayStyle.Flex;
             }
         }
-
+        public void SetFontSize(int fontSize)
+        {
+            ItemName.style.fontSize = fontSize;
+        }
     }
 
 }

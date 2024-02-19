@@ -1,0 +1,34 @@
+.button-add {
+    background-color: rgb(16, 16, 16);
+    display: flex;
+    visibility: visible;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    margin-left: 16px;
+    margin-right: 16px;
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.cbb-text-field {
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.cbb_tool-item-container {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.cbb_tool-item-container:hover {
+    background-color: rgb(33, 33, 33);
+}

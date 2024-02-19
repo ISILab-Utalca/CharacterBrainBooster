@@ -152,7 +152,7 @@ namespace ArtificialIntelligence.Utility
         [UnityEditor.MenuItem("Tools/Debug data loader path")]
         public static void GetAllSensors()
         {
-            Debug.Log("Data Loader PATH: " + DataLoader.Path);
+            Debug.Log("Data Loader PATH: " + BrainDataLoader.Path);
         }
         [UnityEditor.MenuItem("Tools/Log consideration methods")]
         public static void LogAllConsiderationMethods()
@@ -217,7 +217,9 @@ namespace ArtificialIntelligence.Utility
                 string capitalPattern = @"(?=\p{Lu})";
                 string[] result = Regex.Split(match.Value, capitalPattern);
                 // Join the words in the array with a space
-                return string.Join(" ", result);
+                var res = string.Join(" ", result);
+                // Remove any white space at the beggining
+                return res.TrimStart();
             }
             return className + "{An error ocurred}";
         }

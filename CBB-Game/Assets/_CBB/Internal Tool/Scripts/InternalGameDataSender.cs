@@ -28,7 +28,7 @@ public class InternalGameDataSender
     private static void SendGameData(TcpClient client)
     {
         // Collect the brains from the project
-        DataLoader.SendBrains(client);
+        BrainDataLoader.SendBrains(client);
 
         // Send all actions as data Generic
         List<DataGeneric> dataContainer = new();

@@ -1,6 +1,5 @@
 using ArtificialIntelligence.Utility;
 using CBB.Api;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,11 +8,11 @@ namespace CBB.Lib
     [System.Serializable]
     public class SensorStatus
     {
-        public Type sensorType;
+        public System.Type sensorType;
         public Dictionary<string, object> configurations = new();
         public Dictionary<string, object> memory = new();
         public SensorStatus() { }
-        public SensorStatus(Type sensorType, Dictionary<string, object> config, Dictionary<string, object> memory)
+        public SensorStatus(System.Type sensorType, Dictionary<string, object> config, Dictionary<string, object> memory)
         {
             this.sensorType = sensorType;
             this.configurations = config;
@@ -40,7 +39,7 @@ namespace CBB.Lib
         /// </summary>
         public SensorActivation()
         {
-            activationTime = DateTime.Now.ToString();
+            activationTime = System.DateTime.Now.ToString();
         }
         public SensorActivation(string sensorName, string activator, string activationTime, int agentID)
         {
@@ -53,11 +52,11 @@ namespace CBB.Lib
     [System.Serializable]
     public class AgentBrainData
     {
-        public Type ownerType;
+        public System.Type ownerType;
         public string brainName;
         public AgentBrainData() { }
 
-        public AgentBrainData(Type owner, string name)
+        public AgentBrainData(System.Type owner, string name)
         {
             ownerType = owner;
             brainName = name;
@@ -70,7 +69,7 @@ namespace CBB.Lib
     [System.Serializable]
     public class AgentData
     {
-        public Type AgentType;
+        public System.Type AgentType;
         public string agentName;
         public int ID;
         public AgentBrainData BrainData;
@@ -82,7 +81,7 @@ namespace CBB.Lib
             agentName = name;
             ID = id;
         }
-        public AgentData(Type agentType, AgentBrainData brainData, List<SensorStatus> sensorsData)
+        public AgentData(System.Type agentType, AgentBrainData brainData, List<SensorStatus> sensorsData)
         {
             this.AgentType = agentType;
             this.BrainData = brainData;
@@ -157,11 +156,11 @@ namespace CBB.Lib
     [System.Serializable]
     public class AgentStateVariable
     {
-        public Type variableType;
+        public System.Type variableType;
         public string variableName;
         public object value;
         public AgentStateVariable() { }
-        public AgentStateVariable(Type variableType, string variableName, object value)
+        public AgentStateVariable(System.Type variableType, string variableName, object value)
         {
             this.variableType = variableType;
             this.value = value;
@@ -188,7 +187,7 @@ namespace CBB.Lib
         }
     }
     /// <summary>
-    /// Plain Old C# Object to store the configuration set
+    /// Plain C# Object to store the configuration set
     /// on this Consideration in the editor <see cref="ConsiderationEditor"/>
     /// </summary>
     [System.Serializable]
@@ -229,4 +228,24 @@ namespace CBB.Lib
         public object GetInstance() => this;
 
     }
+
+    [System.Serializable]
+    public class AgentBrainAssociation
+    {
+        public string agentTypeName;
+        public string groupName;
+        public string brainName;
+        public string agentName;
+        public int agentID;
+        public AgentBrainAssociation() { }
+        public AgentBrainAssociation(string agentTypeName, string groupName, string brainName, string agentName, int agentID)
+        {
+            this.agentTypeName = agentTypeName;
+            this.groupName = groupName;
+            this.brainName = brainName;
+            this.agentName = agentName;
+            this.agentID = agentID;
+        }
+    }
+
 }

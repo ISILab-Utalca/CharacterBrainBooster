@@ -8,7 +8,7 @@ namespace ArtificialIntelligence.Utility
     /// <summary>
     /// Gives an agent its capacity to think and take decisions
     /// </summary>
-    [RequireComponent(typeof(BrainLoader))]
+    [RequireComponent(typeof(BehaviourLoader))]
     public class AgentBrain : MonoBehaviour, IAgentBrain
     {
         [SerializeField, Tooltip("The brain will tell the Utility System class to pick an option based on this heuristic")]
@@ -21,10 +21,10 @@ namespace ArtificialIntelligence.Utility
 
         [SerializeField]
         private bool viewLogs = false;
-        private ActionRunner _actionRunner;
+        private ActionRunner m_actionRunner;
 
         [SerializeField]
-        private bool _isPaused = false;
+        private bool m_isPaused = false;
         public UtilityDecisionMaker.PickMethod PickMethod { get => _pickMethod; set => _pickMethod = value; }
         public int TopN { get => topN; set => topN = value; }
 
@@ -39,8 +39,8 @@ namespace ArtificialIntelligence.Utility
 
         private void Awake()
         {
-            _actionRunner = gameObject.AddComponent<ActionRunner>();
-            _actionRunner.OnFinishedExecution += TryStartNewAction;
+            m_actionRunner = gameObject.AddComponent<ActionRunner>();
+            m_actionRunner.OnFinishedExecution += TryStartNewAction;
 
         }
         
@@ -48,7 +48,7 @@ namespace ArtificialIntelligence.Utility
         private void OnDisable()
         {
             UnsubscribeFromSensors(Sensors);
-            _actionRunner.OnFinishedExecution -= TryStartNewAction;
+            m_actionRunner.OnFinishedExecution -= TryStartNewAction;
         }
 
         private void StartNewActionAfterSensorActivation(SensorActivation sensorActivation)
@@ -57,11 +57,11 @@ namespace ArtificialIntelligence.Utility
         }
         public void TryStartNewAction()
         {
-            if (_isPaused) return;
+            if (m_isPaused) return;
             Option newOption = GetNewOption();
             if (newOption != null && newOption.Score != 0)
             {
-                _actionRunner.ExecuteOption(newOption);
+                m_actionRunner.ExecuteOption(newOption);
             }
             else
             {
@@ -76,7 +76,7 @@ namespace ArtificialIntelligence.Utility
                 {
                     newOption.Action = gameObject.AddComponent<Idle>();
                 }
-                _actionRunner.ExecuteOption(newOption);
+                m_actionRunner.ExecuteOption(newOption);
             }
         }
         private Option GetNewOption()
@@ -109,14 +109,14 @@ namespace ArtificialIntelligence.Utility
         /// </summary>
         public void Pause()
         {
-            _isPaused = true;
+            m_isPaused = true;
         }
         /// <summary>
         /// Resume the behaviour of this agent, i.e. starts thinking and taking decisions
         /// </summary>
         public void Resume()
         {
-            _isPaused = false;
+            m_isPaused = false;
             TryStartNewAction();
         }
 

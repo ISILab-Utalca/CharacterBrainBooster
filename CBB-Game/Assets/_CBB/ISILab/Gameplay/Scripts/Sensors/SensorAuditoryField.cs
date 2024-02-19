@@ -49,35 +49,30 @@ public class SensorAuditoryField : Sensor, IGeneric
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!hearingTags.Contains(other.tag))
-            return;
-
-        if (viewLogs)
-            Debug.Log($"Object detected: {other.name}");
-
+        if (!hearingTags.Contains(other.tag)) return;
         heardObjects.Add(other.gameObject);
         _agentMemory.HeardObjects.Add(other.gameObject);
+        if (!UpdateOnEnter) return;
+        if (viewLogs) Debug.Log($"Object detected: {other.name}");
 
-        if (UpdateOnEnter)
-        {
-            var name = HelperFunctions.SplitStringUppercase(GetType().Name);
-            var sa = new SensorActivation(name, other.gameObject.name, DateTime.Now.ToString(), agentID);
-            OnSensorUpdate?.Invoke(sa);
-        }
+
+        var name = HelperFunctions.SplitStringUppercase(GetType().Name);
+        var sa = new SensorActivation(name, other.gameObject.name, DateTime.Now.ToString(), agentID);
+        OnSensorUpdate?.Invoke(sa);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!hearingTags.Contains(other.tag)) return;
-        if (viewLogs) Debug.Log($"Object lost: {other.name}");
         heardObjects.Remove(other.gameObject);
         _agentMemory.HeardObjects.Remove(other.gameObject);
-        if (UpdateOnExit)
-        {
-            var name = HelperFunctions.SplitStringUppercase(GetType().Name);
-            var sa = new SensorActivation(name, other.gameObject.name, DateTime.Now.ToString(), agentID);
-            OnSensorUpdate?.Invoke(sa);
-        }
+        if (!UpdateOnExit) return;
+        if (viewLogs) Debug.Log($"Object exited: {other.name}");
+
+
+        var name = HelperFunctions.SplitStringUppercase(GetType().Name);
+        var sa = new SensorActivation(name, other.gameObject.name, DateTime.Now.ToString(), agentID);
+        OnSensorUpdate?.Invoke(sa);
     }
 
     [ContextMenu("Serialize sensor")]
@@ -129,7 +124,7 @@ public class SensorAuditoryField : Sensor, IGeneric
 
     public override DataGeneric GetGeneric()
     {
-        var data = new DataGeneric(DataGeneric.DataType.Sensor) { ClassType = GetType()};
+        var data = new DataGeneric(DataGeneric.DataType.Sensor) { ClassType = GetType() };
 
         data.Add(new WraperNumber { name = "HearingRadius", value = this.HearingRadius });
         return data;
