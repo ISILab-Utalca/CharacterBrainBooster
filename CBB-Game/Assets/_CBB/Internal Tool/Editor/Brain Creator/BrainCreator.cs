@@ -55,8 +55,8 @@ namespace CBB.InternalTool
             {
                 foreach (var b in brainEditor.Brains)
                 {
-                    DataLoader.SaveBrain(b);
-                    DataLoader.BrainUpdated?.Invoke(b);
+                    BrainDataLoader.SaveBrain(b);
+                    BrainDataLoader.BrainUpdated?.Invoke(b);
                 }
             };
         }
@@ -86,7 +86,7 @@ namespace CBB.InternalTool
             var methodNames = cm.Select(m => m.Name).ToList();
             brainEditor.EvaluationMethods = methodNames;
         }
-        private void LoadBrainsInto(BrainEditor be) => be.SetBrains(DataLoader.GetAllBrains());
+        private void LoadBrainsInto(BrainEditor be) => be.SetBrains(BrainDataLoader.GetAllBrains());
         
     }
 }
