@@ -14,7 +14,7 @@ namespace ISILab
             Debug.Log("Path to build: " + pathToBuild);
 
             // Copy all .brain files from the project folder to the build folder, alongside the built game.
-            string root = DataLoader.Path;
+            string root = BrainDataLoader.Path;
             string[] files = System.IO.Directory.GetFiles(root, "*.brain");
 
             // Remove the last part of pathToBuild, which is the name of the game

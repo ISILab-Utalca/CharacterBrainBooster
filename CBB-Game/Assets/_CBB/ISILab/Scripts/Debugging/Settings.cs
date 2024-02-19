@@ -12,7 +12,7 @@ namespace CBB.InternalTool.DebugTools
         }
         public void LogDataPaths()
         {
-            Debug.Log("DataLoader Path: " + DataManagement.DataLoader.Path);
+            Debug.Log("DataLoader Path: " + DataManagement.BrainDataLoader.Path);
             Debug.Log("BindingManager Path: " + DataManagement.BindingManager.Path);
         }
     }

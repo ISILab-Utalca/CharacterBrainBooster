@@ -152,7 +152,7 @@ namespace ArtificialIntelligence.Utility
         [UnityEditor.MenuItem("Tools/Debug data loader path")]
         public static void GetAllSensors()
         {
-            Debug.Log("Data Loader PATH: " + DataLoader.Path);
+            Debug.Log("Data Loader PATH: " + BrainDataLoader.Path);
         }
         [UnityEditor.MenuItem("Tools/Log consideration methods")]
         public static void LogAllConsiderationMethods()

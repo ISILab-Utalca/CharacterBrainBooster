@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[CustomEditor(typeof(BrainLoader))]
+[CustomEditor(typeof(BehaviourLoader))]
 public class BrainLoaderDrawer : Editor
 {
     /// <summary>
@@ -13,7 +13,7 @@ public class BrainLoaderDrawer : Editor
     /// </summary>
     class Caretaker
     {
-        public BrainLoader.Memento Memento { get; set; }
+        public BehaviourLoader.Memento Memento { get; set; }
     }
 
     Caretaker caretaker;
@@ -23,13 +23,13 @@ public class BrainLoaderDrawer : Editor
     {
         caretaker = new Caretaker
         {
-            Memento = ((BrainLoader)serializedObject.targetObject).GetMemento()
+            Memento = ((BehaviourLoader)serializedObject.targetObject).GetMemento()
         };
 
         var brainNameProperty = serializedObject.FindProperty("m_brainName");
         var agentIDProperty = serializedObject.FindProperty("m_agent_ID");
 
-        var brainFiles = DataLoader.GetAllBrainFiles();
+        var brainFiles = BrainDataLoader.GetAllBrainFiles();
         var brainNames = new System.Collections.Generic.List<string>() { };
 
 
