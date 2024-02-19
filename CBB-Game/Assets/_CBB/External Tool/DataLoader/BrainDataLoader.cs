@@ -8,7 +8,7 @@ using ArtificialIntelligence.Utility;
 
 namespace CBB.DataManagement
 {
-    public static class DataLoader
+    public static class BrainDataLoader
     {
         private static List<Brain> brains = new();
         public static System.Action<Brain> BrainUpdated { get; set; }
@@ -71,13 +71,11 @@ namespace CBB.DataManagement
                     brains.Add(brain);
                 }
             }
-            Debug.Log("Loaded: " + brains.Count + " brains.");
         }
 
         public static System.IO.FileInfo[] GetAllBrainFiles()
         {
             System.IO.DirectoryInfo dir = new(Path);
-            Debug.Log("Loading brains from: " + dir.FullName);
             var files = dir.GetFiles("*.brain");
             return files;
         }
@@ -101,7 +99,6 @@ namespace CBB.DataManagement
             }
             JSONDataManager.SaveData(Path, brain.brain_Name + ".brain", brain);
             BindingManager.SaveBrainIDFilenameBinding(brain);
-            Debug.Log($"Brain {brain.brain_ID} saved to: {Path + "/" + brain.brain_Name}.brain");
         }
 
         /// <summary>
@@ -147,7 +144,6 @@ namespace CBB.DataManagement
             };
 
             var serializedBrains = JsonConvert.SerializeObject(brains, settings);
-            Debug.Log(serializedBrains);
             Server.SendMessageToClient(client, serializedBrains);
 
             var considerationEvaluationMethods = ConsiderationMethods.GetAllMethodNames();
@@ -155,29 +151,5 @@ namespace CBB.DataManagement
             Server.SendMessageToClient(client, serializedMethods);
         }
         #endregion
-    }
-
-    [System.Serializable]
-    public class PairBrainData
-    {
-        [System.Serializable]
-        public class PairBrain
-        {
-            public string data_ID;
-            public string brain_ID;
-        }
-
-        public List<PairBrain> pairs = new();
-
-        internal void Add(PairBrain pairBrain)
-        {
-            if (pairs.Any(p => p.data_ID == pairBrain.data_ID))
-            {
-                Debug.LogWarning(" Data ID already exists.");
-                return;
-            }
-
-            pairs.Add(pairBrain);
-        }
     }
 }

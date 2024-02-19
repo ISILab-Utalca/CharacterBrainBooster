@@ -1,35 +1,37 @@
 using ArtificialIntelligence.Utility;
+using CBB.Api;
+using CBB.Comunication;
 using CBB.DataManagement;
+using CBB.Lib;
+using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEngine;
 
-public class BrainLoader : MonoBehaviour
+public class BehaviourLoader : MonoBehaviour
 {
     public class Memento
     {
         private readonly string m_brainName;
-        private string m_agent_ID;
-        public string Agent_ID { get => m_agent_ID; private set => m_agent_ID = value; }
+        private string m_subGroupName;
+        public string SubGroupName { get => m_subGroupName; private set => m_subGroupName = value; }
         public Memento(string brainName, string agent_ID)
         {
             this.m_brainName = brainName;
-            this.m_agent_ID = agent_ID;
+            this.m_subGroupName = agent_ID;
         }
     }
     #region Fields
-
     public string m_agent_ID;
-
     private List<ActionState> actionStates = new();
     private List<Sensor> sensors = new();
-
     private Brain brain;
     private AgentBrain agentBrain;
-    #endregion
     [HideInInspector]
     public string m_brainName;
-
+    #endregion
     public string BrainName
     {
         get => m_brainName;
@@ -38,14 +40,25 @@ public class BrainLoader : MonoBehaviour
             m_brainName = value;
         }
     }
+
     private void Awake()
     {
         agentBrain = GetComponent<AgentBrain>();
-        DataLoader.BrainUpdated += ReadBrain;
+        BrainDataLoader.BrainUpdated += UpdateBehaviour;
+        Server.OnNewClientConnected += SendBindingData;
     }
+
+    private void SendBindingData(TcpClient client)
+    {
+        var association = new AgentBrainAssociation("agentType", GetMemento().SubGroupName, m_brainName, gameObject.name, gameObject.GetInstanceID());
+        var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, NullValueHandling = NullValueHandling.Include };
+        var serializedMessage = JsonConvert.SerializeObject(association, settings);
+        Server.SendMessageToClient(client, serializedMessage);
+    }
+
     private void Start()
     {
-        if(AgentHasBrain())
+        if (AgentHasBrain())
         {
             SetupAgentBehaviour(brain);
             agentBrain.TryStartNewAction();
@@ -53,22 +66,20 @@ public class BrainLoader : MonoBehaviour
     }
     private void OnDestroy()
     {
-        DataLoader.BrainUpdated -= ReadBrain;
+        BrainDataLoader.BrainUpdated -= UpdateBehaviour;
+        Server.OnNewClientConnected -= SendBindingData;
     }
+
     private bool AgentHasBrain()
     {
         var bindingData = BindingManager.AgentIDBrainID.data;
         if (!bindingData.ContainsKey(m_agent_ID)) return false;
-        
+
         var brain_ID = bindingData[m_agent_ID];
-        brain = DataLoader.GetBrainByID(brain_ID);
+        brain = BrainDataLoader.GetBrainByID(brain_ID);
         return brain != null;
     }
-    /// <summary>
-    /// Update the brain data with the current configuration
-    /// </summary>
-    /// <param name="brain"></param>
-    public void ReadBrain(Brain brain)
+    public void UpdateBehaviour(Brain brain)
     {
         var bindingData = BindingManager.AgentIDBrainID.data;
         if (!bindingData.ContainsKey(m_agent_ID))
@@ -83,10 +94,10 @@ public class BrainLoader : MonoBehaviour
         }
         StartCoroutine(ResetAgentBehaviour(brain));
     }
-    // NOTE: In order to not break the agent (stall, infinite loop, etc) is necessary
-    // to pause the agent, update the brain and then resume the agent on several steps (frames)
     private IEnumerator ResetAgentBehaviour(Brain brain)
     {
+        // NOTE: In order to not break the agent (stall, infinite loop, etc) is necessary
+        // to pause the agent, update the brain and then resume the agent on several steps (frames)
         var memento = GetMemento();
         agentBrain.Pause();
         yield return null;
@@ -97,7 +108,6 @@ public class BrainLoader : MonoBehaviour
 
         agentBrain.Resume();
     }
-
     public void SetupAgentBehaviour(Brain brain)
     {
         GetBehaviourComponents();
@@ -144,25 +154,21 @@ public class BrainLoader : MonoBehaviour
 
         agentBrain.ReloadBehaviours();
     }
-
     public void GetBehaviourComponents()
     {
         GetAssignedActions();
         GetAssignedSensors();
     }
-
     private void GetAssignedActions()
     {
         actionStates.Clear();
         actionStates.AddRange(gameObject.GetComponentsOnHierarchy<ActionState>());
     }
-
     private void GetAssignedSensors()
     {
         sensors.Clear();
         sensors.AddRange(gameObject.GetComponentsOnHierarchy<Sensor>());
     }
-
     public Memento GetMemento()
     {
         return new Memento(m_brainName, m_agent_ID);
