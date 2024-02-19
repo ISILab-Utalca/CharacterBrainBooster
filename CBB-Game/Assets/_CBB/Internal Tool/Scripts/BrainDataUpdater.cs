@@ -41,8 +41,8 @@ namespace CBB.InternalTool
         private static void UpdateBrain(string msg)
         {
             var brain = JsonConvert.DeserializeObject<Brain>(msg, settings);
-            DataLoader.SaveBrain(brain);
-            DataLoader.BrainUpdated?.Invoke(brain);
+            BrainDataLoader.SaveBrain(brain);
+            BrainDataLoader.BrainUpdated?.Invoke(brain);
         }
     }
 }

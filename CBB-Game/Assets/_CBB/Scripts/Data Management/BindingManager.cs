@@ -11,15 +11,17 @@ namespace CBB.DataManagement
     {
         private const string BIND_BRAIN_ID_FILENAME = "Brain ID - Brain File Name";
         private const string BIND_AGENT_ID_BRAIN_ID = "Agent ID - Brain ID";
-        private const string BIND_FORMAT = ".data";
+        private const string FILE_FORMAT = ".data";
 
         private static Binding m_agentIDBrainID;
         private static Binding m_brainIDFileName;
+
+
         public static Binding AgentIDBrainID
         {
             get
             {
-                m_agentIDBrainID ??= LoadBinding(new DataFileProperties(Path, BIND_AGENT_ID_BRAIN_ID, BIND_FORMAT));
+                m_agentIDBrainID ??= LoadBinding(new DataFileProperties(Path, BIND_AGENT_ID_BRAIN_ID, FILE_FORMAT));
                 return m_agentIDBrainID;
             }
             set { m_agentIDBrainID = value; }
@@ -28,7 +30,7 @@ namespace CBB.DataManagement
         {
             get
             {
-                m_brainIDFileName ??= LoadBinding(new DataFileProperties(Path, BIND_BRAIN_ID_FILENAME, BIND_FORMAT));
+                m_brainIDFileName ??= LoadBinding(new DataFileProperties(Path, BIND_BRAIN_ID_FILENAME, FILE_FORMAT));
                 return m_brainIDFileName;
             }
             set { m_brainIDFileName = value; }
@@ -91,18 +93,18 @@ namespace CBB.DataManagement
             using System.IO.StreamWriter sw = System.IO.File.CreateText(dataFile.GetFullPath());
             sw.WriteLine(JsonConvert.SerializeObject(binding, Formatting.Indented));
         }
-        public static void UpdateAgentIDBrainIDBinding(BrainLoader.Memento memento, string newAgentID, string newBrainName)
+        public static void UpdateAgentIDBrainIDBinding(BehaviourLoader.Memento memento, string newAgentID, string newBrainName)
         {
             // Remove the previous binding from the memory
-            if (AgentIDBrainID.data.ContainsKey(memento.Agent_ID))
+            if (AgentIDBrainID.data.ContainsKey(memento.SubGroupName))
             {
-                AgentIDBrainID.data.Remove(memento.Agent_ID);
+                AgentIDBrainID.data.Remove(memento.SubGroupName);
             }
             // Add the new binding to the memory
-            var brain = DataLoader.GetBrainByName(newBrainName);
+            var brain = BrainDataLoader.GetBrainByName(newBrainName);
             AgentIDBrainID.data.Add(newAgentID, brain.brain_ID);
             // Save the new binding to the disk
-            DataFileProperties agentBrainAssociationProperties = new(Path, BIND_AGENT_ID_BRAIN_ID, BIND_FORMAT);
+            DataFileProperties agentBrainAssociationProperties = new(Path, BIND_AGENT_ID_BRAIN_ID, FILE_FORMAT);
             SaveBinding(agentBrainAssociationProperties, AgentIDBrainID);
         }
         public static void SaveBrainIDFilenameBinding(Brain brain)
@@ -115,7 +117,7 @@ namespace CBB.DataManagement
             {
                 BrainIDFileName.data.Add(brain.brain_ID, brain.brain_Name);
             }
-            DataFileProperties bindingProperties = new(Path, BIND_BRAIN_ID_FILENAME, BIND_FORMAT);
+            DataFileProperties bindingProperties = new(Path, BIND_BRAIN_ID_FILENAME, FILE_FORMAT);
             SaveBinding(bindingProperties, BrainIDFileName);
         }
     }
