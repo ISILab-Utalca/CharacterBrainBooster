@@ -1,9 +1,20 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/_CBB/Internal%20Tool/Editor/Tags%20Manager/TagsManagerWindow.uss?fileID=7433441132597879392&amp;guid=27defba1020cda345b1cda837bbc69ca&amp;type=3#TagsManagerWindow" />
-    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-        <ui:Label tabindex="-1" text="Collections" display-tooltip-when-elided="true" />
-        <ui:ListView focusable="true" show-add-remove-footer="false" name="collections-list-view" show-border="true" virtualization-method="DynamicHeight" />
-        <ui:Button text="Add" display-tooltip-when-elided="true" name="add-collection" />
-        <ui:Button text="Remove" display-tooltip-when-elided="true" name="remove-collection" />
+    <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement class="container-vertical">
+            <ui:Label tabindex="-1" text="Collections" display-tooltip-when-elided="true" class="title" />
+            <ui:ListView focusable="true" show-add-remove-footer="false" name="collections-list-view" show-border="true" virtualization-method="DynamicHeight" show-alternating-row-backgrounds="ContentOnly" />
+            <ui:Button text="Add" display-tooltip-when-elided="true" name="add-collection" />
+            <ui:Button text="Remove" display-tooltip-when-elided="true" name="remove-collection" />
+        </ui:VisualElement>
+        <ui:VisualElement name="collection-details-container" class="container-vertical" style="flex-grow: 1;">
+            <ui:Label tabindex="-1" text="No collection selected" display-tooltip-when-elided="true" name="tags-title" class="title" />
+            <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-direction: row; border-left-color: rgb(89, 89, 89); border-right-color: rgb(89, 89, 89); border-top-color: rgb(89, 89, 89); border-bottom-color: rgb(89, 89, 89); border-left-width: 3px; border-right-width: 3px; border-top-width: 3px; border-bottom-width: 3px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;">
+                <ui:TextField picking-mode="Ignore" label="New tag" value="tag name" name="new-tag-text-field" />
+                <ui:Button text="Add tag" display-tooltip-when-elided="true" name="add-tag" />
+            </ui:VisualElement>
+            <ui:ListView focusable="true" name="tags-list-view" show-alternating-row-backgrounds="ContentOnly" show-border="true" virtualization-method="DynamicHeight" />
+            <ui:Button text="Remove tag" display-tooltip-when-elided="true" name="remove-tag" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

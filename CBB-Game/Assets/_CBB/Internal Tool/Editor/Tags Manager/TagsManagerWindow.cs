@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,8 +15,13 @@ namespace CBB.DataManagement
         private ListView m_collectionsListView;
         private Button m_addCollection;
         private Button m_removeCollection;
-        private Button m_saveCollections;
-        [MenuItem("CBB/Tags Manager Window")]
+        private ListView m_tagsListView;
+        private Label m_tagsTitle;
+        private TextField m_newTagTextField;
+        private Button m_addTag;
+        private TagCollection m_currentCollection;
+
+        [MenuItem("CBB/Tags Manager Window #&q")]
         public static void ShowExample()
         {
             TagsManagerWindow wnd = GetWindow<TagsManagerWindow>();
@@ -33,23 +39,107 @@ namespace CBB.DataManagement
 
             GetReferences();
             LoadCollections();
-            ConfigureListView();
+            ConfigureCollectionsListView();
+            ConfigureTagsListView();
+            SetRemoveCollectionCallback();
             SetButtonCreateNewCollectionCallback();
+            SetNewTagButton();
             HandleFloatingPanel();
         }
 
-        private void ConfigureListView()
+        private void SetNewTagButton()
+        {
+            m_addTag.clicked += AddNewTag;
+        }
+
+        private void AddNewTag()
+        {
+            if (m_currentCollection == null)
+            {
+                Debug.LogError("No collection selected");
+                return;
+            }
+            if (!NewTagNameIsValid()) return;
+            var tagName = m_newTagTextField.value.Trim();
+            m_currentCollection.Tags.Add(tagName);
+            m_tagsListView.RefreshItems();
+        }
+
+        private bool NewTagNameIsValid()
+        {
+            if (string.IsNullOrEmpty(m_newTagTextField.value))
+            {
+                Debug.LogError("Tag name cannot be empty");
+                return false;
+            }
+            return true;
+        }
+
+        private void OnDestroy()
+        {
+            SaveTagCollections();
+        }
+        private void ConfigureCollectionsListView()
         {
             m_collectionsListView.makeItem = MakeItem;
             m_collectionsListView.bindItem = BindItem;
             m_collectionsListView.itemsSource = m_collections;
+            m_collectionsListView.selectionChanged += OnClickedCollection;
         }
 
         private void BindItem(VisualElement element, int index)
         {
             (element as Label).text = m_collections[index].name;
         }
+        private void OnClickedCollection(IEnumerable<object> item)
+        {
+            var collection = item.First() as TagCollection;
+            m_currentCollection = collection;
+            DisplayCollection(collection);
+        }
 
+        private void DisplayCollection(TagCollection tagCollection)
+        {
+            m_tagsListView.Clear();
+            m_tagsListView.itemsSource = tagCollection.Tags;
+            m_tagsListView.RefreshItems();
+
+            m_tagsTitle.text = tagCollection.name;
+        }
+        private void ConfigureTagsListView()
+        {
+            m_tagsListView.Clear();
+            m_tagsListView.makeItem = MakeItem;
+            m_tagsListView.bindItem = BindTagItem;
+        }
+
+        private void BindTagItem(VisualElement element, int index)
+        {
+            (element as Label).text = m_currentCollection.Tags[index];
+        }
+        private void RemoveCollection()
+        {
+            if (!CanRemoveCollection()) return;
+            var collection = m_collectionsListView.selectedItem as TagCollection;
+            m_collections.Remove(collection);
+            ResetTagPanel();
+            TagsManager.RemoveCollection(collection.name);
+            m_collectionsListView.RefreshItems();
+        }
+        private void ResetTagPanel()
+        {
+            m_tagsListView.Clear();
+            m_tagsTitle.text = "No collection selected";
+            m_currentCollection = null;
+        }
+        private bool CanRemoveCollection()
+        {
+            if (m_collections == null) return false;
+            if (m_collections.Count == 0) return false;
+            if (m_collectionsListView == null) return false;
+            if (m_collectionsListView.selectedIndex == -1) return false;
+            return true;
+        }
         private VisualElement MakeItem()
         {
             return new Label();
@@ -75,7 +165,15 @@ namespace CBB.DataManagement
         {
             m_collectionsListView = rootVisualElement.Q<ListView>("collections-list-view");
             m_addCollection = rootVisualElement.Q<Button>("add-collection");
-            m_removeCollection = m_collectionsListView.Q<Button>("remove-collection");
+            m_tagsListView = rootVisualElement.Q<ListView>("tags-list-view");
+            m_tagsTitle = rootVisualElement.Q<Label>("tags-title");
+            m_newTagTextField = rootVisualElement.Q<TextField>("new-tag-text-field");
+            m_addTag = rootVisualElement.Q<Button>("add-tag");
+            m_removeCollection = rootVisualElement.Q<Button>("remove-collection");
+        }
+        private void SetRemoveCollectionCallback()
+        {
+            m_removeCollection.clicked += RemoveCollection;
         }
         private void SetButtonCreateNewCollectionCallback()
         {
@@ -95,6 +193,7 @@ namespace CBB.DataManagement
             TagCollection newCollection = new(name);
             m_collections.Add(newCollection);
             m_collectionsListView.RefreshItems();
+            TagsManager.SaveTagCollection(name, newCollection);
         }
 
         private void LoadCollections()
@@ -108,5 +207,5 @@ namespace CBB.DataManagement
                 TagsManager.SaveTagCollection(collection.name, collection);
             }
         }
-    } 
+    }
 }

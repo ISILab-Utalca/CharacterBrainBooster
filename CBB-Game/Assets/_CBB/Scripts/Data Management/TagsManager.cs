@@ -1,12 +1,11 @@
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
 namespace CBB.DataManagement
 {
+    [System.Serializable]
     public class TagCollection
     {
         public string name;
@@ -32,32 +31,22 @@ namespace CBB.DataManagement
                 return Application.dataPath + "/_CBB/Configuration/Tags";
             }
         }
+
         public static void SaveTagCollection(string fileName, TagCollection tagCollection)
         {
             if (tagCollection == null) return;
             
-            var filePath = Path + fileName + FILE_EXTENSION;
+            var filePath = Path + "/" + fileName + FILE_EXTENSION;
             
             if (!File.Exists(filePath))
             {
-                File.Create(filePath);
+                // Create the file
+                File.Create(filePath).Dispose();
             }
 
             string json = JsonConvert.SerializeObject(tagCollection, m_settings);
             File.WriteAllText(filePath, json);
         }
-
-        public static TagCollection ReadTagCollection(string filePath)
-        {
-            if (File.Exists(filePath))
-            {
-                string json = File.ReadAllText(filePath);
-                return JsonConvert.DeserializeObject<TagCollection>(json, m_settings);
-
-            }
-            return null;
-        }
-
         public static List<TagCollection> GetAllCollections()
         {
             // Read each file in the path directory and load their contents
@@ -69,6 +58,8 @@ namespace CBB.DataManagement
             string[] files = Directory.GetFiles(Path);
             foreach (string file in files)
             {
+                if (!file.EndsWith(FILE_EXTENSION)) continue;
+                
                 TagCollection collection = ReadTagCollection(file);
                 if (collection != null)
                 {
@@ -76,6 +67,31 @@ namespace CBB.DataManagement
                 }
             }
             return collections;
+        }
+        public static TagCollection ReadTagCollection(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+                return JsonConvert.DeserializeObject<TagCollection>(json, m_settings);
+
+            }
+            return null;
+        }
+
+        public static void RemoveCollection(string name)
+        {
+            string filePath = GetFilePath(name);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+                File.Delete(filePath + ".meta");
+            }
+        }
+
+        private static string GetFilePath(string name)
+        {
+            return Path + "/" + name + FILE_EXTENSION;
         }
     }
 }
