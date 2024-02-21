@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/_CBB/Internal%20Tool/Editor/Resources/Collection%20panel/Collection%20panel.uss?fileID=7433441132597879392&amp;guid=ed9bcc0de76a07b4ca986d6ee255f1f6&amp;type=3#Collection panel" />
+    <ui:VisualElement name="collection-details-container" class="container-vertical">
+        <ui:Label tabindex="-1" text="No collection selected" display-tooltip-when-elided="true" name="collection-title" class="title margin" />
+        <ui:VisualElement class="margin add-item-container">
+            <ui:TextField picking-mode="Ignore" label="New item" value="name" name="item-name-text-field" class="custom-text-field" />
+            <ui:Button text="+" display-tooltip-when-elided="true" name="add-item-button" />
+        </ui:VisualElement>
+        <ui:VisualElement class="list-view-container margin">
+            <ui:ListView focusable="true" show-alternating-row-backgrounds="ContentOnly" show-border="true" virtualization-method="DynamicHeight" />
+            <ui:Button text="-" display-tooltip-when-elided="true" name="remove-item-button" style="align-self: flex-end;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

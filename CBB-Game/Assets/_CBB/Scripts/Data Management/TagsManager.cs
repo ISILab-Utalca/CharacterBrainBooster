@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -9,11 +8,11 @@ namespace CBB.DataManagement
     public class TagCollection
     {
         public string name;
-        public List<string> Tags { get; set; }
+        public List<string> Groups { get; set; } = new List<string>();
         public TagCollection(string name)
         {
             this.name = name;
-            Tags = new List<string>();
+            Groups = new List<string>();
         }
     }
     public class TagsManager
@@ -32,15 +31,14 @@ namespace CBB.DataManagement
             }
         }
 
-        public static void SaveTagCollection(string fileName, TagCollection tagCollection)
+        public static void Save(string fileName, TagCollection tagCollection)
         {
             if (tagCollection == null) return;
             
-            var filePath = Path + "/" + fileName + FILE_EXTENSION;
+            var filePath = GetFilePath(fileName);
             
             if (!File.Exists(filePath))
             {
-                // Create the file
                 File.Create(filePath).Dispose();
             }
 
@@ -49,17 +47,14 @@ namespace CBB.DataManagement
         }
         public static List<TagCollection> GetAllCollections()
         {
-            // Read each file in the path directory and load their contents
             List<TagCollection> collections = new();
             if (!Directory.Exists(Path))
             {
                 Directory.CreateDirectory(Path);
             }
-            string[] files = Directory.GetFiles(Path);
+            string[] files = Directory.GetFiles(Path,"*" + FILE_EXTENSION);
             foreach (string file in files)
             {
-                if (!file.EndsWith(FILE_EXTENSION)) continue;
-                
                 TagCollection collection = ReadTagCollection(file);
                 if (collection != null)
                 {
@@ -79,9 +74,9 @@ namespace CBB.DataManagement
             return null;
         }
 
-        public static void RemoveCollection(string name)
+        public static void RemoveCollection(TagCollection collection)
         {
-            string filePath = GetFilePath(name);
+            string filePath = GetFilePath(collection.name);
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);

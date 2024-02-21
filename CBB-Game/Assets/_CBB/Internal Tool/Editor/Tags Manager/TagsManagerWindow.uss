@@ -1,30 +1,4 @@
-.custom-label {
-    font-size: 20px;
-    -unity-font-style: bold;
-    color: rgb(68, 138, 255);
-}
-
-.title {
-    font-size: 18px;
-    color: rgb(255, 255, 255);
-}
-
-.container-vertical {
+.root-container {
     flex-grow: 1;
-    border-left-width: 4px;
-    border-right-width: 4px;
-    border-top-width: 4px;
-    border-bottom-width: 4px;
-    border-left-color: rgb(29, 29, 29);
-    border-right-color: rgb(29, 29, 29);
-    border-top-color: rgb(29, 29, 29);
-    border-bottom-color: rgb(29, 29, 29);
-    padding-left: 2px;
-    padding-right: 2px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
+    flex-direction: row;
 }

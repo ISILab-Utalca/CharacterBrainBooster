@@ -1,0 +1,8 @@
+{
+  "name": "Humans",
+  "Groups": [
+    "Villager",
+    "Soldier",
+    "Sniper"
+  ]
+}
