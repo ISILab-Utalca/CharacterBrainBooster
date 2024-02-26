@@ -65,7 +65,7 @@
       {
         "$id": "12",
         "$type": "Generic.DataGeneric, Assembly-CSharp",
-        "classType": "ArtificialIntelligence.Utility.Actions.Jump",
+        "classType": "ArtificialIntelligence.Utility.Actions.RunAway",
         "values": {
           "$id": "13",
           "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
@@ -73,25 +73,55 @@
             {
               "$id": "14",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 2.0,
-              "name": "jumpHeight"
+              "value": 6.0,
+              "name": "safeDistance"
             },
             {
               "$id": "15",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "jumpDuration"
+              "value": 5.0,
+              "name": "runSpeed"
             },
             {
               "$id": "16",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 1.0,
+              "name": "pauseAfterRunning"
+            },
+            {
+              "$id": "17",
               "$type": "WrapperConsideration, Assembly-CSharp",
               "configuration": {
-                "$id": "17",
+                "$id": "18",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "Threat heard",
+                "considerationName": "Distance to threat",
+                "evaluationMethod": "DistanceToTarget",
+                "curve": {
+                  "$id": "19",
+                  "$type": "Exponential, Assembly-CSharp",
+                  "value": 1.0,
+                  "e": 2.0,
+                  "dx": -0.04,
+                  "dy": 0.0,
+                  "sx": 1.0,
+                  "sy": 1.0,
+                  "Inverted": true
+                },
+                "normalizeInput": true,
+                "minValue": 0.0,
+                "maxValue": 4.0
+              }
+            },
+            {
+              "$id": "20",
+              "$type": "WrapperConsideration, Assembly-CSharp",
+              "configuration": {
+                "$id": "21",
+                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
+                "considerationName": "Threat is near",
                 "evaluationMethod": "ThreatHeard",
                 "curve": {
-                  "$id": "18",
+                  "$id": "22",
                   "$type": "Linear, Assembly-CSharp",
                   "value": 1.0,
                   "m": 1.0,
@@ -103,30 +133,6 @@
                 "minValue": 0.0,
                 "maxValue": 0.0
               }
-            },
-            {
-              "$id": "19",
-              "$type": "WrapperConsideration, Assembly-CSharp",
-              "configuration": {
-                "$id": "20",
-                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "Distance to threat",
-                "evaluationMethod": "DistanceToTarget",
-                "curve": {
-                  "$id": "21",
-                  "$type": "Exponential, Assembly-CSharp",
-                  "value": 0.0,
-                  "e": 2.0,
-                  "dx": 0.0,
-                  "dy": 0.0,
-                  "sx": 1.0,
-                  "sy": 1.0,
-                  "Inverted": false
-                },
-                "normalizeInput": true,
-                "minValue": 0.0,
-                "maxValue": 4.0
-              }
             }
           ]
         },
@@ -135,19 +141,19 @@
     ]
   },
   "serializedSensors": {
-    "$id": "22",
+    "$id": "23",
     "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
     "$values": [
       {
-        "$id": "23",
+        "$id": "24",
         "$type": "Generic.DataGeneric, Assembly-CSharp",
         "classType": "SensorAuditoryField",
         "values": {
-          "$id": "24",
+          "$id": "25",
           "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
           "$values": [
             {
-              "$id": "25",
+              "$id": "26",
               "$type": "Generic.WraperNumber, Assembly-CSharp",
               "value": 4.0,
               "name": "HearingRadius"
