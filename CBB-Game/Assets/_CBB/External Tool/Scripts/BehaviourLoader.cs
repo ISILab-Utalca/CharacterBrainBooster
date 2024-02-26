@@ -164,8 +164,10 @@ public class BehaviourLoader : MonoBehaviour
         // to pause the agent, update the brain and then resume the agent on several steps (frames)
         var memento = GetMemento();
         agentBrain.Pause();
-        yield return null;
-
+        while(agentBrain.IsRunningAction())
+        {
+            yield return null;
+        }
         SetupAgentBehaviour(brain);
         BindingManager.UpdateAgentIDBrainIDBinding(memento, m_agentType, m_brainName);
         yield return null;

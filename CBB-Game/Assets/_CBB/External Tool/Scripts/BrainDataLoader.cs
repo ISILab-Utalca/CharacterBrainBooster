@@ -82,7 +82,6 @@ namespace CBB.DataManagement
 
         /// <summary>
         /// Save the in-memory brain data to disk.
-        /// Optionally reloads the brains from disk.
         /// </summary>
         /// <param name="AgentID"></param>
         /// <param name="brain"></param>
