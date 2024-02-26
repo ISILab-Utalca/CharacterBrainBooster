@@ -6,11 +6,156 @@
   "serializedActions": {
     "$id": "2",
     "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
-    "$values": []
+    "$values": [
+      {
+        "$id": "3",
+        "$type": "Generic.DataGeneric, Assembly-CSharp",
+        "classType": "ArtificialIntelligence.Utility.Actions.Wander",
+        "values": {
+          "$id": "4",
+          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
+          "$values": [
+            {
+              "$id": "5",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 1.0,
+              "name": "MinWaitTimer"
+            },
+            {
+              "$id": "6",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 5.0,
+              "name": "MaxWaitTimer"
+            },
+            {
+              "$id": "7",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 10.0,
+              "name": "WalkRadius"
+            },
+            {
+              "$id": "8",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 0.2,
+              "name": "TickCheck"
+            },
+            {
+              "$id": "9",
+              "$type": "WrapperConsideration, Assembly-CSharp",
+              "configuration": {
+                "$id": "10",
+                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
+                "considerationName": "Default",
+                "evaluationMethod": "Idle",
+                "curve": {
+                  "$id": "11",
+                  "$type": "Constant, Assembly-CSharp",
+                  "value": 0.02,
+                  "Inverted": false
+                },
+                "normalizeInput": false,
+                "minValue": 0.0,
+                "maxValue": 0.0
+              }
+            }
+          ]
+        },
+        "dataType": 0
+      },
+      {
+        "$id": "12",
+        "$type": "Generic.DataGeneric, Assembly-CSharp",
+        "classType": "ArtificialIntelligence.Utility.Actions.Jump",
+        "values": {
+          "$id": "13",
+          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
+          "$values": [
+            {
+              "$id": "14",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 2.0,
+              "name": "jumpHeight"
+            },
+            {
+              "$id": "15",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 1.0,
+              "name": "jumpDuration"
+            },
+            {
+              "$id": "16",
+              "$type": "WrapperConsideration, Assembly-CSharp",
+              "configuration": {
+                "$id": "17",
+                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
+                "considerationName": "Threat heard",
+                "evaluationMethod": "ThreatHeard",
+                "curve": {
+                  "$id": "18",
+                  "$type": "Linear, Assembly-CSharp",
+                  "value": 1.0,
+                  "m": 1.0,
+                  "dx": 0.0,
+                  "dy": 0.0,
+                  "Inverted": false
+                },
+                "normalizeInput": false,
+                "minValue": 0.0,
+                "maxValue": 0.0
+              }
+            },
+            {
+              "$id": "19",
+              "$type": "WrapperConsideration, Assembly-CSharp",
+              "configuration": {
+                "$id": "20",
+                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
+                "considerationName": "Distance to threat",
+                "evaluationMethod": "DistanceToTarget",
+                "curve": {
+                  "$id": "21",
+                  "$type": "Exponential, Assembly-CSharp",
+                  "value": 0.0,
+                  "e": 2.0,
+                  "dx": 0.0,
+                  "dy": 0.0,
+                  "sx": 1.0,
+                  "sy": 1.0,
+                  "Inverted": false
+                },
+                "normalizeInput": true,
+                "minValue": 0.0,
+                "maxValue": 4.0
+              }
+            }
+          ]
+        },
+        "dataType": 0
+      }
+    ]
   },
   "serializedSensors": {
-    "$id": "3",
+    "$id": "22",
     "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
-    "$values": []
+    "$values": [
+      {
+        "$id": "23",
+        "$type": "Generic.DataGeneric, Assembly-CSharp",
+        "classType": "SensorAuditoryField",
+        "values": {
+          "$id": "24",
+          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
+          "$values": [
+            {
+              "$id": "25",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 4.0,
+              "name": "HearingRadius"
+            }
+          ]
+        },
+        "dataType": 2
+      }
+    ]
   }
 }

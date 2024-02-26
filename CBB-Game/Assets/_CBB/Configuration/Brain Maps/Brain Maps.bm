@@ -1,6 +1,6 @@
 [
   {
-    "name": "Humans",
+    "agentType": "Humans",
     "SubgroupsBrains": [
       {
         "subgroupName": "Melee soldier",
@@ -13,7 +13,7 @@
     ]
   },
   {
-    "name": "Goblins",
+    "agentType": "Goblins",
     "SubgroupsBrains": [
       {
         "subgroupName": "Spell caster",
