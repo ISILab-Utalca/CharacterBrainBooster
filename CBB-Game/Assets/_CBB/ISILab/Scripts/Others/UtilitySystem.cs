@@ -308,17 +308,14 @@ namespace CBB.Api
         /// <summary>Singleton instance of the agent observer. </summary>
         private static AgentObserver instance;
         /// <summary>List of active agents.</summary>
-        public List<AgentBeahaviour> Agents = new List<AgentBeahaviour>();
+        public List<AgentBehaviour> Agents = new();
 
         /// <summary>Gets the singleton instance of the agent observer.</summary>
         public static AgentObserver Instance
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new AgentObserver();
-                }
+                instance ??= new AgentObserver();
                 return instance;
             }
         }
@@ -327,7 +324,7 @@ namespace CBB.Api
         /// Adds an agent to the list of active agents.
         /// </summary>
         /// <param name="agent">Agent to add.</param>
-        public void AddAgent(AgentBeahaviour agent)
+        public void AddAgent(AgentBehaviour agent)
         {
             Agents.Add(agent);
         }
@@ -336,7 +333,7 @@ namespace CBB.Api
         /// Removes an agent from the list of active agents.
         /// </summary>
         /// <param name="agent">Agent to remove.</param>
-        public void RemoveAgent(AgentBeahaviour agent)
+        public void RemoveAgent(AgentBehaviour agent)
         {
             Agents.Remove(agent);
         }

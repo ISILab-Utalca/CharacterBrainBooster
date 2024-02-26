@@ -1,0 +1,16 @@
+{
+  "$id": "1",
+  "$type": "Brain, Assembly-CSharp",
+  "id": "e5e846205ea0444689204f1272752f05",
+  "name": "Human Infantry",
+  "serializedActions": {
+    "$id": "2",
+    "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
+    "$values": []
+  },
+  "serializedSensors": {
+    "$id": "3",
+    "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
+    "$values": []
+  }
+}

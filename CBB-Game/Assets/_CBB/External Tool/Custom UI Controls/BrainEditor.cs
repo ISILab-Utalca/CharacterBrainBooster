@@ -117,7 +117,7 @@ namespace CBB.UI
             {
                 var newBrain = new Brain
                 {
-                    brain_Name = "New Brain"
+                    name = "New Brain"
                 };
                 Brains.Add(newBrain);
                 ResetTreeAndDisplayItem(newBrain);
@@ -288,7 +288,7 @@ namespace CBB.UI
                     if (childrenData.Count() <= 1)
                     {
                         // TODO: Show a message to the user using a custom dialog
-                        Debug.LogWarning($"This brain {LastSelectedBrain.brain_ID} won't work correctly without {subTitle}");
+                        Debug.LogWarning($"This brain {LastSelectedBrain.id} won't work correctly without {subTitle}");
                     }
                     if (obj is DataGeneric generic)
                     {
@@ -329,7 +329,7 @@ namespace CBB.UI
             var textField = new TextField
             {
                 label = "Brain Name",
-                value = brain.brain_Name
+                value = brain.name
             };
             textField.AddToClassList("cbb-text-field");
             textField.RegisterValueChangedCallback(SyncText(brain, index));

@@ -10,7 +10,7 @@ namespace CBB.DataManagement
 {
     public static class BrainDataLoader
     {
-        private static List<Brain> brains = new();
+        private static List<Brain> m_brains = new();
         public static System.Action<Brain> BrainUpdated { get; set; }
 
         public static string Path
@@ -42,12 +42,12 @@ namespace CBB.DataManagement
         #region #BRAIN-METHODS
         public static Brain GetBrainByID(string id)
         {
-            return brains.First(m => id.Equals(m.brain_ID));
+            return m_brains.First(m => id.Equals(m.id));
         }
         public static Brain GetBrainByName(string name)
         {
-            if (brains.Count == 0) LoadBrains();
-            return brains.First(m => name.Equals(m.brain_Name));
+            if (m_brains.Count == 0) LoadBrains();
+            return m_brains.First(m => name.Equals(m.name));
         }
         public static string GenerateID()
         {
@@ -55,8 +55,8 @@ namespace CBB.DataManagement
         }
         public static List<Brain> GetAllBrains()
         {
-            if (brains.Count == 0) LoadBrains();
-            return brains;
+            if (m_brains.Count == 0) LoadBrains();
+            return m_brains;
         }
 
         public static void LoadBrains()
@@ -68,7 +68,7 @@ namespace CBB.DataManagement
                 if (files[i].FullName.EndsWith(".brain"))
                 {
                     var brain = JSONDataManager.LoadData<Brain>(files[i].DirectoryName, files[i].Name);
-                    brains.Add(brain);
+                    m_brains.Add(brain);
                 }
             }
         }
@@ -89,15 +89,15 @@ namespace CBB.DataManagement
         /// <param name="reloadBrains">If set, automatically load brains into memory</param>
         public static void SaveBrain(Brain brain)
         {
-            if (string.IsNullOrEmpty(brain.brain_ID))
+            if (string.IsNullOrEmpty(brain.id))
             {
-                brain.brain_ID = GenerateID();
+                brain.id = GenerateID();
             }
             if (BrainFileWasRenamed(brain))
             {
-                RemovePreviousBrainFile(BindingManager.BrainIDFileName.data[brain.brain_ID]);
+                RemovePreviousBrainFile(BindingManager.BrainIDFileName.data[brain.id]);
             }
-            JSONDataManager.SaveData(Path, brain.brain_Name + ".brain", brain);
+            JSONDataManager.SaveData(Path, brain.name + ".brain", brain);
             BindingManager.SaveBrainIDFilenameBinding(brain);
         }
 
@@ -107,9 +107,9 @@ namespace CBB.DataManagement
         /// </summary>
         private static bool BrainFileWasRenamed(Brain brain)
         {
-            if (BrainFileAlreadyExists(brain.brain_ID))
+            if (BrainFileAlreadyExists(brain.id))
             {
-                return BindingManager.BrainIDFileName.data[brain.brain_ID] != brain.brain_Name;
+                return BindingManager.BrainIDFileName.data[brain.id] != brain.name;
             }
             return false;
         }

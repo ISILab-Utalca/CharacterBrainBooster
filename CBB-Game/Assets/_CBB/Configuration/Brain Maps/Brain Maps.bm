@@ -1,0 +1,28 @@
+[
+  {
+    "name": "Humans",
+    "SubgroupsBrains": [
+      {
+        "subgroupName": "Melee soldier",
+        "brainID": "e5e846205ea0444689204f1272752f05"
+      },
+      {
+        "subgroupName": "Sniper",
+        "brainID": "b1e54eccf0b546d593c221179be11b8f"
+      }
+    ]
+  },
+  {
+    "name": "Goblins",
+    "SubgroupsBrains": [
+      {
+        "subgroupName": "Spell caster",
+        "brainID": "b1e54eccf0b546d593c221179be11b8f"
+      },
+      {
+        "subgroupName": "Minion",
+        "brainID": "b1e54eccf0b546d593c221179be11b8f"
+      }
+    ]
+  }
+]

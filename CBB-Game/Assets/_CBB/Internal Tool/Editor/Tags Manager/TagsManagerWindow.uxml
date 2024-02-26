@@ -1,7 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/_CBB/Internal%20Tool/Editor/Tags%20Manager/TagsManagerWindow.uss?fileID=7433441132597879392&amp;guid=27defba1020cda345b1cda837bbc69ca&amp;type=3#TagsManagerWindow" />
-    <ui:VisualElement class="root-container">
-        <CBB.InternalTool.CollectionPanel name="agent-types-collection-panel" />
-        <CBB.InternalTool.CollectionPanel name="types-subgroups-collection-panel" />
-    </ui:VisualElement>
-</ui:UXML>

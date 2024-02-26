@@ -1,8 +1,8 @@
 {
   "$id": "1",
   "$type": "Brain, Assembly-CSharp",
-  "brain_ID": "d074b9f6cbf94b719b0f6495ae3a86f4",
-  "brain_Name": "Default",
+  "id": "b1e54eccf0b546d593c221179be11b8f",
+  "name": "Default",
   "serializedActions": {
     "$id": "2",
     "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
@@ -46,11 +46,11 @@
                 "$id": "10",
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
                 "considerationName": "Default",
-                "evaluationMethod": "DistanceToTarget",
+                "evaluationMethod": "Idle",
                 "curve": {
                   "$id": "11",
                   "$type": "Constant, Assembly-CSharp",
-                  "value": 0.03,
+                  "value": 0.02,
                   "Inverted": false
                 },
                 "normalizeInput": false,
@@ -67,6 +67,25 @@
   "serializedSensors": {
     "$id": "12",
     "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
-    "$values": []
+    "$values": [
+      {
+        "$id": "13",
+        "$type": "Generic.DataGeneric, Assembly-CSharp",
+        "classType": "SensorAuditoryField",
+        "values": {
+          "$id": "14",
+          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
+          "$values": [
+            {
+              "$id": "15",
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 5.0,
+              "name": "HearingRadius"
+            }
+          ]
+        },
+        "dataType": 2
+      }
+    ]
   }
 }

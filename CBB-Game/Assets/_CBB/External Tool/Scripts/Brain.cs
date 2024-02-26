@@ -8,30 +8,30 @@ using UnityEngine;
 [System.Serializable]
 public class Brain : IDataItem, INameable
 {
-    public string brain_ID;
-    public string brain_Name;
+    public string id;
+    public string name;
     [SerializeField, SerializeReference]
     public List<DataGeneric> serializedActions;
     [SerializeField, SerializeReference]
     public List<DataGeneric> serializedSensors;
-    public Brain(string brain_ID, string brain_Name, List<DataGeneric> serializedActions, List<DataGeneric> serializedSensors)
+    public Brain(string id, string name, List<DataGeneric> serializedActions, List<DataGeneric> serializedSensors)
     {
-        this.brain_ID = brain_ID;
-        this.brain_Name = brain_Name;
+        this.id = id;
+        this.name = name;
         this.serializedActions = serializedActions;
         this.serializedSensors = serializedSensors;
     }
     
     public Brain()
     {
-        this.brain_ID = "";
-        this.brain_Name = "";
-        this.serializedActions = new List<DataGeneric>();
-        this.serializedSensors = new List<DataGeneric>();
+        id = "";
+        name = "";
+        serializedActions = new List<DataGeneric>();
+        serializedSensors = new List<DataGeneric>();
     }
     public object GetInstance() => this;
-    public string GetItemName() => brain_Name;
-    public void SetName(string name) => brain_Name = name;
+    public string GetItemName() => name;
+    public void SetName(string name) => this.name = name;
 }
 
 

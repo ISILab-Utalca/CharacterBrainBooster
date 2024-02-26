@@ -1,0 +1,6 @@
+.subgroup-label {
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    -unity-font-style: bold;
+}

@@ -70,7 +70,6 @@ namespace CBB.DataManagement
             }
             Binding binding = JsonConvert.DeserializeObject<Binding>(data);
             
-            // TODO: edgecase needs refactoring. When the file has no data, it returns null
             if(binding == null)
             {
                 binding = new Binding();
@@ -102,20 +101,20 @@ namespace CBB.DataManagement
             }
             // Add the new binding to the memory
             var brain = BrainDataLoader.GetBrainByName(newBrainName);
-            AgentIDBrainID.data.Add(newAgentID, brain.brain_ID);
+            AgentIDBrainID.data.Add(newAgentID, brain.id);
             // Save the new binding to the disk
             DataFileProperties agentBrainAssociationProperties = new(Path, BIND_AGENT_ID_BRAIN_ID, FILE_FORMAT);
             SaveBinding(agentBrainAssociationProperties, AgentIDBrainID);
         }
         public static void SaveBrainIDFilenameBinding(Brain brain)
         {
-            if (BrainIDFileName.data.ContainsKey(brain.brain_ID))
+            if (BrainIDFileName.data.ContainsKey(brain.id))
             {
-                BrainIDFileName.data[brain.brain_ID] = brain.brain_Name;
+                BrainIDFileName.data[brain.id] = brain.name;
             }
             else
             {
-                BrainIDFileName.data.Add(brain.brain_ID, brain.brain_Name);
+                BrainIDFileName.data.Add(brain.id, brain.name);
             }
             DataFileProperties bindingProperties = new(Path, BIND_BRAIN_ID_FILENAME, FILE_FORMAT);
             SaveBinding(bindingProperties, BrainIDFileName);

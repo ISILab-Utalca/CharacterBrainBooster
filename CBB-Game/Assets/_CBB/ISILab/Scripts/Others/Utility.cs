@@ -9,13 +9,13 @@ namespace CBB
 {
     public class Utility
     {
-        public AgentBeahaviour self;
+        public AgentBehaviour self;
         public UtilityEvaluator evaluator;
         public object action; // methodInfo or eventInfo
         public Curve curve;
         public List<Tuple<string, object>> others;
 
-        public Utility(AgentBeahaviour self, UtilityEvaluator evaluator, Curve curve, object action, List<Tuple<string, object>> others = null)
+        public Utility(AgentBehaviour self, UtilityEvaluator evaluator, Curve curve, object action, List<Tuple<string, object>> others = null)
         {
             this.self = self;
             this.evaluator = evaluator;

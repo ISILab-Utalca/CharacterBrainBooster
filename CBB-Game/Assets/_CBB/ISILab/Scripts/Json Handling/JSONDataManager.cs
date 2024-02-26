@@ -128,11 +128,6 @@ namespace CBB.DataManagement
                 Formatting = Formatting.Indented,
                 NullValueHandling = NullValueHandling.Ignore,
             };
-
-            // add converters to serializer
-            jsonSerializerSettings.Converters.Add(new Vector3Converter());
-            jsonSerializerSettings.Converters.Add(new Vector2Converter());
-
             // generate data from string
             var data = JsonConvert.DeserializeObject<T>(
                 json,

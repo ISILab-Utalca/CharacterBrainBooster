@@ -16,7 +16,7 @@ namespace CBB.InternalTool
         private VisualTreeAsset m_VisualTreeAsset = default;
         private Toggle showLogsToggle;
 
-        [MenuItem("Window/Character Brain Booster")]
+        [MenuItem("CBB/Brain Creator #&w")]
         public static void ShowTool()
         {
             BrainCreator wnd = GetWindow<BrainCreator>();

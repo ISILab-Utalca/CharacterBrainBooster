@@ -9,23 +9,17 @@ namespace CBB.Api
 
     // (??) esta clase se podria inyectar al momento de ser instanciado el objeto que lo necesite
     // asi evitamos que los usuarios tengan que acordarse de poner ellos esta clase a mano
-    public class AgentBeahaviour : MonoBehaviour // brain
+    public class AgentBehaviour : MonoBehaviour // brain
     {
         private float lastTime = 0;
         private float cooldown = 50; // (?) ms o seg ?
 
-        private List<Utility> utilities = new List<Utility>();
+        private List<Utility> utilities = new();
 
         private void Awake()
         {
             AgentObserver.Instance.AddAgent(this);
         }
-
-        void Start()
-        {
-
-        }
-
         private void OnDestroy()
         {
             AgentObserver.Instance.RemoveAgent(this);

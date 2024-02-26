@@ -27,30 +27,6 @@ public class SensorFieldOfViewConverter : JsonConverter
         writer.WriteEndObject();
     }
 }
-public class TransformClassConverter : JsonConverter
-{
-    public override bool CanConvert(System.Type objectType)
-    {
-        return objectType == typeof(Transformer);
-    }
-
-    public override object ReadJson(JsonReader reader, System.Type objectType, object existingValue, JsonSerializer serializer)
-    {
-        var value = serializer.Deserialize(reader);
-        return JsonConvert.DeserializeObject<Transformer>(value.ToString());
-    }
-
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-    {
-        var transformer = (Transformer)value;
-
-        writer.WriteStartObject();
-        writer.WritePropertyName("test");
-        writer.WriteValue(transformer.tests);
-        writer.WriteEndObject();
-    }
-}
-
 public class GameObjectConverter : JsonConverter
 {
     public override bool CanConvert(System.Type objectType)
