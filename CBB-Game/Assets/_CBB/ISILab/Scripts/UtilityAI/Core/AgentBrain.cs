@@ -119,23 +119,24 @@ namespace ArtificialIntelligence.Utility
             m_isPaused = false;
             TryStartNewAction();
         }
-
         public void ReloadBehaviours()
         {
             ReloadActions();
             ReloadSensors();
         }
-
         private void ReloadSensors()
         {
             UnsubscribeFromSensors(Sensors);
             Sensors = gameObject.GetComponentsInChildren<ISensor>().ToList();
             SubscribeToSensors(Sensors);
         }
-
         private void ReloadActions()
         {
             Actions = gameObject.GetComponentsInChildren<IAction>().ToList();
+        }
+        public bool IsRunningAction()
+        {
+            return m_actionRunner.IsRunning;
         }
     }
 }
