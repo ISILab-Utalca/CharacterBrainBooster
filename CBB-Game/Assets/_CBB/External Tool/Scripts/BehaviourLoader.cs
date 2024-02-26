@@ -48,9 +48,9 @@ public class BehaviourLoader : MonoBehaviour
     public string m_agentTypeSubgroup;
     public string m_brainName;
 
-    private List<ActionState> actionStates = new();
-    private List<Sensor> sensors = new();
     private Brain m_brain;
+    private List<ActionState> m_actionStates = new();
+    private List<Sensor> m_sensors = new();
     private AgentBrain agentBrain;
     #endregion
     public string BrainName
@@ -70,13 +70,7 @@ public class BehaviourLoader : MonoBehaviour
     }
     public void UpdateBehaviour(Brain brain)
     {
-        var bindingData = BindingManager.AgentIDBrainID.data;
-        if (!bindingData.ContainsKey(m_agentType))
-        {
-            Debug.LogWarning("Agent has no associated brain");
-            return;
-        }
-        if (bindingData[m_agentType] != brain.id)
+        if (GetAssociatedBrain() != brain)
         {
             Debug.LogWarning("This is not the brain associated with this agent");
             return;
@@ -94,20 +88,23 @@ public class BehaviourLoader : MonoBehaviour
 
     private void Start()
     {
-        if (AgentHasBrain())
+        var brain = GetAssociatedBrain();
+        if (brain == null)
         {
-            SetupAgentBehaviour(m_brain);
-            agentBrain.TryStartNewAction();
+            Debug.LogWarning("No brain associated with this agent");
+            return;
         }
+        SetupAgentBehaviour(brain);
+        agentBrain.TryStartNewAction();
     }
-    private bool AgentHasBrain()
+    private Brain GetAssociatedBrain()
     {
-        var bindingData = BindingManager.AgentIDBrainID.data;
-        if (!bindingData.ContainsKey(m_agentType)) return false;
-
-        var brain_ID = bindingData[m_agentType];
-        m_brain = BrainDataLoader.GetBrainByID(brain_ID);
-        return m_brain != null;
+        var brainMaps = BrainMapsManager.GetAllBrainMaps();
+        if (brainMaps == null) return null;
+        var subgroup = brainMaps.Find(x => x.agentType == m_agentType).SubgroupsBrains.Find(x => x.subgroupName == m_agentTypeSubgroup);
+        if (subgroup == null) return null;
+        var brain_ID = subgroup.brainID;
+        return BrainDataLoader.GetBrainByID(brain_ID);
     }
     public void SetupAgentBehaviour(Brain brain)
     {
@@ -116,7 +113,7 @@ public class BehaviourLoader : MonoBehaviour
         this.m_brain = brain;
         var szedAction = brain.serializedActions;
 
-        foreach (var action in actionStates)
+        foreach (var action in m_actionStates)
         {
             if (!szedAction.Exists(x => x.ClassType == action.GetType()))
             {
@@ -126,7 +123,7 @@ public class BehaviourLoader : MonoBehaviour
         }
         for (int i = 0; i < szedAction.Count; i++)
         {
-            var act = actionStates.Find(x => x.GetType() == szedAction[i].ClassType);
+            var act = m_actionStates.Find(x => x.GetType() == szedAction[i].ClassType);
             if (act == null)
             {
                 act = gameObject.AddComponent(szedAction[i].ClassType) as ActionState;
@@ -135,7 +132,7 @@ public class BehaviourLoader : MonoBehaviour
         }
 
         var szedSensor = brain.serializedSensors;
-        foreach (var sensor in sensors)
+        foreach (var sensor in m_sensors)
         {
             if (!szedSensor.Exists(x => x.ClassType == sensor.GetType()))
             {
@@ -145,7 +142,7 @@ public class BehaviourLoader : MonoBehaviour
         }
         for (int i = 0; i < szedSensor.Count; i++)
         {
-            var sens = sensors.Find(x => x.GetType() == szedSensor[i].ClassType);
+            var sens = m_sensors.Find(x => x.GetType() == szedSensor[i].ClassType);
             if (sens == null)
             {
                 sens = gameObject.AddComponent(szedSensor[i].ClassType) as Sensor;
@@ -182,13 +179,13 @@ public class BehaviourLoader : MonoBehaviour
     }
     private void GetAssignedActions()
     {
-        actionStates.Clear();
-        actionStates.AddRange(gameObject.GetComponentsOnHierarchy<ActionState>());
+        m_actionStates.Clear();
+        m_actionStates.AddRange(gameObject.GetComponentsOnHierarchy<ActionState>());
     }
     private void GetAssignedSensors()
     {
-        sensors.Clear();
-        sensors.AddRange(gameObject.GetComponentsOnHierarchy<Sensor>());
+        m_sensors.Clear();
+        m_sensors.AddRange(gameObject.GetComponentsOnHierarchy<Sensor>());
     }
     public Memento GetMemento()
     {
