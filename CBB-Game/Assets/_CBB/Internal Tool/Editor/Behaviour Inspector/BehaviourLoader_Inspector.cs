@@ -30,7 +30,7 @@ namespace CBB.InternalTool
             m_agentTypeNames.Clear();
             foreach (BrainMap collection in m_brainMaps)
             {
-                m_agentTypeNames.Add(collection.name);
+                m_agentTypeNames.Add(collection.agentType);
             }
         }
         private void SetReferences()
@@ -56,7 +56,7 @@ namespace CBB.InternalTool
             {
                 foreach (var collection in m_brainMaps)
                 {
-                    if (collection.name == selectedType)
+                    if (collection.agentType == selectedType)
                     {
                         var subgroupsNames = new List<string>();
                         foreach (var subgroup in collection.SubgroupsBrains)

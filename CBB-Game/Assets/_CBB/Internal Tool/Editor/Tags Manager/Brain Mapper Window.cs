@@ -82,7 +82,7 @@ namespace CBB.InternalTool
         {
             var lv = m_agentTypesListView;
             lv.makeItem = () => new Label();
-            lv.bindItem = (e, index) => (e as Label).text = m_brainMaps[index].name;
+            lv.bindItem = (e, index) => (e as Label).text = m_brainMaps[index].agentType;
             lv.selectionChanged += DisplayTypeSubgroup;
             lv.itemsChosen += DisplayTypeSubgroup;
             lv.itemsSource = m_brainMaps;
@@ -93,7 +93,7 @@ namespace CBB.InternalTool
             if (item.First() is BrainMap brainMap) m_selectedBrainMap = brainMap;
             m_subgroupsListView.itemsSource = m_selectedBrainMap.SubgroupsBrains;
             m_subgroupsListView.RefreshItems();
-            m_subgroupTitle.text = $"{m_selectedBrainMap.name} subgroups";
+            m_subgroupTitle.text = $"{m_selectedBrainMap.agentType} subgroups";
         }
         public void ConfigureButtons()
         {
@@ -107,7 +107,7 @@ namespace CBB.InternalTool
             string name = m_agentTypeTextField.value;
             if (m_brainMaps.Count > 0)
             {
-                List<string> typeNames = m_brainMaps.Select(m => m.name).ToList();
+                List<string> typeNames = m_brainMaps.Select(m => m.agentType).ToList();
                 if (!ItemNameIsValid(name, typeNames)) return;
             }
             BrainMap brainMap = new(name);

@@ -17,11 +17,11 @@ namespace CBB.DataManagement
                 this.brainID = brainID;
             }
         }
-        public string name;
+        public string agentType;
         public List<SubgroupBrain> SubgroupsBrains { get; set; } = new List<SubgroupBrain>();
         public BrainMap(string name)
         {
-            this.name = name;
+            this.agentType = name;
             SubgroupsBrains = new List<SubgroupBrain>();
         }
     }
