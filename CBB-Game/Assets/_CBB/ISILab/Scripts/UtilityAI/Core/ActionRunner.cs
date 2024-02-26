@@ -29,6 +29,7 @@ namespace ArtificialIntelligence.Utility
             if (_currentAction == null) BeginNewExecution(newOption);
             else
             {
+                if (_currentAction.IsBlocked) return;
                 InterruptExecution(_currentAction);
                 BeginNewExecution(newOption);
             }
