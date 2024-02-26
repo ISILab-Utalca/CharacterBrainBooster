@@ -53,6 +53,7 @@ namespace ArtificialIntelligence.Utility
                 action.InterruptExecution();
                 action.OnFinishedAction -= FinishExecution;
                 action = null;
+                IsRunning = false;
                 if (viewLogs) Debug.Log("Action interrumped");
             }
             else
