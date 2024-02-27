@@ -8,7 +8,7 @@ public class ToolsetPanelController : MonoBehaviour
     private BindingsPanel m_bindingsPanel;
     private Button m_agentBrainButton;
     private Button m_historyButton;
-    private void Start()
+    private void Awake()
     {
         GetLocalReferences();
         SetBindingCallback();

@@ -101,12 +101,7 @@ namespace CBB.Api
             state.agentName = gameObject.name;
             state.ID = agentID;
             var wrap = new AgentWrapper(type, state);
-            List<JsonConverter> converters = new()
-                {
-                    new GameObjectConverter(),
-                    new Vector3Converter()
-                };
-            return JSONDataManager.SerializeData(wrap, converters);
+            return JSONDataManager.SerializeData(wrap);
         }
 
         private void SendDataToAllClients(AgentPackage package)

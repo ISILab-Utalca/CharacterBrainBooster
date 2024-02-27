@@ -1,3 +1,4 @@
+using CBB.Comunication;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -63,20 +64,10 @@ namespace CBB.DataManagement
 
         public static string SerializeData<T>(T data)
         {
-            // generate serializer setting
-            var jsonSerializerSettings = new JsonSerializerSettings()
-            {
-                PreserveReferencesHandling = PreserveReferencesHandling.All,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                TypeNameHandling = TypeNameHandling.All,
-                Formatting = Formatting.Indented,
-                NullValueHandling = NullValueHandling.Ignore,
-            };
-
             // generate json string
             return JsonConvert.SerializeObject(
                 data,
-                jsonSerializerSettings
+                Settings.JsonSerialization
                 );
         }
 
@@ -131,7 +122,7 @@ namespace CBB.DataManagement
             // generate data from string
             var data = JsonConvert.DeserializeObject<T>(
                 json,
-                jsonSerializerSettings
+                Settings.JsonSerialization
                 );
 
             if (data == null)

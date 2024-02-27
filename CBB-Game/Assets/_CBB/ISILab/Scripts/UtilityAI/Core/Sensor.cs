@@ -43,7 +43,7 @@ namespace ArtificialIntelligence.Utility
         }
         private void InternalGUI(object obj)
         {
-            if(Settings.ShowGUI) RenderGui(painter);
+            RenderGui(painter);
         }
 
         protected abstract void RenderGui(GLPainter painter);
