@@ -1,3 +1,4 @@
+using CBB.Comunication;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +8,7 @@ namespace CBB.DataManagement
     [System.Serializable]
     public class BrainMap
     {
+        [System.Serializable]
         public class SubgroupBrain
         {
             public string subgroupName;
@@ -28,11 +30,6 @@ namespace CBB.DataManagement
     public class BrainMapsManager
     {
         private const string FILENAME = "Brain Maps.bm";
-        private static readonly JsonSerializerSettings m_settings = new()
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            Formatting = Formatting.Indented
-        };
         public static string FolderPath
         {
             get
@@ -60,7 +57,7 @@ namespace CBB.DataManagement
                 File.Create(filePath).Dispose();
             }
 
-            string json = JsonConvert.SerializeObject(brainMaps, m_settings);
+            string json = JsonConvert.SerializeObject(brainMaps, Settings.JsonSerialization);
             File.WriteAllText(filePath, json);
         }
         public static List<BrainMap> GetAllBrainMaps()
@@ -69,7 +66,7 @@ namespace CBB.DataManagement
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
-                return JsonConvert.DeserializeObject<List<BrainMap>>(json, m_settings);
+                return JsonConvert.DeserializeObject<List<BrainMap>>(json, Settings.JsonSerialization);
 
             }
             return null;
