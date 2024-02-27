@@ -13,7 +13,6 @@ namespace CBB.Comunication
         {
             TypeNameHandling = TypeNameHandling.All,
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
-            Formatting = Formatting.Indented,
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             PreserveReferencesHandling = PreserveReferencesHandling.Objects,
             NullValueHandling = NullValueHandling.Ignore,
@@ -23,6 +22,7 @@ namespace CBB.Comunication
         private static List<BrainMap> m_brainMaps;
 
         public static List<BrainMap> BrainMaps { get => m_brainMaps; set => m_brainMaps = value; }
+        public static System.Action BrainMapsReceived { get; set;}
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Init()
@@ -35,6 +35,8 @@ namespace CBB.Comunication
             try
             {
                 m_brainMaps = JsonConvert.DeserializeObject<List<BrainMap>>(message, m_jsonSettings);
+                Debug.Log("Brain Maps Deserialized");
+                BrainMapsReceived?.Invoke();
             }
             catch (System.Exception) { }
         }
