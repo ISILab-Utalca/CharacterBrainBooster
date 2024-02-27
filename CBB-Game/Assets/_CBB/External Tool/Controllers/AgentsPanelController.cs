@@ -17,6 +17,8 @@ namespace CBB.ExternalTool
         private AgentsPanel agentsPanel;
         internal ListView list;
 
+        // For some reason I do not understand yet, new GameObjects are created when the game is played
+        // if the deserialization settings are different from the ones declared here. (27/Feb/2024)
         readonly JsonSerializerSettings settings = new()
         {
             NullValueHandling = NullValueHandling.Ignore,
