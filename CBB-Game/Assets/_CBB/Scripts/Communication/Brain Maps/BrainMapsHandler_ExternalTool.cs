@@ -9,16 +9,6 @@ namespace CBB.Comunication
 {
     public static class BrainMapsHandler_ExternalTool
     {
-        private static readonly JsonSerializerSettings m_jsonSettings = new()
-        {
-            TypeNameHandling = TypeNameHandling.All,
-            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-            NullValueHandling = NullValueHandling.Ignore,
-            DefaultValueHandling = DefaultValueHandling.Ignore,
-
-        };
         private static List<BrainMap> m_brainMaps;
 
         public static List<BrainMap> BrainMaps { get => m_brainMaps; set => m_brainMaps = value; }
@@ -34,7 +24,7 @@ namespace CBB.Comunication
         {
             try
             {
-                m_brainMaps = JsonConvert.DeserializeObject<List<BrainMap>>(message, m_jsonSettings);
+                m_brainMaps = JsonConvert.DeserializeObject<List<BrainMap>>(message, Settings.JsonSerialization);
                 Debug.Log("Brain Maps Deserialized");
                 BrainMapsReceived?.Invoke();
             }
@@ -44,7 +34,7 @@ namespace CBB.Comunication
         private static void SendBrainMaps(TcpClient client)
         {
             List<BrainMap> allBrainMaps = BrainMapsManager.GetAllBrainMaps();
-            string json = JsonConvert.SerializeObject(allBrainMaps, m_jsonSettings);
+            string json = JsonConvert.SerializeObject(allBrainMaps, Settings.JsonSerialization);
             Server.SendMessageToClient(client, json);
         }
     }
