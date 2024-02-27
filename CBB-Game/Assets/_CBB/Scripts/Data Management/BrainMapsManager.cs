@@ -33,20 +33,25 @@ namespace CBB.DataManagement
             TypeNameHandling = TypeNameHandling.Auto,
             Formatting = Formatting.Indented
         };
-        public static string Path
+        public static string FolderPath
         {
             get
             {
-                return Application.dataPath + "/_CBB/Configuration/Brain Maps";
+#if UNITY_EDITOR
+                return Application.dataPath + "/_CBB/Configuration";
+#else
+                return Application.dataPath + "/Configuration/";
+
+#endif
             }
         }
         public static void Save(List<BrainMap> brainMaps)
         {
             if (brainMaps == null) return;
 
-            if (!Directory.Exists(Path))
+            if (!Directory.Exists(FolderPath))
             {
-                Directory.CreateDirectory(Path);
+                Directory.CreateDirectory(FolderPath);
             }
             var filePath = GetFilePath();
 
@@ -71,7 +76,7 @@ namespace CBB.DataManagement
         }
         private static string GetFilePath()
         {
-            return Path + "/" + FILENAME;
+            return FolderPath + "/" + FILENAME;
         }
     }
 }

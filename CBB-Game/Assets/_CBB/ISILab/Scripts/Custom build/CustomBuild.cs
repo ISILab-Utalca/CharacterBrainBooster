@@ -15,10 +15,10 @@ namespace ISILab
 
             // Copy all .brain files from the project folder to the build folder, alongside the built game.
             string root = BrainDataLoader.Path;
-            string[] files = System.IO.Directory.GetFiles(root, "*.brain");
+            string[] brainFiles = System.IO.Directory.GetFiles(root, "*.brain");
 
             // Remove the last part of pathToBuild, which is the name of the game
-            var destinationFolder = pathToBuild[..pathToBuild.LastIndexOf('/')] + "/CBB Data";
+            var destinationFolder = pathToBuild[..pathToBuild.LastIndexOf('/')] + "/CBB_Data/Configuration";
             if (!System.IO.Directory.Exists(destinationFolder))
                 System.IO.Directory.CreateDirectory(destinationFolder);
 
@@ -26,13 +26,13 @@ namespace ISILab
             if (!System.IO.Directory.Exists(brainsDestinationFolder))
                 System.IO.Directory.CreateDirectory(brainsDestinationFolder);
 
-            foreach (string file in files)
+            foreach (string file in brainFiles)
             {
                 string name = System.IO.Path.GetFileName(file);
                 string dest = System.IO.Path.Combine(brainsDestinationFolder, name);
                 System.IO.File.Copy(file, dest, true);
             }
-            Debug.Log(files.Length + " brains copied to build folder.");
+            Debug.Log(brainFiles.Length + " brains copied to build folder.");
 
             // Copy the binding files to the build folder
             root = BindingManager.Path;
@@ -47,6 +47,10 @@ namespace ISILab
                 System.IO.File.Copy(file, dest, true);
             }
             Debug.Log(bindingFiles.Length + " bindings copied to build folder.");
+            // Copy the brain maps to the build folder
+            root = BrainMapsManager.FolderPath;
+            System.IO.File.Copy(root + "/Brain Maps.bm", destinationFolder + "/Brain Maps.bm", true);
+            Debug.Log("Brain Maps copied to build folder.");
         }
     }
 } 

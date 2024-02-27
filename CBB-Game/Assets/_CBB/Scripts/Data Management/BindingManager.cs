@@ -43,10 +43,7 @@ namespace CBB.DataManagement
                 // load data from the editor folder
                 return Application.dataPath + "/_CBB/Configuration/Bindings";
 #else
-            // load data from the build folder
-            var dataPath = Application.dataPath;
-            var path = dataPath.Replace("/" + Application.productName +"_Data", "/CBB Data/Bindings");
-            return path;
+                return Application.dataPath + "/Configuration/Bindings";
 #endif
             }
         }

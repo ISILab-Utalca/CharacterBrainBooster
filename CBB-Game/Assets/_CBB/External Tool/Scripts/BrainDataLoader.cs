@@ -21,10 +21,7 @@ namespace CBB.DataManagement
                 // load data from the editor folder
                 return Application.dataPath + "/_CBB/Configuration/Brains";
 #else
-            // load data from the build folder
-            var dataPath = Application.dataPath;
-            var path = dataPath.Replace("/" + Application.productName +"_Data", "/CBB Data/Brains");
-            return path;
+                return Application.dataPath + "/Configuration/Brains";
 #endif
             }
         }
