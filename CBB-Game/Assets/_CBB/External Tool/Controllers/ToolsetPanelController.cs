@@ -1,9 +1,8 @@
 using CBB.ExternalTool;
-using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ToolsetController : MonoBehaviour
+public class ToolsetPanelController : MonoBehaviour
 {
     private SplitView m_splitView;
     private BindingsPanel m_bindingsPanel;
