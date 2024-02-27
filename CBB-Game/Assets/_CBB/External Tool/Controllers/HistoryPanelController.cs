@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System.Text.RegularExpressions;
 using System.Linq;
+using CBB.Comunication;
 
 namespace CBB.ExternalTool
 {
@@ -13,12 +14,6 @@ namespace CBB.ExternalTool
     {
 
         public bool showLogs = false;
-        readonly JsonSerializerSettings settings = new()
-        {
-            NullValueHandling = NullValueHandling.Include,
-            MissingMemberHandling = MissingMemberHandling.Error,
-            TypeNameHandling = TypeNameHandling.Auto,
-        };
         private DetailPanelController detailPanelController;
         private HistoryPanel historyPanel;
         private ListView list;
@@ -30,7 +25,6 @@ namespace CBB.ExternalTool
         private AgentsPanelController agentsPanelController;
         private void Awake()
         {
-            var monitoringWindow = GetComponent<MonitoringWindow>();
             var uiDocRoot = GetComponent<UIDocument>().rootVisualElement;
 
             this.historyPanel = uiDocRoot.Q<HistoryPanel>();
@@ -79,7 +73,7 @@ namespace CBB.ExternalTool
             AgentPackage pack = null;
             try
             {
-                pack = JsonConvert.DeserializeObject<DecisionPackage>(message, settings);
+                pack = JsonConvert.DeserializeObject<DecisionPackage>(message, Settings.JsonSerialization);
                 if (pack is DecisionPackage dp)
                 {
                     if (showLogs) Debug.Log("Decision Package received");
@@ -89,7 +83,7 @@ namespace CBB.ExternalTool
             catch (Exception) { }
             try
             {
-                pack = JsonConvert.DeserializeObject<SensorPackage>(message, settings);
+                pack = JsonConvert.DeserializeObject<SensorPackage>(message, Settings.JsonSerialization);
                 if (pack is SensorPackage sp)
                 {
                     if (showLogs) Debug.Log("Sensor Package received");
@@ -205,16 +199,16 @@ namespace CBB.ExternalTool
             switch (showType)
             {
                 case HistoryPanel.ShowType.Decisions:
-                    historyPanelTitle.text = "DECISIONS HISTORY";
-                    detailsPanelTitle.text = "DECISION DETAILS";
+                    historyPanelTitle.text = "Decisions history";
+                    detailsPanelTitle.text = "Decision details";
                     break;
                 case HistoryPanel.ShowType.SensorEvents:
-                    historyPanelTitle.text = "SENSOR EVENTS HISTORY";
-                    detailsPanelTitle.text = "SENSOR EVENT DETAILS";
+                    historyPanelTitle.text = "Sensor events history";
+                    detailsPanelTitle.text = "Sensor event details";
                     break;
                 default:
-                    historyPanelTitle.text = "ALL HISTORY";
-                    detailsPanelTitle.text = "DETAILS";
+                    historyPanelTitle.text = "All history";
+                    detailsPanelTitle.text = "Details";
                     break;
             }
 

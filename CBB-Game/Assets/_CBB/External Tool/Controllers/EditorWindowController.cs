@@ -1,10 +1,6 @@
-using ArtificialIntelligence.Utility;
-using CBB.Lib;
+using CBB.Comunication;
 using CBB.UI;
-using Generic;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -28,15 +24,7 @@ namespace CBB.ExternalTool
         private BrainEditor brainEditor;
         private Button closeButton;
         private ExternalMonitor monitor;
-        private readonly JsonSerializerSettings settings = new()
-        {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            // This is an important property in order to avoid type errors when deserializing
-            TypeNameHandling = TypeNameHandling.Auto,
-            NullValueHandling = NullValueHandling.Ignore,
-            MissingMemberHandling = MissingMemberHandling.Ignore,
-            Formatting = Formatting.Indented
-        };
+        
         #endregion
         public bool ShowLogs
         {
@@ -98,7 +86,7 @@ namespace CBB.ExternalTool
         {
             foreach (var b in brainEditor.Brains)
             {
-                string json = JsonConvert.SerializeObject(b, settings);
+                string json = JsonConvert.SerializeObject(b, Settings.JsonSerialization);
                 monitor.SendData(json);
             }
         }

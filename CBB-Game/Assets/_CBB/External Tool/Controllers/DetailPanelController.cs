@@ -8,12 +8,6 @@ using UnityEngine.UIElements;
 
 public class DetailPanelController : MonoBehaviour
 {
-    readonly JsonSerializerSettings settings = new()
-    {
-        NullValueHandling = NullValueHandling.Include,
-        MissingMemberHandling = MissingMemberHandling.Error,
-        TypeNameHandling = TypeNameHandling.Auto,
-    };
     ListView list;
     List<DecisionData> auxDecisions = new();
     private void Awake()
@@ -76,10 +70,5 @@ public class DetailPanelController : MonoBehaviour
     public void DisplaySensorDetails(SensorPackage sensorPackage)
     {
         Debug.Log("DO SOME FUN!!");
-    }
-
-    internal void ClearDetails()
-    {
-        Debug.Log("Clearing details");
     }
 }
