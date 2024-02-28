@@ -157,7 +157,6 @@ public class BehaviourLoader : MonoBehaviour
         BrainDataLoader.BrainUpdated -= UpdateBehaviour;
         Server.OnNewClientConnected -= SendBindingData;
     }
-
     private IEnumerator ResetAgentBehaviour(Brain brain)
     {
         // NOTE: In order to not break the agent (stall, infinite loop, etc) is necessary

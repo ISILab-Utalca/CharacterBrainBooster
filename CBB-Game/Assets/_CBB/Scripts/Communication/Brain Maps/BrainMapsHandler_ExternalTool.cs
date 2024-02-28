@@ -30,12 +30,5 @@ namespace CBB.Comunication
             }
             catch (System.Exception) { }
         }
-
-        private static void SendBrainMaps(TcpClient client)
-        {
-            List<BrainMap> allBrainMaps = BrainMapsManager.GetAllBrainMaps();
-            string json = JsonConvert.SerializeObject(allBrainMaps, Settings.JsonSerialization);
-            Server.SendMessageToClient(client, json);
-        }
     }
 }

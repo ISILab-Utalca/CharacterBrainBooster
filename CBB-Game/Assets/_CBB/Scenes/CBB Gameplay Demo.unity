@@ -490,6 +490,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_agentType
       value: Goblins
       objectReference: {fileID: 0}

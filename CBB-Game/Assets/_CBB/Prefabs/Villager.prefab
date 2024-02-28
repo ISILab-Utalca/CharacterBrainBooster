@@ -401,7 +401,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d91dc2b625cfd74a88bf7a8b228b4a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_agent_ID: Default
+  m_agentType: Default
+  m_agentTypeSubgroup: 
   m_brainName: Default
 --- !u!1 &6759708970964299137
 GameObject:
@@ -620,9 +621,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3939443924049006690, guid: 74e8a21546fcb1046b6c2518b398015e, type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4438537135410038923, guid: 74e8a21546fcb1046b6c2518b398015e, type: 3}
       propertyPath: m_Camera
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5608203880223825519, guid: 74e8a21546fcb1046b6c2518b398015e, type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5730765923684792541, guid: 74e8a21546fcb1046b6c2518b398015e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -655,6 +664,10 @@ PrefabInstance:
     - target: {fileID: 6668949862172711791, guid: 74e8a21546fcb1046b6c2518b398015e, type: 3}
       propertyPath: m_Name
       value: Agent Debugger
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328430479064871884, guid: 74e8a21546fcb1046b6c2518b398015e, type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
