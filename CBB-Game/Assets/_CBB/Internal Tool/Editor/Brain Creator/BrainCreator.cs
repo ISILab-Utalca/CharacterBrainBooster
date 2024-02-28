@@ -16,11 +16,11 @@ namespace CBB.InternalTool
         private VisualTreeAsset m_VisualTreeAsset = default;
         private Toggle showLogsToggle;
 
-        [MenuItem("CBB/Brain Creator #&w")]
+        [MenuItem("CBB/Brain Editor #&w")]
         public static void ShowTool()
         {
             BrainCreator wnd = GetWindow<BrainCreator>();
-            wnd.titleContent = new GUIContent("Brain creator");
+            wnd.titleContent = new GUIContent("Brain Editor");
         }
 
         public void CreateGUI()

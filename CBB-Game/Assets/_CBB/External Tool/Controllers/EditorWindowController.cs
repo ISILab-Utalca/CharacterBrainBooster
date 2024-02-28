@@ -81,6 +81,7 @@ namespace CBB.ExternalTool
         {
             mainMenu.SetActive(true);
             gameObject.SetActive(false);
+            monitor.HandleUserDisconnection();
         }
         private void SendBrain()
         {

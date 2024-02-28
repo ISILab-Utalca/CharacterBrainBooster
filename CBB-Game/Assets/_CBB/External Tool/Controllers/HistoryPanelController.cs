@@ -67,7 +67,6 @@ namespace CBB.ExternalTool
                 detailPanelController.DisplaySensorDetails(sensor);
             }
         }
-
         public void HandleMessage(string message)
         {
             AgentPackage pack = null;
@@ -164,7 +163,6 @@ namespace CBB.ExternalTool
 
         private void BindSensorInfo(SensorPackage sensor, SensorInfo sensorInfo)
         {
-
             var t = sensor.timestamp;
             var tt = DateTime.Parse(t);
             sensorInfo.TimeStamp.text = tt.ToString("HH:mm:ss");
@@ -192,8 +190,6 @@ namespace CBB.ExternalTool
 
         private void OnChangeShowType(ChangeEvent<Enum> evt)
         {
-            //list.ClearClassList();
-
             showType = (HistoryPanel.ShowType)evt.newValue;
             // Update titles
             switch (showType)

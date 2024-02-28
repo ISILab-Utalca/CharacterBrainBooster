@@ -12,13 +12,7 @@ namespace CBB.InternalTool
     /// </summary>
     public class BrainDataUpdater
     {
-        static readonly JsonSerializerSettings settings = new()
-        {
-            MissingMemberHandling = MissingMemberHandling.Error,
-            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-            TypeNameHandling = TypeNameHandling.Auto,
-            Formatting = Formatting.Indented
-        };
+        
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Start()
         {
@@ -40,7 +34,7 @@ namespace CBB.InternalTool
 
         private static void UpdateBrain(string msg)
         {
-            var brain = JsonConvert.DeserializeObject<Brain>(msg, settings);
+            var brain = JsonConvert.DeserializeObject<Brain>(msg, Settings.JsonSerialization);
             BrainDataLoader.SaveBrain(brain);
             BrainDataLoader.BrainUpdated?.Invoke(brain);
         }

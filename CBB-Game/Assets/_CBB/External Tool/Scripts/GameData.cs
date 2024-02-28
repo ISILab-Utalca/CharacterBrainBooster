@@ -119,11 +119,6 @@ public static class GameData
     {
         AgentStats.Remove(agent.ID);
     }
-    private static void SetAgentAsDestroyed(AgentData agent)
-    {
-        AgentStats[agent.ID] = null;
-        OnAgentSetAsDestroyed?.Invoke(agent);
-    }
     /// <summary>
     /// If the agent is registered, add the sensor event to its history. Else,
     /// register the agent and add the new sensor event

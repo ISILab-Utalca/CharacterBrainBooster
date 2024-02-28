@@ -70,18 +70,16 @@ public class BehaviourLoader : MonoBehaviour
     }
     public void UpdateBehaviour(Brain brain)
     {
-        if (GetAssociatedBrain() != brain)
+        if (GetAssociatedBrain() == brain)
         {
-            Debug.LogWarning("This is not the brain associated with this agent");
-            return;
+            Debug.LogWarning($"It's a match: {gameObject.name} <> {brain.name} <> {brain.id}");
+            StartCoroutine(ResetAgentBehaviour(brain));
         }
-        StartCoroutine(ResetAgentBehaviour(brain));
     }
     private void SendBindingData(TcpClient client)
     {
         var association = new AgentBrainAssociation("agentType", GetMemento().SubGroupName, m_brainName, gameObject.name, gameObject.GetInstanceID());
-        var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, NullValueHandling = NullValueHandling.Include };
-        var serializedMessage = JsonConvert.SerializeObject(association, settings);
+        var serializedMessage = JsonConvert.SerializeObject(association, Settings.JsonSerialization);
         Server.SendMessageToClient(client, serializedMessage);
     }
 
