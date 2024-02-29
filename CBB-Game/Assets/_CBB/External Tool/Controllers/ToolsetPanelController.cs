@@ -1,11 +1,11 @@
-using CBB.ExternalTool;
+using CBB.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class ToolsetPanelController : MonoBehaviour
 {
     private SplitView m_splitView;
-    private BindingsPanel m_bindingsPanel;
+    private BrainMapsPanel m_brainMapsPanel;
     private Button m_agentBrainButton;
     private Button m_historyButton;
     private void Awake()
@@ -13,6 +13,7 @@ public class ToolsetPanelController : MonoBehaviour
         GetLocalReferences();
         SetBindingCallback();
         SetHistoryCallback();
+        AgentsHistoryCallback();
     }
     private void GetLocalReferences()
     {
@@ -20,7 +21,7 @@ public class ToolsetPanelController : MonoBehaviour
         VisualElement root = document.rootVisualElement;
 
         m_splitView = root.Q<SplitView>("agents-history-panel-container");
-        m_bindingsPanel = root.Q<BindingsPanel>();
+        m_brainMapsPanel = root.Q<BrainMapsPanel>();
         var toolset = root.Q<VisualElement>("toolset");
 
         m_agentBrainButton = toolset.Q<Button>("bindings-button");
@@ -35,7 +36,7 @@ public class ToolsetPanelController : MonoBehaviour
         m_splitView.style.display = DisplayStyle.None;
 
         // Display the new panel
-        m_bindingsPanel.style.display = DisplayStyle.Flex;
+        m_brainMapsPanel.style.display = DisplayStyle.Flex;
     }
     private void SetHistoryCallback()
     {
@@ -45,6 +46,6 @@ public class ToolsetPanelController : MonoBehaviour
     {
         m_splitView.style.display = DisplayStyle.Flex;
         // Hide the other panel 
-        m_bindingsPanel.style.display = DisplayStyle.None;
+        m_brainMapsPanel.style.display = DisplayStyle.None;
     }
 }

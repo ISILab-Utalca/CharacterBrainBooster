@@ -22,7 +22,7 @@
                                 </ui:VisualElement>
                             </ui:VisualElement>
                             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-                                <CBB.ExternalTool.BindingsPanel style="display: none;" />
+                                <CBB.UI.BrainMapsPanel />
                                 <SplitView orientation="Vertical" fixed-pane-initial-dimension="420" name="agents-history-panel-container">
                                     <CBB.ExternalTool.AgentsPanel name="AgentsPanel" style="flex-grow: 0; flex-shrink: 0; max-height: initial; min-height: initial; height: 285px; display: flex;" />
                                     <CBB.ExternalTool.HistoryPanel style="flex-grow: 0; flex-shrink: 1; max-height: initial; min-height: initial; height: 650px; display: flex;" />
