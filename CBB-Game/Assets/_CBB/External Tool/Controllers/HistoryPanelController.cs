@@ -149,7 +149,7 @@ namespace CBB.ExternalTool
                     {
                         var ai = new ActionInfo();
                         element.Add(ai);
-                        BindActionItem(desition2, index, ai);
+                        BindActionItem(desition2, rIndex, ai);
                     }
                     else if (list.itemsSource[rIndex] is SensorPackage sensor2)
                     {

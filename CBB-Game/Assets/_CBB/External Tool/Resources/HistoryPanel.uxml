@@ -5,7 +5,7 @@
     <ui:VisualElement class="container-all-borders" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column;">
         <ui:VisualElement class="title-card-container">
             <ui:Label tabindex="-1" text="Decisions history" display-tooltip-when-elided="true" name="title" class="title-card" />
-            <ui:EnumField type="CBB.ExternalTool.HistoryPanel+ShowType, Assembly-CSharp" name="my-show-field" include-obsolete-values="false" value="Decisions" class="MyVisualElement my-arrow" style="flex-grow: 1; flex-shrink: 1; margin-left: 10px; margin-right: 0; overflow: visible; flex-direction: row; margin-top: 0; margin-bottom: 0; padding-top: 2px;" />
+            <ui:EnumField type="CBB.ExternalTool.HistoryPanel+ShowType, Assembly-CSharp" name="my-show-field" include-obsolete-values="false" value="Decisions" class="MyVisualElement my-arrow" />
         </ui:VisualElement>
         <ui:ListView focusable="true" virtualization-method="DynamicHeight" show-foldout-header="false" horizontal-scrolling="false" class="my-scroll-vertical" style="height: 100%; color: rgb(255, 255, 255); flex-direction: column; flex-grow: 0; align-items: stretch; align-self: stretch; flex-basis: auto; flex-shrink: 1; justify-content: space-around;" />
     </ui:VisualElement>

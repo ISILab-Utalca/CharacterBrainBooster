@@ -132,7 +132,7 @@ namespace CBB.Api
                 throw;
             }
         }
-        public void SendDataToAllClients(AgentWrapper.AgentStateType type = AgentWrapper.AgentStateType.CURRENT)
+        private void SendDataToAllClients(AgentWrapper.AgentStateType type = AgentWrapper.AgentStateType.CURRENT)
         {
             if (!Server.IsRunning) return;
             try

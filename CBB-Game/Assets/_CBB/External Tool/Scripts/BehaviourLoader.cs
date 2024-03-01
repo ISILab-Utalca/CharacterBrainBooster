@@ -70,7 +70,7 @@ public class BehaviourLoader : MonoBehaviour
     }
     public void UpdateBehaviour(Brain brain)
     {
-        if (GetAssociatedBrain() == brain)
+        if (GetAssociatedBrain().id == brain.id)
         {
             Debug.LogWarning($"It's a match: {gameObject.name} <> {brain.name} <> {brain.id}");
             StartCoroutine(ResetAgentBehaviour(brain));

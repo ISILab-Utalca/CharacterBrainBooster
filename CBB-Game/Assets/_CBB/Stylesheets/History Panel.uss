@@ -20,14 +20,8 @@
     border-top-width: 0;
     border-bottom-width: 0;
     color: rgb(255, 255, 255);
-    width: auto;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    margin-left: 0;
-    margin-right: 150px;
-    font-size: 12px;
+    font-size: 16px;
+    margin-bottom: 25px;
 }
 
 .title-card {
@@ -46,4 +40,5 @@
 
 .title-card-container {
     background-color: rgb(7, 7, 7);
+    flex-grow: 1;
 }
