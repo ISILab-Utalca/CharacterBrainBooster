@@ -326,14 +326,15 @@ namespace CBB.UI
         private void DisplayBrainDetails(Brain brain, int index)
         {
             DetailsPanel.Clear();
-            var textField = new TextField
+            var brainDetailsPanel = new BrainDetailsPanel();
+            brainDetailsPanel.DeleteBrainButton.clickable.clicked += () =>
             {
-                label = "Brain Name",
-                value = brain.name
+                Brains.Remove(brain);
+                ResetBrainTree();
             };
-            textField.AddToClassList("cbb-text-field");
-            textField.RegisterValueChangedCallback(SyncText(brain, index));
-            DetailsPanel.Add(textField);
+            brainDetailsPanel.BrainNameTextField.value = brain.name;
+            brainDetailsPanel.BrainNameTextField.RegisterValueChangedCallback(SyncText(brain, index));
+            DetailsPanel.Add(brainDetailsPanel);
             AddButtonContainer.SetDisplay(false);
         }
 
