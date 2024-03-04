@@ -57,7 +57,7 @@ namespace ArtificialIntelligence.Utility.Actions
 
             LocalNavMeshAgent.speed = runSpeed;
             if (viewLogs) Debug.LogWarning($"CAUTION: LOCKING ACTION EXECUTION ON {gameObject.name}.\nLocked action: {this}");
-            IsBlocked = true;
+            //IsBlocked = true;
             Vector3 runAwayDirection = (LocalAgentMemory.GetPosition - target.transform.position).normalized;
             Vector3 finalDestination = LocalAgentMemory.GetPosition + runAwayDirection * safeDistance;
             LocalNavMeshAgent.SetDestination(finalDestination);
@@ -66,7 +66,7 @@ namespace ArtificialIntelligence.Utility.Actions
                 yield return runCheckTick;
             }
             yield return new WaitForSeconds(pauseAfterRunning);
-            IsBlocked = false;
+            //IsBlocked = false;
             if (viewLogs) Debug.LogWarning($"CAUTION: UNLOCKING ACTION EXECUTION ON {gameObject.name}.\nUnlocked action: {this}");
             if (viewLogs) Debug.Log($"Run away finished on {gameObject.name}");
             FinishExecution();

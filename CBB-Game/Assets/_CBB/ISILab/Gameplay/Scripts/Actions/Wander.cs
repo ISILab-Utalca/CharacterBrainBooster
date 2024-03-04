@@ -18,7 +18,8 @@ namespace ArtificialIntelligence.Utility.Actions
         private float m_walkRadius = 10f;
         [SerializeField, Tooltip("How often the script will check if the agent reached its destination")]
         private float m_tickCheck = .2f;
-
+        [SerializeField]
+        private float m_speed = 5;
         private WaitForSeconds _distanceCheckTime;
         private Vector3 _randomDirection;
 
@@ -81,6 +82,7 @@ namespace ArtificialIntelligence.Utility.Actions
             this.m_maxWaitTimer = (float) data.FindValueByName("MaxWaitTimer").Getvalue();
             this.m_walkRadius = (float) data.FindValueByName("WalkRadius").Getvalue();
             this.m_tickCheck = (float) data.FindValueByName("TickCheck").Getvalue();
+            this.m_speed = (float) data.FindValueByName("Agent speed").Getvalue();
         }
         public override DataGeneric GetGeneric()
         {
@@ -89,6 +91,7 @@ namespace ArtificialIntelligence.Utility.Actions
             data.Add(new WraperNumber { name = "MaxWaitTimer", value = m_maxWaitTimer });
             data.Add(new WraperNumber { name = "WalkRadius", value = m_walkRadius });
             data.Add(new WraperNumber { name = "TickCheck", value = m_tickCheck });
+            data.Add(new WraperNumber { name = "Agent speed", value = m_speed });
             AddConsiderationsToConfiguration(data);
             return data;
         }
