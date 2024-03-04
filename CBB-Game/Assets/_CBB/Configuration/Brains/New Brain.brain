@@ -1,0 +1,49 @@
+{
+  "$type": "Brain, Assembly-CSharp",
+  "id": "2012c094b9f146e283a1e3062caa01d4",
+  "name": "New Brain",
+  "serializedActions": {
+    "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
+    "$values": [
+      {
+        "$type": "Generic.DataGeneric, Assembly-CSharp",
+        "classType": "ArtificialIntelligence.Utility.Actions.Wander",
+        "values": {
+          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
+          "$values": [
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 1.0,
+              "name": "MinWaitTimer"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 5.0,
+              "name": "MaxWaitTimer"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 10.0,
+              "name": "WalkRadius"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 0.2,
+              "name": "TickCheck"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 5.0,
+              "name": "Agent speed"
+            }
+          ]
+        },
+        "dataType": 0
+      }
+    ]
+  },
+  "serializedSensors": {
+    "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
+    "$values": []
+  }
+}
