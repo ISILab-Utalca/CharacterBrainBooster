@@ -126,3 +126,8 @@ FloatField #unity-text-input {
     border-top-width: 0;
     border-bottom-width: 0;
 }
+
+.dropdown-text {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+}

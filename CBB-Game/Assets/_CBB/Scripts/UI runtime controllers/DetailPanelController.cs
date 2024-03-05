@@ -1,8 +1,5 @@
 using CBB.Lib;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -28,24 +25,26 @@ public class DetailPanelController : MonoBehaviour
             var considerationCount = evaluatedConsiderations.Count;
             var curvesAndValues = new (Curve, float)[considerationCount];
 
-            var names = "";
-            var values = "";
+            // what is this? names of what?
+            string names = "";
+            // what is this? values of what?
+            string values = "";
             for (int i = 0; i < considerationCount; i++)
             {
                 var consideration = evaluatedConsiderations[i];
                 curvesAndValues[i] = (consideration.Curve, consideration.InputValue);
 
-                var x = (i != considerationCount - 1) ? " * " : "";
-                names += "(" + consideration.EvaluatedVariableName + ")" + x;
-                var y = (i != considerationCount - 1) ? " * " : "";
+                string connector = (i != considerationCount - 1) ? " * " : "";
+                names += "(" + consideration.EvaluatedVariableName + ")" + connector;
+                string y = (i != considerationCount - 1) ? " * " : "";
                 values += consideration.UtilityValue.ToString("N3") + y;
             }
-            var totalUtility = decisionData.actionScore.ToString();
+            string totalUtility = decisionData.actionScore.ToString();
             // Plot the line that represents the total utility
             content.Chart.SetCurves(curvesAndValues, true);
-            content.baseFormula.text = "Base formula: " + names;
-            content.formulaUtility.text = "Formula utility: (" + values + ") * " + decisionData.factor.ToString("N3");
-            content.priorityAction.text = "Priority action: " + decisionData.priority.ToString("N3");
+            content.priorityAction.text = "Action priority: " + decisionData.priority.ToString("N3");
+            content.baseFormula.text = "Utility formula: " + names;
+            content.formulaUtility.text = "Current values: (" + values + ") * " + decisionData.factor.ToString("N3");
             content.TotalUtility.text = "Total utility: " + totalUtility;
             content.DisplayEvaluatedConsiderations(evaluatedConsiderations);
         }
