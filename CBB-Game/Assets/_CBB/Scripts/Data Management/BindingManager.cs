@@ -10,22 +10,10 @@ namespace CBB.DataManagement
     public static class BindingManager
     {
         private const string BIND_BRAIN_ID_FILENAME = "Brain ID - Brain File Name";
-        private const string BIND_AGENT_ID_BRAIN_ID = "Agent ID - Brain ID";
         private const string FILE_FORMAT = ".data";
 
-        private static Binding m_agentIDBrainID;
         private static Binding m_brainIDFileName;
 
-
-        public static Binding AgentIDBrainID
-        {
-            get
-            {
-                m_agentIDBrainID ??= LoadBinding(new DataFileProperties(Path, BIND_AGENT_ID_BRAIN_ID, FILE_FORMAT));
-                return m_agentIDBrainID;
-            }
-            set { m_agentIDBrainID = value; }
-        }
         public static Binding BrainIDFileName
         {
             get
@@ -88,20 +76,6 @@ namespace CBB.DataManagement
         {
             using System.IO.StreamWriter sw = System.IO.File.CreateText(dataFile.GetFullPath());
             sw.WriteLine(JsonConvert.SerializeObject(binding, Formatting.Indented));
-        }
-        public static void UpdateAgentIDBrainIDBinding(BehaviourLoader.Memento memento, string newAgentID, string newBrainName)
-        {
-            // Remove the previous binding from the memory
-            if (AgentIDBrainID.data.ContainsKey(memento.SubGroupName))
-            {
-                AgentIDBrainID.data.Remove(memento.SubGroupName);
-            }
-            // Add the new binding to the memory
-            var brain = BrainDataLoader.GetBrainByName(newBrainName);
-            AgentIDBrainID.data.Add(newAgentID, brain.id);
-            // Save the new binding to the disk
-            DataFileProperties agentBrainAssociationProperties = new(Path, BIND_AGENT_ID_BRAIN_ID, FILE_FORMAT);
-            SaveBinding(agentBrainAssociationProperties, AgentIDBrainID);
         }
         public static void SaveBrainIDFilenameBinding(Brain brain)
         {
