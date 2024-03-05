@@ -18,20 +18,15 @@ namespace CBB.InternalTool
         {
             m_root = new VisualElement();
             m_VisualTreeAsset.CloneTree(m_root);
-            LoadAgentTypes();
+            LoadBrainMaps();
             SetReferences();
             InitializeDropdowns();
             SetDropdownBehaviours();
             return m_root;
         }
-        private void LoadAgentTypes()
+        private void LoadBrainMaps()
         {
             m_brainMaps = BrainMapsManager.GetAllBrainMaps();
-            m_agentTypeNames.Clear();
-            foreach (BrainMap collection in m_brainMaps)
-            {
-                m_agentTypeNames.Add(collection.agentType);
-            }
         }
         private void SetReferences()
         {
@@ -40,10 +35,32 @@ namespace CBB.InternalTool
         }
         private void InitializeDropdowns()
         {
+            if(m_brainMaps == null || m_brainMaps.Count == 0)
+            {
+                SetDefaultDropdownsValue();
+                return;
+            }
+            m_agentTypeNames.Clear();
+            foreach (BrainMap collection in m_brainMaps)
+            {
+                m_agentTypeNames.Add(collection.agentType);
+            }
+            if(m_agentTypeNames.Count == 0)
+            {
+                SetDefaultDropdownsValue();
+                return;
+            }
             m_agentTypeDropdown.choices = m_agentTypeNames;
             SetSubgroups(m_agentTypeDropdown.value);
 
         }
+
+        private void SetDefaultDropdownsValue()
+        {
+            m_agentTypeDropdown.value = "No data";
+            m_typeSubgroupsDropdown.value = "No data";
+        }
+
         private void SetSubgroups(string selectedType)
         {
             List<string> subgroup = GetSelectedTypeSubgroups(selectedType);
@@ -52,6 +69,7 @@ namespace CBB.InternalTool
         }
         private List<string> GetSelectedTypeSubgroups(string selectedType)
         {
+            if(m_brainMaps == null || m_brainMaps.Count == 0) return null;
             if (!string.IsNullOrEmpty(selectedType))
             {
                 foreach (var collection in m_brainMaps)

@@ -115,7 +115,7 @@ namespace CBB.Lib
             targetName = option.Target ? option.Target.name : "No target";
             actionScore = option.Score;
             factor = option.ScaleFactor;
-            priority = option.Action._actionPriority;
+            priority = option.Action.actionPriority;
             evaluatedConsiderations = new List<ConsiderationData>();
             if (option.Evaluations != null)
             {

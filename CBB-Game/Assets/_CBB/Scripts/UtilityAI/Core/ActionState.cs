@@ -15,10 +15,10 @@ namespace ArtificialIntelligence.Utility
     {
         #region Fields
         [Header("Action general settings")]
-        [SerializeField, Tooltip("Relative importance of this action with regards to other actions")]
-        public float _actionPriority = 1f;
+        [Tooltip("Relative importance of this action with regards to other actions")]
+        public float actionPriority = 1f;
         [SerializeField]
-        internal protected float defaultActionCooldown;
+        internal protected float m_defaultActionCooldown;
         [SerializeField, Tooltip("Do you want to see the logs of this Action?")]
         protected internal bool viewLogs = false;
         [SerializeField]
@@ -33,7 +33,7 @@ namespace ArtificialIntelligence.Utility
         public float ActionCooldown { get; set; }
         public LocalAgentMemory LocalAgentMemory { get; protected set; }
         public bool IsRunning { get; set; }
-        public float ActionPriority { get => _actionPriority; }
+        public float ActionPriority { get => actionPriority; }
         public System.Action OnFinishedAction { get; set; }
         public System.Action OnStartedAction { get; set; }
         public bool IsBlocked { get; protected set; }
@@ -42,10 +42,6 @@ namespace ArtificialIntelligence.Utility
         #region Methods
         protected internal virtual void Awake()
         {
-            // Warning: this assumes that the agent has a NavMeshAgent component
-            // and a LocalAgentMemory component at the same level in the hierarchy
-            // TODO: make this more robust
-            //Debug.Log("Cache basic components");
             LocalAgentMemory = GetComponent<LocalAgentMemory>();
             LocalNavMeshAgent = GetComponent<NavMeshAgent>();
         }
@@ -59,16 +55,16 @@ namespace ArtificialIntelligence.Utility
             UtilityConsideration.Evaluation evaluation;
             foreach (var consideration in _considerations)
             {
-                //Note: is possible to optimize this, breaking after a consideration return 0
+                //Note: is possible to optimize this, breaking after a consideration returns 0
                 // but if we do that, the debugging tool won't have information about the next
-                // considerations(that may have scores different than 0), so we compute all
-                // the considerations, regardless of their evaluated value
+                // considerations(that may have scored non-zero), thus all considerations
+                // are computed, regardless of their individual returned value
                 evaluation = consideration.GetValue(LocalAgentMemory, target);
                 option.Evaluations.Add(evaluation);
 
                 //This multiplication is where we combine the scores of the different
-                //considerations being evaluated.This line of code is very important since it
-                //is responsible for combining the different evaluation curves into a single uniform value.
+                //considerations being evaluated. This line of code is very important since it's
+                //responsible for combining the different evaluation curves into a single uniform value.
                 score *= evaluation.UtilityValue;
             }
             option.Score = score;
@@ -89,7 +85,7 @@ namespace ArtificialIntelligence.Utility
             RescaleOptionScore(option);
 
             // Apply the relative importance (weight) of this action
-            option.Score *= _actionPriority;
+            option.Score *= actionPriority;
 
             return option;
 
@@ -194,6 +190,7 @@ namespace ArtificialIntelligence.Utility
         public virtual void SetParams(DataGeneric data)
         {
             SetConsiderationsFromConfiguration(data);
+            actionPriority = (float)data.FindValueByName("Priority").Getvalue();
         }
         internal void SetConsiderationsFromConfiguration(DataGeneric data)
         {
@@ -210,7 +207,13 @@ namespace ArtificialIntelligence.Utility
                 }
             }
         }
-        public abstract DataGeneric GetGeneric();
+        public virtual DataGeneric GetGeneric()
+        {
+            var dg = new DataGeneric(DataGeneric.DataType.Action) { ClassType = GetType() };
+            dg.Add(new WraperNumber { name = "Priority", value = actionPriority });
+            AddConsiderationsToConfiguration(dg);
+            return dg;
+        }
         #endregion
     }
 }

@@ -20,7 +20,7 @@ namespace ArtificialIntelligence.Utility.Actions
         protected internal override void Awake()
         {
             base.Awake();
-            ActionCooldown = defaultActionCooldown;
+            ActionCooldown = m_defaultActionCooldown;
             StartCoroutine(DecreaseCooldown());
         }
         private IEnumerator DecreaseCooldown()
@@ -56,7 +56,7 @@ namespace ArtificialIntelligence.Utility.Actions
             if (target.TryGetComponent<Villager>(out var villager))
             {
                 villager.Health -= damage;
-                ActionCooldown = defaultActionCooldown;
+                ActionCooldown = m_defaultActionCooldown;
             }
             else
             {
@@ -69,13 +69,12 @@ namespace ArtificialIntelligence.Utility.Actions
         public override void SetParams(DataGeneric data)
         {
             base.SetParams(data);
-            this.damage = (int)data.FindValueByName("damage").Getvalue();
+            this.damage = (int)data.FindValueByName("Damage").Getvalue();
         }
         public override DataGeneric GetGeneric()
         {
-            var data = new DataGeneric(DataGeneric.DataType.Action) { ClassType = GetType() };
-            data.Add(new WraperNumber { name = "damage", value = damage });
-            AddConsiderationsToConfiguration(data);
+            var data = base.GetGeneric();
+            data.Add(new WraperNumber { name = "Damage", value = damage });
             return data;
         }
         #endregion

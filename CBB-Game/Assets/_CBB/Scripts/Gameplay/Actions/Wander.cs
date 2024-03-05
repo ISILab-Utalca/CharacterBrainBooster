@@ -78,21 +78,20 @@ namespace ArtificialIntelligence.Utility.Actions
         public override void SetParams(DataGeneric data)
         {
             base.SetParams(data);
-            this.m_minWaitTimer = (float) data.FindValueByName("MinWaitTimer").Getvalue();
-            this.m_maxWaitTimer = (float) data.FindValueByName("MaxWaitTimer").Getvalue();
-            this.m_walkRadius = (float) data.FindValueByName("WalkRadius").Getvalue();
-            this.m_tickCheck = (float) data.FindValueByName("TickCheck").Getvalue();
+            this.m_minWaitTimer = (float) data.FindValueByName("Min wait timer").Getvalue();
+            this.m_maxWaitTimer = (float) data.FindValueByName("Max wait timer").Getvalue();
+            this.m_walkRadius = (float) data.FindValueByName("Walk radius").Getvalue();
+            this.m_tickCheck = (float) data.FindValueByName("Tick check").Getvalue();
             this.m_speed = (float) data.FindValueByName("Agent speed").Getvalue();
         }
         public override DataGeneric GetGeneric()
         {
-            var data = new DataGeneric(DataGeneric.DataType.Action) { ClassType = typeof(Wander) };
-            data.Add(new WraperNumber { name = "MinWaitTimer", value = m_minWaitTimer });
-            data.Add(new WraperNumber { name = "MaxWaitTimer", value = m_maxWaitTimer });
-            data.Add(new WraperNumber { name = "WalkRadius", value = m_walkRadius });
-            data.Add(new WraperNumber { name = "TickCheck", value = m_tickCheck });
+            var data = base.GetGeneric();
+            data.Add(new WraperNumber { name = "Min wait timer", value = m_minWaitTimer });
+            data.Add(new WraperNumber { name = "Max wait timer", value = m_maxWaitTimer });
+            data.Add(new WraperNumber { name = "Walk radius", value = m_walkRadius });
+            data.Add(new WraperNumber { name = "Tick check", value = m_tickCheck });
             data.Add(new WraperNumber { name = "Agent speed", value = m_speed });
-            AddConsiderationsToConfiguration(data);
             return data;
         }
         #endregion

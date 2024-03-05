@@ -8,8 +8,10 @@ namespace ArtificialIntelligence.Utility.Actions
     public class Jump : ActionState
     {
         #region Fields
-        public float jumpHeight = 2f;
-        public float jumpDuration = 1f;
+        [SerializeField]
+        private float m_jumpHeight = 2f;
+        [SerializeField]
+        private float m_jumpDuration = 1f;
         #endregion
 
         #region Methods
@@ -41,12 +43,12 @@ namespace ArtificialIntelligence.Utility.Actions
             var startPosition = transform.position;
             float elapsedTime = 0f;
 
-            while (elapsedTime < jumpDuration)
+            while (elapsedTime < m_jumpDuration)
             {
-                float newY = Mathf.Lerp(startPosition.y, startPosition.y + jumpHeight, elapsedTime / (jumpDuration / 2f));
-                if (elapsedTime > jumpDuration / 2f)
+                float newY = Mathf.Lerp(startPosition.y, startPosition.y + m_jumpHeight, elapsedTime / (m_jumpDuration / 2f));
+                if (elapsedTime > m_jumpDuration / 2f)
                 {
-                    newY = Mathf.Lerp(startPosition.y + jumpHeight, startPosition.y, (elapsedTime - (jumpDuration / 2f)) / (jumpDuration / 2f));
+                    newY = Mathf.Lerp(startPosition.y + m_jumpHeight, startPosition.y, (elapsedTime - (m_jumpDuration / 2f)) / (m_jumpDuration / 2f));
                 }
 
                 transform.position = new Vector3(transform.position.x, newY, transform.position.z);
@@ -65,16 +67,15 @@ namespace ArtificialIntelligence.Utility.Actions
         public override void SetParams(DataGeneric data)
         {
             base.SetParams(data);
-            this.jumpHeight = (float)data.FindValueByName("jumpHeight").Getvalue();
-            this.jumpDuration = (int)(float)data.FindValueByName("jumpDuration").Getvalue();
+            this.m_jumpHeight = (float)data.FindValueByName("Jump height").Getvalue();
+            this.m_jumpDuration = (int)(float)data.FindValueByName("Jump Duration").Getvalue();
         }
 
         public override DataGeneric GetGeneric()
         {
-            var data = new DataGeneric(DataGeneric.DataType.Action) { ClassType = GetType() };
-            data.Add(new WraperNumber { name = "jumpHeight", value = jumpHeight });
-            data.Add(new WraperNumber {name = "jumpDuration", value = jumpDuration });
-            AddConsiderationsToConfiguration(data);
+            var data = base.GetGeneric();
+            data.Add(new WraperNumber { name = "Jump height", value = m_jumpHeight });
+            data.Add(new WraperNumber {name = "Jump Duration", value = m_jumpDuration });
             return data;
         }
         #endregion

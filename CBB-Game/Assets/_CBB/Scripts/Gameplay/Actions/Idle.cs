@@ -10,7 +10,8 @@ namespace ArtificialIntelligence.Utility.Actions
     public class Idle : ActionState
     {
         #region Fields
-        readonly WaitForSeconds wait = new(2);
+        [SerializeField]
+        private float m_waitTime = 2;
         #endregion
 
         #region Methods
@@ -38,7 +39,7 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         protected override IEnumerator Act(GameObject target = null)
         {
-            yield return wait;
+            yield return new WaitForSeconds(m_waitTime);
             FinishExecution();
         }
 
@@ -49,10 +50,9 @@ namespace ArtificialIntelligence.Utility.Actions
 
         public override DataGeneric GetGeneric()
         {
-            return new DataGeneric(DataGeneric.DataType.Action)
-            {
-                ClassType = GetType(),
-            };
+            var data = base.GetGeneric();
+            data.Add(new WraperNumber { name = "Wait time", value = m_waitTime });
+            return data;
         }
         #endregion
     }
