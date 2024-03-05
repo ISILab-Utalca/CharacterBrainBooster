@@ -10,21 +10,6 @@ using UnityEngine;
 
 public class BehaviourLoader : MonoBehaviour
 {
-    /// <summary>
-    /// Holds the previous state of the BrainLoader
-    /// https://www.dofactory.com/net/memento-design-pattern
-    /// </summary>
-    public class Memento
-    {
-        private readonly string m_brainName;
-        private string m_subGroupName;
-        public string SubGroupName { get => m_subGroupName; private set => m_subGroupName = value; }
-        public Memento(string brainName, string agent_ID)
-        {
-            this.m_brainName = brainName;
-            this.m_subGroupName = agent_ID;
-        }
-    }
 
     #region Fields
     public string m_agentType = "Default";
@@ -49,7 +34,6 @@ public class BehaviourLoader : MonoBehaviour
     {
         agentBrain = GetComponent<AgentBrain>();
         BrainDataLoader.BrainUpdated += UpdateBehaviour;
-        Server.OnNewClientConnected += SendBindingData;
     }
     public void UpdateBehaviour(Brain brain)
     {
@@ -59,14 +43,6 @@ public class BehaviourLoader : MonoBehaviour
             StartCoroutine(ResetAgentBehaviour(brain));
         }
     }
-    private void SendBindingData(TcpClient client)
-    {
-        var association = new AgentBrainAssociation("agentType", GetMemento().SubGroupName, m_brainName, gameObject.name, gameObject.GetInstanceID());
-        var serializedMessage = JsonConvert.SerializeObject(association, Settings.JsonSerialization);
-        Server.SendMessageToClient(client, serializedMessage);
-    }
-
-
     private void Start()
     {
         var brain = GetAssociatedBrain();
@@ -136,7 +112,6 @@ public class BehaviourLoader : MonoBehaviour
     private void OnDestroy()
     {
         BrainDataLoader.BrainUpdated -= UpdateBehaviour;
-        Server.OnNewClientConnected -= SendBindingData;
     }
     private IEnumerator ResetAgentBehaviour(Brain brain)
     {
@@ -149,7 +124,6 @@ public class BehaviourLoader : MonoBehaviour
             yield return null;
         }
         SetupAgentBehaviour(brain);
-        BindingManager.UpdateAgentIDBrainIDBinding(memento, m_agentType, m_brainName);
         yield return null;
 
         agentBrain.Resume();
@@ -172,5 +146,20 @@ public class BehaviourLoader : MonoBehaviour
     public Memento GetMemento()
     {
         return new Memento(m_brainName, m_agentType);
+    }
+    /// <summary>
+    /// Holds the previous state of the BrainLoader
+    /// https://www.dofactory.com/net/memento-design-pattern
+    /// </summary>
+    public class Memento
+    {
+        private readonly string m_brainName;
+        private string m_subGroupName;
+        public string SubGroupName { get => m_subGroupName; private set => m_subGroupName = value; }
+        public Memento(string brainName, string agent_ID)
+        {
+            this.m_brainName = brainName;
+            this.m_subGroupName = agent_ID;
+        }
     }
 }
