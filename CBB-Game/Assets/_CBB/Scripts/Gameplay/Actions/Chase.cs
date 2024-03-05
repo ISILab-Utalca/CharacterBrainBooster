@@ -12,9 +12,9 @@ namespace ArtificialIntelligence.Utility.Actions
         #region Fields
 
         [SerializeField]
-        private float chaseSpeed = 2f;
+        private float m_chaseSpeed = 2f;
 
-        private float initialSpeed = 1;
+        private float m_initialSpeed = 1;
         private const float CHASE_TICK = 0.1f;
         readonly WaitForSeconds chaseCheckTick = new(CHASE_TICK);
         #endregion
@@ -24,7 +24,7 @@ namespace ArtificialIntelligence.Utility.Actions
         protected internal override void Awake()
         {
             base.Awake();
-            initialSpeed = LocalNavMeshAgent.speed;
+            m_initialSpeed = LocalNavMeshAgent.speed;
         }
 
         public override void StartExecution(GameObject target = null)
@@ -34,12 +34,12 @@ namespace ArtificialIntelligence.Utility.Actions
         }
         public override void InterruptExecution()
         {
-            LocalNavMeshAgent.speed = initialSpeed;
+            LocalNavMeshAgent.speed = m_initialSpeed;
             base.InterruptExecution();
         }
         public override void FinishExecution()
         {
-            LocalNavMeshAgent.speed = initialSpeed;
+            LocalNavMeshAgent.speed = m_initialSpeed;
             base.FinishExecution();
         }
         public override List<Option> GetOptions()
@@ -50,7 +50,7 @@ namespace ArtificialIntelligence.Utility.Actions
 
         protected override IEnumerator Act(GameObject target = null)
         {
-            LocalNavMeshAgent.speed = chaseSpeed;
+            LocalNavMeshAgent.speed = m_chaseSpeed;
             LocalNavMeshAgent.SetDestination(target.transform.position);
             while (!LocalNavMeshAgent.ReachedDestination())
             {
@@ -63,17 +63,13 @@ namespace ArtificialIntelligence.Utility.Actions
         public override void SetParams(DataGeneric data)
         {
             base.SetParams(data);
-            this.chaseSpeed = (float)data.FindValueByName("chaseSpeed").Getvalue();
-            this.initialSpeed = (float)data.FindValueByName("initialSpeed").Getvalue();
-
+            this.m_chaseSpeed = (float)data.FindValueByName("Speed").Getvalue();
         }
 
         public override DataGeneric GetGeneric()
         {
-            var data = new DataGeneric(DataGeneric.DataType.Action) { ClassType = GetType() };
-            data.Add(new WraperNumber { name = "chaseSpeed", value = chaseSpeed });
-            data.Add(new WraperNumber { name = "initialSpeed", value = initialSpeed });
-            AddConsiderationsToConfiguration(data);
+            var data = base.GetGeneric();
+            data.Add(new WraperNumber { name = "Speed", value = m_chaseSpeed });
             return data;
         }
 

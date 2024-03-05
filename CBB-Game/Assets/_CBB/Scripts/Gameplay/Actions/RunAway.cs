@@ -13,12 +13,12 @@ namespace ArtificialIntelligence.Utility.Actions
     {
         #region Fields
         [SerializeField]
-        private float safeDistance = 3;
+        private float m_safeDistance = 3;
         [SerializeField]
-        private int runSpeed = 2;
+        private int m_runSpeed = 2;
 
         [SerializeField, Range(0, 10)]
-        private float pauseAfterRunning = 1f;
+        private float m_pauseAfterRunning = 1f;
 
         private float initialSpeed = 1;
         private const float RUN_TICK = 0.1f;
@@ -55,38 +55,32 @@ namespace ArtificialIntelligence.Utility.Actions
         protected override IEnumerator Act(GameObject target = null)
         {
 
-            LocalNavMeshAgent.speed = runSpeed;
-            if (viewLogs) Debug.LogWarning($"CAUTION: LOCKING ACTION EXECUTION ON {gameObject.name}.\nLocked action: {this}");
-            //IsBlocked = true;
+            LocalNavMeshAgent.speed = m_runSpeed;
             Vector3 runAwayDirection = (LocalAgentMemory.GetPosition - target.transform.position).normalized;
-            Vector3 finalDestination = LocalAgentMemory.GetPosition + runAwayDirection * safeDistance;
+            Vector3 finalDestination = LocalAgentMemory.GetPosition + runAwayDirection * m_safeDistance;
             LocalNavMeshAgent.SetDestination(finalDestination);
             while (!LocalNavMeshAgent.ReachedDestination())
             {
                 yield return runCheckTick;
             }
-            yield return new WaitForSeconds(pauseAfterRunning);
-            //IsBlocked = false;
-            if (viewLogs) Debug.LogWarning($"CAUTION: UNLOCKING ACTION EXECUTION ON {gameObject.name}.\nUnlocked action: {this}");
-            if (viewLogs) Debug.Log($"Run away finished on {gameObject.name}");
+            yield return new WaitForSeconds(m_pauseAfterRunning);
             FinishExecution();
         }
 
         public override void SetParams(DataGeneric data)
         {
             base.SetParams(data);
-            this.safeDistance = (float)data.FindValueByName("safeDistance").Getvalue();
-            this.runSpeed = (int)(float)data.FindValueByName("runSpeed").Getvalue();
-            this.pauseAfterRunning = (float)data.FindValueByName("pauseAfterRunning").Getvalue();
+            this.m_safeDistance = (float)data.FindValueByName("Safe distance").Getvalue();
+            this.m_runSpeed = (int)(float)data.FindValueByName("Run speed").Getvalue();
+            this.m_pauseAfterRunning = (float)data.FindValueByName("Pause after running").Getvalue();
         }
 
         public override DataGeneric GetGeneric()
         {
-            var data = new DataGeneric(DataGeneric.DataType.Action) { ClassType = GetType() };
-            data.Add(new WraperNumber { name = "safeDistance", value = safeDistance });
-            data.Add(new WraperNumber { name = "runSpeed", value = runSpeed });
-            data.Add(new WraperNumber { name = "pauseAfterRunning", value = pauseAfterRunning });
-            AddConsiderationsToConfiguration(data);
+            var data = base.GetGeneric();
+            data.Add(new WraperNumber { name = "Safe distance", value = m_safeDistance });
+            data.Add(new WraperNumber { name = "Run speed", value = m_runSpeed });
+            data.Add(new WraperNumber { name = "Pause after running", value = m_pauseAfterRunning });
             return data;
         }
         #endregion
