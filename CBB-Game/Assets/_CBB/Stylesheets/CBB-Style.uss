@@ -1,9 +1,5 @@
 Toggle {
     color: rgb(255, 255, 255);
-    font-size: 20px;
-}
-
-FloatField {
     font-size: 16px;
 }
 
@@ -106,4 +102,27 @@ FloatField {
 
 TextField {
     font-size: 16px;
+    color: rgb(255, 255, 255);
+}
+
+TextField #unity-text-input {
+    background-color: rgb(13, 13, 13);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+FloatField {
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+FloatField #unity-text-input {
+    background-color: rgb(13, 13, 13);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
 }
