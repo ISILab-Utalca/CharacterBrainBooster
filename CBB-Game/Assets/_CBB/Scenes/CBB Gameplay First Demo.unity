@@ -361,7 +361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_agentType
-      value: Default
+      value: Humans
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_brainName
@@ -369,7 +369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_agentTypeSubgroup
-      value: 
+      value: Militia
       objectReference: {fileID: 0}
     - target: {fileID: 4853649445717935730, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_Name
@@ -815,7 +815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_agentType
-      value: Default
+      value: Humans
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_brainName
@@ -823,7 +823,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_agentTypeSubgroup
-      value: 
+      value: Militia
       objectReference: {fileID: 0}
     - target: {fileID: 4853649445717935730, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_Name
@@ -1235,7 +1235,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_agentType
-      value: Default
+      value: Humans
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_brainName
@@ -1243,7 +1243,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_agentTypeSubgroup
-      value: 
+      value: Militia
       objectReference: {fileID: 0}
     - target: {fileID: 4853649445717935730, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_Name
@@ -1532,7 +1532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_agentType
-      value: Default
+      value: Humans
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_brainName
@@ -1540,7 +1540,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_agentTypeSubgroup
-      value: 
+      value: Militia
       objectReference: {fileID: 0}
     - target: {fileID: 4853649445717935730, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_Name
@@ -2628,7 +2628,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_agentType
-      value: Default
+      value: Humans
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_brainName
@@ -2636,7 +2636,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2415674093926553685, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_agentTypeSubgroup
-      value: 
+      value: Militia
       objectReference: {fileID: 0}
     - target: {fileID: 4853649445717935730, guid: f92b1c50ddcab4549a8b56e5b827dabb, type: 3}
       propertyPath: m_Name

@@ -1,4 +1,19 @@
 {
   "$type": "System.Collections.Generic.List`1[[CBB.DataManagement.BrainMap, Assembly-CSharp]], mscorlib",
-  "$values": []
+  "$values": [
+    {
+      "$type": "CBB.DataManagement.BrainMap, Assembly-CSharp",
+      "agentType": "Humans",
+      "SubgroupsBrains": {
+        "$type": "System.Collections.Generic.List`1[[CBB.DataManagement.BrainMap+SubgroupBrain, Assembly-CSharp]], mscorlib",
+        "$values": [
+          {
+            "$type": "CBB.DataManagement.BrainMap+SubgroupBrain, Assembly-CSharp",
+            "subgroupName": "Militia",
+            "brainID": "9689c72f4a324622aae4794430aab269"
+          }
+        ]
+      }
+    }
+  ]
 }
