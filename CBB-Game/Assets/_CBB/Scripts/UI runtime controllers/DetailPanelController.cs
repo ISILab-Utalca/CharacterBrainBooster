@@ -36,16 +36,18 @@ public class DetailPanelController : MonoBehaviour
 
                 string connector = (i != considerationCount - 1) ? " * " : "";
                 names += "(" + consideration.EvaluatedVariableName + ")" + connector;
-                string y = (i != considerationCount - 1) ? " * " : "";
-                values += consideration.UtilityValue.ToString("N3") + y;
+                values += consideration.UtilityValue.ToString("N3") + connector;
             }
             string totalUtility = decisionData.actionScore.ToString();
             // Plot the line that represents the total utility
             content.Chart.SetCurves(curvesAndValues, true);
-            content.priorityAction.text = "Action priority: " + decisionData.priority.ToString("N3");
-            content.baseFormula.text = "Utility formula: " + names;
-            content.formulaUtility.text = "Current values: (" + values + ") * " + decisionData.factor.ToString("N3");
-            content.TotalUtility.text = "Total utility: " + totalUtility;
+            string priority = decisionData.priority.ToString("N3");
+            string scaleFactor = decisionData.scaleFactor.ToString("N3");
+            content.PriorityAction.text = $"Action priority (P): {priority}";
+            content.ScaleFactor.text = $"Scale factor (SF): {scaleFactor}";
+            content.BaseFormula.text = $"Utility formula: {names} * SF * P";
+            content.FormulaUtility.text = $"Current values: ({values}) * {priority} * {scaleFactor}"; 
+            content.TotalUtility.text = $"Total utility: {totalUtility}";
             content.DisplayEvaluatedConsiderations(evaluatedConsiderations);
         }
     }
