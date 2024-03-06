@@ -14,7 +14,6 @@ namespace CBB.InternalTool
     {
         [SerializeField]
         private VisualTreeAsset m_VisualTreeAsset = default;
-        private Toggle showLogsToggle;
 
         [MenuItem("CBB/Brain Editor #&w")]
         public static void ShowTool()
@@ -33,15 +32,8 @@ namespace CBB.InternalTool
             // and runtime.
             m_VisualTreeAsset.CloneTree(root);
 
-            showLogsToggle = root.Q<Toggle>("show-logs-toggle");
-
             BrainEditor brainEditor = root.Q<BrainEditor>();
             root.Add(brainEditor);
-            showLogsToggle.RegisterValueChangedCallback((evt) =>
-            {
-                Debug.Log(evt.newValue);
-                brainEditor.ShowLogs = evt.newValue;
-            });
 
             // Load brains and display them in the editor
             LoadBrainsInto(brainEditor);

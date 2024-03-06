@@ -38,7 +38,7 @@
             },
             {
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 5.0,
+              "value": 2.66,
               "name": "Agent speed"
             },
             {
@@ -79,7 +79,7 @@
             },
             {
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 2.0,
+              "value": 6.01,
               "name": "Run speed"
             },
             {
@@ -91,39 +91,19 @@
               "$type": "WrapperConsideration, Assembly-CSharp",
               "configuration": {
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "Distance to threat",
+                "considerationName": "New Consideration",
                 "evaluationMethod": "DistanceToTarget",
                 "curve": {
-                  "$type": "Sigmoide, Assembly-CSharp",
-                  "value": 1.0,
-                  "dx": 5.0,
-                  "sx": 10.0,
+                  "$type": "Linear, Assembly-CSharp",
+                  "value": 0.0,
+                  "m": 1.0,
+                  "dx": 0.0,
                   "dy": 0.0,
-                  "sy": 1.0,
                   "Inverted": true
                 },
                 "normalizeInput": true,
                 "minValue": 0.0,
-                "maxValue": 6.0
-              }
-            },
-            {
-              "$type": "WrapperConsideration, Assembly-CSharp",
-              "configuration": {
-                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "Threat is near",
-                "evaluationMethod": "ThreatHeard",
-                "curve": {
-                  "$type": "Linear, Assembly-CSharp",
-                  "value": 1.0,
-                  "m": 1.0,
-                  "dx": 0.0,
-                  "dy": 0.0,
-                  "Inverted": false
-                },
-                "normalizeInput": false,
-                "minValue": 0.0,
-                "maxValue": 0.0
+                "maxValue": 4.0
               }
             }
           ]
@@ -143,7 +123,7 @@
           "$values": [
             {
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
+              "value": 4.0,
               "name": "HearingRadius"
             }
           ]

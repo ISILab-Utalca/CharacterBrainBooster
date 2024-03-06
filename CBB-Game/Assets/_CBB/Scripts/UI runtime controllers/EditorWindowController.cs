@@ -1,6 +1,8 @@
 using CBB.Comunication;
 using CBB.UI;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -71,12 +73,23 @@ namespace CBB.ExternalTool
             closeButton.clicked += BackToMainMenu;
 
             IncomingGameDataHandler.ReceivedBrains += brainEditor.DisplayReceivedBrains;
+            IncomingGameDataHandler.ReceivedBrains += SaveBrainsInGameData;
             IncomingGameDataHandler.ReceivedActions += brainEditor.SetActions;
             IncomingGameDataHandler.ReceivedSensors += brainEditor.SetSensors;
             IncomingGameDataHandler.ReceivedEvaluationMethods += brainEditor.SetEvaluationMethods;
 
             brainEditor.SaveBrainButton.clicked += SendBrain;
+            brainEditor.SaveBrainButton.clicked += () =>
+            {
+                SaveBrainsInGameData(brainEditor.Brains);
+            };
         }
+
+        private void SaveBrainsInGameData(List<Brain> list)
+        {
+            GameData.Brains = list;
+        }
+
         private void BackToMainMenu()
         {
             mainMenu.SetActive(true);
