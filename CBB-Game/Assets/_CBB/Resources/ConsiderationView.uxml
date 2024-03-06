@@ -1,16 +1,17 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_CBB/Stylesheets/Consideration%20view.uss?fileID=7433441132597879392&amp;guid=7af089829c927a240b7c527c709a3576&amp;type=3#Consideration view" />
     <ui:Foldout text="Consideration" name="Foldout" style="background-color: rgb(26, 26, 26); border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 12px; padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px; height: auto; flex-grow: 1; color: rgb(214, 214, 214); flex-direction: column;">
         <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row;">
-            <ui:VisualElement name="VisualElement" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; height: auto; width: auto; margin-right: 12px; margin-bottom: 4px;">
+            <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); height: auto; width: auto; margin-right: 12px; margin-bottom: 4px;">
                 <CBB.ExternalTool.Chart />
                 <ui:VisualElement name="Content" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0);" />
             </ui:VisualElement>
-            <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-shrink: 0; justify-content: center; align-items: center; margin-right: 12px;">
-                <ui:VisualElement style="flex-grow: 0; background-color: rgb(9, 9, 10); width: 142px; height: 72px; align-items: center; justify-content: center; margin-right: 24px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px;">
-                    <ui:Label tabindex="-1" text="Input: ---" display-tooltip-when-elided="true" name="input" style="color: rgb(255, 255, 255);" />
+            <ui:VisualElement style="background-color: rgba(0, 0, 0, 0);">
+                <ui:VisualElement style="background-color: rgb(9, 9, 10); border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px;">
+                    <ui:Label tabindex="-1" text="Input: ---" display-tooltip-when-elided="true" name="input" class="label-margin" />
                 </ui:VisualElement>
-                <ui:VisualElement style="flex-grow: 0; background-color: rgb(9, 9, 10); width: 142px; height: 72px; align-items: center; justify-content: center; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px;">
-                    <ui:Label tabindex="-1" text="Utility: ---" display-tooltip-when-elided="true" name="utility" style="align-self: auto; align-items: stretch; margin-right: 4px; color: rgb(255, 255, 255); justify-content: flex-start; height: auto; width: auto;" />
+                <ui:VisualElement style="background-color: rgb(9, 9, 10); border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px;">
+                    <ui:Label tabindex="-1" text="Utility: ---" display-tooltip-when-elided="true" name="utility" class="label-margin" style="color: rgb(255, 255, 255); font-size: 16px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
