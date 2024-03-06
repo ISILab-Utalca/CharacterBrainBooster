@@ -31,12 +31,5 @@ namespace ArtificialIntelligence.Utility
             Target = null;
             Evaluations = new List<UtilityConsideration.Evaluation>();
         }
-        public Option(ActionState action, GameObject target = null)
-        {
-            Action = action;
-            Score = 0;
-            Target = target;
-            Evaluations = new List<UtilityConsideration.Evaluation>();
-        }
     }
 }
