@@ -11,6 +11,11 @@
             "$type": "CBB.DataManagement.BrainMap+SubgroupBrain, Assembly-CSharp",
             "subgroupName": "Militia",
             "brainID": "9689c72f4a324622aae4794430aab269"
+          },
+          {
+            "$type": "CBB.DataManagement.BrainMap+SubgroupBrain, Assembly-CSharp",
+            "subgroupName": "Default",
+            "brainID": "ef4eda8e273e45c5bb708a7f39b49e1f"
           }
         ]
       }

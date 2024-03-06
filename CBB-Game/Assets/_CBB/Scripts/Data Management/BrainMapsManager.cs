@@ -8,8 +8,15 @@ namespace CBB.DataManagement
     [System.Serializable]
     public class BrainMap
     {
+        public string agentType;
+        public List<SubgroupBrain> SubgroupsBrains { get; set; } = new List<SubgroupBrain>();
+        public BrainMap(string name)
+        {
+            this.agentType = name;
+            SubgroupsBrains = new List<SubgroupBrain>();
+        }
         [System.Serializable]
-        public class SubgroupBrain
+        public class SubgroupBrain 
         {
             public string subgroupName;
             public string brainID;
@@ -18,13 +25,6 @@ namespace CBB.DataManagement
                 this.subgroupName = name;
                 this.brainID = brainID;
             }
-        }
-        public string agentType;
-        public List<SubgroupBrain> SubgroupsBrains { get; set; } = new List<SubgroupBrain>();
-        public BrainMap(string name)
-        {
-            this.agentType = name;
-            SubgroupsBrains = new List<SubgroupBrain>();
         }
     }
     public class BrainMapsManager

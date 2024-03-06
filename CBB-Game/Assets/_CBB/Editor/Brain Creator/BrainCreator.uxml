@@ -1,5 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/ScrollStyle.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ScrollStyle" />
-    <ui:Toggle label="Show logs" name="show-logs-toggle" style="display: flex; visibility: visible;" />
+    <Style src="project://database/Assets/_CBB/Stylesheets/ScrollStyle.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ScrollStyle" />
     <CBB.UI.BrainEditor style="flex-grow: 1;" />
 </ui:UXML>

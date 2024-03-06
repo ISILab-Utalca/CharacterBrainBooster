@@ -47,7 +47,7 @@ namespace ArtificialIntelligence.Utility
                 methodEvaluation = new MethodEvaluation
                 {
                     OutputValue = 0f,
-                    EvaluatedVariableName = "There is no target"
+                    EvaluatedVariableName = "No target"
                 };
             }
             else
@@ -64,9 +64,10 @@ namespace ArtificialIntelligence.Utility
         [ConsiderationMethod("Threat heard")]
         public static MethodEvaluation ThreatHeard(LocalAgentMemory agentMemory, GameObject target)
         {
+            string targetName = target == null ? "Unknown" : target.name;
             MethodEvaluation methodEvaluation = new()
             {
-                EvaluatedVariableName = "Threat is near",
+                EvaluatedVariableName = $"Threat is near ({targetName})",
                 OutputValue = agentMemory.HeardObjects.Count > 0 ? 1f : 0f,
             };
             return methodEvaluation;
@@ -78,41 +79,6 @@ namespace ArtificialIntelligence.Utility
             {
                 EvaluatedVariableName = "Constant",
                 OutputValue = 0,
-            };
-            return methodEvaluation;
-        }
-        [ConsiderationMethod("room temperature")]
-        public static MethodEvaluation RoomTemperature(LocalAgentMemory agentMemory, GameObject target)
-        {
-            MethodEvaluation methodEvaluation = new()
-            {
-                EvaluatedVariableName = "Temperature",
-                OutputValue = Random.Range(0, 0.3f),
-            };
-            return methodEvaluation;
-        }
-        [ConsiderationMethod("Attack on cooldown")]
-        public static MethodEvaluation AttackOnCooldown(LocalAgentMemory agentMemory, GameObject target)
-        {
-            MethodEvaluation methodEvaluation = new()
-            {
-                EvaluatedVariableName = "Attack cooldown",
-                OutputValue = 0
-            };
-            if (agentMemory.gameObject.TryGetComponent(out Attack attackAction))
-            {
-                methodEvaluation.OutputValue = attackAction.ActionCooldown > 0 ? 1 : 0;
-            }
-            return methodEvaluation;
-
-        }
-        [ConsiderationMethod("Energy left")]
-        public static MethodEvaluation EnergyLeft(LocalAgentMemory agentMemory, GameObject target)
-        {
-            MethodEvaluation methodEvaluation = new()
-            {
-                EvaluatedVariableName = "Energy",
-                OutputValue = Random.Range(0, 1f),
             };
             return methodEvaluation;
         }

@@ -9,42 +9,42 @@ namespace CBB.ExternalTool
 {
     public class AgentBehavioursPanelController : MonoBehaviour
 	{
-		private BrainMapsPanel m_brainMapsPanel;
+		private BrainMapsPanel m_TypeBehavioursPanel;
         private void Awake()
         {
             var uiDoc = GetComponent<UIDocument>();
-            m_brainMapsPanel = uiDoc.rootVisualElement.Q<BrainMapsPanel>();
-            var dropdown = m_brainMapsPanel.Q<DropdownField>();
+            m_TypeBehavioursPanel = uiDoc.rootVisualElement.Q<BrainMapsPanel>();
+            var dropdown = m_TypeBehavioursPanel.Q<DropdownField>();
             dropdown.RegisterValueChangedCallback(OnValueChanged);
             dropdown.value = "Select an agent type";
-            BrainMapsHandler_ExternalTool.BrainMapsReceived += OnBrainMapsReceived;
+            TypeBehavioursHandler_ExternalTool.TypeBehavioursReceived += OnTypeBehavioursReceived;
         }
 
-        private void OnBrainMapsReceived()
+        private void OnTypeBehavioursReceived()
         {
-            Debug.Log("Brain Maps Received");
-            var dropdown = m_brainMapsPanel.Q<DropdownField>();
-            var choices = GameData.BrainMaps.Select(x => x.agentType);
+            Debug.Log("Type Behaviours Received");
+            var dropdown = m_TypeBehavioursPanel.Q<DropdownField>();
+            var choices = GameData.TypeBehaviours.Select(x => x.agentType);
             dropdown.choices = choices.ToList();
             dropdown.value = choices.First();
         }
         private void OnValueChanged(ChangeEvent<string> evt)
         {
-            DisplayBrainMapsDetails(evt.newValue);
+            DisplayTypeBehavioursDetails(evt.newValue);
         }
-        private void DisplayBrainMapsDetails(string agentType)
+        private void DisplayTypeBehavioursDetails(string agentType)
         {
-            var bm = GameData.BrainMaps.Where(x => x.agentType == agentType).FirstOrDefault();
-            if (bm == null)
+            var typeBehaviours = GameData.TypeBehaviours.Where(x => x.agentType == agentType).FirstOrDefault();
+            if (typeBehaviours == null)
             {
                 Debug.LogError("No brain maps found for the selected agent type");
                 return;
             }
-            m_brainMapsPanel.ClearBrainMaps();
-            foreach (var item in bm.SubgroupsBrains)
+            m_TypeBehavioursPanel.ClearBrainMaps();
+            foreach (var item in typeBehaviours.subgroups)
             {
                 var sgbd = new SubgroupBehaviourDetails(item);
-                m_brainMapsPanel.AddBrainMap(sgbd);
+                m_TypeBehavioursPanel.AddBrainMap(sgbd);
                 // I have to add the new SubgroupBehaviourDetails element to the panel
             }
         }

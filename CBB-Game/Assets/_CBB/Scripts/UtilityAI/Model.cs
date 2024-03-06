@@ -228,40 +228,4 @@ namespace CBB.Lib
         public object GetInstance() => this;
 
     }
-
-    [System.Serializable]
-    public class AgentBrainAssociation
-    {
-        public string agentTypeName;
-        public string groupName;
-        public string brainName;
-        public string agentName;
-        public int agentID;
-        public AgentBrainAssociation() { }
-        public AgentBrainAssociation(string agentTypeName, string groupName, string brainName, string agentName, int agentID)
-        {
-            this.agentTypeName = agentTypeName;
-            this.groupName = groupName;
-            this.brainName = brainName;
-            this.agentName = agentName;
-            this.agentID = agentID;
-        }
-    }
-    [System.Serializable]
-    public class AssociatedAgentBehaviour
-    {
-        public string m_agentInstanceID;
-        public string m_agentType;
-        public string m_agentTypeSubgroup;
-        public string m_brainName;
-        public string m_brainID;
-        public AssociatedAgentBehaviour(string agentInstanceID, string agentType, string subGroup, string brainName, string brainID)
-        {
-            m_brainID = brainID;
-            m_brainName = brainName;
-            m_agentType = agentType;
-            m_agentTypeSubgroup = subGroup;
-            m_agentInstanceID = agentInstanceID;
-        }
-    }
 }

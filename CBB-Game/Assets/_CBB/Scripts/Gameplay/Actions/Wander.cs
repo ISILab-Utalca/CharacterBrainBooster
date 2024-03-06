@@ -55,6 +55,7 @@ namespace ArtificialIntelligence.Utility.Actions
             // LayerMask = -1 param is recomended to hit any layer (same as Navmesh.AllAreas)
             if (NavMesh.SamplePosition(_randomDirection, out NavMeshHit navHit, m_walkRadius, NavMesh.AllAreas))
             {
+                LocalNavMeshAgent.speed = m_speed;
                 LocalNavMeshAgent.SetDestination(navHit.position);
                 //if (LocalNavMeshAgent.isOnNavMesh) Debug.Log("Yes is on Navmesh");
                 while (!LocalNavMeshAgent.ReachedDestination())

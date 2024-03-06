@@ -1,4 +1,5 @@
 using CBB.Api;
+using CBB.Comunication;
 using CBB.DataManagement;
 using CBB.Lib;
 using System;
@@ -20,7 +21,8 @@ public static class GameData
     public static Dictionary<int, AgentData> AgentStats { get; set; } = new();
     public static ObservableCollection<(int, string)> Agent_ID_Name { get; set; } = new();
     private static Dictionary<int, DecisionsAndSensorEvents> Histories { get; set; } = new();
-    public static List<BrainMap> BrainMaps { get; set; } = new();
+    public static List<TypeBehaviour> TypeBehaviours { get; set; } = new();
+    public static List<Brain> Brains { get; set; } = new();
     private static int MaxItems { get; set; } = 200;
     #endregion
     #region EVENTS
@@ -167,7 +169,7 @@ public static class GameData
         Histories.Clear();
         AgentStats.Clear();
         Agent_ID_Name.Clear();
-        BrainMaps.Clear();
+        TypeBehaviours.Clear();
     }
 
     #endregion

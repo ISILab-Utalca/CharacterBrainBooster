@@ -4,7 +4,7 @@
         <ui:Foldout text="Subgroup name">
             <ui:DropdownField label="Assigned brain" index="-1" choices="System.Collections.Generic.List`1[System.String]" class="dropdown-text" />
             <ui:Label tabindex="-1" text="Agents using this brain" display-tooltip-when-elided="true" class="dropdown-text" />
-            <ui:ListView focusable="true" show-alternating-row-backgrounds="ContentOnly" selection-type="Multiple" show-border="true" virtualization-method="DynamicHeight" />
+            <ui:ListView focusable="true" selection-type="Multiple" show-border="true" virtualization-method="DynamicHeight" />
         </ui:Foldout>
     </ui:VisualElement>
 </ui:UXML>
