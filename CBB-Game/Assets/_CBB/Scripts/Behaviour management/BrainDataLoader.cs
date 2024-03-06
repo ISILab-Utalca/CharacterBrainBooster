@@ -44,7 +44,14 @@ namespace CBB.DataManagement
         public static Brain GetBrainByName(string name)
         {
             if (m_brains.Count == 0) LoadBrains();
-            return m_brains.First(m => name.Equals(m.name));
+            try
+            {
+                return m_brains.First(m => name.Equals(m.name));
+            }
+            catch (System.InvalidOperationException)
+            {
+                return null;
+            }
         }
         public static string GenerateID()
         {
@@ -75,6 +82,19 @@ namespace CBB.DataManagement
             System.IO.DirectoryInfo dir = new(Path);
             var files = dir.GetFiles("*.brain");
             return files;
+        }
+        public static void RemoveBrain(Brain brain)
+        {
+            m_brains.Remove(brain);
+            RemoveBrainFile(brain);
+            BindingManager.RemoveBrainIDFilenameBinding(brain);
+        }
+
+        private static void RemoveBrainFile(Brain brain)
+        {
+            System.IO.File.Delete(Path + "/" + brain.name + ".brain");
+            // Delete meta
+            System.IO.File.Delete(Path + "/" + brain.name + ".brain.meta");
         }
 
         /// <summary>

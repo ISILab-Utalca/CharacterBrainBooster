@@ -1,5 +1,6 @@
 using ArtificialIntelligence.Utility;
 using CBB.Api;
+using CBB.DataManagement;
 using CBB.ExternalTool;
 using CBB.Lib;
 using Generic;
@@ -76,7 +77,6 @@ namespace CBB.UI
             }
         }
         private VisualElement DetailsPanel { get; set; }
-        private Button ReloadButton { get; set; }
         public TreeView BrainTree { get; set; }
         public Button SaveBrainButton { get; set; }
         public bool ShowLogs { get; set; } = false;
@@ -103,14 +103,12 @@ namespace CBB.UI
             visualTree.CloneTree(this);
 
             DetailsPanel = this.Q<VisualElement>("details-panel");
-            ReloadButton = this.Q<Button>("reload-brains-button");
             BrainTree = this.Q<TreeView>("brain-tree");
             SaveBrainButton = this.Q<Button>("save-brain-button");
             AddButtonContainer = this.Q<VisualElement>("button-add-container");
             AddItemButton = AddButtonContainer.Q<Button>("button-add");
             AddBrainButton = this.Q<Button>("add-brains-button");
 
-            ReloadButton.clicked += ResetBrainTree;
             BrainTree.makeItem = MakeItem;
             BrainTree.bindItem = BindItem;
             AddBrainButton.clickable.clicked += () =>
@@ -331,6 +329,7 @@ namespace CBB.UI
             {
                 Brains.Remove(brain);
                 ResetBrainTree();
+                BrainDataLoader.RemoveBrain(brain);
             };
             brainDetailsPanel.BrainNameTextField.value = brain.name;
             brainDetailsPanel.BrainNameTextField.RegisterValueChangedCallback(SyncText(brain, index));

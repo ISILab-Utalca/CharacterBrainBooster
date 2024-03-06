@@ -58,6 +58,7 @@ namespace CBB.InternalTool
                     BrainDataLoader.SaveBrain(b);
                     BrainDataLoader.BrainUpdated?.Invoke(b);
                 }
+                AssetDatabase.Refresh();
             };
         }
 

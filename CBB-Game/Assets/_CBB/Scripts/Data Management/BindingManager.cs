@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -89,6 +90,16 @@ namespace CBB.DataManagement
             }
             DataFileProperties bindingProperties = new(Path, BIND_BRAIN_ID_FILENAME, FILE_FORMAT);
             SaveBinding(bindingProperties, BrainIDFileName);
+        }
+
+        internal static void RemoveBrainIDFilenameBinding(Brain brain)
+        {
+            if (BrainIDFileName.data.ContainsKey(brain.id))
+            {
+                BrainIDFileName.data.Remove(brain.id);
+                DataFileProperties bindingProperties = new(Path, BIND_BRAIN_ID_FILENAME, FILE_FORMAT);
+                SaveBinding(bindingProperties, BrainIDFileName);
+            }
         }
     }
     
