@@ -25,7 +25,11 @@ namespace ISILab
             var brainsDestinationFolder = destinationFolder + "/Brains";
             if (!System.IO.Directory.Exists(brainsDestinationFolder))
                 System.IO.Directory.CreateDirectory(brainsDestinationFolder);
-
+            // Remove files existing in the destination folder
+            foreach (string file in System.IO.Directory.GetFiles(brainsDestinationFolder))
+            {
+                System.IO.File.Delete(file);
+            }
             foreach (string file in brainFiles)
             {
                 string name = System.IO.Path.GetFileName(file);
