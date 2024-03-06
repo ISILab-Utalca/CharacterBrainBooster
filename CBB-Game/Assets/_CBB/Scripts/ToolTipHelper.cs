@@ -5,12 +5,13 @@ using UnityEngine.UIElements;
 public class ToolTipHelper : MonoBehaviour
 {
     private VisualElement root;
-    private Label label;
+    private CBB.UI.Tooltip m_tooltip;
 
     void Start()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
-        label = root.Q<Label>();
+        m_tooltip = new CBB.UI.Tooltip();
+        root.Add(m_tooltip);
     }
 
     void Update()
@@ -18,14 +19,14 @@ public class ToolTipHelper : MonoBehaviour
         string tooltip = CurrentToolTip(root.panel);
         if (tooltip != "")
         {
-            label.visible = true;
-            label.text = tooltip;
-            label.style.left = Input.mousePosition.x + 15;
-            label.style.top = Screen.height - Input.mousePosition.y;
+            this.m_tooltip.visible = true;
+            this.m_tooltip.Label.text = tooltip;
+            this.m_tooltip.style.left = Input.mousePosition.x + 15;
+            this.m_tooltip.style.top = Screen.height - Input.mousePosition.y;
         }
         else
         {
-            label.visible = false;
+            this.m_tooltip.visible = false;
         }
     }
 
