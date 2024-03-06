@@ -1,9 +1,6 @@
 using CBB.DataManagement;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace CBB.InternalTool
@@ -16,7 +13,7 @@ namespace CBB.InternalTool
         private BrainMap.SubgroupBrain m_subgroupBehaviour;
         public BrainMapItem()
         {
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_CBB/Internal Tool/Editor/Subgroup behaviour/Brain Map Item.uxml");
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_CBB/Editor/Brain Map Item/Brain Map Item.uxml");
             visualTree.CloneTree(this);
             GetReferences();
             LoadBrains();
@@ -43,6 +40,7 @@ namespace CBB.InternalTool
             {
                 if (string.IsNullOrEmpty(evt.newValue)) return;
                 var brain = BrainDataLoader.GetBrainByName(evt.newValue);
+                if (brain == null) return;
                 m_subgroupBehaviour.brainID = brain.id;
             });
         }
