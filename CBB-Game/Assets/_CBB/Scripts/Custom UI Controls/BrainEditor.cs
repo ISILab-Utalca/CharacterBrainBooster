@@ -128,11 +128,10 @@ namespace CBB.UI
 
         private void HandleFloatingPanel()
         {
-            // Remove any FloatingPanel that is currently open if the user clicks
-            // on any other element that is not a FloatingPanel or a FloatingPanelListItem
+            
             this.RegisterCallback<MouseDownEvent>(evt =>
             {
-                var evtFP = evt.target as FloatingPanel;
+                var evtFP = evt.target as DataGenericFloatingPanel;
                 var evtFPIL = evt.target as FloatingPanelListItem;
                 if (evtFP != null || evtFPIL != null) return;
 
@@ -378,7 +377,7 @@ namespace CBB.UI
             return () =>
             {
                 CloseFloatingPanels();
-                var floatingPanel = new FloatingPanel(sourceItems);
+                var floatingPanel = new DataGenericFloatingPanel(sourceItems);
                 floatingPanel.ElementClicked += (data) =>
                 {
                     modifiedCollection.Add(data);
@@ -465,7 +464,7 @@ namespace CBB.UI
         }
         private void CloseFloatingPanels()
         {
-            var floatingPanels = this.Q<FloatingPanel>();
+            var floatingPanels = this.Q<DataGenericFloatingPanel>();
             floatingPanels?.RemoveFromHierarchy();
         }
         private Brain GetParentBrainFromIndex(int itemIndex)
