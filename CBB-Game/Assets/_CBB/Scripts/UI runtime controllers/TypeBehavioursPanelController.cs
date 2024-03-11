@@ -7,13 +7,13 @@ using UnityEngine.UIElements;
 
 namespace CBB.ExternalTool
 {
-    public class AgentBehavioursPanelController : MonoBehaviour
+    public class TypeBehavioursPanelController : MonoBehaviour
 	{
-		private BrainMapsPanel m_TypeBehavioursPanel;
+		private TypeBehavioursPanel m_TypeBehavioursPanel;
         private void Awake()
         {
             var uiDoc = GetComponent<UIDocument>();
-            m_TypeBehavioursPanel = uiDoc.rootVisualElement.Q<BrainMapsPanel>();
+            m_TypeBehavioursPanel = uiDoc.rootVisualElement.Q<TypeBehavioursPanel>();
             var dropdown = m_TypeBehavioursPanel.Q<DropdownField>();
             dropdown.RegisterValueChangedCallback(OnValueChanged);
             dropdown.value = "Select an agent type";
@@ -43,8 +43,8 @@ namespace CBB.ExternalTool
             m_TypeBehavioursPanel.ClearBrainMaps();
             foreach (var item in typeBehaviours.subgroups)
             {
-                var sgbd = new SubgroupBehaviourDetails(item);
-                m_TypeBehavioursPanel.AddBrainMap(sgbd);
+                var subgroupDetails = new SubgroupBehaviourDetails(item);
+                m_TypeBehavioursPanel.AddBrainMap(subgroupDetails);
                 // I have to add the new SubgroupBehaviourDetails element to the panel
             }
         }

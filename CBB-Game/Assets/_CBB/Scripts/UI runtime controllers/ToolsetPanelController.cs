@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 public class ToolsetPanelController : MonoBehaviour
 {
     private SplitView m_splitView;
-    private BrainMapsPanel m_brainMapsPanel;
+    private TypeBehavioursPanel m_brainMapsPanel;
     private Button m_agentBrainButton;
     private Button m_historyButton;
     private void Awake()
@@ -21,7 +21,7 @@ public class ToolsetPanelController : MonoBehaviour
         VisualElement root = document.rootVisualElement;
 
         m_splitView = root.Q<SplitView>("agents-history-panel-container");
-        m_brainMapsPanel = root.Q<BrainMapsPanel>();
+        m_brainMapsPanel = root.Q<TypeBehavioursPanel>();
         var toolset = root.Q<VisualElement>("toolset");
 
         m_agentBrainButton = toolset.Q<Button>("bindings-button");

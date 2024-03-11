@@ -1,4 +1,5 @@
 ﻿using CBB.Api;
+using CBB.Comunication;
 using Generic;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,6 +30,7 @@ public class Brain : IDataItem, INameable
         serializedActions = new List<DataGeneric>();
         serializedSensors = new List<DataGeneric>();
     }
+    public BrainIdentification GetBrainIdentification() => new(id, name);
     public object GetInstance() => this;
     public string GetItemName() => name;
     public void SetName(string name) => this.name = name;
