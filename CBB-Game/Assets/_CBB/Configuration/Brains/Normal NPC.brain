@@ -38,7 +38,7 @@
             },
             {
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 2.66,
+              "value": 10.0,
               "name": "Agent speed"
             },
             {
@@ -91,13 +91,13 @@
               "$type": "WrapperConsideration, Assembly-CSharp",
               "configuration": {
                 "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
-                "considerationName": "New Consideration",
+                "considerationName": "Distance to target",
                 "evaluationMethod": "DistanceToTarget",
                 "curve": {
                   "$type": "Linear, Assembly-CSharp",
-                  "value": 0.0,
-                  "m": 1.0,
-                  "dx": 0.0,
+                  "value": 1.0,
+                  "m": 1.53,
+                  "dx": -0.17,
                   "dy": 0.0,
                   "Inverted": true
                 },
