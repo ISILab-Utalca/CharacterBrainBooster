@@ -15,7 +15,7 @@ namespace CBB.Comunication
         {
             ExternalMonitor.OnMessageReceived += HandleTypeBehaviours;
         }
-
+         
         private static void HandleTypeBehaviours(string message)
         {
             try

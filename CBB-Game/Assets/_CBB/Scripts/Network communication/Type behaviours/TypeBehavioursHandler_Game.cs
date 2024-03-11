@@ -75,23 +75,24 @@ namespace CBB.Comunication
         public SubgroupBehaviour(string subgroupName)
         {
             this.name = subgroupName;
-            brainIdentification = new BrainIdentification();
+            brainIdentification = null;
             agents = new List<AgentIdentification>();
         }
         public void SetBrainIdentification(Brain brain)
         {
-            brainIdentification = new BrainIdentification
-            {
-                name = brain.name,
-                brainType = brain.id
-            };
+            brainIdentification = brain.GetBrainIdentification();
         }
     }
     [System.Serializable]
     public class BrainIdentification
     {
         public string name;
-        public string brainType;
+        public string id;
+        public BrainIdentification(string id, string name)
+        {
+            this.id = id;
+            this.name = name;
+        }
     }
     [System.Serializable]
     public class AgentIdentification
