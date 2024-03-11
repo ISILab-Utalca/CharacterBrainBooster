@@ -132,7 +132,7 @@ namespace CBB.ExternalTool
             switch (showType)
             {
                 case HistoryPanel.ShowType.Decisions:
-                    var view = new ActionInfo();
+                    var view = new ActionCard();
                     element.Add(view);
                     BindActionItem(list.itemsSource[rIndex] as DecisionPackage, rIndex, view);
                     break;
@@ -147,7 +147,7 @@ namespace CBB.ExternalTool
                 case HistoryPanel.ShowType.Both:
                     if (list.itemsSource[rIndex] is DecisionPackage desition2)
                     {
-                        var ai = new ActionInfo();
+                        var ai = new ActionCard();
                         element.Add(ai);
                         BindActionItem(desition2, rIndex, ai);
                     }
@@ -170,7 +170,7 @@ namespace CBB.ExternalTool
             sensorInfo.ExtraInfo.text = "Activator: " + sensor.activator;
         }
 
-        private void BindActionItem(DecisionPackage decision, int index, ActionInfo actionPanel)
+        private void BindActionItem(DecisionPackage decision, int index, ActionCard actionPanel)
         {
             actionPanel.style.display = DisplayStyle.Flex;
 

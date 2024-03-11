@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static CameraDataSender;
+using CBB.Lib;
 
 public class CameraDataReceiver : VisualElement
 {
@@ -29,7 +29,7 @@ public class CameraDataReceiver : VisualElement
 
     public CameraDataReceiver()
     {
-        var visualTree = Resources.Load<VisualTreeAsset>("CameraDataReceiver");
+        var visualTree = Resources.Load<VisualTreeAsset>("Templates/Camera Data Receiver");
         visualTree.CloneTree(this);
 
         content = this.Q<VisualElement>("Content");
@@ -60,7 +60,7 @@ public class CameraDataReceiver : VisualElement
     
     private void HandleMessage(string message)
     {
-        CameraWraper pack = null;
+        CameraWraper pack;
         try
         {
             pack = JsonConvert.DeserializeObject<CameraWraper>(message, settings);
