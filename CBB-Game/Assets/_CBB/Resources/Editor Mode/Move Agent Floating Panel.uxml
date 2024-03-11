@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+        <ui:Label tabindex="-1" text="Move to group" display-tooltip-when-elided="true" />
+        <ui:Button text="+ New Group" display-tooltip-when-elided="true" />
+        <ui:ListView focusable="true" virtualization-method="DynamicHeight" />
+    </ui:VisualElement>
+</ui:UXML>
