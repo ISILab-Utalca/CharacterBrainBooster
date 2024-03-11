@@ -1,7 +1,0 @@
-.unity-two-pane-split-view__dragline--horizontal {
-    cursor: url('../External Tool/2DAssets/cursor_left_right_width.png') 15 15;
-}
- 
-.unity-two-pane-split-view__dragline--vertical {
-    cursor: url('../External Tool/2DAssets/cursor_up_down_height.png') 15 15;
-}

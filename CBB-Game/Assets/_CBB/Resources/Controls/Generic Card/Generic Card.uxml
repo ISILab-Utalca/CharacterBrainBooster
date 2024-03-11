@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/_CBB/Resources/Controls/Generic Card/Generic Card.uss?fileID=7433441132597879392&amp;guid=61ab5981473d3bd469b1337728423570&amp;type=3#Generic card" />
+    <Style src="project://database/Assets/_CBB/Stylesheets/CBB-Style.uss?fileID=7433441132597879392&amp;guid=82cb7018893fc0040b707b6388cf3eb5&amp;type=3#CBB-Style" />
+    <ui:VisualElement class="card-background root-container">
+        <ui:VisualElement>
+            <ui:Label tabindex="-1" text="Element name" display-tooltip-when-elided="true" name="title" class="title" />
+            <ui:Label tabindex="-1" text="Subtitle" display-tooltip-when-elided="true" name="subtitle" class="subtitle" />
+        </ui:VisualElement>
+        <ui:VisualElement>
+            <ui:Button display-tooltip-when-elided="true" tooltip="Delete" name="remove-button" class="remove-button" style="min-height: 15px; height: 15px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

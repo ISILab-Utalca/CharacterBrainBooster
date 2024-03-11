@@ -1,7 +1,7 @@
 using CBB.Comunication;
 using CBB.DataManagement;
 using UnityEngine;
-
+using CBB.Lib;
 public class CameraDataSender : MonoBehaviour
 {
     public RenderTexture render;
@@ -45,17 +45,7 @@ public class CameraDataSender : MonoBehaviour
         Server.SendMessageToAllClients(data);
     }
 
-    [System.Serializable]
-    public class CameraWraper
-    {
-        [SerializeField]
-        public byte[] image;
-
-        public CameraWraper(byte[] image)
-        {
-            this.image = image;
-        }
-    }
+    
 }
 
 public static class ExtensionMethod

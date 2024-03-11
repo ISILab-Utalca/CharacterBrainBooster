@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/_CBB/Stylesheets/CBB-Style.uss?fileID=7433441132597879392&amp;guid=82cb7018893fc0040b707b6388cf3eb5&amp;type=3#CBB-Style" />
+    <Style src="project://database/Assets/_CBB/Resources/Controls/Top Title Bar/Top Title Bar.uss?fileID=7433441132597879392&amp;guid=9bfec56037396c6459f7d2809431034a&amp;type=3#Top bar" />
+    <ui:VisualElement class="root-container">
+        <ui:Label tabindex="-1" text="Window title" display-tooltip-when-elided="true" name="window-title" class="title" />
+        <ui:Button text="X" display-tooltip-when-elided="true" name="close-button" class="close-button" />
+    </ui:VisualElement>
+</ui:UXML>

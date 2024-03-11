@@ -1,5 +1,6 @@
 using CBB.Api;
 using CBB.Lib;
+using CBB.UI;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,7 @@ namespace CBB.ExternalTool
     {
         [SerializeField]
         private bool showLogs;
-
-        private AgentsPanel agentsPanel;
+        AgentsPanel m_agentsPanel;
         internal ListView list;
 
         // For some reason I do not understand yet, new GameObjects are created when the game is played
@@ -31,8 +31,8 @@ namespace CBB.ExternalTool
 
             var uiDocRoot = GetComponent<UIDocument>().rootVisualElement;
 
-            this.agentsPanel = uiDocRoot.Q<AgentsPanel>();
-            this.list = agentsPanel.Q<ListView>();
+            m_agentsPanel = uiDocRoot.Q<AgentsPanel>();
+            this.list = m_agentsPanel.Q<ListView>();
             list.itemsSource = GameData.Agent_ID_Name;
             list.bindItem += BindItem;
             list.makeItem += MakeItem;
@@ -52,11 +52,11 @@ namespace CBB.ExternalTool
 
         private VisualElement MakeItem()
         {
-            return new AgentInfo();
+            return new AgentCard();
         }
         private void BindItem(VisualElement element, int index)
         {
-            if (element is AgentInfo agentInfo)
+            if (element is AgentCard agentInfo)
             {
                 agentInfo.AgentName.text = GameData.Agent_ID_Name[index].Item2;
                 agentInfo.AgentID.text = $"ID: {GameData.Agent_ID_Name[index].Item1}";

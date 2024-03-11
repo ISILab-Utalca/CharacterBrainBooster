@@ -6,6 +6,17 @@ using UnityEngine;
 namespace CBB.Lib
 {
     [System.Serializable]
+    public class CameraWraper
+    {
+        [SerializeField]
+        public byte[] image;
+
+        public CameraWraper(byte[] image)
+        {
+            this.image = image;
+        }
+    }
+    [System.Serializable]
     public class SensorStatus
     {
         public System.Type sensorType;
