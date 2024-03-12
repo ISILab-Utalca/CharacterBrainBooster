@@ -1,22 +1,22 @@
 using CBB.Comunication;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace CBB.UI
 {
-    public class SubgroupBehaviourDetails : VisualElement
+    public class SubgroupBehaviourView : VisualElement
     {
-        public new class UxmlFactory : UxmlFactory<SubgroupBehaviourDetails, UxmlTraits> { }
+        public new class UxmlFactory : UxmlFactory<SubgroupBehaviourView, UxmlTraits> { }
         private Foldout m_rootFoldout;
         private ListView m_agentInstances;
         private DropdownField m_brainDropdown;
 
         private SubgroupBehaviour m_subgroup;
-        public SubgroupBehaviourDetails()
+        public SubgroupBehaviourView()
         {
-            var visualTree = Resources.Load<VisualTreeAsset>("Controls/Subgroup Behaviour Details/Subgroup Behaviour Details");
+            var visualTree = Resources.Load<VisualTreeAsset>("Controls/Subgroup Behaviour Details/Subgroup Behaviour View");
             visualTree.CloneTree(this);
             m_rootFoldout = this.Q<Foldout>();
             m_brainDropdown = this.Q<DropdownField>();
@@ -32,13 +32,24 @@ namespace CBB.UI
         {
             if(evt.button == 1)
             {
-                var selectedAgent = m_agentInstances.selectedItems as System.Collections.Generic.IEnumerable<AgentIdentification>;
-                if (selectedAgent == null) return;
+                var selectedAgents = m_agentInstances.selectedItems.Cast<AgentIdentification>().ToList();
+                if(selectedAgents == null || selectedAgents.Count == 0) return;
                 var menu = new MoveAgentFloatingPanel();
-                menu.SetUpPosition(evt.mousePosition);
+                
+                menu.SetSubgroups(this.userData as string);
+                menu.SubgroupSelected += (subgroup) =>
+                {
+                    foreach (var agent in selectedAgents)
+                    {
+                        subgroup.AddAgent(agent);
+                        m_subgroup.RemoveAgent(agent);
+                    }
+                    var previousGroup = this.parent.Q<SubgroupBehaviourView>(subgroup.name);
+                    previousGroup.m_agentInstances.RefreshItems();
+                    m_agentInstances.RefreshItems();
+                };
+                menu.SetUpPosition(evt.localMousePosition);
                 this.Add(menu);
-                //menu.AddItem(new GUIContent("Move to"), false, () => MoveAgentTo(selectedAgent));
-                //menu.ShowAsContext();
             }
         }
 
@@ -53,7 +64,7 @@ namespace CBB.UI
             m_subgroup.brainIdentification = brain.GetBrainIdentification();
         }
 
-        public SubgroupBehaviourDetails(SubgroupBehaviour subgroup) : this()
+        public SubgroupBehaviourView(SubgroupBehaviour subgroup) : this()
         {
             SetData(subgroup);
         }
@@ -63,6 +74,7 @@ namespace CBB.UI
             m_rootFoldout.text = subgroup.name;
             m_brainDropdown.value = subgroup.brainIdentification.name;
             m_agentInstances.itemsSource = subgroup.agents;
+            this.name = subgroup.name;
         }
         private VisualElement MakeItem()
         {
