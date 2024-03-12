@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement style="flex-direction: row; align-items: center;">
+        <ui:VisualElement style="background-image: url(&apos;project://database/Assets/_CBB/Textures/Static/folder_icon.png?fileID=2800000&amp;guid=f954f3a2d3e03d54bac3005621f914a7&amp;type=3#folder_icon&apos;); -unity-background-scale-mode: scale-to-fit; width: 22px; -unity-background-image-tint-color: rgb(255, 255, 255); height: 8px;" />
+        <ui:Label tabindex="-1" text="Subgroup name" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255);" />
+    </ui:VisualElement>
+</ui:UXML>
