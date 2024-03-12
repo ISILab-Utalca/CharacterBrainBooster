@@ -9,27 +9,29 @@ namespace CBB.UI
     {
         public new class UxmlFactory : UxmlFactory<TypeBehavioursPanel, UxmlTraits> { }
 
-        private DropdownField m_agentTypes;
-        private VisualElement m_brainMapsContainer;
+        private VisualElement m_contentContainer;
+
+        public DropdownField AgentTypes { get; set; }
+
         public TypeBehavioursPanel()
         {
             var visualTree = Resources.Load<VisualTreeAsset>("Controls/Type Behaviours Panel/Type Behaviours Panel");
             visualTree.CloneTree(this);
-            m_agentTypes = this.Q<DropdownField>();
-            m_brainMapsContainer = this.Q<VisualElement>("brain-maps-container");
+            AgentTypes = this.Q<DropdownField>();
+            m_contentContainer = this.Q<VisualElement>("brain-maps-container");
         }
         public void SetAgentTypes(List<string> agentTypes)
         {
-            m_agentTypes.Clear();
-            m_agentTypes.choices = agentTypes;
+            AgentTypes.Clear();
+            AgentTypes.choices = agentTypes;
         }
-        public void ClearBrainMaps()
+        public void ClearContent()
         {
-            m_brainMapsContainer.Clear();
+            m_contentContainer.Clear();
         }
-        public void AddBrainMap(SubgroupBehaviourDetails brainMap)
+        public void AddContent(SubgroupBehaviourView brainMap)
         {
-            m_brainMapsContainer.Add(brainMap);
+            m_contentContainer.Add(brainMap);
         }
     }
 }
