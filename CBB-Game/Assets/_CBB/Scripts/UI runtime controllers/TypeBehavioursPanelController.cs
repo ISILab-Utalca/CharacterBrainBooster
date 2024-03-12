@@ -18,8 +18,26 @@ namespace CBB.ExternalTool
             dropdown.RegisterValueChangedCallback(OnValueChanged);
             dropdown.value = "Select an agent type";
             TypeBehavioursHandler_ExternalTool.TypeBehavioursReceived += OnTypeBehavioursReceived;
+            HandleFloatingPanel();
         }
 
+        private void HandleFloatingPanel()
+        {
+            // Close floating panel if the mouse is clicked outside of it
+            m_TypeBehavioursPanel.panel.visualTree.RegisterCallback<MouseDownEvent>(evt =>
+            {
+                var evtFP = evt.target as MoveAgentFloatingPanel;
+                var evtFPLI = evt.target as SubgroupListItem;
+                if (evtFP != null || evtFPLI != null) return;
+
+                CloseFloatingPanels();
+            });
+        }
+        private void CloseFloatingPanels()
+        {
+            var floatingPanels = m_TypeBehavioursPanel.Q<MoveAgentFloatingPanel>();
+            floatingPanels?.Close();
+        }
         private void OnTypeBehavioursReceived()
         {
             Debug.Log("Type Behaviours Received");
@@ -40,12 +58,14 @@ namespace CBB.ExternalTool
                 Debug.LogError("No brain maps found for the selected agent type");
                 return;
             }
-            m_TypeBehavioursPanel.ClearBrainMaps();
+            m_TypeBehavioursPanel.ClearContent();
             foreach (var item in typeBehaviours.subgroups)
             {
-                var subgroupDetails = new SubgroupBehaviourDetails(item);
-                m_TypeBehavioursPanel.AddBrainMap(subgroupDetails);
-                // I have to add the new SubgroupBehaviourDetails element to the panel
+                SubgroupBehaviourView subgroupDetails = new(item)
+                {
+                    userData = m_TypeBehavioursPanel.AgentTypes.value
+                };
+                m_TypeBehavioursPanel.AddContent(subgroupDetails);
             }
         }
     } 
