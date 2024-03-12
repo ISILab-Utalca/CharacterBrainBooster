@@ -26,5 +26,12 @@ namespace CBB.Comunication
             }
             catch (System.Exception) { }
         }
+        public static void SendTypeBehaviours()
+        {
+            var typeBehaviours = GameData.TypeBehaviours;
+            string json = JsonConvert.SerializeObject(typeBehaviours, Settings.JsonSerialization);
+            //TODO: Ugly
+            GameObject.Find("External Monitor").GetComponent<ExternalMonitor>().SendData(json);
+        }
     }
 }

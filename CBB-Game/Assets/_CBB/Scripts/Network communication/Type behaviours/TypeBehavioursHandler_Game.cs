@@ -1,5 +1,4 @@
 using CBB.DataManagement;
-using CBB.Lib;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -9,7 +8,7 @@ namespace CBB.Comunication
 {
     public static class TypeBehavioursHandler_Game
     {
-        
+        //TODO: Handle incoming type behaviours
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Init()
@@ -20,7 +19,7 @@ namespace CBB.Comunication
         private static void SendTypeBehaviours(TcpClient client)
         {
             List<BrainMap> brainMaps = BrainMapsManager.GetAllBrainMaps();
-            List<TypeBehaviour> blobs = new List<TypeBehaviour>();
+            List<TypeBehaviour> blobs = new();
             if (brainMaps == null) return;
             foreach (var brainMap in brainMaps)
             {
@@ -81,6 +80,14 @@ namespace CBB.Comunication
         public void SetBrainIdentification(Brain brain)
         {
             brainIdentification = brain.GetBrainIdentification();
+        }
+        public void AddAgent(AgentIdentification agent)
+        {
+            agents.Add(agent);
+        }
+        public void RemoveAgent(AgentIdentification agent)
+        {
+            agents.Remove(agent);
         }
     }
     [System.Serializable]
