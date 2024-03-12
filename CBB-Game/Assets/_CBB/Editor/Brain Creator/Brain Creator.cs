@@ -43,7 +43,7 @@ namespace CBB.InternalTool
             LoadFromGeneric<ActionState>(brainEditor.Actions);
             LoadFromGeneric<Sensor>(brainEditor.Sensors);
             
-            brainEditor.SaveBrainButton.clicked += () =>
+            brainEditor.SaveBrainsButton.clicked += () =>
             {
                 foreach (var b in brainEditor.Brains)
                 {

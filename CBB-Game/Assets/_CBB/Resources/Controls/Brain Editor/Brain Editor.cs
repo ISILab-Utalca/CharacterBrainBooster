@@ -78,7 +78,7 @@ namespace CBB.UI
         }
         private VisualElement DetailsPanel { get; set; }
         public TreeView BrainTree { get; set; }
-        public Button SaveBrainButton { get; set; }
+        public Button SaveBrainsButton { get; set; }
         public bool ShowLogs { get; set; } = false;
         public List<string> EvaluationMethods { get; set; } = new();
         private VisualElement AddButtonContainer { get; set; }
@@ -104,7 +104,7 @@ namespace CBB.UI
 
             DetailsPanel = this.Q<VisualElement>("details-panel");
             BrainTree = this.Q<TreeView>("brain-tree");
-            SaveBrainButton = this.Q<Button>("save-brain-button");
+            SaveBrainsButton = this.Q<Button>("save-brain-button");
             AddButtonContainer = this.Q<VisualElement>("button-add-container");
             AddItemButton = AddButtonContainer.Q<Button>("button-add");
             AddBrainButton = this.Q<Button>("add-brains-button");
