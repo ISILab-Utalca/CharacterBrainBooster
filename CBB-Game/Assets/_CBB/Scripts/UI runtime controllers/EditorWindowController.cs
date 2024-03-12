@@ -51,19 +51,19 @@ namespace CBB.ExternalTool
             brainEditor = root.Q<BrainEditor>();
             brainEditor.RegisterCallback<ChangeEvent<bool>>(evt =>
             {
-                brainEditor.SaveBrainButton.style.backgroundColor = ButtonColorUnsavedChanges;
+                brainEditor.SaveBrainsButton.style.backgroundColor = ButtonColorUnsavedChanges;
             });
             brainEditor.RegisterCallback<ChangeEvent<string>>(evt =>
             {
-                brainEditor.SaveBrainButton.style.backgroundColor = ButtonColorUnsavedChanges;
+                brainEditor.SaveBrainsButton.style.backgroundColor = ButtonColorUnsavedChanges;
             });
             brainEditor.RegisterCallback<ChangeEvent<float>>(evt =>
             {
-                brainEditor.SaveBrainButton.style.backgroundColor = ButtonColorUnsavedChanges;
+                brainEditor.SaveBrainsButton.style.backgroundColor = ButtonColorUnsavedChanges;
             });
-            brainEditor.SaveBrainButton.clicked += () =>
+            brainEditor.SaveBrainsButton.clicked += () =>
             {
-                brainEditor.SaveBrainButton.style.backgroundColor = ButtonColorDefault;
+                brainEditor.SaveBrainsButton.style.backgroundColor = ButtonColorDefault;
             };
             closeButton = root.Q<TopTitleBar>().CloseButton;
 
@@ -78,8 +78,8 @@ namespace CBB.ExternalTool
             IncomingGameDataHandler.ReceivedSensors += brainEditor.SetSensors;
             IncomingGameDataHandler.ReceivedEvaluationMethods += brainEditor.SetEvaluationMethods;
 
-            brainEditor.SaveBrainButton.clicked += SendBrain;
-            brainEditor.SaveBrainButton.clicked += () =>
+            brainEditor.SaveBrainsButton.clicked += SendBrains;
+            brainEditor.SaveBrainsButton.clicked += () =>
             {
                 SaveBrainsInGameData(brainEditor.Brains);
             };
@@ -96,7 +96,7 @@ namespace CBB.ExternalTool
             mainMenu.SetActive(true);
             gameObject.SetActive(false);
         }
-        private void SendBrain()
+        private void SendBrains()
         {
             foreach (var b in brainEditor.Brains)
             {
