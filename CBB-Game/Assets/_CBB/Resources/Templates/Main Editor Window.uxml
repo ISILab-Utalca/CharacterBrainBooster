@@ -1,8 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/_CBB/Stylesheets/ScrollStyle.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ScrollStyle" />
-    <Style src="project://database/Assets/_CBB/Resources/Split%20View.uss?fileID=7433441132597879392&amp;guid=e7719d2dcc1ad6b47a47ba4027674664&amp;type=3#Split View" />
+    <Style src="project://database/Assets/_CBB/Resources/Controls/Split%20View/Split%20View.uss?fileID=7433441132597879392&amp;guid=e7719d2dcc1ad6b47a47ba4027674664&amp;type=3#Split View" />
     <Style src="project://database/Assets/_CBB/Stylesheets/CBB-Style.uss?fileID=7433441132597879392&amp;guid=82cb7018893fc0040b707b6388cf3eb5&amp;type=3#CBB-Style" />
-    <Style src="project://database/Assets/_CBB/Resources/Main%20Editor%20Window.uss?fileID=7433441132597879392&amp;guid=b7144fa8f2e02f24d9a5c934e3ba9f7c&amp;type=3#Main Editor Window" />
+    <Style src="project://database/Assets/_CBB/Resources/Templates/Main%20Editor%20Window.uss?fileID=7433441132597879392&amp;guid=b7144fa8f2e02f24d9a5c934e3ba9f7c&amp;type=3#Main Editor Window" />
     <ui:VisualElement name="main-container" class="visual-element-background window-background" style="flex-grow: 1; opacity: 0.7;">
         <CBB.ExternalTool.TopTitleBar name="TopTitleBar" window-title="Character Brain Booster" style="align-self: auto; background-color: rgb(9, 9, 9);" />
         <ui:VisualElement name="panels-container" class="visual-element-background" style="flex-grow: 1; flex-direction: row; align-items: stretch; align-self: stretch; width: auto; max-width: 100%; flex-shrink: 1; background-color: rgb(10, 10, 11);">
@@ -22,6 +22,7 @@
                                 </ui:VisualElement>
                             </ui:VisualElement>
                             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                                <CBB.UI.TypeBehavioursPanel />
                                 <SplitView orientation="Vertical" fixed-pane-initial-dimension="420" name="agents-history-panel-container">
                                     <CBB.ExternalTool.AgentsPanel name="AgentsPanel" style="flex-grow: 0; flex-shrink: 0; max-height: initial; min-height: initial; height: 285px; display: flex;" />
                                     <CBB.ExternalTool.HistoryPanel style="flex-grow: 0; flex-shrink: 1; max-height: initial; min-height: initial; height: 650px; display: flex;" />
