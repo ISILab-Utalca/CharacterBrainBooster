@@ -1,5 +1,5 @@
+using CBB.Comunication;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,32 +9,40 @@ namespace CBB.UI
     public class MoveAgentFloatingPanel : FloatingPanelBase
     {
         public new class UxmlFactory : UxmlFactory<MoveAgentFloatingPanel, UxmlTraits> { }
-        private Foldout m_rootFoldout;
-        private ListView m_agentInstances;
+        private ListView m_subgroupsListView;
+        private List<SubgroupBehaviour> m_subgroupBehaviours;
+        public Action<SubgroupBehaviour> SubgroupSelected { get; set;}
         public MoveAgentFloatingPanel() : base()
         {
             var visualTree = Resources.Load<VisualTreeAsset>("Controls/Move Agent Floating Panel/Move Agent Floating Panel");
             visualTree.CloneTree(this);
-            m_rootFoldout = this.Q<Foldout>();
-            m_agentInstances = this.Q<ListView>();
-            m_agentInstances.makeItem = MakeItem;
-            m_agentInstances.bindItem = BindItem;
-            m_agentInstances.RegisterCallback<MouseUpEvent>(MoveAgents);
+            m_subgroupsListView = this.Q<ListView>();
+            m_subgroupsListView.makeItem = MakeItem;
+            m_subgroupsListView.bindItem = BindItem;
+            m_subgroupsListView.selectionChanged += ElementClicked;
         }
 
-        private void MoveAgents(MouseUpEvent evt)
+        private void ElementClicked(IEnumerable<object> enumerable)
         {
-            throw new NotImplementedException();
+            SubgroupSelected?.Invoke(m_subgroupBehaviours[m_subgroupsListView.selectedIndex]);
+            Close();
         }
 
-        private void BindItem(VisualElement element, int arg2)
+        public void SetSubgroups(string agentType)
         {
-            throw new NotImplementedException();
+            m_subgroupBehaviours = GameData.TypeBehaviours.Find(typeBehaviour => typeBehaviour.agentType == agentType).subgroups;
+            m_subgroupsListView.itemsSource = m_subgroupBehaviours;
+            m_subgroupsListView.RefreshItems();
+        }
+
+        private void BindItem(VisualElement element, int index)
+        {
+            (element as SubgroupListItem).Label.text = m_subgroupBehaviours[index].name;
         }
 
         private VisualElement MakeItem()
         {
-            throw new NotImplementedException();
+            return new SubgroupListItem();
         }
     }
 }
