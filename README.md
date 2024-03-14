@@ -11,6 +11,7 @@ Download the latest release, then drag and drop the file into your project. Or y
 
 ## Authors and acknowledgment
 Fernanda Gonzalez, UI/UX
+
 Nicolas Romero, Developer
 
 ## License
