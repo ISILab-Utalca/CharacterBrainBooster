@@ -1,0 +1,44 @@
+.my-arrow .unity-enum-field__arrow {
+    -unity-background-image-tint-color: rgb(196, 196, 196);
+    height: 6px;
+    padding-left: 0;
+    margin-left: 4px;
+}
+
+.MyVisualElement > VisualElement {
+    background-color: rgb(19, 19, 19);
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+
+.title-card {
+    margin-left: 10px;
+    margin-right: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 22px;
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+}
+
+.title-card-container {
+    background-color: rgb(7, 7, 7);
+    flex-grow: 1;
+}

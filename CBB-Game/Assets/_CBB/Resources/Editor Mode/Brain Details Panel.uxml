@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/_CBB/Stylesheets/CBB-Style.uss?fileID=7433441132597879392&amp;guid=82cb7018893fc0040b707b6388cf3eb5&amp;type=3#CBB-Style" />
+    <Style src="project://database/Assets/_CBB/Stylesheets/Brain%20Details%20Panel.uss?fileID=7433441132597879392&amp;guid=4d47d62d94e2d944fb309be56b1ef77d&amp;type=3#Brain Details Panel" />
+    <ui:TextField picking-mode="Ignore" label="Name" value="filler text" name="brain-name-text-field" />
+    <ui:Button text="Delete" display-tooltip-when-elided="true" name="delete-brain-button" class="delete-button" />
+</ui:UXML>

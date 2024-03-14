@@ -1,0 +1,31 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/_CBB/Editor/Tags%20Manager/Brain%20mapper%20window.uss?fileID=7433441132597879392&amp;guid=27defba1020cda345b1cda837bbc69ca&amp;type=3#Brain mapper window" />
+    <ui:VisualElement class="root-container">
+        <ui:VisualElement class="margin border">
+            <ui:VisualElement>
+                <ui:Label tabindex="-1" text="Agent types" display-tooltip-when-elided="true" name="agent-type-title-label" class="title" />
+                <ui:VisualElement class="add-item-container" style="flex-direction: row;">
+                    <ui:TextField picking-mode="Ignore" label="New agent type" value="name" name="agent-type-text-field" style="flex-grow: 1;" />
+                    <ui:Button text="+" display-tooltip-when-elided="true" name="add-agent-type-button" class="bold-text" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement>
+                <ui:ListView focusable="true" show-border="true" show-alternating-row-backgrounds="ContentOnly" name="agent-types-list-view" />
+                <ui:Button text="-" display-tooltip-when-elided="true" name="remove-agent-type-button" class="bold-text" style="align-self: flex-end;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="margin border">
+            <ui:VisualElement>
+                <ui:Label tabindex="-1" text="Type subgroups" display-tooltip-when-elided="true" name="subgroup-title" class="title" />
+                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-direction: row;">
+                    <ui:TextField picking-mode="Ignore" label="New subgroup" value="name" name="subgroup-text-field" style="flex-grow: 1;" />
+                    <ui:Button text="+" display-tooltip-when-elided="true" name="add-subgroup-button" class="bold-text" />
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1;">
+                    <ui:ListView focusable="true" show-border="true" show-alternating-row-backgrounds="ContentOnly" name="subgroups-list-view" virtualization-method="DynamicHeight" />
+                    <ui:Button text="-" display-tooltip-when-elided="true" name="remove-subgroup-button" class="bold-text" style="align-self: flex-end;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

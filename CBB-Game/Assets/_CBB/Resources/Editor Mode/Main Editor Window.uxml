@@ -1,0 +1,46 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_CBB/Stylesheets/ScrollStyle.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ScrollStyle" />
+    <Style src="project://database/Assets/_CBB/Stylesheets/splitView.uss?fileID=7433441132597879392&amp;guid=e7719d2dcc1ad6b47a47ba4027674664&amp;type=3#splitView" />
+    <Style src="project://database/Assets/_CBB/Stylesheets/CBB-Style.uss?fileID=7433441132597879392&amp;guid=82cb7018893fc0040b707b6388cf3eb5&amp;type=3#CBB-Style" />
+    <Style src="project://database/Assets/_CBB/Stylesheets/Main%20Editor%20Window.uss?fileID=7433441132597879392&amp;guid=b7144fa8f2e02f24d9a5c934e3ba9f7c&amp;type=3#Main Editor Window" />
+    <ui:VisualElement name="main-container" class="visual-element-background window-background" style="flex-grow: 1; opacity: 0.7;">
+        <CBB.ExternalTool.TopTitleBar name="TopTitleBar" window-title="Character Brain Booster" style="align-self: auto; background-color: rgb(9, 9, 9);" />
+        <ui:VisualElement name="panels-container" class="visual-element-background" style="flex-grow: 1; flex-direction: row; align-items: stretch; align-self: stretch; width: auto; max-width: 100%; flex-shrink: 1; background-color: rgb(10, 10, 11);">
+            <SplitView fixed-pane-initial-dimension="814">
+                <CBB.UI.BrainEditor style="flex-grow: 1;" />
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                    <SplitView fixed-pane-initial-dimension="300">
+                        <ui:VisualElement style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; background-color: rgb(26, 26, 26); align-self: stretch; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); width: 290px;">
+                            <ui:VisualElement name="toolset" style="flex-grow: 0; background-color: rgb(0, 0, 0); height: 46px; width: auto; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; border-bottom-width: 3px; border-bottom-color: rgb(0, 0, 0); flex-direction: row; align-self: auto; align-items: center; justify-content: flex-start; flex-shrink: 0;">
+                                <ui:VisualElement name="agent-brains-item-container" class="cbb_tool-item-container" style="margin-left: 5px; margin-right: 5px; display: flex;">
+                                    <ui:Button display-tooltip-when-elided="true" name="bindings-button" style="border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-bottom-width: 0; margin-bottom: 0; padding-bottom: 15px; margin-left: 5px; margin-right: 5px; margin-top: 5px; border-left-width: 0; border-right-width: 0; border-top-width: 0; background-image: url(&apos;project://database/Assets/_CBB/Textures/Static/PersonWhite.png?fileID=2800000&amp;guid=8b96cf7695f326d4eb50f311ffdfa2fb&amp;type=3#PersonWhite&apos;); background-color: rgba(6, 6, 6, 0);" />
+                                    <ui:VisualElement name="agent-brain-bindings_bottom-line" style="border-bottom-color: rgb(255, 214, 30); border-bottom-width: 12px;" />
+                                </ui:VisualElement>
+                                <ui:VisualElement name="history-item-container" class="cbb_tool-item-container" style="margin-left: 5px; margin-right: 5px;">
+                                    <ui:Button display-tooltip-when-elided="true" name="history-button" style="background-image: url(&apos;project://database/Assets/_CBB/Textures/Static/history-icon.png?fileID=2800000&amp;guid=9966e0721d27ca74ba294fc2d67e31bf&amp;type=3#history-icon&apos;); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-bottom-width: 0; margin-bottom: 0; padding-bottom: 15px; margin-left: 5px; margin-right: 5px; margin-top: 5px; border-left-width: 0; border-right-width: 0; border-top-width: 0; background-color: rgba(188, 188, 188, 0);" />
+                                    <ui:VisualElement style="border-bottom-color: rgb(255, 214, 30); border-bottom-width: 12px;" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                                <CBB.UI.BrainMapsPanel />
+                                <SplitView orientation="Vertical" fixed-pane-initial-dimension="420" name="agents-history-panel-container">
+                                    <CBB.ExternalTool.AgentsPanel name="AgentsPanel" style="flex-grow: 0; flex-shrink: 0; max-height: initial; min-height: initial; height: 285px; display: flex;" />
+                                    <CBB.ExternalTool.HistoryPanel style="flex-grow: 0; flex-shrink: 1; max-height: initial; min-height: initial; height: 650px; display: flex;" />
+                                </SplitView>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:VisualElement name="container-3" class="visual-element-container" style="background-color: rgb(26, 26, 26); align-self: stretch; width: 779px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;">
+                            <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-grow: 1;">
+                                <CameraDataReceiver style="flex-grow: 1;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="container-all-borders" style="background-color: rgba(0, 0, 0, 0); flex-grow: 1; height: 382px;">
+                                <ui:Label tabindex="-1" text="Details panel" display-tooltip-when-elided="true" name="details-panel-title" class="title" style="background-color: rgb(10, 10, 10); padding-bottom: 9px; padding-left: 12px; margin-left: 1px; margin-right: 1px; margin-bottom: 1px; padding-top: 8px; margin-top: 2px;" />
+                                <ui:ListView focusable="true" virtualization-method="DynamicHeight" name="decision-detail-list" class="my-scroll-vertical decision-detail" style="flex-grow: 1;" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </SplitView>
+                </ui:VisualElement>
+            </SplitView>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

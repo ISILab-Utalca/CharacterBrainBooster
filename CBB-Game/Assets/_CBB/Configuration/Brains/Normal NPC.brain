@@ -1,0 +1,135 @@
+{
+  "$type": "Brain, Assembly-CSharp",
+  "id": "9689c72f4a324622aae4794430aab269",
+  "name": "Normal NPC",
+  "serializedActions": {
+    "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
+    "$values": [
+      {
+        "$type": "Generic.DataGeneric, Assembly-CSharp",
+        "classType": "ArtificialIntelligence.Utility.Actions.Wander",
+        "values": {
+          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
+          "$values": [
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 1.0,
+              "name": "Priority"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 1.0,
+              "name": "Min wait timer"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 5.0,
+              "name": "Max wait timer"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 10.0,
+              "name": "Walk radius"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 0.2,
+              "name": "Tick check"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 2.66,
+              "name": "Agent speed"
+            },
+            {
+              "$type": "WrapperConsideration, Assembly-CSharp",
+              "configuration": {
+                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
+                "considerationName": "Default",
+                "evaluationMethod": "Idle",
+                "curve": {
+                  "$type": "Constant, Assembly-CSharp",
+                  "value": 0.02,
+                  "Inverted": false
+                },
+                "normalizeInput": false,
+                "minValue": 0.0,
+                "maxValue": 0.0
+              }
+            }
+          ]
+        },
+        "dataType": 0
+      },
+      {
+        "$type": "Generic.DataGeneric, Assembly-CSharp",
+        "classType": "ArtificialIntelligence.Utility.Actions.RunAway",
+        "values": {
+          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
+          "$values": [
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 1.0,
+              "name": "Priority"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 3.0,
+              "name": "Safe distance"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 6.01,
+              "name": "Run speed"
+            },
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 1.0,
+              "name": "Pause after running"
+            },
+            {
+              "$type": "WrapperConsideration, Assembly-CSharp",
+              "configuration": {
+                "$type": "CBB.Lib.ConsiderationConfiguration, Assembly-CSharp",
+                "considerationName": "New Consideration",
+                "evaluationMethod": "DistanceToTarget",
+                "curve": {
+                  "$type": "Linear, Assembly-CSharp",
+                  "value": 0.0,
+                  "m": 1.0,
+                  "dx": 0.0,
+                  "dy": 0.0,
+                  "Inverted": true
+                },
+                "normalizeInput": true,
+                "minValue": 0.0,
+                "maxValue": 4.0
+              }
+            }
+          ]
+        },
+        "dataType": 0
+      }
+    ]
+  },
+  "serializedSensors": {
+    "$type": "System.Collections.Generic.List`1[[Generic.DataGeneric, Assembly-CSharp]], mscorlib",
+    "$values": [
+      {
+        "$type": "Generic.DataGeneric, Assembly-CSharp",
+        "classType": "SensorAuditoryField",
+        "values": {
+          "$type": "System.Collections.Generic.List`1[[Generic.WraperValue, Assembly-CSharp]], mscorlib",
+          "$values": [
+            {
+              "$type": "Generic.WraperNumber, Assembly-CSharp",
+              "value": 4.0,
+              "name": "HearingRadius"
+            }
+          ]
+        },
+        "dataType": 2
+      }
+    ]
+  }
+}

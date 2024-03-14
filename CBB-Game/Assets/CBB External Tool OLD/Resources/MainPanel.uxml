@@ -1,8 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/CBB%20External%20Tool/Resources/StylesSheets/Label.uss?fileID=7433441132597879392&amp;guid=d11de7dd3371feb4abd875c90a48928c&amp;type=3#Label" />
-    <ui:VisualElement>
-        <ui:DropdownField label="Agent type" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="AgentDropdown" />
-        <ui:Button tabindex="-1" text="New brain file" display-tooltip-when-elided="true" name="CreateBrain" />
-        <ui:Button tabindex="-1" text="Open brain file" display-tooltip-when-elided="true" name="OpenBrain" focusable="true" style="display: flex; opacity: 1;" />
-    </ui:VisualElement>
-</ui:UXML>
