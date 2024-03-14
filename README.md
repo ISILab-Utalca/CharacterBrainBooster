@@ -1,5 +1,5 @@
 # Character Brain Booster
-A Unity tool that makes it easy to create and debug NPC AI using utility systems, allowing you to develop rich and organic behaviors faster.
+A Unity tool that makes it easy to create and debug NPC AI using utility systems, allowing you to develop rich and organic behaviours faster.
 
 ## Requirements
 This tool works for **Unity Editor** 2022.3.4f1 and later versions.
