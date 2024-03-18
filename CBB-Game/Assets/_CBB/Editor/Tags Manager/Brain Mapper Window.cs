@@ -23,7 +23,7 @@ namespace CBB.InternalTool
         private Button m_removeSubgroupButton;
 
         private BrainMap m_selectedBrainMap;
-        [MenuItem("CBB/Brain mapper window #&q")]
+        [MenuItem("Window/ISILab/Brain mapper window #&q")]
         public static void ShowExample()
         {
             BrainMapperWindow wnd = GetWindow<BrainMapperWindow>();

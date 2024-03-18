@@ -15,7 +15,7 @@ namespace CBB.InternalTool
         [SerializeField]
         private VisualTreeAsset m_VisualTreeAsset = default;
 
-        [MenuItem("CBB/Brain Editor #&w")]
+        [MenuItem("Window/ISILab/Brain Editor #&w")]
         public static void ShowTool()
         {
             BrainCreator wnd = GetWindow<BrainCreator>();
