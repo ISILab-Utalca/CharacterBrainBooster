@@ -98,7 +98,7 @@
                   "value": 1.0,
                   "m": 1.53,
                   "dx": -0.17,
-                  "dy": 0.0,
+                  "dy": 0.46,
                   "Inverted": true
                 },
                 "normalizeInput": true,
@@ -124,7 +124,7 @@
             {
               "$type": "Generic.WraperNumber, Assembly-CSharp",
               "value": 4.0,
-              "name": "HearingRadius"
+              "name": "Hearing radius"
             }
           ]
         },

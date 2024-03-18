@@ -293,11 +293,9 @@ namespace CBB.UI
                         {
                             case DataGeneric.DataType.Action:
                                 LastSelectedBrain.serializedActions.Remove(generic);
-                                Debug.Log($"[Editor Window Controller] Removed action: {generic}");
                                 break;
                             case DataGeneric.DataType.Sensor:
                                 LastSelectedBrain.serializedSensors.Remove(generic);
-                                Debug.Log($"[Editor Window Controller] Removed sensor: {generic}");
                                 break;
                             default:
                                 break;

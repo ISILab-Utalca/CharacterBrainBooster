@@ -95,8 +95,8 @@
           "$values": [
             {
               "$type": "Generic.WraperNumber, Assembly-CSharp",
-              "value": 1.0,
-              "name": "HearingRadius"
+              "value": 4.0,
+              "name": "Hearing radius"
             }
           ]
         },
