@@ -59,12 +59,13 @@ namespace CBB.DataManagement
         }
         public static List<Brain> GetAllBrains()
         {
-            if (m_brains.Count == 0) LoadBrains();
+            LoadBrains();
             return m_brains;
         }
 
         public static void LoadBrains()
         {
+            m_brains.Clear();
             System.IO.FileInfo[] files = GetAllBrainFiles();
             for (int i = 0; i < files.Length; i++)
             {
