@@ -4,7 +4,7 @@ using Generic;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// this class is used to store the generic brain data
+/// Represents the configuration of an agent's behaviour
 /// </summary>
 [System.Serializable]
 public class Brain : IDataItem, INameable
