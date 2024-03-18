@@ -9,7 +9,7 @@ namespace ArtificialIntelligence.Utility
     /// Gives an agent its capacity to think and take decisions
     /// </summary>
     [RequireComponent(typeof(BehaviourLoader))]
-    public class AgentBrain : MonoBehaviour, IAgentBrain
+    public class AgentBrain : MonoBehaviour
     {
         [SerializeField, Tooltip("The brain will tell the Utility System class to pick an option based on this heuristic")]
         private UtilityDecisionMaker.PickMethod _pickMethod;
