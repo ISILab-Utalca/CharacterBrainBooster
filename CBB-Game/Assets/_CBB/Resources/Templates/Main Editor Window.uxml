@@ -18,7 +18,7 @@
                                 </ui:VisualElement>
                                 <ui:VisualElement name="history-item-container" class="cbb_tool-item-container" style="margin-left: 5px; margin-right: 5px;">
                                     <ui:Button display-tooltip-when-elided="true" name="history-button" style="background-image: url(&apos;project://database/Assets/_CBB/Textures/Static/history-icon.png?fileID=2800000&amp;guid=9966e0721d27ca74ba294fc2d67e31bf&amp;type=3#history-icon&apos;); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-bottom-width: 0; margin-bottom: 0; padding-bottom: 15px; margin-left: 5px; margin-right: 5px; margin-top: 5px; border-left-width: 0; border-right-width: 0; border-top-width: 0; background-color: rgba(188, 188, 188, 0);" />
-                                    <ui:VisualElement style="border-bottom-color: rgb(255, 214, 30); border-bottom-width: 12px;" />
+                                    <ui:VisualElement name="history_bottom-line" style="border-bottom-color: rgb(255, 214, 30); border-bottom-width: 12px;" />
                                 </ui:VisualElement>
                             </ui:VisualElement>
                             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
