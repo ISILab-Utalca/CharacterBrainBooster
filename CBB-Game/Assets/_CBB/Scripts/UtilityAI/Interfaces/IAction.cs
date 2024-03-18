@@ -9,7 +9,6 @@ namespace ArtificialIntelligence.Utility
     /// </summary>
     public interface IAction
     {
-        bool IsRunning { get; set; }
         /// <summary>
         /// Called when the execution is stopped by some other event, before it finishes normally.
         /// Useful for interruptions like a higher priority action that needs to be executed.
@@ -21,8 +20,7 @@ namespace ArtificialIntelligence.Utility
         /// </summary>
         void FinishExecution();
         /// <summary>
-        /// Begin the execution of this action. Make sure that every action that
-        /// overrides this method set the <b>IsRunning</b> property to true
+        /// Begins the execution of this action.
         /// </summary>
         /// <param name="target"></param>
         void StartExecution(GameObject target = null);
