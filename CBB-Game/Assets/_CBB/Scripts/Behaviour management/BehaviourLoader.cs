@@ -71,7 +71,7 @@ public class BehaviourLoader : MonoBehaviour
             if (!szedAction.Exists(x => x.ClassType == action.GetType()))
             {
                 Destroy(action);
-                break;
+                //break;
             }
         }
         for (int i = 0; i < szedAction.Count; i++)
@@ -90,7 +90,7 @@ public class BehaviourLoader : MonoBehaviour
             if (!szedSensor.Exists(x => x.ClassType == sensor.GetType()))
             {
                 Destroy(sensor);
-                break;
+                //break;
             }
         }
         for (int i = 0; i < szedSensor.Count; i++)
