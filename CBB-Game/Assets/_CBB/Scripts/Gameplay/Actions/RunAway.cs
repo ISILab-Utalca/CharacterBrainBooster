@@ -70,9 +70,9 @@ namespace ArtificialIntelligence.Utility.Actions
         public override void SetParams(DataGeneric data)
         {
             base.SetParams(data);
-            this.m_safeDistance = (float)data.FindValueByName("Safe distance").Getvalue();
-            this.m_runSpeed = (int)(float)data.FindValueByName("Run speed").Getvalue();
-            this.m_pauseAfterRunning = (float)data.FindValueByName("Pause after running").Getvalue();
+            this.m_safeDistance = (float)data.FindValueByName("Safe distance").GetValue();
+            this.m_runSpeed = (int)(float)data.FindValueByName("Run speed").GetValue();
+            this.m_pauseAfterRunning = (float)data.FindValueByName("Pause after running").GetValue();
         }
 
         public override DataGeneric GetGeneric()

@@ -79,11 +79,11 @@ namespace ArtificialIntelligence.Utility.Actions
         public override void SetParams(DataGeneric data)
         {
             base.SetParams(data);
-            this.m_minWaitTimer = (float) data.FindValueByName("Min wait timer").Getvalue();
-            this.m_maxWaitTimer = (float) data.FindValueByName("Max wait timer").Getvalue();
-            this.m_walkRadius = (float) data.FindValueByName("Walk radius").Getvalue();
-            this.m_tickCheck = (float) data.FindValueByName("Tick check").Getvalue();
-            this.m_speed = (float) data.FindValueByName("Agent speed").Getvalue();
+            this.m_minWaitTimer = (float) data.FindValueByName("Min wait timer").GetValue();
+            this.m_maxWaitTimer = (float) data.FindValueByName("Max wait timer").GetValue();
+            this.m_walkRadius = (float) data.FindValueByName("Walk radius").GetValue();
+            this.m_tickCheck = (float) data.FindValueByName("Tick check").GetValue();
+            this.m_speed = (float) data.FindValueByName("Agent speed").GetValue();
         }
         public override DataGeneric GetGeneric()
         {

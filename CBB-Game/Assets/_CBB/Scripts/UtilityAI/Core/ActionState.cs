@@ -32,7 +32,6 @@ namespace ArtificialIntelligence.Utility
         [field: SerializeField]
         public float ActionCooldown { get; set; }
         public LocalAgentMemory LocalAgentMemory { get; protected set; }
-        public bool IsRunning { get; set; }
         public float ActionPriority { get => actionPriority; }
         public System.Action OnFinishedAction { get; set; }
         public System.Action OnStartedAction { get; set; }
@@ -140,13 +139,11 @@ namespace ArtificialIntelligence.Utility
 
         public virtual void StartExecution(GameObject target = null)
         {
-            IsRunning = true;
             _numberOfExecutions++;
             if (viewLogs) Debug.Log($"Starting execution of {GetType().Name}, number of executions: {_numberOfExecutions}");
         }
         public virtual void InterruptExecution()
         {
-            IsRunning = false;
             StopAllCoroutines();
         }
         /// <summary>
@@ -155,7 +152,6 @@ namespace ArtificialIntelligence.Utility
         /// </summary>
         public virtual void FinishExecution()
         {
-            IsRunning = false;
             if (viewLogs) Debug.Log($"Finish execution of {GetType().Name}");
             OnFinishedAction?.Invoke();
         }
@@ -190,7 +186,7 @@ namespace ArtificialIntelligence.Utility
         public virtual void SetParams(DataGeneric data)
         {
             SetConsiderationsFromConfiguration(data);
-            actionPriority = (float)data.FindValueByName("Priority").Getvalue();
+            actionPriority = (float)data.FindValueByName("Priority").GetValue();
         }
         internal void SetConsiderationsFromConfiguration(DataGeneric data)
         {

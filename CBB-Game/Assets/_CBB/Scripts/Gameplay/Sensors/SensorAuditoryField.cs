@@ -119,14 +119,14 @@ public class SensorAuditoryField : Sensor, IGeneric
 
     public override void SetParams(DataGeneric data)
     {
-        this.HearingRadius = (float)data.FindValueByName("HearingRadius").Getvalue();
+        this.HearingRadius = (float)data.FindValueByName("Hearing radius").GetValue();
     }
 
     public override DataGeneric GetGeneric()
     {
         var data = new DataGeneric(DataGeneric.DataType.Sensor) { ClassType = GetType() };
 
-        data.Add(new WraperNumber { name = "HearingRadius", value = this.HearingRadius });
+        data.Add(new WraperNumber { name = "Hearing radius", value = this.HearingRadius });
         return data;
     }
     #endregion

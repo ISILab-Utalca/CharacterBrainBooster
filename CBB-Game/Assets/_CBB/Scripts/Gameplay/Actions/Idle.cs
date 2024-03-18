@@ -46,7 +46,7 @@ namespace ArtificialIntelligence.Utility.Actions
         public override void SetParams(DataGeneric data)
         {
             base.SetParams(data);
-            this.m_waitTime = (float)data.FindValueByName("Wait time").Getvalue();
+            this.m_waitTime = (float)data.FindValueByName("Wait time").GetValue();
         }
 
         public override DataGeneric GetGeneric()

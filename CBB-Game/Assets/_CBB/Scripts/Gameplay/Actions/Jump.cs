@@ -67,8 +67,8 @@ namespace ArtificialIntelligence.Utility.Actions
         public override void SetParams(DataGeneric data)
         {
             base.SetParams(data);
-            this.m_jumpHeight = (float)data.FindValueByName("Jump height").Getvalue();
-            this.m_jumpDuration = (int)(float)data.FindValueByName("Jump Duration").Getvalue();
+            this.m_jumpHeight = (float)data.FindValueByName("Jump height").GetValue();
+            this.m_jumpDuration = (int)(float)data.FindValueByName("Jump Duration").GetValue();
         }
 
         public override DataGeneric GetGeneric()

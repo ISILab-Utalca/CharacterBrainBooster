@@ -71,10 +71,10 @@ public class Linear : Curve
     }
     public override void SetParams(DataGeneric data)
     {
-        this.m = (float)data.FindValueByName("m").Getvalue();
-        this.dx = (float)data.FindValueByName("dx").Getvalue();
-        this.dy = (float)data.FindValueByName("dy").Getvalue();
-        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
+        this.m = (float)data.FindValueByName("m").GetValue();
+        this.dx = (float)data.FindValueByName("dx").GetValue();
+        this.dy = (float)data.FindValueByName("dy").GetValue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").GetValue();
     }
     public Linear() { }
 
@@ -141,12 +141,12 @@ public class InvertedExponential : Curve
     }
     public override void SetParams(DataGeneric data)
     {
-        this.e = (float)data.FindValueByName("e").Getvalue();
-        this.dx = (float)data.FindValueByName("dx").Getvalue();
-        this.dy = (float)data.FindValueByName("dy").Getvalue();
-        this.sx = (float)data.FindValueByName("sx").Getvalue();
-        this.sy = (float)data.FindValueByName("sy").Getvalue();
-        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
+        this.e = (float)data.FindValueByName("e").GetValue();
+        this.dx = (float)data.FindValueByName("dx").GetValue();
+        this.dy = (float)data.FindValueByName("dy").GetValue();
+        this.sx = (float)data.FindValueByName("sx").GetValue();
+        this.sy = (float)data.FindValueByName("sy").GetValue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").GetValue();
     }
 
     public InvertedExponential() { }
@@ -214,12 +214,12 @@ public class Exponential : Curve
     }
     public override void SetParams(DataGeneric data)
     {
-        this.e = (float)data.FindValueByName("e").Getvalue();
-        this.dx = (float)data.FindValueByName("dx").Getvalue();
-        this.dy = (float)data.FindValueByName("dy").Getvalue();
-        this.sx = (float)data.FindValueByName("sx").Getvalue();
-        this.sy = (float)data.FindValueByName("sy").Getvalue();
-        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
+        this.e = (float)data.FindValueByName("e").GetValue();
+        this.dx = (float)data.FindValueByName("dx").GetValue();
+        this.dy = (float)data.FindValueByName("dy").GetValue();
+        this.sx = (float)data.FindValueByName("sx").GetValue();
+        this.sy = (float)data.FindValueByName("sy").GetValue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").GetValue();
     }
     public Exponential() { }
 
@@ -280,10 +280,10 @@ public class Staggered : Curve
     }
     public override void SetParams(DataGeneric data)
     {
-        this.e = (float)data.FindValueByName("e").Getvalue();
-        this.max = (float)data.FindValueByName("max").Getvalue();
-        this.min = (float)data.FindValueByName("min").Getvalue();
-        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
+        this.e = (float)data.FindValueByName("e").GetValue();
+        this.max = (float)data.FindValueByName("max").GetValue();
+        this.min = (float)data.FindValueByName("min").GetValue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").GetValue();
     }
     public Staggered() { }
 
@@ -346,11 +346,11 @@ public class Sigmoide : Curve
     }
     public override void SetParams(DataGeneric data)
     {
-        this.dx = (float)data.FindValueByName("dx").Getvalue();
-        this.dy = (float)data.FindValueByName("dy").Getvalue();
-        this.sx = (float)data.FindValueByName("sx").Getvalue();
-        this.sy = (float)data.FindValueByName("sy").Getvalue();
-        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
+        this.dx = (float)data.FindValueByName("dx").GetValue();
+        this.dy = (float)data.FindValueByName("dy").GetValue();
+        this.sx = (float)data.FindValueByName("sx").GetValue();
+        this.sy = (float)data.FindValueByName("sy").GetValue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").GetValue();
     }
     public Sigmoide() { }
 
@@ -402,7 +402,7 @@ public class Constant : Curve
     }
     public override void SetParams(DataGeneric data)
     {
-        this.value = (float)data.FindValueByName("value").Getvalue();
+        this.value = (float)data.FindValueByName("value").GetValue();
     }
     public Constant() { }
 
@@ -452,11 +452,11 @@ public class Bell : Curve
     }
     public override void SetParams(DataGeneric data)
     {
-        this.b = (float)data.FindValueByName("b").Getvalue();
-        this.dx = (float)data.FindValueByName("dx").Getvalue();
-        this.dy = (float)data.FindValueByName("dy").Getvalue();
-        this.u = (float)data.FindValueByName("u").Getvalue();
-        this.Inverted = (bool)data.FindValueByName("Inverted").Getvalue();
+        this.b = (float)data.FindValueByName("b").GetValue();
+        this.dx = (float)data.FindValueByName("dx").GetValue();
+        this.dy = (float)data.FindValueByName("dy").GetValue();
+        this.u = (float)data.FindValueByName("u").GetValue();
+        this.Inverted = (bool)data.FindValueByName("Inverted").GetValue();
     }
     public Bell() { }
 

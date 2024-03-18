@@ -61,7 +61,7 @@ namespace Generic
 
         public virtual string GetItemName() => "DATA ITEM";
 
-        public abstract object Getvalue();
+        public abstract object GetValue();
         public abstract override string ToString();
         public object GetInstance() => this;
     }
@@ -73,7 +73,7 @@ namespace Generic
 
         public override object Clone() => new WraperNumber { name = name, value = value };
 
-        public override object Getvalue() => value;
+        public override object GetValue() => value;
 
         public override string ToString() => value.ToString();
     }
@@ -85,7 +85,7 @@ namespace Generic
 
         public override object Clone() => new WraperString { name = name, value = value };
 
-        public override object Getvalue() => value;
+        public override object GetValue() => value;
 
         public override string ToString() => value.ToString();
     }
@@ -97,7 +97,7 @@ namespace Generic
 
         public override object Clone() => new WraperBoolean { name = name, value = value };
 
-        public override object Getvalue() => value;
+        public override object GetValue() => value;
 
         public override string ToString() => value.ToString();
     }
@@ -115,7 +115,7 @@ public class WrapperConsideration : WraperValue
 
     public override object Clone() => new WrapperConsideration { name = name, configuration = configuration };
 
-    public override object Getvalue() => configuration;
+    public override object GetValue() => configuration;
     public override string GetItemName() => configuration.considerationName;
     public override string ToString() => configuration.ToString();
 }
