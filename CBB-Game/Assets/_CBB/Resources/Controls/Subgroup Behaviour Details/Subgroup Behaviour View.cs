@@ -47,6 +47,7 @@ namespace CBB.UI
                     var previousGroup = this.parent.Q<SubgroupBehaviourView>(subgroup.name);
                     previousGroup.m_agentInstances.RefreshItems();
                     m_agentInstances.RefreshItems();
+                    TypeBehavioursHandler_ExternalTool.SendTypeBehaviours();
                 };
                 menu.SetUpPosition(evt.localMousePosition);
                 this.Add(menu);
