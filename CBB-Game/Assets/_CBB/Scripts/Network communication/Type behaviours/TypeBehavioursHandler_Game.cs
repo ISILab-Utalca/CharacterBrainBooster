@@ -1,6 +1,9 @@
 using CBB.DataManagement;
+using CBB.Lib;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using UnityEngine;
 
@@ -14,6 +17,7 @@ namespace CBB.Comunication
         public static void Init()
         {
             Server.OnNewClientConnected += SendTypeBehaviours;
+            InternalNetworkManager.OnServerMessageDequeued += ReceiveTypeBehaviours;
         }
 
         private static void SendTypeBehaviours(TcpClient client)
@@ -52,7 +56,94 @@ namespace CBB.Comunication
             string json = JsonConvert.SerializeObject(blobs, Settings.JsonSerialization);
             Server.SendMessageToClient(client, json);
         }
+        private static void ReceiveTypeBehaviours(string json)
+        {
+            try
+            {
+                List<TypeBehaviour> typeBehaviours = JsonConvert.DeserializeObject<List<TypeBehaviour>>(json, Settings.JsonSerialization);
+                //After receiving the data, the game nees to update 2 main things:
+                // 1. The brain maps
+                UpdateBrainMaps(typeBehaviours);
+                // 2. The behaviour of the agents
+                SetTypeBehaviours(typeBehaviours);
+            }
+            catch (Exception)
+            {
+                // Intentionally left empty
+            }
+        }
 
+        private static void UpdateBrainMaps(List<TypeBehaviour> typeBehaviours)
+        {
+            // We load the current brain maps
+            List<BrainMap> brainMaps = BrainMapsManager.GetAllBrainMaps();
+            if (brainMaps == null) return;
+            // We iterate over the received type behaviours
+            foreach (var typeBehaviour in typeBehaviours)
+            {
+                // We find the brain map that matches the agent type
+                var brainMap = brainMaps.Find(x => x.agentType == typeBehaviour.agentType);
+                if (brainMap == null)
+                {
+                    // If the brain map does not exist, we create a new one
+                    brainMap = new BrainMap(typeBehaviour.agentType);
+                    brainMaps.Add(brainMap);
+                }
+                // We iterate over the subgroups of the received type behaviour
+                foreach (var subgroup in typeBehaviour.subgroups)
+                {
+                    // We find the subgroup in the brain map
+                    var subgroupBrain = brainMap.SubgroupsBrains.Find(x => x.subgroupName == subgroup.name);
+                    if (subgroupBrain == null)
+                    {
+                        // If the subgroup does not exist, we create a new one
+                        subgroupBrain = new BrainMap.SubgroupBrain(subgroup.name, subgroup.brainIdentification.id);
+                        brainMap.SubgroupsBrains.Add(subgroupBrain);
+                    }
+                    else
+                    {
+                        // If the subgroup exists, we update the brain id
+                        subgroupBrain.brainID = subgroup.brainIdentification.id;
+                    }
+                }
+            }
+            // We save the updated brain maps
+            BrainMapsManager.Save(brainMaps);
+        }
+
+        private static void SetTypeBehaviours(List<TypeBehaviour> typeBehaviours)
+        {
+            // Load the brain maps
+            List<BrainMap> brainMaps = BrainMapsManager.GetAllBrainMaps();
+            if (brainMaps == null) return;
+            // Get all game objects with Behaviour Loader component
+            var agents = UnityEngine.Object.FindObjectsOfType<BehaviourLoader>().ToList();
+            foreach (var typeBehaviour in typeBehaviours)
+            {
+                foreach (var subgroup in typeBehaviour.subgroups)
+                {
+                    foreach (var agent in subgroup.agents)
+                    {
+                        var agentGO = agents.Find(x => x.gameObject.GetInstanceID().ToString() == agent.id);
+                        if (agentGO != null)
+                        {
+                            if (agentGO.TryGetComponent<BehaviourLoader>(out var behaviourLoader))
+                            {
+                                // Compare values before updating behaviour, to avoid unnecessary updates
+                                if (behaviourLoader.m_agentType == typeBehaviour.agentType && behaviourLoader.m_agentTypeSubgroup == subgroup.name)
+                                {
+                                    continue;
+                                }
+                                behaviourLoader.m_agentType = typeBehaviour.agentType;
+                                behaviourLoader.m_agentTypeSubgroup = subgroup.name;
+                                // kicktart the reload behaviour process
+                                behaviourLoader.UpdateBehaviour(BrainDataLoader.GetBrainByID(subgroup.brainIdentification.id));
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     [System.Serializable]
     public class TypeBehaviour
