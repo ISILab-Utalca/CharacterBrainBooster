@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:DropdownField label="Agent type" index="-1" binding-path="m_agentType" name="agent-type-dropdown" />
+    <ui:DropdownField label="Subgroup" index="-1" binding-path="m_agentTypeSubgroup" name="type-subgroups-dropdown" />
+</ui:UXML>

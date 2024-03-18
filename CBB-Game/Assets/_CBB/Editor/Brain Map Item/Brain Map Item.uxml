@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/_CBB/Editor/Brain Map Item/Brain Map Item.uss?fileID=7433441132597879392&amp;guid=9c71ae00f6b5d64438eeec9aea293643&amp;type=3#Brain Map Item" />
+    <ui:VisualElement style="background-color: rgba(0, 0, 0, 0);">
+        <ui:Label tabindex="-1" text="Subgroup name" display-tooltip-when-elided="true" class="subgroup-label" />
+        <ui:DropdownField label="Brain" index="-1" choices="System.Collections.Generic.List`1[System.String]" />
+    </ui:VisualElement>
+</ui:UXML>

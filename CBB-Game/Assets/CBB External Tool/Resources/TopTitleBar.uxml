@@ -1,7 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <Style src="project://database/Assets/CBB%20External%20Tool/Styles/TextField.uss?fileID=7433441132597879392&amp;guid=2fd88df24d06fce4cb235ab79afe6089&amp;type=3#TextField" />
-    <ui:VisualElement name="VisualElement" style="flex-grow: 0; background-color: rgb(56, 56, 56); align-self: stretch; flex-direction: row; align-items: stretch; justify-content: space-between; border-left-width: 4px; border-right-width: 4px; border-top-width: 4px; border-bottom-width: 4px; border-left-color: rgb(38, 38, 38); border-right-color: rgb(38, 38, 38); border-top-color: rgb(38, 38, 38); border-bottom-color: rgb(38, 38, 38); height: 44px;">
-        <ui:Label tabindex="-1" text="Window title" display-tooltip-when-elided="true" name="window-title" class="top-window-title" />
-        <ui:Button text="X" display-tooltip-when-elided="true" name="close-button" style="height: 24px; width: 26px; background-color: rgb(87, 87, 87); align-self: center; flex-direction: column; color: rgb(0, 0, 0); -unity-font-style: bold;" />
-    </ui:VisualElement>
-</ui:UXML>

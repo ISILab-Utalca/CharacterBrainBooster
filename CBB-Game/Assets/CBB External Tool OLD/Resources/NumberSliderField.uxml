@@ -1,6 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
-        <ui:FloatField label="&#10;" value="42,2" style="flex-grow: 0; flex-shrink: 1; width: 50%;" />
-        <ui:Slider picking-mode="Ignore" value="0.5" high-value="1" show-input-field="false" direction="Horizontal" inverted="false" style="flex-shrink: 1; flex-grow: 0; width: 50%;" />
-    </ui:VisualElement>
-</ui:UXML>

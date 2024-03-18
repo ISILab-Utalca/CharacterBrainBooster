@@ -1,6 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:TextField picking-mode="Ignore" label="ID Code" value="XXX-XXX-XXX" hide-mobile-input="false" keyboard-type="Default" focusable="true" readonly="true" name="IDField" />
-    <ui:TextField picking-mode="Ignore" label="Address" value="127.0.0.1" hide-mobile-input="false" keyboard-type="NumbersAndPunctuation" focusable="true" readonly="false" name="AddressField" />
-    <ui:TextField picking-mode="Ignore" label="Port" value="8888" keyboard-type="NumberPad" name="PortField" readonly="false" />
-    <ui:Button text="Start connection" display-tooltip-when-elided="true" name="ConnectionButon" />
-</ui:UXML>

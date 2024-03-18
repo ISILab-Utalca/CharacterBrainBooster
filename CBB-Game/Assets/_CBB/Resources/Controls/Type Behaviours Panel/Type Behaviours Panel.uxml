@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_CBB/Stylesheets/CBB-Style.uss?fileID=7433441132597879392&amp;guid=82cb7018893fc0040b707b6388cf3eb5&amp;type=3#CBB-Style" />
+    <ui:Label tabindex="-1" text="Edit Agent Behaviour" display-tooltip-when-elided="true" class="title" style="border-left-color: rgb(33, 33, 33); border-right-color: rgb(33, 33, 33); border-top-color: rgb(33, 33, 33); border-bottom-color: rgb(33, 33, 33); border-top-width: 1px; border-bottom-width: 1px;" />
+    <ui:DropdownField index="-1" choices="System.Collections.Generic.List`1[System.String]" style="color: rgb(255, 255, 255);" />
+    <ui:VisualElement name="brain-maps-container" />
+</ui:UXML>

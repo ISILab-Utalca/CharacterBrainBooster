@@ -1,8 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/CBB%20External%20Tool/MonitorTextField.uss?fileID=7433441132597879392&amp;guid=b1ae81bb3415fba48bb3762b3b09de33&amp;type=3#MonitorTextField" />
-    <Style src="project://database/Assets/CBB%20External%20Tool/ListViewTest.uss?fileID=7433441132597879392&amp;guid=eb46a9b3dab2e814eb42687b550ee5bf&amp;type=3#ListViewTest" />
-    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-        <ui:Label tabindex="-1" text="ACTIONS" display-tooltip-when-elided="true" class="title-letter" />
-        <ui:ListView focusable="true" name="ListPrueba" style="flex-grow: 1;" />
-    </ui:VisualElement>
-</ui:UXML>
