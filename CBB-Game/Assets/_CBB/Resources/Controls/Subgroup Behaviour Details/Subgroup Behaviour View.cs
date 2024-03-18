@@ -63,6 +63,7 @@ namespace CBB.UI
                 return;
             }
             m_subgroup.brainIdentification = brain.GetBrainIdentification();
+            TypeBehavioursHandler_ExternalTool.SendTypeBehaviours();
         }
 
         public SubgroupBehaviourView(SubgroupBehaviour subgroup) : this()
