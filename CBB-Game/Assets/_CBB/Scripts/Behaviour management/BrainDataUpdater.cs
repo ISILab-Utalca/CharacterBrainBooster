@@ -25,10 +25,9 @@ namespace CBB.InternalTool
             {
                 UpdateBrain(msg);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.LogError("[BRAIN LOADER] Message is not Brain type: " + e);
-                throw;
+                // Intentionally left empty
             }
         }
 
