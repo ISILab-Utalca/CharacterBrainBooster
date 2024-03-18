@@ -1,11 +1,7 @@
 using ArtificialIntelligence.Utility;
-using CBB.Comunication;
 using CBB.DataManagement;
-using CBB.Lib;
-using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using UnityEngine;
 
 public class BehaviourLoader : MonoBehaviour
@@ -117,7 +113,6 @@ public class BehaviourLoader : MonoBehaviour
     {
         // NOTE: In order to not break the agent (stall, infinite loop, etc) is necessary
         // to pause the agent, update the brain and then resume the agent on several steps (frames)
-        var memento = GetMemento();
         agentBrain.Pause();
         while(agentBrain.IsRunningAction())
         {
@@ -142,24 +137,5 @@ public class BehaviourLoader : MonoBehaviour
     {
         m_sensors.Clear();
         m_sensors.AddRange(gameObject.GetComponentsOnHierarchy<Sensor>());
-    }
-    public Memento GetMemento()
-    {
-        return new Memento(m_brainName, m_agentType);
-    }
-    /// <summary>
-    /// Holds the previous state of the BrainLoader
-    /// https://www.dofactory.com/net/memento-design-pattern
-    /// </summary>
-    public class Memento
-    {
-        private readonly string m_brainName;
-        private string m_subGroupName;
-        public string SubGroupName { get => m_subGroupName; private set => m_subGroupName = value; }
-        public Memento(string brainName, string agent_ID)
-        {
-            this.m_brainName = brainName;
-            this.m_subGroupName = agent_ID;
-        }
     }
 }
