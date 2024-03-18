@@ -191,6 +191,7 @@ namespace CBB.Comunication
                 catch (Exception e)
                 {
                     Debug.LogError($"Error sending message to client {clientIP}: {e}");
+                    clients.Remove(clientIP);
                 }
             }
         }
