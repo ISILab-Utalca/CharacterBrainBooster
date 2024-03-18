@@ -37,10 +37,10 @@ namespace ArtificialIntelligence.Utility
 
         private void BeginNewExecution(Option option)
         {
+            IsRunning = true;
             _currentAction = option.Action;
             option.Action.OnFinishedAction += FinishExecution;
             option.Action.StartExecution(option.Target);
-            IsRunning = true;
         }
 
         /// <summary>

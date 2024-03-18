@@ -117,6 +117,7 @@ namespace ArtificialIntelligence.Utility
         public void Resume()
         {
             m_isPaused = false;
+            ReloadBehaviours();
             TryStartNewAction();
         }
         public void ReloadBehaviours()
