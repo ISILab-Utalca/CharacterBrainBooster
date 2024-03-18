@@ -1,5 +1,4 @@
 using CBB.DataManagement;
-using CBB.Lib;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -130,10 +129,10 @@ namespace CBB.Comunication
                             if (agentGO.TryGetComponent<BehaviourLoader>(out var behaviourLoader))
                             {
                                 // Compare values before updating behaviour, to avoid unnecessary updates
-                                if (behaviourLoader.m_agentType == typeBehaviour.agentType && behaviourLoader.m_agentTypeSubgroup == subgroup.name)
-                                {
-                                    continue;
-                                }
+                                //if (behaviourLoader.m_agentType == typeBehaviour.agentType && behaviourLoader.m_agentTypeSubgroup == subgroup.name)
+                                //{
+                                //    continue;
+                                //}
                                 behaviourLoader.m_agentType = typeBehaviour.agentType;
                                 behaviourLoader.m_agentTypeSubgroup = subgroup.name;
                                 // kicktart the reload behaviour process
