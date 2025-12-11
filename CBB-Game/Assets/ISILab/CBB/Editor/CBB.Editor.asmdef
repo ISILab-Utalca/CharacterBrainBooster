@@ -1,7 +1,9 @@
 {
-    "name": "CBB",
+    "name": "CBB.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:5808cb2aa2a83274f9601766e1c9e17a"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
